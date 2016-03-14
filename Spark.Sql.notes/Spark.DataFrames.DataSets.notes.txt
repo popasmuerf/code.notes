@@ -1,0 +1,214 @@
+http://spark.apache.org/docs/latest/sql-programming-guide.html#datasets
+
+
+
+sudo rm -rf /usr/local/mysql*
+sudo rm ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+sudo rm -rf /Library/StartupItems/MySQLCOM
+sudo rm -rf /Library/PreferencePanes/My*
+launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+rm -rf ~/Library/PreferencePanes/My*
+sudo rm -rf /Library/Receipts/mysql*
+sudo rm -rf /Library/Receipts/MySQL*
+sudo rm -rf /private/var/db/receipts/*mysql*
+
+
+
+
+DataFrames
+=======================================
+A distributed collection of data organized into named columns.
+Conceptually equivalent to a table in a relational database
+or a dataframe in R/Python, but with thricher optimizations
+under the hood.  
+DataFrames may be constructed via:
+	*Structured data files
+	*Hive tables
+	*External Databases
+	*Existing RDDs
+
+Datasets
+=======================================
+a new experimental interface added in Spark 1.6 that tries to provide the benefits of
+RDDs(strong typing and lambdas) with the beenfits of Spark SQL's optimized execution egine.
+A DataSet may be constructed from JVM objects and then manipulated using functional 
+transformations(map, flatMap, filter,etc)
+
+The unified Dataset API can be used both in Scala and Java.  Python does not yet have support for the
+Dataset API, but due to its dynamic nature many of th benefits are already available(i.e you can)
+
+Datasets are similar to RDDs, however, instead of using Java Serialization or Kryo they use a specialized Encoder to serialize the objects for processing or transmitting over the network. While both encoders and standard serialization are responsible for turning an object into bytes, encoders are code generated dynamically and use a format that allows Spark to perform many operations like filtering, sorting and hashing without deserializing the bytes back into an object.
+
+
+
+Getting Started
+======================================
+
+/**
+***********************
+	Scala
+***********************
+**/
+
+import sqlContext.implicits._
+val sc:SparkContext
+val sqlContext:SQLContext = new org.apache.spark.sql.SQLContext(sc)
+
+/**
+***********************
+	Java
+***********************
+**/
+
+import sqlContext.implicits.*;
+SparkContext sparkContext  = null ;
+SQLContext sqlContext = new org.apache.spark.sql.SQLContext(sc);
+
+
+Important Note about your sql context...
+=======================================
+n addition to the basic SQLContext, you can also create a HiveContext, which provides a superset of the functionality provided by the basic SQLContext. Additional features include the ability to write queries using the more complete HiveQL parser, access to Hive UDFs, and the ability to read data from Hive tables. To use a HiveContext, you do not need to have an existing Hive setup, and all of the data sources available to a SQLContext are still available. HiveContext is only packaged separately to avoid including all of Hive’s dependencies in the default Spark build. If these dependencies are not a problem for your application then using HiveContext is recommended for the 1.3 release of Spark. Future releases will focus on bringing SQLContext up to feature parity with a HiveContext.
+
+
+
+
+Creating DataFrames 
+=========================================
+with a SQLContext we can crate DataFrames from:
+	RDDs
+	HiveTable
+	data sources
+
+/**
+***********************
+	Scala
+***********************
+**/
+import org.apache.spark.sql.SQLContext._
+import sqlContext.implicits._ 
+val jsonFilePath:String = "/src/data/datfile.json"
+val sc : SparkContext //An existing SparkContext
+val sqlContext:SQLContext = new SQLContext(sc)
+val dataFrame = sqlContext.read.json(jsonFilePath)
+dataFrame.show()
+
+/**
+***********************
+	Java
+***********************
+**/
+import org.apache.spark.sql.SQLContext.* ;
+import sqlContext.implicits.* ;
+String jsonFilePath = "/src/data/datfile.json"
+SparkContext sc  //An existing SparkContext
+SQLContext sqlContext = new SQLContext(sc)
+DataFrame dataFrame = sqlContext.read().json(jsonFilePath)
+dataFrame.show()
+
+
+
+DataFrame Operations (Scala)
+=========================================
+val sc:SparkContext //An existing SparkContext
+val sqlContext:SQLContext = new SQLContext(sc)
+val dataFrame = sqlContext.read.json(jsonFilePath)
+dataFrame.show()
+
+DataFrame Operations (Java)
+=========================================
+SparkContext sparkContext ; //An existing SparkContext
+SQLContext sqlContext: = new SQLContext(sc) ;
+DataFrame dataFrame = sqlContext.read().json(jsonFilePath)
+dataFrame.show()
+
+/****output****/
+// age  name
+// null Michael
+// 30   Andy
+// 19   Justin
+
+Print DataFrame Schema(Scala & Java)
+*****************************************
+dataFrame.printSchema()  //scala
+dataFrame.printSchema() //Java
+
+/****output****/
+// |-- age: long (nullable = true)
+// |-- name: string (nullable = true)
+
+
+Select all data from the name column
+*****************************************
+dataFrame.select("name").show() //Scala
+dataFrame.select("name").show(); //Java
+
+
+
+Select everybody but increment age by 1
+*****************************************
+dataFrame.select(df("name"),df("age") + 1 ).show() //Scala
+dataFrame.select(df.col("name"), df.col("age").plus(1)).show() ;
+
+
+Select everybody over the age of 21
+*****************************************
+dataFrame.filter(dataFrame("age").gt(21)).show() ; //Scala
+dataFrame.filter(dataFrame("age") > 21).show() ;
+
+
+Count people by age 
+*****************************************
+dataFrame.groupBy("age").count().show() ; //Scala
+dataFrame.groupBy("age").count().show();
+
+
+Running SQL Queries Programmatically
+=========================================
+
+val sqlContext:SQLContext = new SQLContext(sc) //scala
+val dataFrame:DataFrame = sqlContext.sql("SELECT * FROM table") //scala
+
+SQLContext sqlContext = new SQLContext(sc) ; //Java
+DataFrame dataFrame = sqlContext.sql("SELECT * FROM table");  //Java
+
+Creating DataSets
+=========================================
+/**
+Datasets are similare to RDDs, however they are not using Java serialization
+or Kryo...they use a specialized Encoder to serialize the objects for proecsing or transmitting ove rthe network.
+**/
+TDA for COIN – 050088.000.001
+val dataSet:DataSet = Seq(1,2,3).toDS()
+https://spark.apache.org/docs/1.4.1/sql-programming-guide.html#json-datasets
+28.125 -27.5
+
+		import org.apache.spark.SparkConf ;
+		import org.apache.spark.api.java.JavaRDD;
+		import org.apache.spark.api.java.JavaSparkContext;
+		import org.apache.spark.rdd.RDD;
+		import org.apache.spark.rdd.JdbcRDD;
+		import java.sql.Connection;
+		import java.sql.Statement;
+		import java.sql.DriverManager;
+		import java.sql.ResultSet;
+		import java.sql.SQLException;
+
+      	String csvFilePath ="/Users/mbrown/src/data/csv/titanic/test.csv";
+        Connection connection = null ;
+        Statement statement  = null ;
+        ResultSet results = null ;
+        String dbName = "employees";
+        String dbURL = "jdbc:mysql//localhost:306";
+        String dbUser = "mysql";
+        String dbPasswd = "";
+        String test_query = "select * from employees limit 10";
+        System.out.println("Running within DriverJ.main().....");
+        SparkConf conf = new SparkConf() ;
+        conf.setAppName("DataFrame Join exercise-J");
+        conf.setMaster("local");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        JavaRDD<String> csvFileRDD = sc.textFile(csvFilePath).cache();
+
+
+
+

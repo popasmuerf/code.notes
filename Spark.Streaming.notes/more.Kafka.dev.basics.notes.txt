@@ -1,0 +1,75 @@
+https://kafka.apache.org/documentation.html#introduction
+README: located at /home/jschuff/README-kafka_testing.txt
+
+Kafka abstraction : topics
+==============================================
+Let's first dive into the high-level abstraction: topics.
+
+A topic is a category or feed name to which messages are published.  For each topic, the kafka cluster
+maintains a partititoned log that looks like this:
+
+Anatomy of a topic:
+
+
+Partition 0 0|1|2|3|4|5|6|7|8|9|10|11|12 <------------------
+															|
+Partition 1 0|1|2|3|4|5|6|7|8|9|10|11|12 <------------------------------Writes
+                                                            |
+Partition 2 0|1|2|3|4|5|6|7|8|9|10|11|12 <------------------
+
+Old-------------------------------------------------------->New
+
+
+^^^^Each partition is an ordered, immutable sequence of messages that is continually appened to--a commit log
+The messages in the partitions are each assigned a sequenctial id number called the "offset" that uniquely
+identifes each message within the partition.
+
+The Kafaka cluster retuans all publiced messages, whether or not they have been consumed--for a configurable log.
+The messages in the partitions are each assigned a squential id number called the offset that uniquely identifies
+each message within the partition.
+
+The Kafka cluster retains all published messages--whether or not they have been consumed--for a configurable perioed of time.
+
+
+Producers
+=============================================
+Producers publish data to the topics of their choice. The producer is responsible for choosing which
+message to assign to which partition with the topic.  This can be done in a round-robin fashion simply to balance
+load or it can be done according to some semantic partition function(say based on some key in the message).  More
+on the use of partitioning in a a second.
+
+
+Consumers
+=============================================
+Messaging traditionally has two modules:
+
+	queuing
+	publish-subscribe
+
+In a queue, a pool of consumers may read from a server and each message goes to one of them
+In publish-subscribe the message is a broadcast to all consumers.
+Kafka offers a single conumer abstractiont hat generalizes both of these--the consumer group
+
+
+Messaging
+=============================================
+Kafka works well as a replacement for more traditional message broker.
+Message brokers are used for a variety of reasons:
+	Decoupling of processing from data produces
+	to buffer unprocessed messages
+	etc.
+Kafka could be thought as very comparable to ActiveMQ or RabbitMQ
+
+
+Website Actvivity Tracking
+===============================================
+The original user case for Kafka was to be able to reubild a suer activity tracking
+pipeline as a set of real-time publish -subscribe feeds.
+This means site activity (page views, searches, or other actions users may take) is
+published to central topics with teh one topic per activity type.
+This means site activity  
+
+
+
+
+

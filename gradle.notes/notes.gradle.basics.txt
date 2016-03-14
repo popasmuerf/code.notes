@@ -1,0 +1,129 @@
+Build Script Basics
+===========================
+6. Projects and tasks
+Gradle has two basic concepts:
+	projects
+	tasks
+Every Gradle build is made up of one or more projects.
+Projects may constitute:
+	lib jar
+	web app(war ?)
+	Something that necessaryly need to be built
+	May simply represent something that needs to be done
+	Note:"This may seem a little vague...but that's ok..for now"
+
+
+Hello world:
+===========================
+You can run a Gradle build using the gradle command. The gradle command looks for 
+a file called:
+	build.gradle
+which is in the current directory.
+Build.gradle is what we call a:
+	"build script"
+Though strictly it is a build configuratio script, as we
+will see shortly.  The build script defines a project and its tasks.
+
+Example:
+	build.gradle:
+		task hello{
+			doLast{
+				println 'Hello world!'
+			}
+	}
+commands:
+	$cd working.dir
+	$gradle build
+	$gradle -q hello
+
+What's going on here?:
+	the build script defines here a task called hello
+	gradle executes the hello task
+	tasks execute actions
+Gradle tasks are equivalent to Ant targets
+
+Task definition shorthand:
+Example:
+	task hello <<{
+		println 'Hello World'
+	} 
+If I add a task to my gradle.build such that it now looks like:
+
+task hello{
+	doLast{
+		println "hello"
+	}
+}
+task goodbye{
+	doLast{
+		println "goodbye"
+	}
+}
+
+^^^ I can build:
+	$gradle
+and then I can either run the task "hello" or "goodbye" seperate from one another:
+	$ gradle -q hello
+	Hello World!!!
+	$ gradle -q goodbye
+	Good Bye!!!
+
+Gradle Build Scripts are Code
+===========================================
+Gradle build scripts are written in 
+The JVM language Groovy.  Everything
+you can do generally in Groovy, you can do
+in a Gradle Build Script:
+
+task upper <<{
+	String someSting = 'my_nAme'
+	println "Original: " + someString
+	println "Upper case: " + someString.toUpperCase()
+}
+
+task count<<{
+	4.times {print "$it "}
+}
+
+
+$gradle
+$gradle -q upper
+Upper case: MY_NAME
+$gradle -q count
+0 1 2 3
+
+Task dependencies
+===========================================
+Some tasks depend on the execution and or the execution
+order of other tasks....
+
+task prolouge <<{
+	println "beginning"
+}
+task epilouge(dependsOn: prolouge) <<{
+	println "end"
+}
+task one <<{
+	println "one"
+}
+task two(dependsOn: one){
+	println "two"
+}
+task taskX(dependsOn:taskY)<<{
+	println "taskX running...."
+}
+taskY(dependsOn:taskX)<<{
+	println "taskY running...."
+}
+
+
+^^^Notice that you can define a task that depends on a task that is defined after it is.
+This is very important and lends towards gradle's flexibility.
+
+Tasks may be created dynamically
+===========================================
+4.times { counter ->
+	task "task$Counter" <<{
+		println "I'm task number $counter"
+	}
+}	

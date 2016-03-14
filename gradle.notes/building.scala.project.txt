@@ -1,0 +1,38 @@
+https://docs.gradle.org/current/userguide/scala_plugin.html
+
+Creating Scala projects from the CLI:
+======================================
+#Gradle init --type java-library
+
+
+
+
+Gradle basic build file: gradle.build
+======================================
+apply plugin: 'java'
+apply plugin: 'scala'
+repositories {
+	mavenCentral()
+}
+dependencies{
+	compile 'org.slf4j:slf4j-api:1.7.5'
+    testCompile 'junit:junit:4.11'
+}
+
+
+Build
+=====================================
+# gradle build
+
+
+Project Layout
+=====================================
+src/main/java		Production Java source
+src/main/resources		Production resources
+src/main/scala	Production Scala sources. May also contain Java sources for joint compilation.
+src/test/java		Test Java source
+src/test/resources		Test resources
+src/test/scala	Test Scala sources. May also contain Java sources for joint compilation.
+src/sourceSet/java		Java source for the given source set
+src/sourceSet/resources		Resources for the given source set
+src/sourceSet/scala	Scala sources for the given source set. May also contain Java sources for joint compilation.

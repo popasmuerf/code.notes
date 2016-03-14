@@ -1,0 +1,547 @@
+Interface and Implementation
+============================
+
+
+*In ObjC, the file where the declaration of classes is done via
+the interface file
+
+*In ObjC , the file where the implementation of classes is done via
+the implementation file.
+
+*A simple interface file : MyClass.h would look like the following:
+
+@interface MyClass::NSObject{
+	//class variables or attributes declared go here
+}
+// class properties declared here
+// class methods and instances methods go here 
+@end
+
+A simple implementation file : MyClass.m would look like the following:
+
+@implementation MyClass{
+	//class methods are implemented here
+@end
+
+
+
+Method Declarations in ObjC
+================================
+-(returnType)methodName:(type)param1:(type)param2;
+*Example:
+-(void)calculateAreaOfTriangle:(CGFloat)length andBreadth:(CGfloat)breadth;
+
+the andBreath string is actually an optional string, which helps us read and understand
+the method easily, epseically at the time of calling.  To call this method from
+within the same class it is defined and implemented in....we use the following statement:
+[self calculateAreaOfTriange:30 andBreadth:20]
+
+The equivalent in C++, D, Java or C# of calling from within the class the method
+has been encapsulated in:
+this.calculateAreaOfTriangle(30,20);
+
+
+So...likely an easy way to remember what the description string is in an ObjC
+method signature....it is the "argument" that is not preceded by ":(type)"
+
+
+Class Methods
+================================
+* Class methods can be access directly without creating objects
+
+
+Example :
+
+@interface Square:NSObject{
+	double height ;
+	double width ;
+}
+	-(void)setHeight:(void) ;
+	-(void)setWidth:(double) width;
+	-(double)getHeight(void) ; 
+	-(double)getWidth:(void) ;
+	-(double)getPerimeter:(void) ;
+	-(double)getArea:(void);
+@end
+
+
+
+@implementation Square
+	void setHeight(double height){
+		this.height = height ; 
+	}
+	void setWidth(double width){
+		this.width = width ;
+	}
+	double getHeight(){
+		return this.height;
+	}
+	double getWidth(){
+		return this.width ;
+	}
+	double getPerimeter(){
+		return (this.height + this.width);
+	}
+	double getArea(){
+		return (this.height * width);
+	}
+@end
+
+
+Object instance creation
+================================
+*In ObjC we create instances of objects  
+
+*Object Creation 
+MyClass *myClassPtr =  [[MyClass alloc]init];
+
+*Example 
+Square *squarePtr = [[Square alloc]init];
+
+Circle *circlePtr = [[Circle alloc]init];
+
+Sphere *spherePtr = [[Sphere alloc]init];
+
+
+
+Defining a static class method
+================================
++(void)setCircleRadius:(CGFloat)area
+{
+	self.area = area; //or [self area:area]
+
+}
+
+Defining a static class method
+================================
+-(void)setCircleInstanceRadius:(CGFloat)area
+{
+	[self area:area] //or self.area = area
+}
+
+
+Properties Control Access to an Object's Values
+===============================================
+Objects often hae properties intended for public access.
+If we define behavior inside the @interface declaration.
+In this example, we might decide you need properties for strings
+representing a person's first and last names:
+
+@interface Person : NSObject
+	@property NSString *firstName ; //public attrib
+	@property NSString *lastName ;  //public attrib
+	@proprety NSInteger *ssn ; //public attrib
+	@propetry int yearOfBirth; //public attrib
+	@prpertry(readonly) NSString *id  ;
+@end
+
+
+
+Categories are used to add methods to the existing classes
+===============================================
+Categories are used to add methods to the existing classes.
+By this way, we can add a method to classes for which we do not
+possess access to with respect to it's source code.
+for example:
+	@interface MyClass(customAdditions)
+		-(void) sampleCategoryMethod;
+	@end
+
+	@implementation MyClass(categoryAdditions)
+		-(void) sampleCategoryMethod{
+			NSLog(@"Just a test category");
+		}
+	@end
+
+
+
+Arrays and Dictionaries
+================================================
+NSMutableArray and NSarray are the array classes used in ObjC.
+As the name suggess, the former is mutable and the latter is not...
+
+NSMutableArray *inmutableArray = [[NSMutable alloc] init];
+NSArray *mutableArray = [[NSArray alloc]init];
+[mutableArray setObject:@"firstobject" forKey:@"aKey"]
+
+
+NSMutableDictionary *mutableDictionary = [NSMutableDictionary alloc]init]; 
+NSDictionary *imutableDictionary = [[NSArray alloc]initWithObjects:[NSArray arrayWithObjects:nil] forKeys:[ NSArray arrayWithObjects:@"aKey"]]];;
+
+
+Destroying Objects in ObjC
+================================================
+To Destroy an object, you set the variable that points to 
+it to nil.
+Party partyInstance = [[Party alloc]init] ;
+partyInstance = nil ;
+
+*nil in ObjC is the "zero pointer"
+*C/C++ programmers in this known as NULL
+*We can use nil to do stuff:
+
+if(venue == nil){
+	[organizer remindToFindVenueForParty];
+}
+
+If nil is in fact an object....can I send a message to it ?
+================================================
+Yes...(only in ObjC can you do this....)
+but nothing will happen.
+
+
+On createing Object instances
+================================================
+Party *party = [Party alloc] ; // we allocate memory for an object
+[party init] ; // we cannot use this object until with initialize it!!!!
+
+	-or-
+Party *party = [[Party alloc]init];
+^^Nested message send.  The inner most brackets are
+evaluated first, so the message alloc is sent to 
+the class Party first.  This returns a pointer to 
+a new, uninitialized instance of Party that is then 
+sent the message init.  This returns a pointer to the initialed
+instance that you store in your pointer variable.
+
+On createing Object instances...a little detail and nomen-clature...
+================================================
+*An object has a life span
+*Objects are created via messages
+*Objects should be destroyed when they are no longer needed
+
+
+*Sending messages...the anatomy of....:
+	-receiver:
+		This a pointer to the object being asked to execute a method
+	-selector:
+		This is the method to be executed by the resceiver
+	-arguments:
+		These are the values to be supplied to the the selector(method)
+	-Example:
+		[partyInstancePtr addAttendee:somePerson];
+			partyINstancePtr --> reciever
+			addAttendee -->  selector
+			somePerson --> argument
+*For every bracket pair...only one message is being sent.
+
+
+Instance variables upon instance creation
+=================================================
+When an object is created, all of its instance variables are "zeroed out":
+	* Non-number variables = nil
+	* Number variables = 0
+
+Overriding methods
+=================================================
+*Overrid methods in ObjC the same way we do in other langues...via
+re-implementing it.
+//We just overrode the description method of the super class for BNRItem.
+-(NSString *) description{
+	NSString *descriptionString = [[NSSstring alloc]init] initWithFormat:@"%@(%@) : Worth $%d, recorded on %@",
+	self.itemName,
+	self.serial.serialNumber,
+	self.valueInDollars,
+	self.dateCreated] ;
+
+	return descriptionString ;
+}
+
+
+Initializers
+=================================================
+Before we go any further....let's be honest...initializers are pretty much
+ObjC's take on object constructors....
+Right now, the BNRItem class has only one way to initialize an instance:
+	-init() method
+which inherits from the NSObject class.  In this section, you are going to write
+two additional initialization methods, or initializers, for BNRItem.
+In BNR.h, declare two intializers:
+
+-(instancetype) initWithItemName:(NSString *) name valueInDollars:(int)value serialNumber:(NSString *)sNumber;
+-(instancetype) initWithItemName:(NSString *) name ;
+
+Each initializer begins with the word init.  Naming initializers this way does not make
+these methods different from other instance methods; it is only a nameing convention.  However,
+the ObjC community is all but naming conventions, which you shold striclty adhere to.
+
+An initializer takes arguments that the object can use to initialize itself.
+Often, a class has multiple initializers because instances can have different initialization
+needs.  For instance, our first example initializer, takes three arguments that it uses
+to configure the item's names, value and serial number....so you need all of this
+information to initialize an instance with this method.
+What if you only know the item's name ?  Then you can use the second initializer....
+
+Typically the designated intializer has paramters for the most important and frequently used
+instance variables of an object.  The BNRItem class has four instance variables, but only 
+three are writable.
+
+Return types for Initializers
+====================================================
+instancetype:
+	Don't worry why it does not match the return type....it works
+	worry about it later...
+id:
+	Pre instancetype.  This type is defined as a "pointer to any object"
+	sort of like "void *" in C/C++....like a generic pointer.
+	You can use the id return type when you are not sure exactly what the
+	return type will be...sort of like Object type in Java.  A variable of type
+	Object can reference any type within Java.
+
+	Another not worth knowing....you do not need to use the * when declaring a pointer
+	of type id
+
+	Example:
+	id genPtr = [[SomeType alloc]init];
+
+	Example:
+	id objectOfUnknownType;
+
+	for (id item in items){
+		NSLog(@"%@", item);
+	}
+
+Implementing the designated initializer
+===================================================
+In BNRItem.m, implement the designated initialier within the  implementation block.
+-(instancetype)initWithItemName:(NSString*) name valueInDollars:(int)value serialNumber:(NSString *)sNumber{
+		self = [super init]; //call the superclass's deignated initializer..notice how we don't allocat anything
+		if(self){
+			_itemName = name ;
+			_serialNumber = sNumber ;
+			_valueInDollars = value ;
+			_dateCreated = [[NSDate alloc]init];
+		}
+	return self ;
+}
+
+
+
+
+About Object Initialization from Apple.....
+===================================================
+Initialization sets the instance variables of an object to a reasonable
+and useful inital value(s).  It can also allocate and prepare other
+global resources needed by the object, loading them if necessary from an external source
+such as a file.  Every object that declares instance variables
+should implement an intialization; unless the default set-everything-to-zero
+initialzation is sufficient.  If an object does not implemtn an initializer,
+Cocoa invokes the initalizer of the nearest initializer of the 
+nearext ancestor insteard.
+
+Note:
+So...if my class has no initializer, then Cocoa will use the initializer
+(if one exists) of my class' most imidiate parent in the inheritance
+hierarchy.....
+
+
+Note:
+Instead of implementing an initializer with paramters, a subclass can implement
+only a simple inti method and then use "set" accessor methods immediately after
+initialization to set the object to a useful initial state.
+
+Cocoa has plenty of examples of initializers with parameters.  Below are a few
+(with the defining in parentheses):
+
+-(id)initWithArray:(NSArray *)array {...}
+-(id)initWithTimeInterval:(NSTimeInterval)secsToBeAdded sinceDate:(NSDate *):fromAnotherDate{...}
+-(id)initWithFrame:(NSRect)frameRect{...}
+
+Note: 
+Although init... methods are required by their method signature to return an object,
+that object is not necessarly the one that was most recently allocate--the reciever of the init...
+message.  In other words, the object you get back from the initialzer might not
+be the one you thought was initialzed.
+
+
+Implemeting an Initializer according to Apple.......
+=====================================================
+-(id)initWithAccountID:(NSString *)identifier{
+	if(self = [super init]){
+		Account *ac = [accountDictionary objectForKey:identifier];
+		if(ac){
+			[self release];
+			return [ac retain] ;
+		}
+		....
+		....
+		....
+		return nil ;
+	}
+
+
+Multipple initializers and the Designated Initializer
+}
+
+
+Multiple Initializers and the Designated Initializer....according to Apple
+=====================================================
+A class can define more than one initializer.  Sometimes multiple
+initialiers let clients of the class provide the input same initialization
+in different forms.
+
+
+@interface
+{}
+-(id)initWithArray:(NSArray *)array ;
+-(id)initWithObjects:(id * )object ;
+@end
+
+
+
+@implementation
+
+	-(id)initWithArray:(NSArray*)array{
+		NSArray *thisArray = array ;
+		return  [self thisArray];
+	}
+	-(id)initWithObjects:(id *)object{
+		NSObject *objPtr = object ;
+		return [self  objPtr];  
+	}
+@end
+
+
+
+
+import "whatever.h"
+public void main(int argc, char * argv[]){
+	NSString *str = [] ;
+	MyObject *obj0 = [[MyObject alloc]init] ;
+	MyObject *obj1 = [[MyObject alloc]initWithObjects:str] ;
+}
+
+
+self
+=====================================================
+Inside a method, self is an implicit local variable.  There
+is no need to declare it, and it is automatically set to point to the object
+that was sent the message.  (Most object-oriented languages have this concept,
+but some call it "this"  instead of "self") Typically, self is used
+so that an object can send a message to itself;
+
+-(void) chickentDance{
+	[self pretendHandsAreBeaks];
+	[self flapWings];
+	[self shakeTailFeathers];
+}
+
+
+super
+====================================================
+When you are overriding a method , you often want to keep what the
+method of the superclass is doing and have your subclass add
+something new on top of that.  To make this easier, there
+is a compiler directive in Objective-C called super:
+-(void)someMethod{
+	[super someMethod];
+	[self doMoreStuff];
+}
+
+
+
+Confirming initializing success
+===================================================
+If an initializer message fails, it will return nil.
+It is a good idea to save the return value of the
+superclasse's initializer into the self variable and confirm that 
+it is not nil before doing any futher intitializion...
+
+
+Instance variables in intializers
+==================================================
+Now we get to the core of this method where the instance 
+variables are given values.  Earlier we told you not to access instance
+variables directly and to use accessor methods.  Now we are asking you to 
+break thea trule when writing initializers.
+
+While an initializer is being executed, the object is being born, and 
+you cannot be sure that its instance variables have all been set to the usuable values.
+Thus, invoking a method(like an accessor) at a time when this may not be
+the case is unsafe.  At Big Nerd Ranch, we typically set the instancd ariables
+directly in initialzers, instead of calling  accessor methods.
+
+Some very good Objective-C Programmers do use accessors in initializers.  They
+aregure that if the accessor does something complicated, you want that code in 
+exactly one place' replicating it in your initializer is bad.  We are not religiously
+devoted to either approach, but in this book we will set instance variables directly in
+initializers.
+
+
+Other initializers in teh initializer chain
+==================================================
+If we implement the second initializer for the BNRItem class:
+
+-(instancetype)initWithItemName:(NSString*)name{
+	return [self initWithItemName:name valueInDollars:0 serialNumber@""];
+}
+
+
+
+/*designated initializer*/
+initWithItemName:valueInDollars serialNumbers  calls:
+	[NSObject init]
+BNRItem
+init calls:
+	initWithItemName calls:
+		initWithItemName:valueDollars:serialNumber
+
+
+
+On Using Autorrelease Pool Blocks
+==================================================
+@autoreleasepool {
+
+    // Code that creates autoreleased objects.
+
+}
+
+*Autorelease pool blocks porovide a mechanism whereby you can relinquic ownership of an object,
+but avoid the possibility of it being deallocated immediately
+such as when yu return an object from a method.
+Typically you will not need to create your own autorelease blocks, but there 
+are some situations in which either you must or it is beneficial to do so...
+*You generally use the autorelease block to reduce app memory footprint without having
+to deallocat resources manually:
+
+NSArray *urls = <# An array of file URLs #>;
+
+for(NSURL *url in urls){
+	
+	@autoreleasepool{
+		NSError *error ;
+		NSString *fileContents = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
+		/*Processing the string, creating and atuorreleasing more  objects */
+	}
+}
+
+The for loop processes one file at a time. Any object (such as fileContents) sent an autorelease message inside the autorelease pool block is released at the end of the block.
+
+
+NSArray and NSMutableArray
+================================================
+ObjC arrays can only hold references to ObjC objects.
+Primitives and C structures cannot be added to an ObjC array.
+If you need to add primitives or C structs to an ObjC array, you
+should encapsulate them into an ObjC object.  There are some ObjC
+objects written for this purpose:
+	NSNumber
+	NSValue
+	NSData
+
+Nil values cannot be added to ObjC arrays.
+Nil must be encapsulated in
+	NSNull
+Example
+	[itemArray objectAdd:[NSNull null]];
+
+You access specific indices within an ObjC array as thus:
+	Obj *objAtIndicePtr = [objArray objectAtIndex:4] ;
+		-or-
+	Obj *objAtIndicePtr = objArray[4]; 
+Assigning values 
+	Obj *newAtIndicePtr = [[Obj alloc]initWithValues:a:b ] ;
+	objArray[0] = newAtIndicePtr ;
+		-or-
+	[objArray addObject:newAtIndicePtr];
+

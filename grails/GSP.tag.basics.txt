@@ -1,0 +1,113 @@
+http://grails.asia/grails-tutorial-for-beginners-introduction-to-gorm/
+
+GORM(grails tutorial for beginners - Introdution to GORM)
+===========================
+GORM is half the reason why I use grails as my defualt choice in implementing new
+projects.  Using it just makes implmentation of business logic a breeze.  Working with
+databases becomes easier.
+GORM is Grails' object relational mapping (ORM) implementation, whihc sits on top of
+the very popular Hibernate framework.  If you are familiar with Hibernate, then you can pickup
+GORM in an insant.  Do't worry otherwise as GORM is straightfoward and easy to learn.
+
+
+Object-relational mapping(ORM):
+============================
+Relational database is still the most popular way to store
+and returieve information beause the technology is very
+mature and it has many software options.  Oracle and MS SQL Server
+are popular for commerical products, while  MySQL and PostgreSQL.
+
+Working with relational database direclty in Grails/Java is tricky.
+Becaue you think in terms of tables. in a dtabase,
+while you thin in term sof classes and objects in Java.  Wouldn't
+it be easier and more effiencient if we just thin in terms of objects
+and forget about tables ?
+
+Example, code dsnippet on how we save a record in the database using
+plain JDBC:
+
+public void save(Person person){
+	try{
+		Connection conn = Class.forName("com.mysql.jdbc.Driver");
+		conn = DriverManager.getConnection("jdbc:mysql://localhost/mydb","root","root");
+		Statement stmt = con.createStatement();
+		String sql = "INSERT INTO person( first_name, last_name) VALUES ('"+p.getFirstName()+"', '"+p.getLastName()+"')";
+		stmt.executeUpdate(sql);
+	}catch(Exceptione){
+		//....
+	}
+}
+
+A better way:
+
+new Person(firstName:'John',lastName:'Doe').save()
+
+
+Configuration
+============================================
+Since Grails is a framework that dosent want to get in your way,
+it has a default database configuration already so that you could
+start coding your business logic right away.  By defualt, it uses
+an embedded H2 database(http://www.h2database.com/html/main.html).  But
+ifyou wish to modify this, the config file to edit is:
+
+	DataSource.groovy
+
+Domain Object
+===========================================
+Create a groovy class insided the domain folder:
+
+/* Person.groovy */
+
+package testing
+class Person{
+	String firstName
+	String lastName
+	Date dateOfBirth
+	double salary
+}
+
+Create, Read, Update, Delete (CRUD)
+===========================================
+Once our domain class exists...we can 
+immediately write CRUD ops.  Usually you will write
+GORM code inside these components:
+	BootStrap.groovy
+	controllers
+	services
+
+Create record
+--------------------------------------------
+Person p = new Person()
+p.firstName = 'John'
+p.lastName = 'Doe'
+p.save()
+
+Delete a record
+---------------------------------------------
+Person p = Person.get(999)
+p.delete()
+
+
+
+Other goodies
+============================
+Aside from the methods avaialable above, there are other many
+useful  methods.  Some are dynamically available.
+Here is a quick overview below:
+
+Number of records in person table:
+-------------------------------
+int numberOfRecords = Person.count()
+
+Number of records with last name = Doe:
+--------------------------------
+int numberOfRecords = Person.countByLastName("Doe");
+
+Find 1 record with the first name = John, and last name = Doe:
+------------------------------------
+Person p = Person.findByFirstNameAndLastName("John","Doe")
+
+Find all records with last name = Doe:
+-------------------------------------
+Person p = Person.findAllByLastName("Doe")

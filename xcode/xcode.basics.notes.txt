@@ -1,0 +1,44 @@
+https://www.hackingwithswift.com/read/1/4/introducing-interface-builder
+XCode dev basics navigation:
+==============================
+*Projects can be ran via cmd+R  or hitting play
+*Projects can be stopped(running) via cmd+
+*Changes made to a running project will be updated via cmd+R
+
+
+
+
+XCode iPhone Basic Framework:
+===============================
+
+MaserViewController.swift:
+--------------------------------
+UITableViewController-|
+					  |
+					  |
+					  MasterViewController
+
+inherited from UITableViewController:
+	*viewDidLoad -> completes post screen creation activities
+	presumably....before the screen is actually rendered...
+	*
+
+native methods:
+*insertNewObject(sender:AnyObjec)
+*tableView(tableView:UITableView) 
+	args:
+		(tableView:UITableView,section:Int)
+	returns:
+		objects.count
+Objects of note:
+
+
+UITableView is analogus to ListView
+
+App directories in XCode parlance is called "bundles"
+and they all have the extension ".app"
+
+We can access files from disk using the NSFileManager
+
+
+

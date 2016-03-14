@@ -1,0 +1,68 @@
+http://www.tutorialspoint.com/log4j/log4j_installation.htm
+
+Log4J Basics
+=====================================
+log4j is a realiable , fast and flexible logging framework(APIs) written in Jasva
+which is distributed uner the Apcache Software license.
+
+log4J has been ported to C/C++, C#, Perl, Python, Ruby, and Eiffel
+language platforms.
+
+Features
+=====================================
+*log4j is highly configurable through external configuration
+files at runtime.  It views the logging process in terms of levels
+and priorties and offers mechanisms to direct loggin information
+to a great variety of estinations
+such as a:
+	database
+	file
+	console
+	Unix Syslog
+*log4j has three main components:
+	loggers:
+		Responsible for capturing logging information
+	appenders:
+		Responsible for publishing logging information to various
+		preferred destinations
+	layouts:
+		Responsible for formatting logging information in different
+		styles
+*Optimized for speed
+*Based on named logger hierarchy
+*supports mutliple output appenders per logger
+*supports internalization
+*is not restrcited to predefined set of facilities
+*logging behavior can be set at runtime using a configuration file
+*Uses multiple levels, namely:
+	ALL
+	TRACE
+	DEBUG
+	INFO
+	WARN
+	ERROR
+	FATAL
+*The target of the log outpu as well as the writing strategy can be altered by implementations of the 
+Appender interface
+*It is fail-stop.  Hoever, although it certainly strives to ensure delivery,
+log4j does not guarantee that each log  statement will be delivered to 
+its destination.
+
+History of log4j
+=====================================
+*Started in early 1996 as a tracing API for the E.U. SEMPER(Secure Electronic Marketplace for Europe)
+project
+*Eventually evolved to become log4j, a popluar logging package for Java
+
+
+Pros and Cons of Logging
+=====================================
+Logging is an important component of the software development. A well-written logging code offers quick debugging, easy maintenance, and structured storage of an application's runtime information.
+
+Logging does have its drawbacks also. It can slow down an application. If too verbose, it can cause scrolling blindness. To alleviate these concerns, log4j is designed to be reliable, fast and extensible.
+
+Since logging is rarely the main focus of an application, the log4j API strives to be simple to understand and to use
+
+
+
+

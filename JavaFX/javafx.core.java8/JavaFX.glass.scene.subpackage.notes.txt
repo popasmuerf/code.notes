@@ -1,0 +1,127 @@
+JavaFX Scene Package
+===========================
+16 Core Java 8 Classes
+----------------------------
+package javafx.scene contains 16 powerful
+JavaFX  Java 8 classes:
+
+  Camera
+  ParallelCamera
+  PerspectiveCamera
+  Cursor
+  ImageCursor
+  LightBase
+  PointLight
+  AmbientLight
+  Scene Grappd
+
+
+The Java 8 javafx.scene Package
+------------------------------------------
+Scene Graph   Light & Camera    Scene Utilities
++++++++++++   ++++++++++++++    +++++++++++++++
+Scene         Cursor            SnapshotResult
+Node          ImageCursor       SnapshotParameters
+Parent        LightBase         SceneAntialiasing
+Group         PointLight
+SubScene      AmbientLight
+              Camera
+              ParallelCamera
+
+
+Primary classes of javafx.scene package
+============================================
+Primary classes in javafx.scene:
+  javafx.scene.Scene
+  javafx.scene.Node
+In a sense the Node class and all of its subclasses
+may be viewed as being below the Scene class...despite
+the Node class not being a subclass of the Scene class...as opposed
+to the Node(Scene Graph) class and subclasses are contained
+inside the Scene object itself(composistion).
+
+
+Scene Constructor
+=========================
+It's overloaded:
+
+Scene(Parent root)
+Scene(Parent root, double width, double height)
+Scene(Parent root, double width, double height, boolean depthBuffer)
+Scene(Parent root, double width, double height, boolean depthBuffer, SceneAntialiasing aAlias)
+Scene(Parent root, double width, double height, Paint fill)
+Scene(Pareent root, Paint fill)
+
+
+
+JavaFX Scene Graph: Organizing Scenes, Using Parent Nodes
+============================================================
+A scene graph, whihc isnot usnique to JavaFX and which can
+be seen in quite a few new media content creation 
+software packages,  with the root node at the top and 
+branch nodes and leaf nodes comming off the root node.
+
+JavaFX Scene Graph data structure alows you not only 
+to architect, organize, and design your JavaFX scene and its content,
+but also to apply:
+  opacity
+  states
+  event handlers
+  transformations
+  special effects
+to entire logical branches of the Scene Graph hierarchy if you
+set up the Scene Graph correctly
+
+Figure below depicts a Scene Graph tree, with the root node
+at the top and branch and leaf nodes below it:
+
+
+Scene Object (Contains Scene Graph Node Hierarchy)
+----------------------------------------------------
+                ROOT NODE
+[*******************************************]
+        |             |
+    [Branch Node]    [leaf node]
+    |           |
+  [leaf Node] [leaf Node]
+
+786-567-0854
+Branch nodes are decendents of:
+    
+    javafx.scene.Parent
+
+...and as a type of "Parent"
+
+Branch nodes may have other Branches or leaf nodes as children
+Leaf nodes cannot have children
+Branch nodes maybe created by using the following classes:
+
+*Parent
+*Group
+*SubScene
+
+Or the subclasses of the above:
+
+*WebView
+*PopupControl
+*Region
+*Pane
+*StackPane
+
+Leaf Nodes maybe be:
+
+JavaFX objects
+
+that may be configured using parameters
+such as shapes, text, or an ImageView
+Leaf Nodes are therefore always contain a JavaFX
+class that has not been subclassed(extended) from the
+Parent class, and that has not itself been specifically
+desinged to have child elements(child objects) within
+it, or below it.
+
+
+
+
+
+

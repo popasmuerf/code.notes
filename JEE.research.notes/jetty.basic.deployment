@@ -1,0 +1,52 @@
+http://examples.javacodegeeks.com/enterprise-java/jetty/jetty-web-xml-configuration-example/
+https://wiki.eclipse.org/Jetty/Reference/webdefault.xml
+http://www.eclipse.org/jetty/documentation/current/advanced-embedding.html#jetty-helloworld
+
+Typically in a Java web application, the deployment
+descriptor file is named as web.xml which includes
+application-wide configuration.  In addition
+to this, a common deployment descriptor can be 
+defined for jetty.
+
+This common descriptor is container-wide and includes configuration
+which is applicable to all the web applications deployed in Jetty.
+
+Typically the the file is named webdefault.xml, howeverit is possible to
+rename and relocate this file
+
+deployment Descriptor file (a.k.a web.xml)
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>Webapp2</display-name>
+</web-app>
+
+
+
+The fundamental elements available in the deployment descriptor file.
+Full list of of elements are here:
+
+http://docs.oracle.com/cd/E24329_01/web.1211/e21049/web_xml.htm#WBAPP502
+
+*welcom-file-list
+*servlet/servlet-mapping
+*filter/filter-mapping
+*listener
+
+As mentioned before, web.xml file stores configurations per application.
+It is also possible to specify a common deployment descriptor that holds
+configuration for multiple web applications.
+In Jetty, this file is named as webdefault.xml
+
+Note:
+After Java Servelt 3.0, web.xml is not necessary for a
+web application and the same configuration can be performed through Java
+classes and annotations.
+
+
+
+
+
+

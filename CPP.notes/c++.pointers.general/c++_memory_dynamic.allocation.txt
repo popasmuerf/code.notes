@@ -1,0 +1,97 @@
+C++ Dynamic Memory Allocation
+==================================
+Basically requesting as much memory you might need while
+your program is running...i.e....memory in addtion
+to the memory statically allocated to run it
+---------------------------------
+
+
+How to get new memory....basic syntax
+--------------------------------------
+int *p_int = new int ;
+
+^^^ now I have a new pointer that points to a reference
+of a new chunk of memory of type int.
+
+We taketh....and as such we must returneth....
+===============================================
+p_int must eventually return this memory back to the free store,
+an operation called:
+	"freeing the memory"
+Until p_int is freed, the memory that is pointed to will
+be marked as in-use willnot be given out again.  If you keep
+allocating memory and never free it, you will run out of memory.
+
+We return memory as such below:
+-----------------------------------------------
+int p_int* = new int ;
+delete p_int;
+//it is always a good idea to reset pointers to NULL
+//because you never know if some idiot will try to 
+//dereference a dangling pointer.
+p_int = NULL ;
+
+Rule of thumb....
+-------------------------------------------------
+always release memory when you are done with it.
+
+
+
+References and dynamic allocation
+================================================
+In general, you should not store memory that you just
+allocated in a reference...
+
+	int &val = *(new int);
+
+^^^ as a reference does not provide immediate
+access to the raw memory address.  You can get it using &, but generally
+references should provide an additional name for a variable, not 
+storage for dynamically allocated memory.
+
+
+
+Pointers and arrays
+==================================================
+int numbers[8] ;
+int* p_numbers = numbers ;
+for(int i = 0 ;i < 8; ++i){
+	p_numbers[i] = i ;
+}
+delete p_numbers ;
+p_numbers = NULL ;
+
+int *p_numbers = new int[8];
+delete p_numbers ;
+
+
+Dynamically set array length of int via user input
+===================================================
+cin >> max ;
+int *ptr_array = new int[max];
+delete [] ptr_array ;
+ptr_array = NULL ;
+
+
+
+
+Pointer Arithmetic
+=====================================
+Pointers prepresent memory addresses, and memory addresses
+are ultimately just numbers.
+We can perform some mathematical operations on pointers:
+	adding a number and a pointer
+	subtracting two pointers
+
+Why use pointer Arithmetic ?
+=====================================
+Wrting to a block of memory  and we know the exact
+offest into which you wish to place a value.  We have already
+done this at a high level traversing arrays.
+
+int x[10];
+x[3] = 120 ;
+
+	-vs -
+int x[10] ;
+*(x + 3) = 120 ;

@@ -1,0 +1,65 @@
+https://kafka.apache.org/documentation.html#introduction
+
+Integrating Kafka and Spark Streaming:
+Code Examples and State of the Game
+==============================================
+Spark Streaming has been getting some attention
+lately as a real-time data processing tool, often
+mentioned alongside with Apache Storm.
+
+What is Kafka?
+===============================================
+Kafka is a distribted, partitioned, replicated
+commit log service.  It provides the functionality
+of a messaging system, but with the unique design.
+
+
+Kafka(general messaging terminology)
+===============================================
+Kafka maintains feeds of messages in categories called topics
+Processes that publish messages to Kafka are called topic producers
+We'll call processes that subscribe to topics and process the feed of published messages
+consumers
+Kafka is run as a cluster comprised of one or more servers each of which is called a broker
+
+High level description of Kafka
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+producer----------------                                        -------------consumer
+                        |                                      |
+producer---------------------------->Kafka Cluster------------>-------------consumer
+                        |                                      |
+producer----------------                                        -------------consumer
+
+Communication between clients is peformed via TCP
+1st and 3rd party Kafka clients are widely available
+
+What is Arvo?
+===============================================
+
+
+What is Storm ?
+===============================================
+Apache Storm is a free and open source distributed realime computation
+system.  Storm makes it easy to reliably
+process ubounded streams of data, doing 
+for realtime process what Hadoop did for batch processing.
+Storm is simple, can be used with ANY PROGRAMMING LANGUAGE.
+Storm allows for the following:
+	Supports All programming languages
+	Scaling out
+	Fault-tolerance
+	ETL(Extract-Transform-Load):
+		Extract:
+			Get data from source system efficiently
+		Transform:
+			Perform calculations on data
+		Load:
+			Load the data in the target storage
+		Clean:
+			Perform data cleansng and dimension conforming
+		Transform:
+			Perform calculations on data
+		Load:
+			Load the data in the target storage
+
+

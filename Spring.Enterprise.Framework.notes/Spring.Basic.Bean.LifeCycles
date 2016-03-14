@@ -1,0 +1,171 @@
+Life Cycle of Beans 3132933419
+===================================
+The life cycle of beans are easy to understand.
+When a bean is instantiated, it may be required
+to perform some initialization to gt it into a usuable 
+Similarly, hwen the bean is no longer required
+and is removed from the container, some cleanup may be required.
+We setup and tear down beans by declaring the 
+<bean> with 
+    init-method
+    destroy=method
+parameters
+
+
+
+Initialization callbacks programtically:
+=====================================================================
+The interface 
+
+	org.springframework.beans.factory.beans.factory.InitializingBean
+
+specifices a single method:
+
+	void afterPropertiesSet() throws Exception ;
+
+So...we coud simply implement the ^^^^ above interface and initializing 
+work can be done inside :
+
+	void afterPropertiesSet() throws Exception ;
+
+as follows:
+
+	public class ExampleBean implements InitializingBean {
+		public void afterPropertiesSet(){
+			//do some initialization work
+		}
+	}
+
+In the case of XML-based configuration metadata, you can use the :
+=====================================================================
+We can use this tag in our Bean XML definition file:
+	
+	init-method
+..that has no-argument signature.  For example:
+
+	<bean id="exampleClassId" class="ExampleBean" init-method="init">
+		//stuff
+	</bean>
+
+Following is the class definition:
+
+	public class ExampleBean{
+		public void init(){
+			//init stuff
+		}
+	}
+
+
+Desctruction callbacks 
+
+In the case of XML-based configuration metadata, you can use the :
+=====================================================================
+We can use this tag in our Bean XML definition file:
+	
+	destroy-method
+..that has no-argument signature.  For example:
+
+	<bean id="exampleClassId" class="ExampleBean" destroy-method="destroy">
+		//stuff
+	</bean>
+
+Following is the class definition:
+
+	public class ExampleBean{
+		public void init(){
+			//init stuff
+		}
+		public void destroy(){
+			//destroy stuff
+		}
+	}
+=====================================================================
+The interface used for initializing the "destruction" of a bean method sig:
+
+	org.springframework.beans.factory.DisposableBean
+
+	void destroy() throws Exception;
+
+Example of a destructor method:
+
+	public class ExampleBean implements org.springframework.beans.factory.DisposableBean{
+		public void destroy(){
+			//do some destructive work
+		}
+	}
+
+If we are are using the Spring IoC container in a non-web application enviroment...
+=====================================================================
+....like for say in a rich-client application....we would register a shutdown
+hook with the JVM.  Doing so ensures a graceful shutdown and calls the relevant destory methods
+on your singleton beans so that all reasources are released.
+
+It is recommened that you do not use the callbacks:
+
+	InitializingBean
+		-or-
+	DisposableBean
+
+callbacks, because XML configuration gives much more flexibility in terms
+of naming your method.
+
+
+How do we destroy stuff ?
+=====================================================================
+We need to register a "shutdown hook" method that is declared on the 
+AbstractApplicaitonContext class:
+
+	org.springframework.contenxt.support.AbstractApplicationContext ;
+
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainApp{
+	public static void main(String []args){
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext("Bean.xml");
+		HelloWorld obj = (HelloWorld) context.getBean("helloWorldId");
+		obj.getMessage() ;
+		context.registerShutdownHook() ;
+
+	}
+}
+
+The XML config in Beans.xml required for init and destroy methods:
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <bean id="helloWorld" class="HelloWord" init-method="init" destroy-method="destroy">
+    	<property name="message" value="HelloWorld!!!!"/>
+    </bean>
+</beans>
+
+
+Default initializationa nd Destroy methods
+===================================================================
+If you have too many bens having intialization and or destroy methods, with the same names
+we don't  need to declare init-method and destroy method on each individual bean.
+Instead the framework provides the flexibility to configure such situation using xml declarations
+	
+	init-method		<!--individual bean declaraton-->
+	destroy-method <!--individual bean declaraton-->
+	default-init-method		<!--global bean declaraton-->
+	default-destroy-method	<!--global bean declaraton-->
+
+Example:
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <bean id="helloWorld" class="HelloWord" init-method="init" destroy-method="destroy">
+    	<property name="message" value="HelloWorld!!!!"/>
+    </bean>
+</beans>
+
+
+
+=====================================================================

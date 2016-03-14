@@ -1,0 +1,40 @@
+https://99designs.com/designer-blog/2014/01/15/7-unbreakable-laws-of-user-interface-design/
+
+1.Law of clarity:
+	Users will aoid interface elements
+	that have no clear/obvious meaning.
+	Question:  Are any of our elements
+	bereft of clear and obvious meaning ?
+
+2.Law of prefferred action
+	Is the workflow or what the user is supposed to
+	do obvious ?  If it isn't....then people
+	will be reluctant to use the app.
+	Question: Is what one is supposed to do for any part
+	of the Workflow more or less obvious ?  Users should
+	not have to search for what they want to do:
+	Question : Is the main operation
+	for some task of some Activity prominent ?
+
+3. Law of Contexts 
+Do features make sense within the context they are presented ?
+For example....if I want a cup a coffee, it is intuitive
+to walk over to the coffee machine, and then press "brew" as 
+opposed to walking over to the microwave, or simple just standing
+in the kitchen with a bunch of devices that have no outwardly apparent
+in function.....or if coffee workflow consists of going downstairs into the laundry room
+
+4. Law of defaults:
+	User will rarely change defaults
+	Question: Does our app need tons of configuration in order
+	to be useful ?
+
+5. Law of guided action:
+	The user will likely do what is explicitly asked of them
+	by the app:
+	Quesion: N/A
+
+6. Law of feedback:
+	The user will feel more confident if yo provide clear and constant
+	feedback
+	Question:"" 

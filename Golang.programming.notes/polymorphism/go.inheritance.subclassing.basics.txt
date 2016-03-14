@@ -1,0 +1,99 @@
+http://golangtutorials.blogspot.com/2011/05/table-of-contents.html
+http://spf13.com/post/is-go-object-oriented/
+
+Object Composistion in GoLang
+============================================================================
+
+The difference between Polymorphism an composistion:
+=============================================================================
+Polymorphism or subtying defines an is-a relationship.
+Inheritance reuses implementation.  Subtyping defines a semantic
+relationship between two(or more) objects.  Inheritance only defines a syntactic
+relationship.
+
+Object comoposistion si wher one object is defined by in cluding other objects.
+Rather than inheriting from them, the object contains them.
+Unlike the is-a relationship of subtying, object composistion defines
+a has-a relationship.
+
+There is no inheritance in Go...only composistion. 
+
+
+Some Code:
+==============================================================================
+
+In the following program, we have only defined a method or behavior for Car.
+Since we then defined Car as an anonymous field(AF) in Ferrari, the latter
+calass automatically can call on all the visible behaviors/mehtods of the 
+AF type.  so here, we have not subclassed a parent class, but coposed it.
+But the effect is effectively the same.  We have all the behaviors of the
+parent with none of the frills of object oriented programming.
+Is this kinda cool ?   I am not sure just yet:
+
+
+package main
+import "fmt"
+
+type Car struct{
+	wheelCount int
+}
+/*Define the behavior of a car
+func(car Car)numberOfWheels()int{
+	return car.wheelCount
+}
+
+type Ferrari struct{
+	Car
+}
+
+
+func main(){
+	f:=Ferrari{Car{4}}
+	fmt.Println("A Ferrari has this many wheels", f.numberOfWheels)
+}
+
+
+
+
+
+In the following code...we provided some behavior for the Ferrari
+data type.  Just as with Sub-Classing with Java/C++/C#, this behavior is only
+possesed at the moment by the sub-class, and not the super-class....
+Both types Ferrari and AstonMartin can both do everything the Car type can,
+and also whatever being a Ferrari or AstonMartin affords you.
+===================================================================
+
+package main
+
+import "fmt"
+
+type Car struct{
+	wheelCount int
+}
+
+func (car Car)numbeOfWheels() int{
+	return car.wheelCount
+}
+
+type Ferrari struct{
+	Car
+}
+
+/* behavior only available to to ferraris*/
+func(f Ferrari) sayHiToSchumacher(){
+	fmt.Println("Hi Schumacher!!!")
+
+}
+
+type AstonMartin struct{
+	Car
+}
+
+func(a AstonMartn)sayHiToBond(){
+	f:=Ferrari{Car{4}}
+	fmt.Println("A Ferrari has this many wheels", f.numberOfWheels)
+	a:=AstonMartin{Car{4}}
+	f.sayHitToSchumacher()
+	fmt.Println("An AstonMartin has this many wheels", a.numberOfWheels)
+	a.sayHiToBond()
+}

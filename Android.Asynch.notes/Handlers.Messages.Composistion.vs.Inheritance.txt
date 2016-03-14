@@ -1,0 +1,45 @@
+
+/*
+	How Handler "handles messages"
+*/
+
+Handler.handleMessage(Message msg);
+
+
+/* 
+	SpeakHandler extends Handler.  We defined
+	SpeakHandler as a static class.  Handlers should
+	not be instantiated into Objects
+*/
+
+public static class SpeakHandler extends  Handler {
+	public static final int SAY_HELLO = 0 ;
+	public static final int SAY_BYE = 0 ;
+	@Override
+	public void handleMessage(Message msg){
+		switch(msg.what){
+			case SAY_HELLO:
+				sayWord("hello");
+				break;
+			case SAY_BYE:
+				sayWord("goodbye");
+				break ;
+			default:
+				super.handleMessage(msg);
+		}
+	}
+	private void sayWord(String word){
+		....
+		....
+		....
+	}
+}
+
+
+/* Attaching an instance of our Handler to main thread */
+
+private Handler handler ;
+protected void onCreate(Bundle savedInstanceState){
+	super.onCreate(savedInstanceState);
+	handler = new speakHandler() ;
+}

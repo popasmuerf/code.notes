@@ -1,0 +1,42 @@
+Put up a page on confluence->FAQ->Spark on ZipReduce
+
+I've had 4-5 people ask me about this exact same problem, so I figured i'd just write it down on confluence.
+
+The task is you have an inputRDD: RDD[ (key, value, label)] and you want to aggregate/reduce by label, like so:
+
+inputRDD.map( (key, value, label) => (label, mapfunction(value))).reduceByKey(reducefunction)
+or
+inputRDD.map( (key, value, label) => (label, mapfunction(value))).aggregateByKey(zerovalue,combinerfunction)
+
+Spark will fail at you if the amount of data in your labels are too big (meaning the grouping will fail). If you have few labels and many more keys, the best solution IMO is what I'm calling ZipReduce. The code is on confluence, but the idea is to
+(1) construct an Array of the length of the number of labels
+(2) map the raw data to indices in the array corresponding to which label the data point actually belongs to
+(3) reduce using the zip operator and applying your combine function as a map
+
+Enjoy,
+
+-Shrayes
+
+
+
+    for obj in iterator:
+  File "/opt/cloudera/parcels/CDH-5.4.2-1.cdh5.4.2.p0.2/lib/spark/python/pyspark/rdd.py", line 1420, in func
+    for x in iterator:
+  File "/home/mbrown/ldaPipeLineII/./outlier_mapper2.py", line 107, in <lambda>
+IndexError: list index out of range
+) [duplicate 65]
+15/08/04 17:27:57 WARN TaskSetManager: Lost task 38.7 in stage 1.0 (TID 571, r6e05.drax.gotgdt.net): TaskKilled (killed intentionally)
+15/08/04 17:27:57 INFO TaskSetManager: Lost task 43.5 in stage 1.0 (TID 575) on executor r6e07.drax.gotgdt.net: org.apache.spark.api.python.PythonException (Traceback (most recent call last):
+  File "/data/7/yarn/nm/filecache/1839/spark-assembly.jar/pyspark/worker.py", line 101, in main
+    process()
+  File "/data/7/yarn/nm/filecache/1839/spark-assembly.jar/pyspark/worker.py", line 96, in process
+    serializer.dump_stream(func(split_index, iterator), outfile)
+  File "/data/7/yarn/nm/filecache/1839/spark-assembly.jar/pyspark/serializers.py", line 125, in dump_stream
+    for obj in iterator:
+  File "/opt/cloudera/parcels/CDH-5.4.2-1.cdh5.4.2.p0.2/lib/spark/python/pyspark/rdd.py", line 1420, in func
+    for x in iterator:
+  File "/home/mbrown/ldaPipeLineII/./outlier_mapper2.py", line 107, in <lambda>
+IndexError: list index out of range
+
+
+carbon filaments,

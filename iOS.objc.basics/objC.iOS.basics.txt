@@ -1,0 +1,39 @@
+Datatypes/Classes/Objects most often used in ObjC programming
+============================
+
+NSString:
+	String type
+CGFloat:
+	Floating point type; float is also available for use, but 
+	CGFloat is apparently better.
+NSInteger:
+	Integer types
+NSLog:
+	Analogous to System.out.println()
+BOOL:
+	Analogous to boolean or bool
+NSArray:
+	immutable array
+NSMutableArray:
+	mutable array
+
+
+
+
+iOS project framework
+============================
+Important files auto-generated:
+	AppDelegate.h
+	AppDelegate.m
+	ViewController.h
+	ViewController.m
+	ViewContraller.xib
+
+What do they do ?:
+	*AppDelegate is primarily conscerned with all UI related items.
+	*ViewController
+
+
+
+
+

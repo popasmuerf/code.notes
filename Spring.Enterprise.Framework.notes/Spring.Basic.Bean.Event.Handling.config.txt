@@ -1,0 +1,174 @@
+http://www.tutorialspoint.com/spring/event_handling_in_spring.htm
+
+Spring Event Handling:
+=========================================================================
+The ApplicationContext, which manages complete life cycle of the beans.
+The ApplicationContext publishes certain types of events when loading the beans.
+For example, a ContextStartedEvent is publised when the context is started 
+and ContextStoppedEvent is published when the context is stopped:
+
+
+Two examples of IoC context event-handling:
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ContextStartedEvent
+ContextStoppedEvent
+
+
+How does the Spring Container manages complete life cycle of the beans?
+=============================================================================-
+Event handling in the ApplicationContext is provided through the ApplicationEvent class and
+ApplicationListener interface.  So if a bean implements the ApplicationListener, then
+every time an ApplicationEvent gets published to the ApplicationContext, that bean is notified:
+
+ApplicationCtxt ---->publishes event ----->ApplicationContext alert mechanism---->Application
+
+Spring built-in Events & Description
+=============================================================================
+ContextRefreshedEvent
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+This event is published when the ApplicationContext is either initialized or
+refreshed.  This can also be rasied usint the refresh() method on the ConfigurableApplicationContext
+interface.
+
+ContextStartedEvent
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+This event is published when the ApplicationContext is started using the start()
+method on the ConfigurableApplicationContext interface.  You can poll your database
+or you can re/start any stopped application after recieving this event.
+
+
+ContextStoppedEvent
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+This event is published when the ApplicationContext is stopped using the method:
+
+stop()
+
+method on the ConfigurableApplicationContext interface.  You can do required housekeep work
+after recieving this event.
+
+ContextClosedEvent
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+This event is published when the ApplicationContext is stopped using the method:
+
+stop()
+
+method on the ConfigurableApplicationContext interface.  You can do required housekeep work
+after recieving this event.
+
+ContextClosedEvent
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+This event is published when the ApplicationContext is stopped using the stop() method
+on the ConfigurableApplicationContext using the :
+
+start()
+
+method on the ConfigurableApplicationContext interface.  You can do required housekeep work
+after recieving this event.
+
+ContextClosedEvent
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+This event is published when the ApplicationContext is closed using the close() method
+on the ConfigurableApplicationContext interface.  A closed context reaches its end of life; it cannot be
+refreshed or restarted:
+
+
+RequestHandledEvent
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+This is web-specific event telling all beans that an HTTP request has been serviced
+
+
+
+
+Spring event handling is single-threaded?
+=============================================================================-
+So what?  
+Having an event loop that is single threaded means that all recievers will get the message,
+the processes are blocke and the flow will not continue.  Hence, care should be taken when
+designing your application if event handling is to be used.
+
+
+
+Listening to Context Events
+==============================================================================
+To listen to a context event, a bean should implement the interface
+
+ApplicationListener
+
+
+
+
+/* code : HelloWorld.jav  */
+
+public class HelloWorld{
+	private String message ;
+	public void setMessage(String message){
+		this.message = message ;
+	}
+	public void getMessage(){
+		System.out.println("Your message: " + message);
+	}
+}
+
+
+/* code: CStartEventHandler.java */
+
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextStartedEvent ;
+
+public class CStrartEventHandler implements ApplicationListener<ContextStartedEvent>{
+	public void onApplicationEvent(ContextStartedEvent event){
+		System.out.println("ContextStartedEvent Recieved");
+	}
+}
+
+/* code: CStopEventHandle.java */
+
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextStartedEvent ;
+
+public class CStopEventHandler implements ApplicationListner<ContextStoppedEvent>{
+	public void onApplicationEvent(ContextStoppedEvent event){
+		System.out.println("ContextStoppedEvent Recived");
+	}
+}
+
+
+/* code: MainApp */
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainApp{
+	ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+	context.start() ; //raise start event
+	Hello obj = (Hello) context.getBean("helloWorld");
+	obj.getMessag() ;
+	context.stop() ; // Let us raise a stop event ;
+}
+
+
+<!--Beans.xml-->
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="helloWorld" class="com.tutorialspont.HelloWorld">
+    	<property name="message" value="HelloWorld"/>
+    </bean>
+
+    <bean id="cStrartEventHandler" class="com.tutorialspont.cStrartEventHandler">
+    </bean>
+    <bean id="cStopEventHandler" class="com.tutorialspont.cStopEventHandler">
+    </bean>
+</beans>
+
+
+
+Once you are done with creating source and bean configuration files, let us run the application.
+If everything is fine with your applicatio, this should print out to STDOUT:
+
+ContextStartedEvent Received
+Your Message : Hello World!
+ContextStoppedEvent Received

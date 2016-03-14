@@ -1,0 +1,20 @@
+Microservices
+=============================
+
+
+
+
+Spring Boot componentsL:
+===========================
+Spring Initializer:
+	* bootstrapping the build for the Boot-based Web app
+	*Allows devs to choose what dependencies they need
+	*Generates project from meta-data
+	*provides scaffolding
+Aggregate Modules known as "starters"
+	*Composistions of well unsderstood and operable version of libraries that can use cto proved
+	functionality to the application
+
+
+
+

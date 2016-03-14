@@ -1,0 +1,33 @@
+Note on Rotation of device in emulator:
+========================================
+Alt-F11
+
+Persistence of Fragments
+=====================================
+During rotation, if you pay attention to LogCat
+messages(needs to be set on info level logging)
+You will notice that with every rotation,
+the activity is being destroyed and then recreated.
+LogCat displays in real-time the life-cycle of your
+Activity and Fragments
+
+Fragment state persistance
+=====================================
+Android saves automatically:
+	Data you placed in the Bundle instance
+	passed to your Activity onCreate and onSaveInstance
+	activity callback methods.
+		-and-
+	Knowledge of the type of fragment you are using.
+
+newInstance() method
+=====================================
+While recreating a fragment, Android
+WILL NOT call newInstance again as opposed 
+to using the default constructor, attaching the arguments
+bundle to it, and then  starts calling the callbacks on
+the fragment.
+
+You should not do anything fancy  in the 
+	newInstance()
+method.

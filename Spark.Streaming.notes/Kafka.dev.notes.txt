@@ -1,0 +1,47 @@
+https://kafka.apache.org/documentation.html#introduction
+README: located at /home/jschuff/README-kafka_testing.txt
+
+Base Kafka stuff for our enviroment
+==============================================
+1.The kwrite_to_topic will use the Kafka CL producer tool to redirect an input file into a Kafka topic, which essentially loads test data into a Kafka topic for you to consume via a DStream in Spark
+2.The input file will be written to whichever topic you specify in the kwrite_to_topic alias in your .bash_profile (via the --topic <topic_name> arg)
+3.If you want to run the example on your chosen topic, you will need to update:
+	3.1the Kafka brokers for which cloud you are on
+	3.2.the input topic to point to your new topic
+	3.3.the output topic (or table) to point to a unique name of your choosing
+4.Yes, you can execute it via Spark submit so long as you provide the spark-streaming-kafka dependency at runtime (--jars <jar_name>). See my testing workspace at /home/jschuff/spark_testing/spark_kafka on Drax for an example setup.
+
+Questions about the above ^^^^
+===============================================
+1.The kwrite_to_topic will start a dstream using kafka?
+2.Do we still need to associate a topic with an input file or table? How do we do that?
+3.Then we run your jar examples to read from the dstream?
+4.Is your example jar run through a spark submit?
+5.What is a topic in kafka ?      
+
+
+Answers provided for the above ^^^^
+===============================================
+I have pushed up my Kafka and Spark Streaming code onto the feature/streaming_utils branch of the darpa-nd-utils repository. This will hopefully give everyone a good place to start in terms of integrating their analytics with Kafka. Here's a quick breakdown of the classes/objects located in mil.darpa.netdefense.{examples,kafka,utils}:
+examples.KafkaToKafka:
+===============================================
+Spark Streaming example of processing a Kafka DStream and writing the results back to a Kafka topic.
+demonstrates how to read JSON messages values from a Kafka topic and transform them into a DataFrame of implicit type
+checkpointing is configured, which adds resiliency to the driver in case of crashes
+reuse of a single kafka producer pool per partition when writing to Kafka (avoids unnecessary connection creation times)
+writes to Kafka are done in batches, by using the outputDF as a distributed output buffer, and writing out when size > minNumLinesPerWrite
+
+examples.KafkaToTable:
+===============================================
+Spark Streaming example of processing a Kafka DStream and writing each batch of results out to a new partition in an Impala/Hive-accessible table.
+demonstrates transforming each batch of messages values from a Kafka topic into a DataFrame by first converting each row into a case class representation 
+buffering and bucketing the output file sizes as close to the HDFS block size as possible before writing to HDFS
+kafka.KafkaProducerApp
+Simple Kafka producer implementation, as well as a factory for producer object creation
+kafka.KafkaProducerPool
+Simple Kafka producer pool implementation, as well as a factory for producer pool creation
+utils.SQLContextSingleton
+fault-tolerant SQLContext singleton to be used within a Spark Streaming application (this is a built-in in Spark 1.4)
+utils.StreamingUtils
+The modest start of a helper library containing convenience functions for reading from and writing to Kafka
+

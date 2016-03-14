@@ -1,0 +1,72 @@
+http://javascript.info/tutorial/inheritance#inheritance-the-proto
+http://javascript.info/tutorial/inheritance#inheritance-the-proto
+http://javascript.info/tutorial/inheritance#inheritance-the-proto
+
+
+Inheritance, Object.create
+=================================================================
+The __proto__ is a non-standard property, provided by Firefox/Chrome. In other browsers the property still exists internally, but it is hidden.
+All modern browsers except Opera(IE from 9) support two standard methods for working with prototypes:
+
+Object.create(proto[,props]) //creates emtpy object with given __proto__:
+
+/*example*/
+
+var animal = { eats: true}
+var rabbit = Object.create(animal)
+console.log(rabbit.eats)
+
+
+
+Inheritance, The Prototype
+================================================================
+var animal = {eats: true}
+var rabbit = Object.create(animal)
+console.log(rabbit.eats)
+rabbit.jumps=true
+rabbit.poops = function() {
+    console.log("poops")
+}
+
+
+
+If I prototype  object-A to another object's spec...then  ?
+
+071033.007.0701
+
+
+
+We can emulate how all this works via the code below:
+=====================================================
+function inherit(proto){
+	function F() ={}
+	F.prototype = proto
+	return new F
+}
+
+
+Creating Objects in JS summary:
+====================================
+var obj = new Object;
+var obj = {
+	attr0 : "attr0",
+	attr1 : "attr1",
+	attr2 : "attr2"
+}
+function obj(){
+	var attr0 = "attr0"
+	var attr1 = "attr1"
+	var attr2 = "attr2"
+}
+
+Prototypical Object inheritance in JS summary:
+======================================
+var parentObj = {
+	var attr0 : "attr0"
+}
+var childObj = {
+	var attr1 : "attr1"
+}
+
+childObj = Object.create(childObj)
+

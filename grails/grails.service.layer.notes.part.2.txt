@@ -1,0 +1,121 @@
+http://grails.asia/grails-tutorial-for-beginners-grails-service-layer
+http://grails.github.io/grails-doc/latest/guide/services.html
+
+
+What is the Grails service layer ?
+===================================================
+
+
+Seperation of concerns
+--------------------------------------------------
+The best systems are composed of components that do one thing
+and one thing very well.  Components that perform/responsible
+for multiple tasks increase the overall system dependence on them
+and increases the difficulty of modifying functionality of the overall
+system.
+Writing/building components that peform as few componenetns as possible is known
+as "seperation of concerns".
+
+
+What a controller is capable of performing
+--------------------------------------------
+*handling routing logic
+*Invoke GORM operations to manipulate data in the database
+*Render text and show it to the user
+
+
+Why would'nt I want to do all the cool stuff I could do in a controller ?
+--------------------------------------------------------------------------
+We could do all this  awesome stuff.....but why should we....when the true
+purpose of a controller is to deal with routing logic.  Just because you can
+do something does not mean you should.  a controller is a router....period....and 
+as such, this is what controller should be used for:
+	1. Recieve HTTP requests from users
+	2. Invoke the appropiate business logic based on user HTTP request
+	3. Invoke the appropiate view based on the user HTTP request
+
+HTTP request ---> controller---> controller executes logic -----> do some shit ---> return appropiate view
+
+Ok...controllers are just routers...so what are you really saying?
+-------------------------------------------------------------------------
+Controllers should only perform routing.  View logic should only take
+place within views, business logic is not within the domain of routing.
+So where should business logic go ?   That's RIGHT!  SOMEWHERE ELSE!!!!
+(The service layer you dolt!!!!)
+
+
+Injecting a Service
+==========================================================================
+The service is automatically injected inside a controller by just defining a variable
+with the proper name:
+
+/****Service Class****/
+package asia.grails.sample
+class StudentService {
+  Student createStudent(String lastName, String firstName) {
+    Student student = new Student()
+    student.lastName = lastName
+    student.firstName = firstName
+    student.referenceNumber = generateReferenceNumber()
+    student.save()
+    return student
+  }
+  private String generateReferenceNumber() {
+    // some specific logic for generating reference number
+    return referenceNumber
+  }
+}
+/****Service Class****/
+package asia.grails.sample
+class MyController {
+  def studentService
+  def displayForm() {
+  }
+  def handleFormSubmit() {
+    def student = studentService.createStudent(params.lastName, params.firstName)
+    [student:student]
+  }
+}
+
+
+We can inject services within one another....
+==============================================================
+package asia.grails.sample
+class PersonService {
+  Person createPerson(String lastName, String firstName) {
+    Person p = new Person()
+    p.lastName = lastName
+    p.firstName = firstName
+    p.save()
+    return p
+  }
+}
+package asia.grails.sample
+class EmployeeService {
+  def personService
+  Employee createEmployee(String lastName, String firstName) {
+    Person person = personService.createPerson(lastName, firstName)
+    Employee emp = new Employee()
+    emp.person = person
+    emp.employmentDate = new Date()
+    emp.save()
+    return emp
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

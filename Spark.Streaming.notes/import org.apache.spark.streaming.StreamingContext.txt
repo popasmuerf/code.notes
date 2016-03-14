@@ -1,0 +1,181 @@
+import org.apache.spark.streaming.StreamingContext._
+import org.apache.spark.streaming.StreamingContext._
+import org.apache.spark.streaming.dstream.DStream
+import org.apache.spark.streaming.Seconds
+
+
+val scc = new StreamingContext(conf,Seconds(1))
+val linesRDDStream = ssc.socketTextStream("localhost",7777)
+val errorLines = linesRDDStream.filter(_.contains("error"))
+errorLines.print()
+
+
+
+
+
+import org.apache.spark.streaming.api.java.JavaStreamingContext ;
+import org.apache.spark.streaming.api.java.JavaDStream ;
+import org.apache.spark.streaming.api.java.JavaPairDStream ;
+import org.apache.spark.streaming.Duration ;
+import org.apache.spark.streaming.Durations ;
+
+JavaStreamingContext jssc = new JavaStreamingContext(conf,Durations.seconds(1));
+JavaDStream<String> lines = jscc.socketTextStream("localhost",7777); 
+JavaDStream<String> errorLines = lines.filter(
+	new Function<String,Boolean>(){
+		public Boolean call(String line){
+			return  line.contains("error");
+		}
+	}
+);
+
+
+/*
+This sests up only the computation that will be done when the system recieves
+Data.
+To start reciveing data, we must expliclity call the 
+	start()
+method on the streaming context
+	ssc.start()
+		-or-
+	jssc.start() ;
+Spark Streaming will start to schedule Spark jobs
+on the underlying SparkContext.  This will
+occur in a sperate theread, so to keep our applicaiton
+from exiting, we also need to call
+	awaitTermination 
+to force the main thread to 
+to wait for the streaming computation thread to finish.
+*/
+
+
+Scala
+======================
+//Start our straming context and wait for it to "finish"
+ssc.start() 
+ssc.awaitTermination()
+
+Java
+======================
+jssc.start() ;
+jssc.awaitTermination() ;
+
+Running a streaming app and providing data on Linux/Mac
+$ spark-submit --class com.oreilly.learningssparkexamples.scala.StreamingLogInput $ASSEMBLY_JAR local[4]
+
+$nc localhost 7777
+
+DStreams
+=======================
+You can create DStreams either from external
+input sources, or by applying 
+transformations to other DStreams.
+DStreams support many of the standard
+transformations available to RDDs.
+DStreams also have a new "stateful" 
+transformations that can aggreate data across time.
+
+Execution of Spark Streaming
+==========================
+Spark Streaming launches 
+	recievers
+which are tasks running within 
+the application's executors that collect
+data from some input source and saves it as
+	RDDs
+These recieve the input data and replicate it(by default)
+to another executor for fault tolerance, and may be cached.
+
+
+The StreamingContext in the driver program
+periordically runs Spark jobs to 
+process this data and combine it with RDDs
+from previous time steps.
+
+
+DStream Transformations
+============================
+Transformations on DStreams can be grouped into
+either stateless or stateful:
+	The stateless transformations the
+	processing of each batch does not
+	depend on the data of its previous batches.
+	They include the common RDD transformations:
+		filter()
+		map()
+		reduceByKey()
+	Stateful transformations, in constrast, use
+	data or intermediate results form previous
+	batches to compute the results form previous
+	batches to compute the results of the current batch.
+	They include transformations based on sliding windows
+	and on tracking state across time
+
+Stateless transformations
+===============================
+map()
+ds.map(x => x + 1) f: (T)
+Apply a function to each element in the DStream
+and return a DStream of the result
+
+flatMap()
+ds.flatMap(x => split(" ")) f:T->Iterable
+Apply a function to each element in the DStream
+and return a DStream of the contents of the iterators
+return.
+
+filter()
+ds.filter(x => x!=1) f: T->Boolean
+Returns a DStream consisting
+of oly elements that pass the condition
+passed to  filer
+
+repartition()
+ds.repartition(10)  N/A
+Change the number of partitions
+of the DStreams
+
+reduceByKey()
+ds.reduceByKey((x,y) => ( x + y) ) f: T
+Combine values with the same key in each
+batch
+
+groupByKey()
+ds.groupByKey()   N/A
+Group Values sith the ssame key in
+each batch
+
+Note about stateless DStream transformations:
+==================================
+Theses function do not apply to the entire stream,
+as each DStream is composed of multiple RDDs(batches),
+and each statelss transfordmation applies seperately
+to each RDD.
+For example, reduceByKey() will only reduce data within
+each time step, but not across steps.
+
+
+
+Example reduceByKey() on DStream in Scala
+======================================
+
+//Assumes ApacheAccessLog is a utility class for parsing
+//entries from Apachelogs
+val accessLogDStream = logData.map(line => ApacheAccessLog.parseFromLogLine(line))
+val ipDStream = accessLogsDStream.map(entry => (entry.getIPAddress,1))
+val ipCountsDStream = ipDStream.reducByKey((x,y) => x + y)
+
+
+
+Example reduceByKey() on DSream in Java
+=========================================
+//Assmes ApacheAccessLog is a 
+//utility class for parsing entries from Apache logs
+static final class IpTuble implements PairFunction<ApacheAccessLog,String,Long>{
+	public Tuple2<String,Long>  call(ApacheAccessLog log){
+		return new Tuple2<>(log.getIpAddress(),1L);
+	}
+}
+JavaDStream<ApacheAccessLog> accessLogDStream = logData.map(new ParseFromLogLine());
+JavaPairDStream<String,Long> ipDStream = accessLogsDStream.mapToPair(newIpTuple());
+JavaPairDStream<String,Long> ipCountsDStream = ipDStream.reduceByKey(new LongSumReducer());

@@ -1,0 +1,89 @@
+http://grails.github.io/grails-doc/latest/guide/webServices.html#REST
+
+What is REST ?
+=========================================
+REST is not really technology in itself, as opposed
+to an architectural pattern.  REST is very simple and just
+involves using plain:
+	XML
+	-or-
+	JSON
+as a communication medium, combined with URL patterns
+that are "representational" of the underlying
+system, and HTTP methods such as 
+	POST
+	GET
+	PUT
+	DELETE
+Each HTTP methods maps to an action type.  For example
+GET for retrieving data
+POST for creating data
+PUT for updating data
+etc.......
+
+
+
+Domain classes as REST resources:
+=========================================
+The easiest way to create a RESTful API in Grails is to 
+expose a domain class as a REST resource.  This can be
+done by adding transformation  to any domain class:
+
+	grails.rest.Resource
+
+
+/****Example*****/
+import grails.rest.*
+@Resource(uri='/books')
+class book{
+	String title
+	static constraints = {
+		title blank:false
+	}
+}
+
+
+Let's test out the above via using populationg test data via bootstrap....
+****************************************************************************
+
+/**** boot strapping our service ****/
+
+def init = { servletContext ->
+	new Book(title:"The Stand").save()
+	new Book(title:"The Shining").save()
+}
+
+And then hitting the URL http://localhost:8080/books/1
+**********************************************************************
+<?xml version="1.0" encoding="UTF-8"?>
+<book id="1">
+	<title>The Stand</title>
+</book>
+
+And then hitting the URL http://localhost:8080/books/1.json
+**********************************************************************
+{"id":1,"title":"The Stand"}
+
+
+We can change the default for xml to json via the small change below
+such that json is prioritized 
+***********************************************************************
+@Resource(uri='/books', formats=['json','xml'])
+class book{
+	String title
+	static constraints = {
+		title blank:false
+	}
+}
+
+Note:  format names.
+===========================================================
+
+grails.mime.types = grails.mime.types = [
+    …
+    json:          ['application/json', 'text/json'],
+    …
+    xml:           ['text/xml', 'application/xml']
+]
+
+

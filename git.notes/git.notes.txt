@@ -1,0 +1,47 @@
+git branch bugfix
+git checkout bugfix
+git merge master
+
+
+
+
+git branch bugfix
+git commit
+git rebase master
+
+
+git checkout master
+git rebase bugFix
+
+
+checkout a new branch named bugFix
+commit once
+got back to master and commit again
+checout the bugFix again and rebase onto master
+
+
+
+
+checkout the parent commit of bugFix
+use relative refs
+
+
+git checkout c4~3
+
+git branch -f master HEAD~3  //application of relative referencing to force a branch's HEASD to point ot 
+a specific commit
+
+git branch -f bugFix~4
+git branch -f master~3
+
+git checkout C3
+
+
+
+git reset   //reverts changes by moving a branch backwards to an older commit..for local branches
+git reset HEAD~1
+git revert //For user for remote brances where the re-write of history is shared with others
+git revert HEAD
+		
+
+

@@ -1,0 +1,156 @@
+http://www.drdobbs.com/open-source/go-introduction-how-go-handles-objects/240005949
+
+Custom types in Go makes use of the "type" keyword
+===============================================
+type Widget struct{
+	X,Y int
+}
+type Label struct{
+	Widget //Embedding(delegation)
+	Text string //Aggregation
+}
+
+
+Go types are more like C types as C++ types are actually objects(double check this).
+The Widget struct aggregates two public int fields(public because they are upper-case)
+and a string value...and the Label type embedds a Widget type and a string
+
+We declare  a Label type as such:
+
+label := Label{Widget{10,10},"State:"}
+
+We access the the embedded fields by their names:
+	
+	label.Text
+	label.X
+	label.Y
+
+We can create a label value...as opposed to an object or instance...as these
+concepts have no meaning in Go's parlance....as such:
+
+label := Label{Widget{10,10},"State:"}
+
+
+Custom types can have methods added to it
+=================================================
+Any custom type can have methods added to it.  Here is an example of a method
+for the Lable type, along with the output produced by calling the method
+on a Label value:
+
+func(label Lable) Paint(){
+	fmt.Printf("%p:Label.Paint(%q)\n", &label, label.Text)
+}
+
+^^^
+Rather than using "this" or "self", Go methods typically use "sensible" custom-type-specific
+names for their "reciever"(that is, for the value on witch they have been called).
+We have followed that convention by calling the reciever label, although core Go developers would have just called it "l"
+This particular method takes no arguments an returns nothing.
+
+
+
+More Code....let's Go!!!  heheheheh  I made a funny...
+========================================================
+type Label struct{
+	Widget //Embedding(delegation)
+	Text string //Aggregation
+}
+func(label Lable) Paint(){
+	fmt.Printf("%p:Label.Paint(%q)\n", &label, label.Text)
+}
+type Button struct{
+	Label // Embedding (delegation)
+}
+func NewButton(x int, y int , text string){
+	return Button{Widget{x,y}text}
+}
+func(b Button)Paint(){ 
+	fmt.Printf("%p:Button.Paint(%q)\n", &b , b.Text)
+}
+func(b Button)Click(){
+	fmt.Printf("%p:Button..Click()\n", &button)
+}
+
+
+^^^^Here, we have definted a Button type.....really just a  clickable Label, although it has it's own
+Paint() method.  If Button didn't hae it own Paint() method, calling button.Paint() would
+be al;most the same as calling button.Label.Paint()....however, in the latter case, the reciever passed to the method would be the Label field, not the whole Button.
+
+
+
+Go does not have constructors....
+==========================================================
+We'eve also added a convience construction function:
+
+	func NewButton(x int, y int , text string){
+	return Button{Widget{x,y}text}
+	}
+
+...so that we can create Buttons usine nicer syntax than we used for the label we created
+ealier  Here are two ways to create buttons for comparison:
+
+	button1 := Button{Label{Widget{10,10}, "OK"}}
+	button2 := new Button(20,20,"Cancel")
+
+
+Quick Summary
+=========================================================
+Clearly, embedding(or delegation) provides a kind of inhereitance for
+Go types.  It is analogus to OOP inheritance....however Go developpers advocate
+avoiding inheritance or the semblance of it altogether; we will see how shortly.
+
+
+Go Interfaces
+=========================================================
+For now, let's continue a little futher with this example to show another aspect of Go programming:
+The use of interfaces.  Suppose we have a bunch of widget values of different
+type, Buttons, Labels, ListBoxes, and so on.  All thiese might be  in a layout and need 
+painting.  Here's how we can do this using Go interfaces and duck typing:
+
+type Painter interface{
+	Paint()
+}
+
+
+^^^^First we create an interface; this is a type in it's own right, but wholly abstract.
+It isn't possible as such to create a value of an interace type...however, we can create
+variables that hold interface values....such variables must be assigned the value of a concrete type that satisfies the interface; that is, it ahs the mehot of romethods that the interface specifies:
+
+for _, painter := range[]Painter{label, listBox, button1 , button2}{
+	painter.Paint()
+}
+
+
+^^^The Button, Label, and ListBox(not shown) types all have a Paint() method
+that matches the signature of the Painter interface, so all these types are Painters --
+even though there is no explict connection between the concrete types and the interface!
+This is pure, and type-safe duct-typing:  Go could not offer a wit for what the concrete types of:
+
+	label
+	listBox
+	button1
+	button2
+
+...as all that matters to Go and it's compiler is that the given values stisfy the Painter
+interface(That is they have a Paint() method).
+What happens if we want to apply an operation to a bunch of values -- but only to those values that support the operation? Again, we begin by creating a sutiable interface:
+
+type Clicker interface {
+	Click()
+}
+
+Any custom type, no matter what it is, that has a Click() method satisfies the Clicker
+interface.  In this case, the Label is not a Clicker, but the Button and ListBox are:
+
+for _, widget := range []interface{}{label, listBox, button1, button1}{
+	if clicker, ok := widget.(Clicker); ok{
+		clicker.Click
+	}
+}
+
+^^^Here, we iterate over a slice of interface{} values.  These values of any built-in or custom
+type (rather like Java's Object or a C++ void*) that knows its own type, and use a checked type
+assertion to determine whether the value has a Click() method.  Again, Go doesnt care what
+the value's actual type only whether it has the requied method.
+
+

@@ -1,0 +1,66 @@
+Main UI thread:
+	Async tasks may not be executed within the main ui thread as it is not thread safe
+	These Async related methods execute with main ui thread....so be careful not to
+	peform long-running/blocking operations in these following methods...:
+		onPreExecute
+		onProgressUpdate
+		onPostExecute 
+
+Context.  What is it?:
+	*It is a superclass of Activity.   We use the context to let Android OS know via
+	callback what activity we are targeting.....in this case what Activity is the 
+	Async task is targeting.
+	*Example:
+		public ExampleActivity extends Activity{
+		Context ctx = this;
+		....
+		}
+
+
+Remember we are not allowed to to update the user interface directly from doInBackground:
+	* So how do we update task progress in such a manner that the user is aware ?:
+		AsyncTask comes with a handy callback method for this:
+			protected void onProgressUpdate(Progress... values)
+		We can override onProgressUdate to update the user interface from the main thread
+		via AsyncTask.publishProgess(Progress... values)
+		^^^ which is a callback that servers as an go-between the mainUI callback onProgressUpdate()
+		and the background thread callback doInBackground():
+			onProgressUpdate() <--> publishProgress <-->  doInBackground()
+
+	*Example of using publishProgress within doInbackGround for the purpose of provding the onProgress
+	method with useful progress data:
+
+	protected void onPreExecute(){
+		progress = new ProgressDialog(ctx);
+		progress.setTitle("calculating nearest prime for input");
+		progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		progress.setProgress(0);
+		progress.setMax(0);
+		progress.setCancelable(false);
+		progress.show() ;
+	}
+
+	protected BigInteger doInBackground(Integer... params){
+		int primeToFind = params[0];
+		BigInteger prime = new BigInteger("2");
+		int progress = 0 ;
+		for(int i = 0 ; i < primeToFind; i++){
+			prime = prime.nextProbablePrime();
+			int percent =(int)((i * 100f)/primeToFind);
+			if(percent > progress){
+				publishProgress(percent);
+				progress = percent
+			}
+		}
+		return prime ;
+	}
+
+	protected final void publishProgress(Progress... values){
+
+	}
+
+	protected void onPostExecute(BigInteger result){
+		resultView.setTet(result.toString());
+		progress.dismiss() ;
+	}
+

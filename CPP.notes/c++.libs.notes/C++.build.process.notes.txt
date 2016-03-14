@@ -1,0 +1,32 @@
+Understanding the C++ build process
+=====================================================================================
+Creating an executable is a a multi-stage process(otherwise known as creating a build:
+	preprocessiing
+	compilation
+	linking
+
+C++ libs
+========================================
+
+
+
+what are libs in C++
+========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

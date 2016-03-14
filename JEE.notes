@@ -1,0 +1,22 @@
+What is a Java EE Application Server ?
+========================================
+From a technical Java perspective, a Java App Server
+is any implementation of of the Java EE Application Server spec
+that fully complies with and supports all Java EE features:
+	*These features extend the standard java platform for use in internet -based business
+	such as JTA, EJBs, JMS, JSF, and Java EE APIs for session persistence,
+	dependency injection, and more...
+
+Java EE servers deploy applications using the EAR(Enterprise Archive Tormat),
+	*Contains one or more WARs
+	*WAR files contain:
+		*EJBs
+		*JSPs
+		*Servlets
+	*EAR packages are deployed into a single container, so that 
+	its classes and resources can be loaded and managed seperately.
+
+Most commercial application servers like Websphere and Weblogic include
+extensive management and monitoring tooling, as well as a family of
+additional products that integerate with them and provide additional
+functionalities for a fee.

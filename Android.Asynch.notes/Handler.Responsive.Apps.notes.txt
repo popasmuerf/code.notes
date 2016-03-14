@@ -1,0 +1,300 @@
+Building responsive apps with Handler
+=============================
+The Handler class is fundamental to the infrastructure of
+Android apps along with Looper.  It underpins
+everything that the main Thread does-including the
+invocatin of the Activityh lifecycle methods.
+
+
+Looper
++++++++++++++++++++++++++++++++
+Takes care of dispatching work on
+its message-loop thread
+
+Handler
+++++++++++++++++++++++++++++++++
+Provides the means to add work to 
+the message queue belonging to a Looper.
+Simplpy put, Hanlers submit work to the 
+Looper Thread.  These tasks submitted often
+take the form of Runnable type objects
+
+Example of a Handler object instance being
+generated in an Activity code fragment:
+++++++++++++++++++++++++++++++++
+protected void onCreate(Bundle savedInstance){
+	super.onCreate(savedInstance);
+	Handler handler = new Handler() ;
+}
+
+Example of a Handler object instansiation
+where we explicitely want to submit work
+to the main Looper Thread:
+++++++++++++++++++++++++++++++++++
+protected void onCreate(Bundle savedInstance){
+	super.onCreate(savedInstance);
+	Handler handler = new Handler(Looper.getMainLooper());
+}
+
+Rough description
++++++++++++++++++++++++++++++++++
+Handler_________________________________
+		 					   			|
+         					   			v
+Looper-->queue-task0-task1-task2-task3-new_task4
+
+
+What exactly do we mean by "work" or tasks within this context ?
+=================================================================
+What we mean by "work" or "task" are subclasses
+of:
+	java.lang.Runnable
+		-or instances of-
+	android.os.Message
+
+
+
+Scheduling work with post
+==============================
+We can post work to Handler very simply, for 
+example, by creating an anonymous inner Runnable:
+
+	protected void onCreate(Bundle savedInstance){
+		super.onCreated(savedInstance);
+		Handler handler = new Handler() ;
+		handler.post(new Runnable(){
+			public void run(){
+				//do some work
+			}
+		});
+	}
+what happens now after "posting" the Runnable object ?
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+The Looper instance to which the Handler is bound
+works its way through the queue, executing each
+Runnable as soon as possible.  Posting with the method:
+	Handler.post()
+simply adds a new Runnable at the end of the queue.
+
+Posting at front of the queue:
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+handler.postAtFrongOfQueue(new Runnable{
+	pubic void run(){
+		//do stuff asyncrhonously
+	}
+});
+
+
+Delaying posting to the Looper queue:
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+handler.postDelayed(new Runnable()){
+	public void run(){
+		//do some work on the main thread
+		//in 10 seconds time
+	}
+},TimeUnit.SECONDS.toMillis(10));
+
+We can still post additonal work for execution in the 
+meantime, and our delayed Runnable instance will execute
+after the specified delay.  Note theat we're using the 
+
+	java.lang.concurrent.TimeUnit
+
+class to convert seconds to milliseconds
+
+
+Posting a task at a specific time :
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+handler.postAtime(new Runnable(){
+	public void run(){
+		//do some work on the main thread
+	}
+,SystemClock.uptimeMillis() + TimeUnit.SECONDS.toMillis(10)});
+
+
+Tip?
+=================================================================
+Posting anonymous Runnable  makes for concise examples
+but when used with:
+	postDelayed
+		-or-
+	postAtTime
+requires  care to avoid potential resouce leakage.
+
+Since we instantiated our Hanlder on the main Thread, all
+work submitted to it executes on the main Thread.
+We shouldn't submit long running operations to 
+this particular Handler, beyond safely interacting with
+the user interface:
+
+handler.post(new Runnable(){
+	public void run(){
+		TextView text = (TextView)findViewById(R.id.textId);
+		text.setText("updated on the UI thread");
+	}
+} );
+
+This applies regardless of which thread posts the Runnable,
+which makes Handler an ideal way to send the results of
+work performed by other threads to the main thread.
+
+Thread thread = new Thread() ;
+public void run(){
+		final BigInteger result = calculatePrime(500) ;
+		calculatePrime(500);
+		handler.post(new Runnable(){
+			public void run(){
+			TextView text = (TextView)findViewById(R.id.textId);
+			text.setText(result.toString()
+			}
+		});
+	}
+};
+
+
+thread.setPriority(Thread.MIN_PRIORITY);
+thread.start ;
+
+^^^Review and Explination:
+++++++++++++++++++++++++++++++++++++++++++++++++
+Instead of directly posting a task for updating the UI on the main Looper Thread
+directly, we are submitting the task to the Loop queue via a Thread.
+Why? For the same reason why we use threads.  If a particular job is 
+large:
+	calculatePrime(500);
+	
+....it makes more sense to hand it all of to a thread where the serious work
+is first taking care of off the main Looper Thread, and then once finished...
+you then pass the results to:
+
+	Thread.run()
+Once in Thread.run().....we can then
+create a new instance of Handler where we will take the results of
+calculatePrime()....passing it to a loaded or static instantiation of Runnable that is
+going to be a passed as a arg to the Handler constructor
+for a quick UI update.
+
+
+
+Tip?
+=================================================================
+If you start your own the threads for the background work, make
+sure to set the priority to
+
+	Thread.MIN_PIORITY
+
+to avoid starving  the main thread of CPU time.
+Handler is so fundamental that it is integreated right
+into the View class hierarchy, so we can rewrite
+the last example as follows:
+
+
+final TextView text = (TextView) findViewById(R.id.textId);
+Thread thread = new Thread(){
+	public void run(){
+		final BigInteger result = calculatePrime(500);
+		text.post(new Runnable(){
+			public run(){
+				text.setText(result.toString());
+			}
+		});
+	}
+};
+thread.setPriority(Thread.MIN_PRIORITY);
+thread.start() ;
+
+^^^Review and Explination:
+++++++++++++++++++++++++++++++++++++++++++++++++
+Instead of directly posting a task for updating the UI on the main Looper Thread
+directly, we are submitting the task to the Loop queue via a Thread.
+Why? For the same reason why we use threads.  If a particular job is 
+large:
+	calculatePrime(500);
+	
+....it makes more sense to hand it all of to a thread where the serious work
+is first taking care of off the main Looper Thread, and then once finished...
+you then pass the results to:
+
+	Thread.run()
+Once in Thread.run().....we can then
+create a new instance of Handler where we will take the results of
+calculatePrime()....passing it to a loaded or static instantiation of Runnable that is
+going to be a passed as a arg to the Handler constructor
+for a quick UI update.
+
+IMPORTANT:
+++++++++++++++++++++++++++++++++++++++++++++++++
+The Handler class only hands off tasks of type 
+	java.lang.Runnable
+ 	android.os.Message
+to Looper's queue to be executed.  It DOES NOT execute code
+off of the main thread.  If you want to run potentionally
+resource heavy code off the main thread to be place on the Looper
+thread...then "wrap" it all in a Thread in this order:
+
+	1. Run resource intensive code within Thread.run()
+	2. Take results and then pass code to the operations within a Runnable object
+	   within Thread.run()
+	3. Instantiate a Handler and pass the Runnable object to it.  The Runnable
+	   object can be dynamically loaded as an parameter while instantiating the Handler
+	   object.
+
+
+
+For compararison, both of the previous examples are rouglhly equivialent to the follwing
+AsyncTask code:
+===========================================================================================
+new AsyncTask<Void,Void,BigInteger>(){
+	public BigInteger doInBackground(Void... params){
+		return calculatePrime(500);
+	}
+	public void onPostExecute(BigInteger result){
+		TextView text = (TextView)findViewById(R.id.text);
+		text.setText(result.toString());
+	}
+}.execute() ;
+
+
+
+Alternative: use Activity.runOnUiThread()
+==========================================================================================
+When writing code in an Activity class, there is 
+an alternative way of executing a Runnable on
+the main thread using the method:
+
+	Activity.runOnUiThread() ;
+
+If invoked from a background thread, the Runnable
+will be posted to a Handler instance attached to 
+the main thread.
+
+If the Runnable object is executed from the main thread,
+the Runnable will be executed immediately.
+
+
+
+
+Canceling async tasks
+==========================================================================================
+We can cancel a pending operation by removing
+a posted Runnable callback from the queue.
+We can canceled a scheduled task(Runnable or Message)
+if we have a reference to it.
+This is one of the instances where you 
+actually do not want to load/dynamically create
+a object of type Runnable/Message
+
+
+final Runnable runnable = new Runnable(){
+	public void run(){
+		//do some work...
+	}
+};
+handler.postDelayed(runnable,TimeUnit.SECONDS.toMillis(10));
+Button cancel = (Button) findViewById(R.id.buttonId);
+cancel.setOnClickListener(new OnClickListener(){
+	public void onClick(View v){
+		handler.removeCallbacks(runnable);
+	}
+});
+

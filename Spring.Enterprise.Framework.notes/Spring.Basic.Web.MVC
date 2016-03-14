@@ -1,0 +1,72 @@
+http://www.tutorialspoint.com/spring/spring_web_mvc_framework.htm
+
+
+Spring web MVC framework provides model-view-controller architecture and
+ready components that can be used to develop flexible and loosely coupled
+web applications.  The MVC pattern results in separating the different apsects of the
+appliation (input logic, business logic, and UI logic), while providing a loose coupling
+between these elements.
+
+
+Model
+=================================
+Encapsulates the applicatio dta and in general they will consist
+of POJO
+
+View
+=================================
+The View is responsible for rendering the model data and in general
+it generates HTML output that the client's browser can interperate
+
+
+Controller
+==================================
+Teh Controller is resonsible for precessing user requests and building appropriate
+model and passes it to the view for rendering...
+
+
+
+The Dispatcher Servlet
+====================================
+HTTP requests               HTTP response<--------
+	|							                 |
+	|											 |
+	|---------------------->DispatcherServlet----------------|
+	                       |    ^                           |
+	                       |    |---------------------|     |
+	                       |------->HandlerMapping(1)-------- 
+	                                                        |
+	                       |--------------------------------- 
+	                       |
+	                       |
+	                       |<--------->Controller(2)
+	                       |<--------->View Resolver(3)
+	                       |<--------->View(4)
+
+^What happens:
+1. After recieving an HTTP request, DispatcherServlet consults the HandlerMapping
+to call the appropriate Controller
+2. The Controller take the request and calls the appropriate service methods
+based on the HTTP methods used:
+	GET
+	-or-
+	POST
+The service method will set model data based on defined business
+logic and returns view name to DispatcherServlet
+3. The DispatcherServlet will take help from ViewResolver to pickup the defined view
+for the request.
+4. Once iew is finalized, The DispatcherServlet passes the model data to the view
+which is finally rendered in the browser  
+
+
+
+WebapplicationContext extends ApplicationContext
+================================================
+ApplicationContext
+|
+\-------->WebApplicationContext
+		  +HandlerMapping
+		  +Controller
+		  +ViewResolver
+
+

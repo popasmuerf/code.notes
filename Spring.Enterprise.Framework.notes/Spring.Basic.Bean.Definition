@@ -1,0 +1,90 @@
+Bean MetaData definition properties
+===================================
+class
+--------------
+attriubte specifies the actual bean class
+
+name
+---------------
+attribute specifies the bean identifier uniquely.
+In XML based metadata, you use the id and/or name
+attributes to specify bean identifiers
+
+scope
+----------------
+attribute specifies the scope of objects created from 
+a specific bean
+
+
+constructor-arg
+----------------
+attribute specifies the dependencies to be injected
+
+
+properties
+-----------------
+attribute used to inject dependences
+
+autowiring mode
+------------------
+attribute for injectig dependencies
+
+lazy-initialization mode
+--------------------
+attribute that tells the IoC container
+to create a bean instance when it is first
+requested, rhant than at startup
+
+initialzation method
+-----------------------
+A callback to be called just after all necessary
+properties on the bean has ben
+set by the container.  It will be dicusssed in
+bean life cycle chapter.
+
+
+destruction method
+------------------------
+A callback to be used when the container 
+containing the bean is destroyed
+
+
+
+
+Spring configuration Metadata
+=====================================
+IoC is totally decoupled from the format in which
+this configuration metadata
+is actually written.  There are following theree
+important methods to provide configuration metadata to 
+the Spring Container:
+	XML based configuration
+	Annotation-based confirguration
+	Java-based configuration
+Another Sample of XML based configuration file
+with different bean definitions including lazy
+initialization, initialization method and
+destruction method:
+++++++++++++++++++++++++++++++++++++++++++
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!--A simple bean defintion-->
+    <bean id="simpleBeanId" class="SimpleBean" />
+    	<!-- collaborators and configuration for this bean go here -->
+    </bean>
+
+    <!--A simple bean defintion with lazy init set on-->
+    <bean id="simpleLazyBeanId" class="SimpleLazyBean" lazy-init="true" />
+    	<!-- collaborators and configuration for this bean go here -->
+    </bean>
+
+     <!--A simple bean defintion with destruction method on-->
+    <bean id="simpleDestructionBeanId" class="SimpleDestructionBean" destroy-method="....." />
+    	<!-- collaborators and configuration for this bean go here -->
+    </bean>
+</beans>

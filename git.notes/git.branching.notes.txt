@@ -1,0 +1,192 @@
+https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell
+https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches
+
+
+
+After the initial commit, your git repo now has 5 objects:
+	* A blob containing contents of each of your three files
+	* One tree that lists the contents of the directory and specififes which file names are stored as which blobs
+	* One commit with the pointer to that root tree and all the commit metadata
+
+
+
+/* Commit */
+																  |---------> blob : size
+Commit: size													  |			  Testing lib for ruby projects
+tree : 92e2														  |			  
+author: scott   ---------------->   tree: size  -----------------------------> blob : size
+commiter: scott						blob: 51der4  README          |             MIT license
+									blob: 56uiy   LICENCE		  |
+									blob: cty45	  test.rb         |----------> blob: size
+																			   require 'logger'
+																			   require 'text/unit'
+																			   class Test::Unit::TestCase
+
+
+Quick Summary:
+------------------------
+Git commits generate these:
+	*pointer to your commit tree
+	*a commit tree with all the meta data for your commmits
+	*all of your file(s) snap shots
+
+
+What another commit will do?
+---------------------------
+If I make some changes and commit again, the next commit stores a pointer to the commit that
+came immediately before
+
+3rd       2nd         1str
+---       ---		  ----
+51der4 --> 56uiy  --> cty45
+|		   |          |
+snapshotC  snapshotB  snapshotA
+
+
+What branches are really in Git
+============================
+They are really just pointers to some commit
+that are moveable.  The default branch in git is "master"
+As you start making commits, your given a master branch that
+points to the last commit you made.  Branching from master creates
+a new pointer that is also a "branch"
+
+
+Note:
+===============================
+The "master" branch in Git is not a special branch.  It is exactly like any other branch.
+The only reason nearly every reporsitory has one is that  the command:
+
+	git nit
+
+which creates it by default and most people not bother to change it.
+
+Another example of how this graphs out for some brand and its commit history
+================================
+
+										 	      Head
+											        |
+											        |
+									v1.0		  master 
+									    \         /
+								   	     \       /
+        98ca9<-------34ac2<--------------- f30ab
+          |            |					 |
+          |            |					 |
+       SnapshotA     SnapshotB              SnapshotC
+
+
+
+What happens when we create a new Branch?
+===============================
+A new pointer is created that is movable:
+
+	#git branch testing
+
+This pointer is now pointing to you latest commit
+
+							 master
+							  |	
+							  |
+98ca9<-------34ac2<--------- f30ab
+							  |
+							  |
+							 testing 
+
+
+How does git now which branch we are on?  Via the HEAD pointer.
+Git's concept of HEAD is not the same as that of HEAD for Subversion 
+or CVS
+
+
+We can view where the branch pointers are currently pointing via the command:
+-----------------------------------------------------------------------------
+	$ git log --oneline --decorate
+
+		-or-
+	$ git log --oneline --abbrev-commit --all --graph --decorate
+
+
+What happens to the HEAD pointer once you "branch"  ?
+===============================================================
+Nothing.  It is still pointing to the commit you last made when you
+branched...because our new branch has not been checked out.....so...let's 
+get on that....
+
+
+							 master<-----HEAD
+							  |	
+							  |
+98ca9<-------34ac2<--------- f30ab
+							  |
+							  |
+							 testing 
+
+$ git log --oneline --abbrev-commit --all --graph --decorate
+* a50c432 (HEAD -> master, origin/testing, origin/master, test) First commit
+C02G4075DRJN:InvinciBagel mbrown$ 
+
+
+
+What happens to the HEAD pointer once you "branch"  and then checkout
+the new branch  ?
+===============================================================
+$ git branch test
+$ git checkout -b test
+
+
+							 master
+							  |	
+							  |
+98ca9<-------34ac2<--------- f30ab
+							  |
+							  |
+							 testing<-----HEAD 
+
+
+$git log --oneline --abbrev-commit --all --graph --decorate
+* a50c432 (HEAD -> test, origin/testing, origin/master, master) First commit
+C02G4075DRJN:InvinciBagel mbrown$ 
+
+
+
+Does branching only occur server side ?
+===============================================================
+NO!  Infact...disabuse yourself of the notion that git is by nature
+centralized..this is how SVN/CVS/Hg works.....git is TRUELY distributed...
+I can actually create a new branch locally, and then push this back up to 
+our "git server"
+
+$git checkout -b test2
+$git push origin test2
+git branch
+  master
+  test
+* test2
+
+
+
+							 master
+							  |	
+							  |
+98ca9<-------34ac2<--------- f30ab-------test2<-----HEAD  
+							  |
+							  |
+							 testing
+
+
+
+$ git checkout master
+Your branch is up-to-date with 'origin/master'
+
+
+							 master<-----HEAD 
+							  |	
+							  |
+98ca9<-------34ac2<--------- f30ab-------test2  
+							  |
+							  |
+							 testing
+
+
+

@@ -1,0 +1,148 @@
+http://www.tutorialspoint.com/spring/spring_environment_setup.htm
+
+Spring Basics Core:
+==============================
+The core of Spring consists of the Core, Beans, Context,
+and Expression Language modules whose detail is
+as follows:
+
+
+Core
++++++++++++++++++++++++++++
+The Core module provides the fundamental parts of the 
+framework, including the IoC and Dependency
+injection features
+
+
+Bean
++++++++++++++++++++++++++++
+The Bean module provides BeanFactory which is a sophisticated
+implementation of the factory pattern
+
+
+Context
+++++++++++++++++++++++++++++
+The Context module builds on the solid base provided by the Core
+and the Beans modules and it is a medium used to access any objects
+defined and configured.  The interface 
+
+ApplicationContext
+
+is the focal point of the Context module
+
+
+SpEL
++++++++++++++++++++++++++++++++
+The SpEL module provides a powerful expression language
+for querying and manipulationg an 
+object graph at runtime
+
+
+
+Spring Basics Data Access/Integration:
+==================================
+The Data Access/Integeration layer consists of the
+modules:
+	JDBC
+	ORM
+	OXM
+	JMS
+as follows:
+
+JDBC
++++++++++++++++++++++++++++++++++++++
+The JDBC module provides a JDBC-abstraction layer that removes the need to do
+tedious persistence/module related coding
+
+The ORM module provides integration layers for popular object-relational mapping 
+APIs including:
+++++++++++++++++++++++++++++++++++++++
+	JPA
+	JDO
+	Hibernate
+	iBatis
+
+OXM
+++++++++++++++++++++++++++++++++++++++
+The OXM module provides an abstraction layer that supports Object/XML mapping
+API implemmentations for :
+	JAXB
+	Castor
+	XMLBeans
+	JiBX
+	XStream
+
+JMS
+==================================
+The Java Messaging Service(JMS) module contains featerues for producing
+and consuming messages
+
+Web
+==================================
+The Web layer consists of modules:
+	Web
+	Web-MVC
+	Web-Socket
+	Web-Portlet
+Web
++++++++++++++++++++++++++++++++++++++
+The Web module provides a basic web-oriented integration
+features such as:
+	multipart file upload
+	Initialization of IoC container using servlet listeners
+	applicaiton context
+
+Web-MVC
++++++++++++++++++++++++++++++++++++++
+The Web-MVC module contains Spring's model-view-controller (MVC)
+implmentation afor applications
+
+Web-Socket
++++++++++++++++++++++++++++++++++++++
+The Web-Socket module provides support for WebSocket-Based, two-way communictation
+between client and server in web applications
+
+Web-Portlet
++++++++++++++++++++++++++++++++++++++
+The Web-Portlet module provides the MVC implementation to be used in a portlet
+enviroment and mirrors the functionality of the Web-Servlet module
+
+Miscellaneous
+==================================
+There are a few other important modules like:
+	AOP
+	Aspects
+	Instrumentation
+	Web
+	Test
+AOP
++++++++++++++++++++++++++++++++++++++
+The AOP module provides aspect-oriented programming implementation allowing
+for the definition of :
+	method-interceptors
+	pointcuts
+for the purpose of clean decoupling code that implements functionality
+that should be seperated
+
+
+Aspects
++++++++++++++++++++++++++++++++++++++
+The Aspects module provides an integration with AspectJ which is again a
+powerful and mature aspect oriented programming(AOP) framework.
+
+Instrumentation
++++++++++++++++++++++++++++++++++++++
+The Instrumentation module provides clas instrumentation support and class loader
+implementations to be used in certain applications servers.
+
+Messaging
++++++++++++++++++++++++++++++++++++++
+Provides support for STOMP as the WebSocket sub-protocol to use in applications.
+It also suppots an annotation programming model for routing and procesing STOMP
+messages from WebSocket Clients
+
+Test
++++++++++++++++++++++++++++++++++++++
+The Test module supports the testing of Spring components with JUnit or TestNG
+frameWorks
+

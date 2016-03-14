@@ -1,0 +1,238 @@
+http://grails.asia/grails-tutorial-for-beginners-scaffolding
+
+What is scaffolding in Grails ?
+===================================================
+Scaffolding is a popular feature of web frameworks where a programmer can quickly create working
+components of a system to handle data manipulation.  Code to handle p[s:
+
+	(CRUD)
+	--------
+	*CReate
+	*Update
+	*Delete/Destroy
+
+^^^^ may all be implemented or generated within several minutes only through the use of code
+generators or other shortcuts
+
+
+Benefits
+====================================================
+*quickly create screens that can do CRUD operations
+*users can immediately see a working software prototype that helps users/customers
+visualize what the finished product may end up looking like
+*test data can be created  their manual test data
+*repetative code may be copied to other apps
+*only model and conroller code is needed to generate 
+
+
+
+Requirement
+=====================================================
+The model class is the only code code needed to be
+prepared manually before going through scaffolding:
+
+/* model code */
+class Person {
+	String firstName
+	String lastName
+	Date dateOfBirth
+	static constraints = {
+		firstName (blank: false)
+		lastName (blank: false)
+		dateOfBirth (blank: false)
+	}
+}
+
+/* controller code */
+class PersonController{
+	static scaffold = true
+}
+
+
+^^^^That's all that's needed in the controller.....when you navigate to the following
+URL:
+
+	http://localhost/app/person
+
+The user will have access to following features:
+	*The ability to view all existing persons
+	*Create a new person record
+	*Navigate back to the home page
+	*Update/edit a person record
+	*Remove a person record
+	*Field validation/checking
+	*Ideal if the target app feature only requires this functionality
+
+About Static Scaffolding
+======================================================
+Since dynamic scaffolding is genrated at runtime, it has limitations.  It is possible to generate the
+real code so that it can be further customized otherwise known as static scaffolding as
+the code can be viewed and modified, and not generated at runtime.
+
+You can generate the controller code, view code, or both.  Before you can generate any
+code, run this console command of the project root.
+
+
+Generating Static Scaffolding
+=======================================================
+grails compile
+grails generate-controller org.permutation.Person
+
+/* generated code */
+
+import org.springframework.dao.DataIntegrityViolationException
+class PersonController {
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    def index() {
+        redirect(action: "list", params: params)
+    }
+    def list(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        [personInstanceList: Person.list(params), personInstanceTotal: Person.count()]
+    }
+    def create() {
+        [personInstance: new Person(params)]
+    }
+    def save() {
+        def personInstance = new Person(params)
+        if (!personInstance.save(flush: true)) {
+            render(view: "create", model: [personInstance: personInstance])
+            return
+        }
+        flash.message = message(code: 'default.created.message', args: [message(code: 'person.label', default: 'Person'), personInstance.id])
+        redirect(action: "show", id: personInstance.id)
+    }
+    def show(Long id) {
+        def personInstance = Person.get(id)
+        if (!personInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), id])
+            redirect(action: "list")
+            return
+        }
+        [personInstance: personInstance]
+    }
+    def edit(Long id) {
+        def personInstance = Person.get(id)
+        if (!personInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), id])
+            redirect(action: "list")
+            return
+        }
+        [personInstance: personInstance]
+    }
+    def update(Long id, Long version) {
+        def personInstance = Person.get(id)
+        if (!personInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), id])
+            redirect(action: "list")
+            return
+        }
+        if (version != null) {
+            if (personInstance.version > version) {
+                personInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                          [message(code: 'person.label', default: 'Person')] as Object[],
+                          "Another user has updated this Person while you were editing")
+                render(view: "edit", model: [personInstance: personInstance])
+                return
+            }
+        }
+        personInstance.properties = params
+        if (!personInstance.save(flush: true)) {
+            render(view: "edit", model: [personInstance: personInstance])
+            return
+        }
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'person.label', default: 'Person'), personInstance.id])
+        redirect(action: "show", id: personInstance.id)
+    }
+    def delete(Long id) {
+        def personInstance = Person.get(id)
+        if (!personInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), id])
+            redirect(action: "list")
+            return
+        }
+        try {
+            personInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'person.label', default: 'Person'), id])
+            redirect(action: "list")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'person.label', default: 'Person'), id])
+            redirect(action: "show", id: id)
+        }
+    }
+}
+
+
+^^^^^^explaination of the code generated above
+========================================================
+*Allowed Methods
+--------------------------------
+restricts what GET and POST operatons/requests are allowed
+for the specfic actions(controllers are synonymous with actions)
+
+*index
+--------------------------------
+Just redirect to the list action, passing the parameters
+it recieved if any
+
+
+*list
+---------------------------------
+Retrieves paginated records by using params attritbutes:
+
+	params.max
+	params.offset 
+
+into the query.  The total number of records are also 
+computed to be albe to detemine the number of pages available
+
+*create
+--------------------------------
+Prepare and display a create form page
+
+*save
+--------------------------------
+The action invoked to create a new record.  If successful, the 
+show page is diplayed together with a sucess message.  Othewise,
+the form is displayed again so that the user can correct the
+form contents.
+
+*show
+--------------------------------
+Retrieves the record and show the details on a page.  If record with the given
+id is not found, the page is redirected to the list screen.
+
+*edit
+--------------------------------
+Retrieves the record and show the details on a page.  If record with the given
+id is not found, the page is redirected to the list screen.
+
+
+*update
+--------------------------------
+The action inovked to update a record.  If successful, the show page is displayed
+together with a success message.  Otherwise, the form is iplayed again so that
+the user can correct the form contents.
+
+*delete
+--------------------------------
+Action invoked to delete a re ord.  If successful, the list page is shown,
+otherwise the show page is displayed again.
+
+
+Creating DataFrames
+========================================================
+/*sample code*/
+
+val results = hc.createDataFrame(results1.rdd, results1.schema)
+
+
+Registering Temporary Tables via your DataFrame
+=========================================================
+Register your DataFrame as a temporary tableusing the given name.
+The lifetime of this temporary table is tied to the 
+SQLContext that was used to create this DataFrame
+
+/*sample code*/
+

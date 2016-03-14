@@ -1,0 +1,155 @@
+http://www.tutorialspoint.com/spring/spring_bean_definition.htm
+
+Bean Definition:
+==============================
+The objects that form the backbone of your application and that are managed
+by the Spring IoC container are called:
+
+	Beans
+
+A bean is an object that is instantieated, assembled and otherwised
+managed by Spring IoC coantainer.
+
+
+
+Bean definition basics:
+=============================
+The bean definition contains the information called
+configuration metadata which is needed for the container to know the
+following:
+	Bean creation
+	Bean lifecycle
+	Bean dependencies
+
+Particulate metadata
++++++++++++++++++++++++++++++++
+class
+-------------------------------
+This attribute is mandatory and specifies the bean class
+to be used to create the bean.
+
+name
+---------------------------------
+Specfies the bean identifier uniquely.
+In XML-based configuration metadata, you use attributes
+	id
+	name
+to specify the bean identifier(s)
+
+scope
+----------------------------------
+Specifies th scope of created objects
+
+constructor-arg
+-----------------------------------
+This is used to inject the dependencies
+
+properties
+-------------------------------------
+Used to inject the dependiences
+
+autowiring mode
+--------------------------------------
+This is used to inject the dependencies
+
+lazy-initialization mode
+---------------------------------------
+Tells the IoC container to create a bean instance
+when it is first requested, ratherthan at startup.
+
+initialization method
+-----------------------------------------
+
+destruction method
+
+Core
++++++++++++++++++++++++++++
+The Core module provides the fundamental parts of the 
+framework, including the IoC and Dependency
+injection features
+
+
+What does the spring container do ?
++++++++++++++++++++++++++++++++
+The Spring container is at the core of the Spring Framework.
+The container will create the objects,
+wire them together, configure them,
+and then manager their complete lifecycle from 
+creation till destruction.  The Spring container uses
+Dependency Injection(DI) otherwise known as IoC(Inversion of Control) 
+
+Where does the IoC container get's it's instructions ?
++++++++++++++++++++++++++++++++++
+Spring apps...much like JEE can be set up via convention or configuration meta data:
+	XML
+	in code annotations
+	in code
+
+Rough diagram of how a spring app works w/r to configurations
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Java POJO classes________________
+								|
+								v
+Meta-data---------------->The Spring Container
+								|(final result)
+								V
+						Ready to use application
+
+^^^Description of what's going on:
++++++++++++++++++++++++++++++++++++++
+Spring BeanFactory Container:
+-------------------------------------
+The BeanFactory Container is the simplest 
+container providing basic support for DI and 
+defined by the inteface:
+
+	org.springframework.beans.factory.BeanFactory
+
+Related interaces are:
+	BeanFactoryAware
+	InitializingBean
+	DisposableBean
+are included for backwards compatibility with
+a large number of third-party framewors that
+integreate with Spring
+
+Spring ApplicationContext Container
+----------------------------------------
+This container adds more enterprise-specific functionality
+such as the ability to resolve textual messages from
+a properties file and the ability to publish application events
+to interesed event listeners.  This  container is defined by the  interface:
+
+	org.springframework.context.ApplicationContext
+
+
+Tip
+===================================================
+The application container:
+
+	ApplicationContext
+
+includes all the functionality of the container
+
+	Beanfactory
+
+so it is generally recommened over the BeanFactory.
+BeanFactory can still be used for light weight applications
+like mobile devices or applet based applications where dta volume and 
+speed is significant.
+
+Summary:
+=====================================================
+Spring core is composed of two containers
+that allow you to create enterprise apps from POJOS.
+
+	ApplicationContext
+	BeanFactory
+
+ApplicationContext container can do all of what BeanFactory can do
+and more...however BeanFactory is still useful for small, lightweight and mobile applications,
+and for backwards compatiblity with other frameworks that integrate with Spring.
+
+
+
+

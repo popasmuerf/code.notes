@@ -1,0 +1,107 @@
+Datatypes/Classes/Objects most often used in ObjC programming
+============================
+
+NSString:
+	String type
+CGFloat:
+	Floating point type; float is also available for use, but 
+	CGFloat is apparently better.
+NSInteger:
+	Integer types
+NSLog:
+	Analogous to System.out.println()
+BOOL:
+	Analogous to boolean or bool
+NSArray:
+	immutable array
+NSMutableArray:
+	mutable array
+
+
+
+
+iOS project framework
+============================
+Important files auto-generated:
+	AppDelegate.h
+	AppDelegate.m
+	ViewController.h
+	ViewController.m
+	ViewContraller.xib
+
+What do they do ?:
+	*AppDelegate :
+		The AppDelegate just sits there waiting
+		to be told that something potentioally important has or will happen.
+		AppDelegate is the proxy between you and iOS/your app:
+			*The app will create one instance of that class(singleton)
+			*The app will send messages to the AppDelegate singleton
+			such that the AppDelegate will influence the app's behavior
+			at well-defined times.
+			*Example:
+				-application:didFinishLaunchingWithOptions
+				^^is sent  when the app has finished launching and is ready
+				to do something interesting.
+			*It contains your app's startup code
+			*It responds to key changes in the state of your app.  Specifically, it responds to both temporary
+			interruptions and to changes in the execution state of your app, such as when your app transistions
+			from the foreground to the background
+			*It responds to notifications originiating from outside the app, such as remote notifications
+			(also known as push notifications), low-memory warnings, download completion notificatond, and more
+			*It determines whether state preservation and restortion shold occur and assists in the preservation
+			and restoration process as needed.
+			*It responds to events that target the app iselt and are not specific to yoru app's views or view
+			controllers
+			*You can use it to store your app's central data opbjects or any content that does not have an owning view
+			controller
+			*Reference for this is in the UIApplicationDelegate reference page:
+				https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/index.html
+	*ViewController:
+		Class that defines a view controller class.
+		Manages hierarchy of views -- basically, one screen of an application.
+		You may have multiple screens that each have a their own view controller.
+
+
+AppDelegate.h
+================================================
+import "AppDelegate.h"
+import "ViewController.h"
+
+@implementation AppDelgate 
+-(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSdictionary *) launchOptions
+{
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.viewController = [[ViewController alloc]
+	initWithNibName:@"ViewController" bundle:nil];
+	self.window.rootViewController = self.viewController;
+	[self.window makeKeyAndVisible];
+	return YES;
+}
+
+
+-(void)applicationWillResignActive:(UIApplication *)application
+{
+	/*
+		Use this method to release shared resources, save user data,
+		invalidate timers, and store enough app;lication state information
+		to restore your application to its current state in case it is 
+		terminated later.  If you applicaiton supports background execution,
+		this methid is called instead of applicationWillTerminate: when the user quites.
+	*/
+}
+
+
+
+-(void)applicaitonDidBecomeActive:(UIApplication *) applications
+{
+	
+}
+
+@end
+AppDelegate.m
+================================================
+
+
+
+
+

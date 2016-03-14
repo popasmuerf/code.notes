@@ -1,0 +1,288 @@
+http://grails.asia/grails-tutorial-for-beginners-grails-service-layer
+http://grails.github.io/grails-doc/latest/guide/services.html
+
+
+What is the Grails service layer ?
+===================================================
+
+
+Seperation of concerns
+--------------------------------------------------
+The best systems are composed of components that do one thing
+and one thing very well.  Components that perform/responsible
+for multiple tasks increase the overall system dependence on them
+and increases the difficulty of modifying functionality of the overall
+system.
+Writing/building components that peform as few componenetns as possible is known
+as "seperation of concerns".
+
+
+What a controller is capable of performing
+--------------------------------------------
+*handling routing logic
+*Invoke GORM operations to manipulate data in the database
+*Render text and show it to the user
+
+
+Why would'nt I want to do all the cool stuff I could do in a controller ?
+--------------------------------------------------------------------------
+We could do all this  awesome stuff.....but why should we....when the true
+purpose of a controller is to deal with routing logic.  Just because you can
+do something does not mean you should.  a controller is a router....period....and 
+as such, this is what controller should be used for:
+	1. Recieve HTTP requests from users
+	2. Invoke the appropiate business logic based on user HTTP request
+	3. Invoke the appropiate view based on the user HTTP request
+
+HTTP request ---> controller---> controller executes logic -----> do some shit ---> return appropiate view
+
+Ok...controllers are just routers...so what are you really saying?
+-------------------------------------------------------------------------
+Controllers should only perform routing.  View logic should only take
+place within views, business logic is not within the domain of routing.
+So where should business logic go ?   That's RIGHT!  SOMEWHERE ELSE!!!!
+(The service layer you dolt!!!!)
+
+
+
+
+Creating a Service in Grails
+===================================================
+#command
+$ grails create-service org.permutation.testapp
+
+
+/** Service code class generated **/
+
+package org.permutation.testapp
+class testappService {
+	def serviceMethod(){
+		//do business stuffs
+	}
+}
+
+^^^How do we use this new service 
+---------------------------------------------------
+We just add as many functions as needed that pertains to business logic and GORM
+operations.  Heres is an example:
+
+
+/**example service code***/
+
+class StudentService{
+	Student createStudent(String lastName, String firstName){
+		Student student = new Student()
+		student.lastName = lastName
+		student.firstName = firstName 
+		student.referenceNumber = generateReferenceNumber()
+		student.save() 
+		return student
+	}
+	private String generateReferenceNumber(){
+		//specific logic for generating reference number
+		return referenceNumber
+	}
+}
+
+
+
+NOTE: the sevice layer also provides a way for you to avoid writing the same or most of
+similar business logic by having it placed in a centralized region seperate from
+other app components.
+
+
+
+Injecting a Service
+===================================================
+The service is automatically injected inside a controller by just defining 
+a variable with the proper name. 
+
+/***Controller code where corresponding service object is injected***/
+
+class MyController{
+	def studentService
+	def displayForm(){
+
+	}
+	def handleFormSubmit(){
+		def student = studentService.createStudent(params.lastName, params.firstName)
+		[student:student]
+	}
+} 
+
+^^^^What's going on here ?
+--------------------------------------------------
+If you are not familiar with Spring and the concept of injection,
+what it means abouf is that you don't need to do anything special.  Just declare the 
+variable :
+	studentService
+and the Grails framework will automatically assign an instance to it.
+Just declare and use it right away.
+
+
+
+
+Frame code for GRAILS service
+===================================================
+package some_package
+class SimpleService{
+	
+}
+
+
+Declarative Transactions
+===================================================
+Services are typically invovled in coordinating logic between domain classes
+and hence often involved with persistence that spans large operations.
+Given the nature of services, they frequently require transactional behavior.  you cna use programmaitc transactions with the  method:
+
+	withTransAction()
+
+
+Wait...what is Transaction processing ?
+=====================================================
+In computer science, transaction process is information processing that is divided into
+indivicual, indivisuble operationss called "transactions".  Each transaction
+must succeed or fail as a complete unit or else the transactions is regarded as a failure.
+
+Example:
+
+For example, when you purchase a pbook from an online bookstore, you exchange money(in the form of credit)
+for a book.  If your credit is good, a series of related operations ensures that you get the book and the bookstore geets yoru money.....however if a single operation within this series of operations fails
+during the exchange, the entire exchange fails.  You don't get your book and the book store does not
+get your bread.
+Transactions ensure that data-oriented resources are not permantly updated unless all operations with the
+transactional unite complete successfully.   By combining a set of related operations into a unit that either
+completely succeeds or completely fails, one can simplify error recovery and make one's application more reliable.
+
+Transaction processing is designed to maintain a system's integerity(typically a database or some modern filesystem)
+
+
+Example of some code using method withTransaction
+=====================================================
+Purpose:  Allows progrrammitic transactions using Spring's Transaction abstraction.
+
+/****Sample Transaction code ****/
+
+Account.withTransaction {status ->
+	def source = Account.get(params.from)
+	def dest = Account.get(params.to)
+	int amount = params.amount.toInteger()
+	if(source.active){
+		source.balance -= amount
+		if(dest.active){
+			dest.amount += amount
+		}else{
+			status.setRollbackOnly()
+		}
+	}
+
+}
+
+
+
+Default Declarative Transactions
+=================================
+Services enable taransaction demarcation, which is a declarative way of
+defining which methods are to be made transactional.  All sevices
+are transactional by default.  To disable this set the transactional property
+to false:
+
+/***Example set the transactional property to false***/
+
+class CountryService{
+	static transactional = false 
+}
+
+^^^^ You may also set this property to true to make it clear that the service
+is intentionally transactional
+The result is that all methods ae wrappped in a transaction and atuomatic rollback
+occurs if a method throws a runtime exception.
+
+WARNING:
+===================================
+Dependency injection is the only way that declarative transactions work.
+You willl not get a transactional service if you use the "new" operator.
+such as :
+
+new BookService()
+
+WARNING:
+===================================
+Checked exceptions do not roll back transactions:  Even though Groovy blurs the distinction
+between checked and unchecked exceptions, Spring isn't aware of this and its
+default behavior is used, so it's important to understand the distinciton between
+checked and unchecked exceptions.
+
+link for info on checked excpetions: http://www.javapractices.com/topic/TopicAction.do?Id=129
+
+
+Custom Transaction Configuration
+=================================
+Grails also provides annotations:
+
+	@Transactional
+	@NotTransactional
+
+for cases whre ou need more fine-grained control over
+transactions at a per-method level.
+
+/** Example Code **/
+import org.springframework.transaction.annotation.Transactional
+class BookService{
+	@Transactional(readOnly=true)
+	def listBooks(){
+		Book.list()
+	}
+	@Transactional
+	def updateBook(){
+		//.....
+	}
+	def deleteBook(){
+		//......
+	}
+}
+
+
+^^^^^
+	listBooks()   // readonly transaction
+	updateBook() // default read-write transaction
+	delete()	// non-transactional and a really bad idea given it's likely function
+
+
+We could also annotate the entire service class and be done with it.
+In the following example code....annotating the class renders all class methods
+default transactional read/write
+
+/** Example Code **/
+import org.springframework.transaction.annotation.Transactional
+@Transactional(readOnly=true)
+class BookService{
+	def listBooks(){
+		Book.list()
+	}
+	def updateBook(){
+		//.....
+	}
+	def deleteBook(){
+		//......
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

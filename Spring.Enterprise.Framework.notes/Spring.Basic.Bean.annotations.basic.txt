@@ -1,0 +1,44 @@
+http://www.tutorialspoint.com/spring/spring_annotation_based_configuration.htm
+
+Intro:
+=========================================================================
+Startng from Spring 2.5 it became possible to configure the dependency injection
+using annotations as opposed to XML
+
+Annotation injection is performed before XML injection, thus the 
+latter configuration will ALWAYS override the former
+for properties wired through both approaches.
+
+
+Annotation wiring is not turned on in the Spring container by default.
+So, befoe we can use annottion based wiring, we will need
+to enable it in our Spring confguration file:
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   <context:annotation-config/>
+   <!-- bean definitions go here -->
+
+</beans>
+
+
+
+S.N.	Annotation & Description
+1	@Required
+The @Required annotation applies to bean property setter methods.
+
+2	@Autowired
+The @Autowired annotation can apply to bean property setter methods, non-setter methods, constructor and properties.
+
+3	@Qualifier
+The @Qualifier annotation along with @Autowired can be used to remove the confusion by specifiying which exact bean will be wired.
+
+4	JSR-250 Annotations
+Spring supports JSR-250 based annotations which include @Resource, @PostConstruct and @PreDestroy annotations.

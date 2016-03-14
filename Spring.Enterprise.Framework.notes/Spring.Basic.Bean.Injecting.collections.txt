@@ -1,0 +1,272 @@
+http://www.tutorialspoint.com/spring/spring_injecting_collection.htm
+
+Injecting collections
+=========================================================================
+We have seen hot to configure primitiec data types using  the attribute
+	value
+and object reference usinng the attribute
+	ref
+of the tag
+	<property>
+
+Both cases deal with passing singular value to a bean
+Now what about if we want to pass plural values like
+Java collection types:
+	List
+	Set
+	Map
+	Properties
+?  To handle the situation, Spring offers four types of collection configuration elements 
+which are as follows:
+
+Element and Description
+=========================================================================
+<list>
+This helps in wiring for  injecting a list of values, allowing duplicates
+
+<set>
+This helps in wiring a set of values but without any duplicates
+
+<map>
+This can be used to inject a collection of name-value pairs where name and value
+can be of any type
+
+<props>
+This can bused to incec a collection of name-value  pairs where the name 
+and vlaue are both Strings
+<!--Bean Definition-->
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<bean id="javaCollection" class="JavaCollection">
+    <property name="addressList">
+    	<list>
+    	    <value>INDIA</value>
+    	    <value>Pakistan</value>
+    	    <value>USA</value>
+    	    <value>USA</value>
+    	</list>
+    </property>
+    <property name="addressSet">
+        <set>
+	        <value>INDIA</value>
+	    	<value>Pakistan</value>
+	    	<value>USA</value>
+	    	<value>USA</value>
+	    </set>
+    </property>
+    <property name="addressMap">
+         <map>
+	        <entry key="1" value="INDIA"></entry>
+	    	<entry key="2" value="Pakistan"></entry>
+	    	<entry key="3" value="USA"></entry>
+	    	<entry key="4" value="USA"></entry>
+	    </map>
+    </property>
+     <property name="addressProp">
+         <props>
+            <prop key="one">INDIA</prop>
+            <prop key="two">Pakistan</prop>
+            <prop key="three">USA</prop>
+            <prop key="four">USA</prop>
+         </props>
+      </property>
+</bean>
+</beans>
+
+
+/* Bean Code*/
+import java.util.*;
+public class JavaCollection {
+	List addressList ;
+	Set addressSet ;
+	Map addressMap ;
+	Properties addressProp ;
+	
+	public void setAddressList(List addressList){
+		this.addressList = addressList ;
+	}
+	public List getAddressList(){
+		System.out.println("List Elements : " + addressList);
+		return addressList ;
+	}
+	public void setAddressSet(Set addressSet){
+		this.addressSet = addressSet ;
+	}
+	public Set getAddressSet(){
+		System.out.println("Set Elements : " + addressSet);
+		return this.addressSet ;
+	}
+	public void  setAddressMap(Map addressMap){
+		this.addressMap = addressMap ;
+	}
+	public Map getAddressMap(){
+		System.out.println("Map Elements : " + addressMap);
+		return this.addressMap ;
+	}
+	public void  setAddressProp(Properties addressProp){
+		this.addressProp = addressProp ;
+	}
+	public Properties getAddressProp(){
+		System.out.println("Prop Elements : " + addressProp);
+		return this.addressProp ;
+	}
+}
+
+
+
+
+
+
+
+Injecting Bean References
+=========================================================================
+Following the Bean definition will help you understand ow to inject bean references
+as one of the collections element.  
+Even you can mix references and values all together as shown below:
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <!-- Bean Definition to handle references and values -->
+   <bean id="..." class="...">
+
+      <!-- Passing bean reference  for java.util.List -->
+      <property name="addressList">
+         <list>
+            <ref bean="address1"/>
+            <ref bean="address2"/>
+            <value>Pakistan</value>
+         </list>
+      </property>
+      
+      <!-- Passing bean reference  for java.util.Set -->
+      <property name="addressSet">
+         <set>
+            <ref bean="address1"/>
+            <ref bean="address2"/>
+            <value>Pakistan</value>
+         </set>
+      </property>
+      
+      <!-- Passing bean reference  for java.util.Map -->
+      <property name="addressMap">
+         <map>
+            <entry key="one" value="INDIA"/>
+            <entry key ="two" value-ref="address1"/>
+            <entry key ="three" value-ref="address2"/>
+         </map>
+      </property>
+      
+   </bean>
+
+</beans>
+
+
+
+Injecting null an dempty string values:
+===========================================
+passing empty strings:
+
+<bean id="..." class="exampleBean">
+<property name="email" value=""/></property>
+</bean>
+
+
+passing a null value:
+<bean id="..." class="">
+<property name="email" <null/>/></property>
+</bean>
+
+
+
+^^^ equivilant to the following code:
+
+exampleBean.setEmail(null)
+
+
+
+
+
+
+
+
+
+
+
+
+Injecting Inner Beans
+===================================
+As you know Java inner classes are defined within the sope of other classes, similarly,
+inner beans are beans that are defined with the scope of another bean.  Thus,
+a <bean/> element insided the </property> or 
+<constructor-arg/> elements is called inner bean and it is shown below :
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <bean id="outerBean" class="....">
+    	<property name="target">
+    		<bean id="innerBean" class="..."/>
+    	</property>
+    </bean>
+
+</beans>
+
+What are talking about here ?
+==================================
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <bean id="textEditor" class="com.tutorialspoint.TextEditor">
+    	<property name="spellChecker">
+    		<bean id="spellChecker" class="com.tutoiralspoint.SpellChecker"/>
+    	</property>
+    </bean>
+
+</beans>
+
+
+
+
+package com.tutorialspoint ;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TextEditor{
+	private SpellChecker spellChecker = null ;
+	public TextEditor(){
+
+	}
+	public void setSpellChecker(SpellChecker spellChecker){
+		System.out.println()
+	}
+	public void spellCheck(){
+		spellChecker.checkSpelling() ;
+	}
+}
+public class SpellChecker{
+	public SpellChecker(){
+		System.out.println("Inside SpellChecker constructor.");
+	}
+	pubic void checkSpelling(){
+		System.out.println("Inside checkSpelling");
+	}
+}
+public class MainApp{
+	public static void main(String[] args){
+		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+		TextEditor te = (TextEditor)context.getBean("textEditor");
+		te.spellCheck();
+	}
+}
+

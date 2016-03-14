@@ -1,0 +1,273 @@
+www.bogotobogo.com/cplusplus/libraries.php
+
+
+C++ libs
+========================================
+
+
+
+what are libs in C++
+========================================
+A static library contains object code linked with an end-user
+application, and then becomes a part of that executable.  A static library
+is sometimes acalled an archive since it is just a package of compiled
+object files.  These libraries are in directories such as:
+
+	/lib
+	/usr/lib
+	/usr/local/lib
+
+After resolving the various function references from the main
+program to themodules in the static library, a linker 
+extracts copies of the required object modules from the library and copies
+these inot the resulting executable file.
+
+Linking donedurint the creation of an executable, it is known as:
+
+	static linking
+		-or-
+	early linking
+		-or-
+	early binding
+
+
+Application Code
+				|         ----------         ---------------------------------          ------------
+ 				|-------->(compiler)-------->|Executable (Static ßlibrary code)------->(Static Build)
+Static Library--          ----------         ---------------------------------          ------------
+
+
+
+Linkers are what make this happen...and originally..only static libs existed....but
+no more...C++....unlike what most inexperienced clowns realized....has kept up with the
+times....as most languages with a large code base and community tend to do....
+
+
+Naming convintions for static libs
+========================================================
+prefix => "lib"
+extention => "a"
+
+examples(Linux/*nix):
+	libexec.a
+	libOpenGl.a
+	libFoo.a
+	libBar.a
+
+examples(Windows):
+	static library => *.LIB(may or may not be dynamic)
+	dynamic => .DLL
+
+
+Implications of distributing our implementation as a static library:
+====================================================================
+*A static library is only needed to link an application.  It is not needed to run
+that application because the library code is already embedded inside the application...
+so, our clients can distribute their applications without any addtional run-time dependencies
+
+*If our clients want to link our library into multiple executables, each one will embded a copy of our code.
+If our library is 100MB in size, and our client wishes to link this into three spearate programs,
+then we could be adding up to 300MB to the total size of the product.  Notice that only
+the object files in the static library that are actually used
+are copied tot he application...so it may or may not be ass bad as the worst case
+scenario.
+
+*incompatibilities are not an issue...as your shit is already compiled
+
+*But if our clients want to be able to hot patch theri application, in other words
+they want to update the ersion of our library used by their application, they must replace the 
+entire executable to achieve this...in other words....re-write the lib and then recompile...
+
+
+
+Dynamic Libraries
+==============================
+A shared library or shared object is a file that is intended to be shared by
+executable files and futher shared objects files.
+Modules used by a prgoram are loaded from indiviual shared objects into
+memory at load time or run time, rather than being copied by a linker
+when it creates a single monolithic executable file for the program
+
+Application code------------
+                            |------------->(compiler)----------(Application executes)--------------|
+Dynamic Library ------------|                                                                      V
+							|----------------------------------------------------------------->(Dynamic Library)
+
+
+In other words, dynamic libraries are files lnked against at compile time to resolve
+undefined references and then distributed with the application so that the application can load the library code
+at run time.  Usualy this requres use of dynamic linker on the end user's manchine to determine and load all
+dynamic  library dependencies at run time, perform the necessary symbol relocations, and then pass control
+to the application
+
+
+Dynamic linkers list:
+============================
+Linux ==> ld.so
+OS-X ===> dyld
+
+
+Dyanmic lib nomenclature
+============================
+Linux ===> *.so (for "shared object")
+Windows ===> *.DLL (for "Dynamic linked library")
+OS-X ======> *.OCX (for "OLE libraries")
+
+
+Implications of using Dynamic Libraries:
+==============================
+*Our clients must distrbute our dynamic library with their application
+as well as anyother dynamic library that the application may depend on
+
+*Our clients' applications will not run if the dynamic lib cannot be found
+...also...the application may not run if the dynamic library is upgraded
+
+*Using dynamic libraries  can often be more efficient than static
+libraries in terms of disk space if more than one application need to use the 
+library
+
+*If our clients want to hot patch their application with a new
+(backward compatible) version of our shared library, they can simply
+drop in the replacement library file and all of their applications will use this
+new library without having to recompile or relink.
+
+
+Plugins
+===============================
+Plug-ins enable customizing the functionality of an application.
+For example, plug-ins are commonly used in web browsers for playing
+video, scan for viruses, and display new file types.  Well-known plug-ins
+include examples of Adobe Flash Player, QuickTime, and Microsoft
+Silverlight:
+
+
+Application Code ----------->(compiler)----------->(ApplicationExecutable)
+                            |
+                            |
+                            |
+Plugin Library-------------->(compiler)----------->(Pluging Library)
+
+
+
+Dynamic libraries are usually linked against an application and then
+distributed with that application so that the OS can load the library
+when the application is launched.  However, it is also possible for an 
+application to load a dynamic library on demand without the application
+having  been compiled and linked against that library.
+
+This can be used to create plugin interface, when the application
+can load addtional code at run time that extends the basic capabilities of the
+program
+
+This gives us the capability to create extensible code that allow our
+clients to drop in new functionality that our program will then load
+and execute
+
+
+
+
+Building a library
+==================================================
+
+/* The code (in C-lang)*/
+
+//mylib.h
+#ifndef MYLIB_H
+#define MYLIB_H
+double calcSqrt(double);
+#endif
+
+
+//calc.c
+#include <math.h>
+#include "mylib.h"
+double calcSqrt(double d){
+	return sqrt(d);
+}
+
+//main.c
+#include <stdio.h>
+#include "mylib.h"
+int main(){
+	double d = 100 ;
+	printf("sqrt(%3.0f)=%2.0f\n",d,calcSrt(d));
+	calcSqrt();
+	return 0 ;
+}
+
+
+Building Libary - static
++++++++++++++++++++++++++++++++++++++++++++++++++
+$ gcc -c main.c
+$ gcc -c calc.c
+$ gcc -o main calc.o main.o -lm
+	-or-
+$ gcc -o main calc.o main.o /usr/lib
+
+
+
+Use ar to build the new library
++++++++++++++++++++++++++++++++++++++++++++++++++
+$ ar crv libcalc.a calc.o
+
+Now we can make executable from the library we just built, libcalc.a
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+$gcc -o main main.o libcalc.a -lm
+	-or-
+$gcc  -o main main.o -L. -lcalc -lm
+
+^^^ The "-L" argument lets the compiler know that the library libcalc.a
+may be found in the local directory
+
+
+
+
+List the symbols in the object/library by using the nm command:
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$nm main | egrep calcSqrt
+$nm libcalc.a | egrep calcSqrt
+
+
+
+Quick Summary
+======================================================
+A typical static libarary extension is:
+	*.a
+A typical shared library extension is:
+	*.so(or *.dll)
+
+Static libary code is actually incorporated statically within
+the compiled executable.  Static libs being updated/upgraded require
+the recompile of the entire app.....
+
+Dynamic library code is not incorporated staticatically by the compiler
+as opposed to be being linked to by the linker during run-time as needed and 
+are often shipped along with the main executable and or accompanying src files
+Dynamic libraries can be updated/upgraded on the fly....
+
+
+Shared dynamic libraries(OS resident) requirred by the app during run time
+are determined by the resident OS linker/loader:
+
+	ld.so //Linux
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,131 @@
+Digital Imaging Concepts: Resolution, Color Depth, Alpha, Layers
+=================================================================
+Supported image formats:
+	gif
+	jpeg
+	png
+
+Note:
+==============
+png's are preferred as they are an open format
+and provide the highest quality leel and supports
+image compositing.  gif is also loseless....as in it does
+not sacrifice image date to achieve better compression,
+however it's compression algorithm
+is not as refined(powerful) as png.
+
+
+
+Digital Image Resolution and Aspect Ratio: Defining Image Size and Shape:
+=========================================================================
+Digital imagery is made up of 2D(two-dimensional) arrays of pixels
+(pixel stands for picture[pix]
+ element[el]]).  The sharpmess of an image
+ is expressed by its resolution, which is the number of pixels in the image
+ width and height.
+ 	w = x-axis
+ 	h = y-axis
+
+The more pixels an image has, the higher its resolution.  This is similar to how
+digital cameras work, as the more megapixels in aimage capture device
+(a camera CDD), the higher the image quality tha can be achieved....
+
+
+How to find the total number of image pixels
+========================================================================
+To find the total number of image pixels, multiple the swidth pixels  by
+the height pixels:
+	w*h = total number of image pixels
+
+Example:
+************************************************************
+A wide video graphics array (VGA) 800 * 480 image contains:
+	384,000 pixels
+which is 3/8 of a megabyte.  This is how you would fid the size of yoru image,
+both in terms of kilobytes(or megabytes) and the height and width of it displayed on
+the screen.
+
+
+Aspect ration
+*************************************************************
+An aspect ratio of a retangle(of matching sides) would be irrelvant of the actual width and height:
+
+	1:1 | 3:3 | 100:100 == 1:1
+
+An aspect ration of a rectangle  where w=8 && h=12  has a ratio of  8/12  == 2/3  == 2:3
+
+
+
+Color theory
+====================================================================================================
+The color values for each digital image pixel can be deined by the
+amount of three different colors:
+
+	red, green, and blue (RGP)
+
+which are present in different amounts in every pixel.  Consumer electronics display screens
+leverage additive colors, in which wavelength sof light for each RGB channel are added
+together creating 16.8 milion different color values.  Additvie color is used
+in liquid crystal display (LCD), light-emitting diode(LED), and organic lightemitting
+diode(OED) displays.
+
+256 levels of brightness for each read, green, and blue color value that is held for each
+pixel...this allows for  8bits of velue-controlling color brightness variation
+for each fo teh red, green, and blue values, from a minimum of :
+
+	0(#00, or offf, all dark or black)  --> 255(#FF, or fully on, macismum color contributed)
+
+color depths often used in digital imaging industry include:
+	8 bit 256 colors
+	16 bit 65,536 colors
+	24 bit 16,777,216 colors
+	32 bit 32,000,000
+^^^ All of these use GIF and PNG8 formats to hold this indexed color type
+of data.
+
+Note: Formats aside from GIF, JPEG, PNG
+=============================
+If you want to use fomats like TIFF, or TGA in your JavaFX
+projects, then import a 3rd Party ImageJ library. 
+
+
+Digital Image Composisting: Using Alpha Channels and Transparency in Layers
+=============================================================================
+
+What is compositing?
+****************************************************
+Compositing is the process of seamlessly blending together multiple layers
+of digital imagery.  As you might imagine, this is an extremely important concept
+for game design and development.
+
+Where is compositing used ?
+*****************************************************
+Compositing is useful when you want to create an image
+on the display that appears as though it is one single image(or animation),
+when i is actually the seamless collection of two or more composited image layers.
+One of the principle reasons you would want to set up an image or animation
+composite is to allow programmatic control over various elements in those images,
+by having them on different layers.
+
+How do we accomplish composition ?
+*******************************************************
+To accomplish this, you  need to have an:
+
+ alpha channel transparency
+
+value, which you can use to control the precision of the blending amount of a given pixel
+with another pixel(meaning in the same x,y image location)
+
+Like the other RGB channels, an alpha channel has 256 transparency levels.
+In Java programming the alpha channel is represented by the first two slots in
+a hexadecimal representation of 
+
+	#AARRGGBB
+
+data values.  Alpha channel ARGB data values use eight slots(32 bit) of
+data rather than the six data slots used in 24-bit image, which is really
+a 32-bit image with zero alpha channel data.
+
+
+
+

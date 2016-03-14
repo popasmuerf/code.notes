@@ -1,0 +1,61 @@
+
+/*
+The Handler class is fundamental to the infrastructure
+of Android apps--together with Looper.
+It underpins everything that the main theread does---
+including invocation of the Activity lifecyle methods.
+
+Looper:
+=============
+dispatches work on its message-loop thread
+
+Handler
+============
+provides the means to add work to the
+message queue belong to a Looper.
+
+
+How do we create a Handler that will submite work
+to be processed on the main thread in our Activities  ?
+======================================
+protected void onCreate(Bundle savedInstanceState){
+	super.OnCreate(savedInstanceState);
+	Hander handler = new Handler() ;
+}
+
+
+*/
+
+
+static class Parrot extends Thread{
+	
+	private Handler handler;
+	private InetAddress address;
+	private ServerSocket server ;
+
+	public Parrot(InetAddress address, Handler handler){
+		this.address = address ;
+		this.handler = handler ;
+		setPriority(Thread.MIN_PRIORITY);
+	}
+	public void run(){
+		try{
+			server = new ServerSocket(4444,1,address);
+			while(true){
+				Socket client = server.accept() ;
+				handler.sendMessage(Message.obtain(handler,SpeakHandler.SAY_HELLO));
+				BufferedReader in = new BufferedReader(new InputStream(client.getInputStream()));
+				String word = null ;
+				while(!"bye".equals(word = in.readLine())){
+					handler.sendMessage(Message.obtain(handler,SpeakHandler.SAY_WORD,word));
+				}
+				client.close() ;
+				handler.sendMessage(Message.obtain(handler,SpeakHandler.SAY_BYE));
+			}
+		}catch(Exception exc){
+			Log.e(TAG,exc.getMessage(),exc);
+		}
+	}
+
+
+}

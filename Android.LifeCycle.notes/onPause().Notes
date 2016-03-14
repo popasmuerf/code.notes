@@ -1,0 +1,29 @@
+onPause()
+=====================
+Another app is running and taking focus
+Release resources such as:
+	Camera
+	GPS
+	Shutoff Sound/Video
+	End Animations
+	Any and all things that may Consume Resources, or deplete the battery
+Commit any critical data or state to persistence of some sort
+Re-Commit resources during onResume()
+
+
+onStopped()
+=====================
+App is no longer avaiable
+Here is where you should save any data or state required for onCreate()/onStart()/onRestart()
+Often Android will release all resources whithout you calling onDestroy()
+
+
+
+Input output on Confluence:
+=============================
+What our inputs and outputs are.(content analysis)
+What type of analytics(streaming vs. batch)
+
+
+
+ 

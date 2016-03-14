@@ -1,0 +1,73 @@
+Overview of JavaFX: From Scene Graph
+===============================================
+
+High Level Diagram of JavaFX 8.0 and its Components
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+JavaFX 8.0 Scene Graph and Visual Editing Tools
+|------JavaFX 8.0 Application Programming Interface(API)
+|
+|
+|------Quantum Toolkit(Thread Management)
+		|
+		|
+		|
+		|-------GLASS (windowing tookit)
+				|
+				|
+				|
+		|-------WEBKIT(HTML5, js, css)
+				|
+				|
+				|		
+		|-------Media (audio,video)
+				|
+				|
+				|	
+		|-------Prism (Java2D OpenGL DirectX)
+				|
+				|
+				|
+				|-------Java 8 JDK and Java APIs
+						|
+						|
+						|
+				|-------JVM bytecode
+						|
+						|
+						|-------|-------Windows
+								|-------Linux/
+								|-------OS-X/
+								|-------Embedded/
+
+
+The quantum toolkit
+=========================================
+Handles Thread Management
+Can use seperate processor cores or seperate processes
+
+
+Glass Windowing Tookit
+==========================================
+Handles windowing functions and features
+
+Webkit
+==========================================
+Engine rendering HTML5, CSS3 web content
+
+Prism
+===========================================
+renders 2D content, using Java 2D, and 3D content,
+using either OpenGL and DirectX
+
+Bridges the powerful 3D game engines (DirectX, OpengGL), that are on the maor 
+OS platforms as well as on consumer electonrics (embedded) devices so
+JavaFX 8.0 can offload complex rendering task processing to graphics processing unit(GPU)
+hardware from NVIDIA(GeForce), AMD(ATI Radeon) and Intel.
+This makes JavaFX(and thus Java 8 ) games pretty fucking fast.
+This frees up the CPU for other tasks.
+
+
+Support for Mobile
+===========================================
+*iOS
+

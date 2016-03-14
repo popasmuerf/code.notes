@@ -1,0 +1,203 @@
+sudo /usr/local/mysql/support-files/mysql.server stop
+sudo rm /usr/local/mysql
+sudo rm -rf /usr/local/mysql*
+sudo rm -rf /Library/StartupItems/MySQLCOM
+sudo rm -rf /Library/PreferencePanes/My*
+sudo rm /Library/LaunchDaemons/com.mysql.mysql.plist
+sudo rm -rf /Library/Receipts/mysql*
+sudo rm -rf /Library/Receipts/MySQL*
+sudo rm -rf /private/var/db/receipts/*mysql*
+sudo rm -rf /var/db/receipts/com.mysql.*
+
+A Word on Methods and Resources
+===============================================
+Quite often, resources like 
+	PDF files
+	video files
+	image files
+	script files
+all exist as physcial files on the server.  However,
+the URLs for many for many modern web applications
+don't truly point to files.  Technologies like ASP.NET and Ruby
+on Rails will intercept the requests for a resource and 
+repspond however they see fit.  They might rad a file
+from a distant  DB and return the contents in the HTTP respone
+to make it appear as if the resource really existed on the server itself.
+
+For example:
+A request to
+
+	/account/create
+
+Chances are there is no real filenamed "create" in an "account"
+directory.  Instead, something on the web server picks up this request,
+reads and validates the user information, and creates a record in 
+a database.  
+
+The more you can think of a virtual resource as a real resource, the better
+your appliction architecture and esign will adhere to the strengths of
+HTTP
+
+
+HTTP Request
+
+
+
+
+HTTP request headers:
+===============================================
+So far we'eve seen raw HTTP request and talked
+about the two popular HTTP methods
+	GET
+	-and-
+	POST
+But as the telnet output demonsterated, there is more 
+to an HTTP request message than just the HTTP methods.
+A full HTTP request message consists of the following parts :
+
+[method][URL][version]
+[headers]
+
+[body]
+
+
+
+^^^^
+The message is always in ASCII text.
+
+
+Example 0:
+***************************************************
+If the client wants to see resource in French, the client can
+include an Accept-Language heder requesting French content:
+
+GET http://odetodcode.com/Articles/741.aspx HTTP/1.1
+Host: odetocode.com
+Accept-Langauge:fr-FR
+Date:Fri, 9 Aug 2014 21:1200 GMT
+
+Everything but the host header is optional, but when a header does appear it must
+obey the standards.  For Date, the HTTP specification says the value of the header has to
+the RFC822 format for dates
+
+
+Some of the more popular request headers:
+**************************************************
+
+Header:					Description:
+========				===========================
+Referer					When the user clicks on a link, the cient can send
+						of the referring page in this header
+--------				----------------------------------------------------
+User-Agent				Information about the user agent(software making) the
+						request.  Many application use the information in this header,
+						when present, to figure out what browser is making the rquest
+						(IE 6 versus IE 9 versus Chrome versus Firefox)
+--------				----------------------------------------------------
+Accept 					Describes the media types the user-agent is willing to accept.
+						This header is used for content negotiation.
+--------				-----------------------------------------------------
+Accept-Language			Describes the languages the suer-agent prefers
+--------				-----------------------------------------------------
+Cookie					Contains cookie information , which we  will look at in 
+						a later chapter.  cookie information gnerally helps a server
+						track or identify a user.
+--------				------------------------------------------------------
+If-Modified-Since		Will contain a date of when the user-agent last retrived (and
+						cached) the resource.  the server only has to send back the entire
+						resource if it's been modifed since that time.
+---------				------------------------------------------------------
+
+
+
+A full HTTP request might look like the following
+======================================================
+
+GET http://odetocode.com/HTTP/1.1
+Host:odetodcode.com
+Connection:keep-alive
+User-Agent:Mozilla/5.0(Windows NT 6.1; WOW64) Chrome/16..912.75 Safari/535.7
+Accept:text/html,application/xhtml+xml,applclication/xml;q=0.9,*/*;q=0.8
+Referer:http://www.google.com/url?q=odetocode
+Accept-Encoding:gzip,deflate,sdch
+Accept-Language:en-US,en;q=0.8
+Accept-Charset:ISO-8859-1,utf-8;q=0.7,*;q=0.3
+
+HTTP request headers:
+===============================================
+[version][status][reason]
+[headers]
+
+[body]
+
+The full HTTP response to the last full request
+=================================================
+HTTP/1.1 200 OK
+Cache-Control: private
+Conent-Type:text/html;charset=utf-8
+Server:Microsoft-IIS/7.0
+X-AspNet-Version:2.0.50727
+X-Powered-By:ASP.NET
+Date:Sat, 14 Jan 2012 04:00:08 GMT
+Connection:close
+Content-Length:17151
+
+<html>
+<head>
+	<title>
+		.Net related Articles, Code and Resources
+	</title>
+</head>
+<body>
+	....content....
+</body>
+</html>
+
+
+
+Response Status Codes
+============================================
+Range						Category
+***************				******************
+100-199						Informational
+-------						------------------
+200-299						Successful
+-------						------------------
+300-399						Redirection
+-------						------------------
+400-499						Client Error
+-------						------------------
+500-599						Server Error
+-------						------------------
+
+HTTP status Codes versus Your Application
+=============================================
+Remember that the HTTP status code is a code to indicate
+what is happening at the HTTP level.  It does not necessarily reflect what
+happened inside your web application.
+If some feature fails in your app....the client may still be sent back
+a "200 OK" status code.
+
+On the other hand....maybe you are writing a wb service instead of a web
+application.  Instead of using HTTP to send HTML to browsers for humans to 
+read, you are using HTTP to send XML or JSON data to another application.
+In this scenario, if a program sends data to create a user account but does not
+include the user's last name, you may want to reply with a 400 code error specifying a missing field.
+
+
+
+Summary
+===============================================
+Web App versus Web Service
+++++++++++++++++++++++++++
+they are not the same.  Web Services handle requests via
+json, xml, etc responses.  Web Apps generally handle requests via
+responses that send text/html, and or some MIME type...etc.
+
+
+HTTP messages
++++++++++++++++++++++++++
+* Comes in pairs...a request and response
+* HTTP spec designs messages such that both parties understand what is being asked for and what is being offered
+
+*

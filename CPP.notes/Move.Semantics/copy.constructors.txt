@@ -1,0 +1,59 @@
+http://blog.smartbear.com/c-plus-plus/c11-tutorial-introducing-the-move-constructor-and-the-move-assignment-operator/
+http://www.cplusplus.com/articles/y8hv0pDG/
+
+
+What is the practical implication of all this ? Conscider the
+following:
+=========================================
+//Improperly declared function:  parameter dhould be const reference:
+
+void print_me_bad(std::string& s){
+	std::cout<<s<<std<<endl;
+}
+//Properly declared function: function has no intent to modify s:
+void print_me_good(const std::string& s){
+	std::cout<<s<<std<<endl;
+}
+
+std::string hello("hello");
+
+print_me_bad(hello);
+print_me_bad(std:string("World!"));
+
+
+
+Another Example
+========================================
+//The implict move constructor:
+C::C(C&& other);
+
+It doesn't allocat new resources. Instead, it
+pilfers other's resrources and then set's "other" to
+it's default-constructed state.
+
+Let's look at a concrete example.  Suppose you're designing
+a MemoryPage class that represents a memory buffer:
+
+class MemoryPage
+{
+	size_t size ;
+	char *buf  ;
+	public:
+		explicit MemoryPage(int sz=512):
+		size(sz), buf(new char [size]) {}
+	~MemoryPage( delete[] buf;}
+	//typical C++03 copy ctor and assignment operator
+	MemoryPage(const MemoryPage&);
+	MemoryPage& operator=(const MemoryPage&);
+};
+
+A typical move constructor definition would look like this
+MemoryPage(MemoryPage&& other): size(size(0), buf(nullptr)
+{
+	
+}
+
+
+
+
+

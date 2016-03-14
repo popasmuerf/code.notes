@@ -1,0 +1,152 @@
+http://www.tutorialspoint.com/spring/spring_bean_post_processors.htm
+
+
+Bean Inheritance
+===================================
+A bean definition can constain a lot of configuration
+information, including constructor arguments, propety
+values, and container-specific information such as initialization method,
+static factory method name, and so on.
+
+Child bean definition inherits configuration data from a parent definition.  The child definition
+can override some values, or add others as needed.
+
+Spring Bean definition inheritance has nothing to do with 
+Java class inheritance but inheritance as a concept it is the same.
+Spring Bean inheritance exists as inheritance of configuration.
+
+When you use XML-based configuration metadata, you indicate a child bean definition by using the 
+parent atttribute, specifying  the parent bean as the value of this attribute.
+
+
+Example of Bean config inheritance in the Beans.xml :
+======================================================
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <bean id="helloWorld" class="com.tutorialspoint.HelloWorld">
+    	<property name="message1"  value="message 1"/>
+    	<property name="message2"  value="message 2"/>
+    </bean>
+     <bean id="helloIndia" class="com.tutorialspoint.HelloIndia" parent="helloWorld">
+    	<property name="message1"  value="message 1"/>
+    	<property name="message3"  value="message 3"/>
+    </bean>
+</beans>
+
+^^^Following is the configuration file Beans.xml where we defined "helloWorld" bean which has two properties message1 and message2. Next "helloIndia" bean has been defined as a child of "helloWorld" bean by using parent attribute. The child bean inherits message2 property as is, and overrides message1 property and introduces one more property message3.
+
+Example of BeanPostProcessor stuff:
+===================================
+//HelloWorld POJO and HelloIndia POJO:
+
+package com.tutorialspoint; 
+
+public class HelloWorld{
+	private String message1 ;
+	private String message2 ;
+	public void setMessage1(String message){
+		this.message = message ;
+	}
+	public void getMessage2(){
+		System.out.println("Your message : " + message);
+	}
+	public void init(){
+		System.out.println("Bean is going through init : " + message);
+	}
+	public void destroy(){
+		System.out.println("B will be destroyed now")
+	}
+
+}
+
+public class HelloIndia{
+	private String message1 ;
+	private String message2 ;
+	public void setMessage1(String message){
+		this.message = message ;
+	}
+	public void getMessage2(){
+		System.out.println("Your message : " + message);
+	}
+	public void init(){
+		System.out.println("Bean is going through init : " + message);
+	}
+	public void destroy(){
+		System.out.println("B will be destroyed now")
+	}
+}
+
+^^^ This is a very basic example of implementing BeanPostProcessor, which prints
+a bean name  before and after initialization of any bean.  You can
+implement more complex logic before and after instantiating a bean because
+you have access on bean object inside both the post processor methods
+
+
+//Implementation of our example BeanPostProcessor interface class
+package com.tutorialspoint;
+
+
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.BeansException;
+public class initHelloWorld implements BeanPostProcessor{
+	@Override
+	public Object postProcessAfterInitialization(Object bean, String beanName)
+			throws BeansException {
+		System.out.println("BeforeInitialization: " + beanName);
+		return bean;
+	}
+	@Override
+	public Object postProcessBeforeInitialization(Object bean , String beanName)
+			throws BeansException {
+		System.out.println("AfterInitialization: " + beanName);
+		return bean;
+	}
+}
+
+
+//Implementation of MainApp class
+package com.tutorialspoint;
+
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainApp{
+	public static void main(String[] args){
+		AbstractApplictionContext context = context = new ClassPathXmlApplicationContext("Beans.xml");
+		HelloWorld obj = (HelloWorld) context.getBean("helloWorldId");
+		obj.getMessage() ;
+		context.registerShutdownHook() ;
+	}
+}
+
+//Beans.xml definition required for destroy methods:
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <bean id="helloWorld" class="com.tutorialspoint.HelloWorld"
+       init-method="init" destroy-method="destroy">
+       <property name="message" value="Hello World!"/>
+   </bean>
+
+   <bean class="com.tutorialspoint.InitHelloWorld" />
+
+</beans>
+
+^^^
+So aparentlly we don't have to call post before and after processing
+methods.  The framework does it for us.  We just have to include this
+expression attribute in XML bean definition:
+
+<beans ....>
+	<bean class="com.tutorialspoint.InitHelloWorld"/>
+</beans>
+

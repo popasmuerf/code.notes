@@ -1,0 +1,67 @@
+
+
+
+Party *partyPtr = [Party alloc];  //initializing and assigning a pointer of type Party to a new instance of party....
+[partyPtr init];  //initialing the class instance(object)
+
+
+-or-
+
+
+Party *partyPrt = [[Party alloc] init]; //nested message send
+
+
+
+
+anatormy of an Objective-C message:
+	reciever:
+		a pointer to the object being asked to execute  a method
+	selector:
+		The name of the method to be executed
+	arguments:
+		The values to be passed as the paramters to the method
+
+	Example:
+		[partyPtr addAttendee:somePerson]:
+			reciever:
+				partyPtr
+			selector:
+				addAttendee
+			message:
+				somePerson
+
+		here we are sending the "addAttendee:" message to the partyPtr
+		The addAttendee: message has exactly one argument.
+		Earlier...the message init has no arguments.  notice how it lacks a trainling colon.
+
+		An attendee to a party might need to RSVP and inform the host what dish the attendee will bring.  Thus,
+		the Party class may have anogher method named:
+			addAttendee:withDish:.  This message takes two arguments:
+				The attendee and the dish.  Each argument is pared with a label int he selector, and each label ends with a colon.
+				The slecter is all the labels taken together.
+
+				[partyPtr addAttendee: somePerson withDish: deviledEggs];
+				in Java or C++ it might look like:
+				partyPtr.addAttendee(somePerson,deviledEggs)
+
+				Again....
+				In Java/C#/C++ we utilize method calls using "dot notation"
+				partyPtr.addAttendees(somePerson,deviledEggs) ;
+				In Objective-C we "send messages to objects"
+				[partyPtr addAttendees:somePerson withDish:deviledEggs]
+
+Destroying objects:
+To destroy an object, you set the variable that to that object to the value of "nil"
+
+partyPtr = nil ;
+
+The above line of code destroys the object pointed to by the partyPtr
+and then sets the value of partyPtr to nil.
+
+The value of nil is the zero pointer(C/C++ programmers know it as NULL, while Java/C# devs know it as null.  GolLang also uses nil)
+nil value is used to represent the absense of an object.
+
+
+
+
+

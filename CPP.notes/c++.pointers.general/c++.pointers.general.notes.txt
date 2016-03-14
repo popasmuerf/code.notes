@@ -1,0 +1,66 @@
+C++ pointers
+==================================
+When to use pointers
+---------------------------------
+
+
+When not to use pointers
+----------------------------------
+
+Basic syntax
+===================================
+<type> *<ptr_name> ;
+int *intPtr = null ;
+int* intPtr = null ;
+int *ptr1 , *ptr2 = null ;
+
+
+Getting the address of the variable your pointer points to...
+=====================================
+int x ;
+int *ptr = &x ;
+*ptx =  2 ; //initializes x = 2 
+
+
+
+Unitiialized pointers and NULL
+=====================================
+All pointers should be initialized to something
+before use....as
+
+
+
+References
+=======================
+int i ;
+int *i_ptr = &i ;
+
+int &j //is illegal...as references must always be initialized....
+
+
+/* Example Code */
+int main(int argc, const char * argv[]) {
+    // insert code here...
+    int x = 5 ;
+    int &x_ref = x ;
+    int *x_ptr =  &x_ref ;
+    std::cout << "Running in main()"<<"\n";
+    std::cout<<"str :"<<*x_ptr<<"\n";
+    return 0;
+}
+
+
+
+References vs. pointers
+========================
+References are a replacement for pointers when you need to refer to a variable
+by multiple names--such as when you want to pass arguments to a 
+function without copying them, or when you want the function to be able to modify
+its parameters in a way that is visible to the caller.
+
+References are less flexible than pointers as they MUST ALLWAYS BE VALID.
+REFERENCES CANNOT REFERENCE NULL VALUES.  You cannot use build complex
+data structures using references.
+
+Once a reference has been initialized, you cannot change the memory it refers
+to....something that is possible with pointers.

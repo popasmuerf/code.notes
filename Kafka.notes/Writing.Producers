@@ -1,0 +1,123 @@
+Writing producers
+=================================
+Producers are applications that create messages and publis them to the Kafka broker for further
+consumption.  These producers can bedifferent in nature;
+for example, frontend applications, backend services, proxy
+application, adapters to legacy systems and producers for Hadoop.
+These producers can also be implemented in different languages sucha as
+Java, C, and Python.
+
+
+Producer --------> Data ------------->Create Message--------------->Publish Message------------->Send Message----------->Kafka Cluster
+
+
+
+
+Simple Java Producers
+================================
+
+/*Imported Classes*/
+import kafka.javaapii.producer.Producer ;
+import kafka.producer.KeyedMessage ;
+import kafka.producer.ProducerConfig ;
+
+
+/*Define properties*/
+Properties props = new Properties() ;
+props.put("metadata.broker.list","localhost:9092","localhost:9093","localhost:9094");
+props.put("serializer.class","kafka.serializer.StringEncoder");
+props.put("request.required.acks","1");
+ProducerConfig config = new ProducerConfig(props);
+Producer<String,String> producer = new Producer<String,String>(config);
+
+/*Building messages and sending them*/
+String runtime = new Date().toString() ;
+string msg = "Message Publishing Time - " + runtime ;
+KeyedMessage<String,String> data = new KeyedMessage<String,String>(topic,msg);
+producuer.send(data);
+
+
+Note:
+Before you compile and run the code below...
+==============================================
+Before compiling and running the Java-based Kafka program in the
+console, make sure you download the jar:
+	slf4j-1.7.7.tar.gz
+from
+	http://www.slf4j.org/download.html
+and then copy
+	slf4j-log412-1.7.7.jar
+contained within
+	slf4j-1.7.7.tar.gz
+to the
+	/opt/kafka_2.9.2-0.8.1.1/libs
+Add the env variable
+	KAFKA_LIB
+enviroment variable and also add all thelibraries
+available in 
+	/opt/kafka_2.9.2-0.8.1.1/libs
+to the classpath using the following commands:
+
+
+Example Producer Class
+==================================
+
+import java.util.Date;
+import java.util.Properties;
+import kafka.javappi.producer.Producer;
+import kafka.producer.KeyedMessage;
+import kafka.producer.ProducerConfig ;
+public class SimpleProducer{
+	private static Producer<String,String> producer;
+	public SimpleProducer(){
+		Properties props = new Properties();
+		props.put("metadata.broker.list","localhost:9092","localhost:9093","localhost:9094");
+		props.put("serializer.class","kafka.serializer.StringEncoder");
+		props.put("request.required.acks","1");
+		ProducerConfig config = new ProducerConfig(props);
+		Producer<String,String> producer = new Producer<String,String>(config);
+	}
+	public void PublishMessage(String topic,int messageCount){
+		for(int mCount = 0 ; mCount < messageCount ; mCount++){
+			String runtime = new Date().toString() ;
+			String msg = "Message Publishing Time - " + runtime ;
+			System.out.println(msg);
+			KeyedMessage<String,String> data = new KeyedMessage(topic,msg);
+			producer.send(data);
+		}
+		producer.close();
+	}
+	public static void main(String[] args){
+		int argsCount = args.length;
+		if(argsCount == 0 || argsCount == 1){
+			throw new IllegalArgumentException("Please provide topic name and Message count as arguments");
+		}
+		String topic  = (String)args[0];
+		String count =  (String)args[1];
+		int messageCount = Integer.parseInt(count);
+		System.out.println("Topic Name - " + topic);
+		System.out.println("Message count - " + messageCount);
+		SimpleProducer simpleProducer = new SimpleProducer();
+		simpleProducer.publicMessage(topic,messageCount);
+	}
+
+
+}
+
+
+
+Summary
+===================================
+The SimpleProducer class takes two arguments
+	topic name
+	number of messages to be published.
+Once the producer is successfully executed and 
+begins publishing the messages to the broker, run the command line
+consumer for consuming the messages as it subscribes to the topic
+being created int he Kafka brodker as:
+# bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topic kafkatopic
+
+
+
+
+

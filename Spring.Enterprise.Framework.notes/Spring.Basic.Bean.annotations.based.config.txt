@@ -1,0 +1,75 @@
+http://www.tutorialspoint.com/spring/spring_annotation_based_configuration.htm
+
+Intro:
+=========================================================================
+Java based configuration Spring beans using XML configuration file.  If you are
+comfortable with XML configuration, then I say it is not really an 
+imperitive to use java based configuration as you will achieve the same result...
+not to mention that all java configs are overrode by the xml config...
+
+
+@Configuration & @Bean Annotations:
+=========================================================================
+Annotating a class with the 
+
+@Configuration
+
+indicates that the class can be used by the Spring IoC as a source of bean definitions.
+The 
+
+@Bean annnotation tells Spring that method annotated with
+
+@Bean
+
+will return an object tha should be registered as a bean in the Spring application context.
+The simplest possible @Configuration  class would be as follows
+
+
+/*Code*/
+
+package com.whatsgood.work ;
+import org.springframework.context.annotation ;
+
+@Configuration
+public class HellWorldConfig{
+	@Bean
+	public HelloWorld helloWorld(){
+		return new HelloWorld() ;
+	}
+}
+
+
+^^^So basically you create a bean configuration class for each bean(annotated with @Configuration), and within that class you annotate a bunch of methods with @Bean.  The equivlalant is below:
+
+<beans>
+	<bean id="helloWord" class="HelloWorld"/>
+</beans>
+
+^^^ Here the method helloWorld annotated with @Bean works as the bean ID and it creates and returns a new
+bean as displayed in the code for MainApp below:
+
+/*Code*/
+public static void main(Sting[] args){
+	ApplicationContext ctx = new new AnnotationConfigApplicationContext(HelloWorldConfig.class);
+	HelloWorld helloWorld = ctx.getBean(HelloWorld.class);
+	helloWorld.getMessage() ;
+}
+
+
+
+We can load  various configuration classes as follows:
+=============================================================================-
+
+public static void main(String[] args){
+	ApplicationContext ctx = new AnnotationConfigApplicationContext(HelloWorldConfig.class);
+	ctx.register(Appconfig.class,OtherConfig.class);
+	ctx.register(AddtionalConfig.class);
+	ctx.refresh() ;
+	MyService myService = ctx.getBean(MyService.class);
+	myService.doStuff ;
+
+}
+
+
+
+

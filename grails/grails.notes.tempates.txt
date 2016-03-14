@@ -1,0 +1,56 @@
+When coding screens, there are many elements that are common and repetitive.
+Usually these:
+
+	header
+	footer
+	sidebars
+
+The best apprach is to have your GSP page contain
+only the specfic business content, and hae teh repeating
+content re-factored outside.
+
+GSP templates are located in <app>/views/layouts/
+Thre is already a default template named
+
+	main.gsp 
+included in a skeleton Grails application This is how it works:
+
+/*Our simple template*/
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><g:layoutTitle default="Grails"/></title>
+		<style>
+			#header {background-color:#ffe0e0;text-align: center;}
+			#footer {background-color:#e0e0ff;text-align: center;}
+		</style>
+		<g:layoutHead/>
+	</head>
+	<body>
+		<div id="header">HEADER</div>
+		<g:layoutBody/>
+		<div id="footer">FOOTER</div>
+	</body>
+</html>
+
+
+/*to use it, just specify the layout metat tag in your specific GSP.
+For example*/
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="test"/>
+		<title>I am a test page</title>
+		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
+	</head>
+	<body>
+		<p>The quick brown fox jumps over the lazy dog.</p>
+	</body>
+</html>
+
+
+
+

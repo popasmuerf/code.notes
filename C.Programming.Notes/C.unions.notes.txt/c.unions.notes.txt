@@ -1,0 +1,39 @@
+A Union is a special dta type available in C that enables
+you to store different data types in the same memory location.
+You can define a union with many members, but only one memeber can contain
+a value at any given time.
+Unions provide an efficient wy of using the sam memory location for
+multi-purpose.
+
+
+Syntax
+===============================
+union [union tag]
+{
+	member definition ;
+	member definition;
+	.....
+	member definition ;
+
+}[one or more union varaibles]
+
+
+
+union Data
+{
+	int i ;
+	float f;
+	char str[20];
+
+}data ;
+
+
+So how is a Union different than a struct ?
+======================================
+A Union IS as struct....save for the fact
+that all members of a Union are stored at the
+same address.  Members of a union
+can ONLY be accessed in a serial manner.
+
+Unions where created for the purpose of 
+reducing memory fragmentation.

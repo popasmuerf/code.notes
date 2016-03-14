@@ -1,0 +1,118 @@
+Apache cordova base configurationf ile
+========================================
+the target base configuration file is:
+
+	config.xml
+
+^^^ this file encapsulates all the necessary information required to compile
+your mobile application.
+
+<!---example code --->
+<widget xmlns = "http://www.w3.org/ns/widgets" 
+   xmlns:gap = "http://phonegap.com/ns/1.0" id = "com.tutorialspoint.onlineviewer" version = "1.0">
+
+   <name> Tutorials Point </name>
+   <description>
+   	Tutorials Point Online Viewer
+   </description>
+   <author href = "http://tutorialspoint.com" email = "contact@tutorialspoint.com">
+      Tutorials Point
+   </author>
+   <preference name = "permissions" value = "none"/>
+   <icon src = "res/icon/android/drawable-ldpi/tp_icon.png" 
+      gap:platform = "android" gap:qualifier = "ldpi" />
+		
+   <icon src = "res/icon/android/drawable-mdpi/tp_icon.png" 
+      gap:platform = "android" gap:qualifier = "mdpi" />
+		
+   <icon src = "res/icon/android/drawable-hdpi/tp_icon.png" 
+      gap:platform = "android" gap:qualifier = "hdpi" />
+		
+   <icon src = "res/icon/android/drawable-xhdpi/tp_icon.png" 
+      gap:platform = "android" gap:qualifier = "xhdpi" />
+		
+   <icon src = "res/icon/android/drawable-xxhdpi/tp_icon.png" 
+      gap:platform = "android" gap:qualifier = "xxhdpi" />
+   
+   <icon src = "res/icon/ios/Icon-72.png" gap:platform = "ios" gap:qualifier = ""/>
+   <icon src = "res/icon/ios/icon-57.png" gap:platform = "ios" width = "57" height = "57" />
+   <icon src = "res/icon/ios/icon-72.png" gap:platform = "ios" width = "72" height = "72" />
+   <icon src = "res/icon/ios/icon-57-2x.png" gap:platform = "ios" width = "114" height = "114" />
+   <icon src = "res/icon/ios/icon-72-2x.png" gap:platform = "ios" width = "144" height = "144" />
+   
+</widget>
+
+
+
+Break down
+====================================================================
+All configuration contents are wrapped in the tag <widget>
+
+<widget id = "app_id">
+****************************************
+id is your reserve dapp0id on various app stores.  It is in reverese-domain name
+syntax i.e. -->   org.permutation.onlineviewer
+
+
+<widget version = "x.y.z">
+****************************************
+The version number of app in x.y.z format where (x,y,z) are postive
+integers i.e. 1.0.0, it represents major.minor.patch version system.
+
+<name> App Name </name>
+****************************************
+This is the name of the app, which will displayed below the app icon ont the 
+mobile screen.  Your app can be searched using this name
+
+
+<author> Author_Name </author>
+****************************************
+This field contains name of the creator  or programmer,
+generally set to the name of organization which is launching this app.
+
+
+<prefences name = "permissions" value = "none">
+****************************************
+The preferences tag is used to set various options like FullScreen, BackgroundColor and Orientation for app. These options are in name and value pair. For example: name = "FullScreen" value = "true" etc. Because we do not require any of these advance settings, we just put permissions to none.
+
+<icon>
+****************************************
+Allows us to add icons to our apps.  It can be coded in various ways, but
+since w are learning  short-cut everything, so here it is.  The .src determins the
+path of icon image.  The gap:platform determins for which OS platform this 
+icon is to be sued.  The gap:qualifier is densisty that is isued by android
+devices.  The iOS devices use width & height parammeters.
+
+	.src
+	-----------------------------------
+	Determines the path of icon image
+
+	gap:platform
+	-----------------------------------
+	determines for which OS platform this icon is to be used
+
+	gap:qualifier
+	-----------------------------------
+	is density that is used by android devices.
+	The iOS devices use width & height paramters
+
+
+
+About Icons
+=======================================================
+There are devices of various sizes having same mobile operating system, so to target an audience of one platform you need to furnish icons of all the mobiles types too. It is important that we prepare icons of exact shapes and sizes as required by particular mobile operating system.
+
+Here we are using the folders res/icon/ios and res/icon/android/drawable-xxxx..
+
+To get this work done fast, you can create a logo of size 1024x1024 and log on to makeappicon.com. This website will help you instantly create logos of all sizes for both android and iOS platform.
+
+
+
+
+
+
+
+
+
+
+

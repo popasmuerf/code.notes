@@ -1,0 +1,55 @@
+http://javascript.info/tutorial/inheritance#inheritance-the-proto
+
+
+Inheritance, the __proto__
+=================================================================
+When an object rabit inherits from anaother object animal,
+in JavaScript that means that there is a special property
+
+	rabbit.__proto__ = animal
+
+animal ---> __proto__ ---> rabbit
+
+When a rabbit property is accessed, and the interperet can't find it in rabbit, it follows the 
+link and searches in animal
+
+The following examples using
+	
+	__proto__
+ work only in Chrome/FireFox 
+
+/* example */ 
+
+var animal = { eats : true }
+var rabbit = { jumps: true }
+rabbit.__proto__ = animal
+
+console.log(rabbit.eats)
+console.log
+
+
+Note: if an attribute or method is found within the child class...
+__proto__ is not checked and the parent is igored.
+
+var animal = { 
+    eat: function() { 
+    console.log( "I'm full" )
+    this.full = true
+  } 
+}
+var rabbit = { jumps: true }
+var dog = {barks:function(){console.log("ruff, ruff!!")}}
+rabbit.__proto__ = animal
+dog.__proto__ = animal
+
+console.log(rabbit.eats)
+console.log
+
+
+
+var car = { wheels:4 ,engine:"engine"}
+var truck = { cargobed:true }
+
+truck.__proto__ = car
+
+

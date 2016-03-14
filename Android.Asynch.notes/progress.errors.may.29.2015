@@ -1,0 +1,62 @@
+prePrep()
+sanitizeDocumentData()
+docWordRDD0 = docWordRawRDD.map(procRawDocs)  #[('10.18.15.91:63.251.85.43::1400260297', [' 0', ' 0', ' 0', ' 12',....)]
+docWordRDD1 = docWordRDD0.map(buildDocWordRDDStage_1) #[('10.18.15.91:63.251.85.43::1400260297', [(0, 0), (1, 0), (2, 0), (3, 12)...] match index(id) with word
+docWordRDD2 = docWordRDD1.map(buildDocWordRDDStage_0Stage_2)
+docWordRDD3 = docWordRDD2.flatMap(lambda x: x)
+docWordRDD = docWordRDD3  #[('10.18.15.91:63.251.85.43::1400260297', (0, 0)), ('10.18.15.91:63.251.85.43::1400260297', (wordId, )),
+docWordRDD4 = docWordRDD3.map(buildDocWordRDDStage_0Stage_4) #[None, None, None, [('10.18.15.91:63.251.85.43::1400260297', 1), ('10.18.15.91:63.251.85.43::1400260297', 1)...]
+docWordRDD45 = docWordRDD3.map(buildDocWordRDDStage_0Stage_5)
+docWordRDD5 = docWordRDD4.filter(lambda x: isinstance(x,list)) #[[('10.18.15.91:63.251.85.43::1400260297', 1), ('10.18.15.91:63.251.85.43::1400260297', 1)..]
+docWordRDD55 = docWordRDD45.filter(lambda x: isinstance(x,list))#[[('10.18.15.91:63.251.85.43::1400260297', 3, 1), ('10.18.15.91:63.251.85.43::1400260297', 3, 1)...]
+docWordRDD6 = docWordRDD5.flatMap(lambda x: x)
+docWordRDD65 = docWordRDD55.flatMap(lambda x: x)
+docWordRDD75 = docWordRDD65.map(lambda (a,b,c): ((a,b),c))#[(('10.18.15.91:63.251.85.43::1400260297', 3), 1), (('10.18.15.91:63.251.85.43::1400260297', 3), 1)...]
+dwcRDD = docWordRDD6.reduceByKey(lambda a, b: a + b ) #[('10.18.24.54:74.217.240.80::1358438361', 7), ('10.18.6.22:68.67.159.242::1364563430', 7)]
+dwcRDD75 = docWordRDD75.reduce(lambda a, b: a + b )
+docWordDocCountRDD = docWordRDD.join(dwcRDD).cache()
+docWordDocCountRDD75 = docWordRDD75.join(dwcRDD75).cache() #(('10.18.24.76:74.125.228.103::1368405584', 10), (1, 4))]
+doc_word_docCountRDD = docWordDocCountRDD75 # docWordDocCountRDD75
+doc_word_docCountRDD  = docWordDocCountRDD75.map(setImmutableRDD) # [(dyad, wordId, dwc)]
+doc_word_dC_IRDD = doc_word_docCountRDD.map(lambda (dyad, wordId, dwc)): (dyad, wordId, dwc, randint(1,3)))  #doc_word_dC_I = doc_word_docCount.map(lambda (d, (w, dC)): (d, w, dC, randint(1,3)))
+doc_I_countsRDD = doc_word_dC_IRDD.map(lambda (dyad, wordId, dwc, I): ((d, I), 1)).reduceByKey(lambda a,b: a+b).map(lambda ((dyad, I), sum): (d, (I, sum))).groupByKey().map(lambda (x, y): (x, y.data))
+d_w_dC_I_IcountsRDD = doc_word_dC_IRDD.map(lambda (dyad, wordId, dwc, I): (dyad, (wordId, dwc, I))).join(doc_I_countsRDD)
+doc_I_countsRDD.unpersist()
+new_d_w_dC_I_IcountsRDD = d_w_dC_I_IcountsRDD
+d_w_dC_I_IcountsRDD.unpersist()
+#######################################################
+####### Code for getting word-topic counts
+w_I_counts = doc_word_dC_IRDD.map(lambda (dyad, wordId, dwc, I):  ((wordId, I), 1) ).reduceByKey(lambda a, b: a + b).collect()#we are not collecting this.
+# collect info into matrix
+NW = np.zeros((nTerms, nK))  # this is pxk (p is number of unique words, k is number of topics, or number of I's)
+# Populate matrix with reduced information:
+genMatrix(w_I_counts)
+# II is words per topic:
+II = NW.sum(axis=0)
+# Broadcast values of matrices:
+bNW = sc.broadcast(NW)  # this is a pxk matrix of counts
+bII = sc.broadcast(II)  # colsums of NW
+
+
+
+
+'''
+errors
+'''
+
+15/05/29 11:18:28 INFO AppClient$ClientActor: Executor added: app-20150529100042-0090/1019 on worker-20150526183304-sc03.silverdale.dev-7078 (sc03.silverdale.dev:7078) with 1 cores
+15/05/29 11:18:28 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150529100042-0090/1019 on hostPort sc03.silverdale.dev:7078 with 1 cores, 512.0 MB RAM
+15/05/29 11:18:28 INFO AppClient$ClientActor: Executor updated: app-20150529100042-0090/1019 is now RUNNING
+
+....
+....
+....
+....
+
+15/05/29 11:20:27 INFO AppClient$ClientActor: Executor added: app-20150529100042-0090/2977 on worker-20150526183304-sc03.silverdale.dev-7078 (sc03.silverdale.dev:7078) with 1 cores
+15/05/29 11:20:27 INFO SparkDeploySchedulerBackend: Granted executor ID app-20150529100042-0090/2977 on hostPort sc03.silverdale.dev:7078 with 1 cores, 512.0 MB RAM
+15/05/29 11:20:27 INFO AppClient$ClientActor: Executor updated: app-20150529100042-0090/2977 is now FAILED (java.io.IOException: Failed to create directory /var/run/spark/work/app-20150529100042-0090/2977)
+15/05/29 11:20:27 INFO SparkDeploySchedulerBackend: Executor app-20150529100042-0090/2977 removed: java.io.IOException: Failed to create directory /var/run/spark/work/app-20150529100042-0090/2977
+15/05/29 11:20:27 ERROR SparkDeploySchedulerBackend: Asked to remove non-existent executor 2977
+
+

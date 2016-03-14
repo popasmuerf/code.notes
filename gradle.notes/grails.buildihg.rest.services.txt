@@ -1,0 +1,152 @@
+http://www.javaworld.com/article/2072635/restful-grails-services-in-3-steps.html
+About REST and Grails
+=======================================================
+REST embodies this thought and thus yields  highly
+scalable loosely coupled systems that, as it turns out,
+are simple to build.
+There are a few mechanisms  for implementing
+RESTful applications:
+	Restlets
+	JSR 311
+are two in a handful of options available in Java; however, they
+address one aspect of RESTful applications and ignore other aspects
+like an:
+	ORM
+	testing
+GRAILS gives you the ability to apply RESTful techniques with a full fleged web
+application framework that supports an ORM and testing.
+
+
+So how do we manage to build RESTful apps in grails ?
+========================================================
+	*Create domain objects
+	*Update URL mappings
+	*Create one or more controllers to hand RESTful requests and responses
+	*(?)Create optionally service classes containing the actual business logic if applicable
+
+
+So let's create a restful app:
+1. RESTful web service that enables runners to sign up for races.
+2. creates races
+3. associate runners with those races
+
+
+
+Create Domain Classes
+==========================================================
+/**  Race Domain Class **/
+
+class Race {
+	String name
+	double distance
+	static hasMany =[runners:Runner]
+}
+
+/**  Race Domain Runner **/
+
+class Runner {
+	String firstName
+	String lastName
+	int age
+	static belongsTo = Race
+}
+
+
+What we just accomplished
+**********************************************************
+Note too how in GORM, I can make a relationship bi-directional
+by specifying a Runner instance belongs to a 
+related Race via the "belongsTo" syntax
+
+
+Second step invovles manipulating Grails' URL mappings
+==========================================================
+We need to expose desired behaviors via URL mappings
+Our URL mappings mods can be accomplished via the class:
+
+	grailsapp/controllers/UrlMappings.groovy
+
+What the default URLMappings class looks like:
+
+	/** default code **/
+
+	class UrlMappings {
+
+    static mappings = {
+        "/$controller/$action?/$id?(.$format)?"{
+            constraints {
+                // apply constraints here
+            }
+        }
+
+        "/"(view:"/index")
+        "500"(view:'/error')
+        "404"(view:'/notFound')
+    }
+}
+
+What we want for our RESTful service:
+**********************************************************
+class UrlMappings {
+ static mappings = {
+  "/$controller/$id?"{
+    action = [GET:"show", POST:"save", PUT:"update", DELETE:"remove"]
+  }
+  "500"(view:'/error')
+ }
+
+ ^^^^ Explination :
+***************************************************************
+We make Grails's URLs more RESTful via hiding the details of how 
+we provide these services.  How do we do this?  By abstracting
+the URLs via mapping.   This is done via UrlMappings class.
+
+
+Our Controllers config for RESTful apps in Grails
+=================================================================
+Consequently, the final step in craeting a RESTful web sevice in Grails is to
+code your controllers.  In our current case, we need two ---- one for handling races
+and another for handling runners.  Concievable, these could be combined into one logical
+model as well.  For example:
+/** controller code **/
+import grails.converters.XML
+
+class RunnerController {
+
+ def show = {
+  if(params.id && Runner.exists(params.id)){
+   render Runner.findById(params.id) as XML
+  }else{
+   render Runner.list() as XML
+  }
+ }
+
+ def save = {
+  def runner = new Runner(params['runner'])
+
+  if(runner.save()){
+   render runner as XML
+  }else{
+   //handle errors...
+  }
+ }
+}
+
+
+^^^ Results
+===================================================================
+The show closure is simple(as is the entire class,right?)
+-- the id parameter is obtained and consequently a related runner is 
+found; otherwise, all runners are displayed.
+
+Note how easy it is to leverage Grail's XML render -- I jsut have to type:
+
+	render x as XML
+	-or-
+	render x as JSON
+
+Creating a hip runner is just as easy -- as GRAILS automagically maps everything for us!!!!ses
+
+/*** code ***/
+
+def runner = new Runner(params['runner'])

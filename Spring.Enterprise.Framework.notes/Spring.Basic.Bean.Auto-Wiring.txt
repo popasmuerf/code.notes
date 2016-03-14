@@ -1,0 +1,82 @@
+http://www.tutorialspoint.com/spring/spring_beans_autowiring.htm
+
+Note:
+=========================================================================
+Autowiring works best when it is used consistently accross a project.
+If autowiring is not used in general, it might be confusing to
+developers to use it to wire only one or two beean definitions.  Though,
+autowiringcan significantly reduce the need to specify properties
+or constructor arguments but you should consider the limitations and
+disadvantages of autowiring before using them 
+
+Autowiring basics
+=========================================================================
+The spring container can aautowire relationships beteen collaborating beans
+whit using <constructor-arg> and <property> elements which helps
+cut down on the amount of XML configurtio you write fora big Spring
+based application
+
+
+AutoWiring Modes:
+=========================================================================
+The following are autowiring modes which can be used to instruct
+Spring container to use autowiring for dependency injection.
+You use the autowire attribute of th <bean/> element to specify
+autowire mode for a bean definition:
+
+Modes:
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+no
+^^^^This is default setting which nmeans no autowiring and you
+should use explict bean reference for wiring.  You have nothing
+to do special for this wiring.  This is what you already have
+seen in Dependency injection chapter
+
+byName
+^^^^Autowiring by property name.  Spring container looks at the properties
+of teh beans on which autowire attribute is set to byName in the XML
+configuration file.  It then tries to match and wire its properties
+with the beans defined by the same names in the configuration file	
+
+byType
+^^^^^Autowiring by property datatype.  Spring container looks at the properties
+of the beans on which autowire attribute is set to byType in the XML
+configuration file.  It then tries to match and wire a property if
+its type matches with exatly one of the beans name in the
+configuration file.  If more than one such beans exists, a fatal exception
+is thrown.
+
+Construtor
+^^^^^^Similar to byType, but type applies to constructor arguments.  if
+there is not exactly one bean of the constructor argument type in the container,
+a fatal error is raised.
+
+audodetect
+^^^^^^Spring first tires to wire using autowire by constructor, if it does not
+work, Spring tries to autowire by byType
+
+
+
+
+Limitations with autowiring:
+=========================================================================
+Autoworking works best when it is used consistently across a project.
+If autowiring is not used in general, it might be confusing to developers to
+use it to wire only one or two bean definitions.  Though, autowiring can
+significantly reduce the nee to specify properties or constructor arguments
+
+Overriding possibility
+
+^^^You can still specify dependencies using <constructor-arg> and
+<property> settings which will always override autowiring
+
+Primitive data types
+
+^^^^You cannot autowire so-called simple properties such as primitieves,
+Strings, and Classes.
+
+Confusing nature
+
+^^^^ Autowiring is less exact than explicit wiring, so if possible,
+prefere using  explict wiring
+

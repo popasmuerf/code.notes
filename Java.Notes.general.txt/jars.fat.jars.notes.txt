@@ -1,0 +1,204 @@
+We get used to large WAR archives which contain all dependencies
+packed together under some common folder structure.  With JAR-like packaging
+the story is a bit different: in order to make your application
+runnable(via java -jar) all dependencies should be provided over
+classpath paramteror enviroment variable.
+
+
+WAR = all dependencies are packaged together under a common folder structure
+JAR = all dependencies are included on the execution classpath or the CLASSPATH env varialbe
+
+
+
+
+Usually this means  there ould be some lib folder with all dependencies and some runnable script
+which will do the job ot construct classpath and run JVM.  Maven Assembly plugin is well known for 
+making such kin of application distribution.
+
+
+A slightly different appriac would be to package all your application dependencies to the same JAR
+file and make it runnable without any addtional parameters or scripting required.
+This however is not possible without a bit of magic at this current moment(Java-8 ?)
+You can get the magick you need form the One-Jar project 
+
+http://one-jar.sourceforge.net/
+http://www.developertutorials.com/simplify-application-delivery-one-jar-050422/
+
+
+One-Jar lets you package a Java application together with its dependency Jars into a single executable Jar file:
+
+
+
+Breifly outline example problem:
+
+We are writing a stand-alone Spring application which should be runnable just by typing:
+
+	java -jar <our-app.jar>
+
+As always...let's start out with the POM file (yeah..we are using Maven)
+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelversion>4.0.0</modelversion>
+
+    <groupid>com.example</groupid>
+    <artifactid>spring-one-jar</artifactid>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>spring-one-jar</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceencoding>UTF-8</project.build.sourceencoding>
+        <org.springframework.version>3.1.1.RELEASE</org.springframework.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupid>cglib</groupid>
+            <artifactid>cglib-nodep</artifactid>
+            <version>2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupid>org.springframework</groupid>
+            <artifactid>spring-core</artifactid>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupid>org.springframework</groupid>
+            <artifactid>spring-context</artifactid>
+            <version>${org.springframework.version}</version>
+        </dependency>
+    </dependencies>
+</project>
+
+
+
+/* Our Bean */
+
+package com.example;
+public class SimpleBean{
+	public void print(){
+		System.out.println("Called from a single Jar!!!");
+	}
+}
+
+
+
+/* Spring Context defined as annoted  AppConfig POJO */
+package com.example.config ;
+import org.springframework.context.annotation.Bean ;
+import org.springframework.context.annotation.Configuration ;
+import com.example.SimpleBean ;
+
+@Configuration
+public class AppConfig{
+	@Bean
+	public SimpleBean simpleBean(){
+		return new SimpleBean() ;
+	}
+}
+
+
+/* And finally , our appliation Starter with main() */
+package com.example.config ;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.example.config.Appconfig ;
+
+public class starter{
+	public static void main(final String[] args){
+		ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+		SimpleBean bean = context.getBean(SimpleBean.class);
+		bean.print() ;
+	}
+}
+
+
+
+<!--
+	Manifest File for our JAR
+	Adding our main class to META-INF/MANIFEST.MF
+	allowiing us to leverage Java capabilities to
+	run JAR files without explicity specifying classes
+	with the main(method).  Maven JAR plugin can
+	help us with that:
+-->
+
+    <plugins>
+        <plugin>
+            <groupid>org.apache.maven.plugins</groupid>
+            <artifactid>maven-jar-plugin</artifactid>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainclass>com.example.Starter</mainclass>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
+
+^^^^If we try to run all of the above...then we will get an exception thrown...
+because the compiler javac does not know about all the spring stuff(wait...is this true ?
+I mean....I have been runing Spring Maven projects in my IDE with no problem....or...
+is that because all Maven does is grab the jars...the IDE is what sets the classpath!!!?!!!?!!!?)
+
+/*exceptions thrown...because this stuff exists...but not specified int he class path 
+ obviously we are not in the classpath....I must not be using an IDE worth mentioning....
+*/
+
+
+aopalliance-1.0.jar
+cglib-nodep-2.2.jar
+commons-logging-1.1.1.jar
+spring-aop-3.1.1.RELEASE.jar
+spring-asm-3.1.1.RELEASE.jar
+spring-beans-3.1.1.RELEASE.jar
+spring-context-3.1.1.RELEASE.jar
+spring-core-3.1.1.RELEASE.jar
+spring-expression-3.1.1.RELEASE.jar
+
+
+
+<!-- We can use the One-JAR maven plug-in since we are not using a worthy IDE
+	Don't forget we have to specify the plugin in both sections 'plugin'
+	and 'pluginrepositories' -->
+
+<plugin>
+    <groupid>org.dstovall</groupid>
+    <artifactid>onejar-maven-plugin</artifactid>
+    <version>1.4.4</version>
+    <executions>
+        <execution>
+            <configuration>
+                <onejarversion>0.97</onejarversion>
+                <classifier>onejar</classifier>
+            </configuration>
+            <goals>
+                <goal>one-jar</goal>
+            </goals>
+        </execution>
+   </executions>
+</plugin>
+
+<pluginrepositories>
+    <pluginrepository>
+        <id>onejar-maven-plugin.googlecode.com</id>
+        <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+    </pluginrepository>
+</pluginrepositories>
+
+
+
+
+
+
+
+
+

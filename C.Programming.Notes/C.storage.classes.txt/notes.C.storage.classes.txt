@@ -1,0 +1,133 @@
+
+C storage class
+================================================================
+A storage class defines the scope (visiblity) and life-time of variables
+and/or function within a C Program 
+	auto
+	register
+	static
+	extern
+
+The auto Storage Class
+================================================
+The auto storage class is the default storage class 
+for all local varaibles
+{
+	int mount ;
+	auto int month ;
+}
+
+^^^ the the example above defines two variables with the same storage class,
+auto can only be used within function, i.e/, local variables 
+
+The register Storage Class
+================================================
+{
+	register int b = 100;
+}
+
+^^^ the the example above defines variable "b" as an int
+that should be stored within a register instead of RAM.
+The variable will have a maximum storage size eqaul exactly to the
+size of the resister.
+You can use 
+
+sizeof(b)
+
+to test this out.
+
+Quick Note:
++++++++++++
+Apparently I cannot take the address of a register classes variable:
+{
+	register int b = 100 ;
+	int *ptrB = &b = //illegal address request.... 
+}
+
+
+The static  Storage Class
+================================================
+static int count = 10 ;
+void func( void )
+{
+    static int i = 5; /* local static variable */
+    i++;
+    printf("i is %d and count is %d\n", i, count);
+}
+int main(int argc, const char * argv[]) {
+    while(count--)
+    {
+        func() ;
+    }
+    return 0 ;
+}
+
+^^^ the static class instructs the compiler to keep a local variable
+in existence during the life-time of the program instead of merely keeping
+this variable alive within it's original scope.
+This allows for a variable within a whatever scope it was declared in
+to be shared by all components of the program.
+This breaks scope.  Meh.
+You can use 
+
+The extern  Storage Class
+================================================
+
+/*main.c*/
+#include <stdio.h>
+#include <float.h>
+#define LENGTH 10
+#define WIDTH 5
+int count ;
+extern void write_extern() ;
+int main(int argc, const char * argv[]) {
+    count = 5 ;
+    write_extern();
+    return 0 ;
+}
+
+/*support.c*/
+#include <stdio.h>
+
+extern int count ;
+
+void write_extern(void)
+{
+   printf("count is %d\n", count);
+}
+
+
+^^^ the extern storage class is used to give a reference of a global variable that is visible to 
+ALL program files.
+The variable CANNOT be initialized.  All it does is provide for a declaration of
+a global variable or function in another file
+Quick Note:
++++++++++++++++++
+teh extern modifier is most commonly used when there are two or more
+files sharing the same global variables or functions as explained below:
+Here, extern keyword is being used to declare count in teh second file where
+as it has its definition in the
+first file:
+
+main.c
+
+Now, comple these twor files as follows:
+
+ $gcc main.c support.c
+
+
+ Discussion:
+ ***********************************
+ In C++ or Java, I can acheive the same result by merely
+ making a global variable public and static.....and then access it
+ by calling the class(not it's instance) from anywhere in teh code base.
+ I guess this is how we do it in C using purely procedural methods.
+
+
+ Summary of C storage classes:
+ ###################################
+ static
+ extern
+ register
+ auto
+

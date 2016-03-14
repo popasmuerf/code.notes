@@ -1,0 +1,158 @@
+Instantiating Fragments
+=============================
+
+Using the Factory Method
+==============================
+public static MyFragment newInstance(int index){
+	MyFragment f = new MyFragment{
+		Bundle args = new Bundle();
+		args.putInt("index",index);
+	};
+	f.setArguments(args);
+	return f ;
+}
+
+
+
+From the client's point of view, they get a new instance by calling
+the static
+newInstance() method with the single argument.
+They get the instantiated object back, and the initialization
+argument has been set on this fragment int he arguments bundle
+If the fragment is saved and reconstructed later, the system will
+go through a very similar process of calling the default constructor
+and then reattaching the intialization arguments.  For your particular
+case, you woudl define the signature of your newInstance() method
+
+newInstance() Callback
+==============================
+
+
+onInflate() Callback
+==============================
+Preceding event: newInstance()
+
+after instantiation of a new fragment,
+the fragment is to be inflated via
+
+	onInflate()
+
+which passes to the surrounding activity:
+	reference to the new fragment
+	AttributeSet object with the attributes from the <fragment> tag
+	saved bundle
+The expectation of onInflate() is that you'll read
+attribute values and save them for later user.
+At this stage in the fragment's life it is too
+early to actually do anything with the user interface.
+The fragment is not even associated to tis activity yet.
+
+
+onAttach() Callback
+==============================
+Preceding event: onInflage()
+
+The onAttach() callback is invoked after your fragment is
+associated with its activity.
+After your fragment is associated with its activity a reference
+is passed to you if you want to use it.
+The reference to the current surrounding activity
+provides information about it.
+The surrounding Activity reference can be accessed via:
+
+	Fragment.getActivity()
+
+You may also use this Activity reference to perform other operations
+related to this Activity.  You can gain access to 
+all public accessable Acitity methods and attributes,
+including the Activity's:
+	Bundle instance
+		-via-
+	Fragment.getArguments()
+
+onCreateView() Callback
+==============================
+onAttach() method returns a view hierarchy
+for this fragment.
+The arguments that are passed into this callback
+include:
+	LayoutInflater
+	ViewGroup
+	Bundle
+
+The LayoutInflater is used to to inflate the fragment
+The ViewGroup parent(contatiner)
+The saved Bundle if it exists.
+
+Example of onCreateView:
++++++++++++++++++++++++++++++++++++
+@Override
+public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState){
+	if(container == null){
+		return null ;
+	}
+	View v = inflater.inflate(R.layout.details,container,false);
+	TextView text 1 = (TextView) v.findViewById(R.id.text1);
+	text1.setText(myDatatSet[getPosistionn()]);
+	return v ;
+}
+
+
+
+onViewCreated() CallBack
+==================================
+This one is called right after onCreateView()
+but before any saved state has been put into the UI.
+Teh view object passed in this is the same view object that
+returned from onCreateView()
+
+
+
+onActivityCreated() CallBack
+===================================
+We are now getting close to the point where
+the user can interact with your fragment.
+onActivityCreated() is called after the surrounding
+Activity has called it's onCreate() method callback.
+At this point we are certain that the view hierarchy of the
+Activity and the fragment exist and may be "trusted"
+onActivityCreated() is where you perform your last minute
+tweeks to the user interface before anyone else sees it.
+
+
+onViewStateRestored() Callback
+=====================================
+Introduced in JellyBean 4.2
+This is called when the fragment
+has all stare restored(if applicable).
+Before JellyBean 4.2 decisions had to be maded
+in:
+	onActivityCreated()
+w/r to tweaking the UI for a restored fragment.
+
+
+
+onStart() Callback
+======================================
+The next callback in your fragment life cycle
+is onStart().
+Now your fragment is visible to the user, however
+the user has not started interacting with the user just
+jet.
+
+onResume()
+=======================================
+onPause()
+=======================================
+
+
+Summary:
+===========================
+The fragment is instantiated via the Fragment.newInstance() method
+
+The onAttach() method assocaties the new Fragment with the surrounding Activity
+at this point is is possible to access the surrounding Activity reference passed to 
+the now attached Fragment via:
+	Activity suroundingActivity = (Activity) this.getActivity() ;
+I can access the the Activity's Bundle only if I so chose via
+	Bundle surroundingActivityBundle = (Bundle) this.getArguments ;

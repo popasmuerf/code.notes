@@ -1,0 +1,110 @@
+Scheduling work with send
+=====================================
+When we post a Runnable, we can --as seen in the previous
+examples--define the work at the call
+site with an anonymouse Runnable, and as such...
+a Handler does not know in advance what kind of
+work it might be asked to perform.
+
+
+When we might forgoe dynamically declared Runnables
+and statically defined Runnables
+=====================================
+If there is an async task that regularly needs
+to be executed by different components of the app
+or even repeatedly within one component of the app,
+then we should statically define it and from that
+statically defined, top level Runnable class:
+
+public class crossCuttingRunableTask  implementes Runnable{
+	public void run(){
+		//peform cross-cutting tasks
+	}
+}
+Thread task1 = new Thread{
+	//do some stuff you want executed off the main thread....	
+	public void run(){
+		handler.post(new crossCuttingRunableTask());
+	}
+}.setPriority(Thread.MIN_PRIORITY);
+Thread task2 = new Thread{
+	//do some stuff you want executed off the main thread....	
+	public void run(){
+		handler.post(new crossCuttingRunableTask());
+	}
+}.setPriority(Thread.MIN_PRIORITY);
+Thread task3 = new Thread{
+	//do some stuff you want executed off the main thread....	
+	public void run(){
+		handler.post(new crossCuttingRunableTask());
+	}
+}.setPriority(Thread.MIN_PRIORITY);
+
+Using Messages
+=========================================
+Alternatively, we can turn the approach on its head
+by sending Messages tto a Handler, and defining
+the Handler to ract appropriately to different Messages.
+
+Taking a simple example, let's say we want our
+Handler to display hello or goody,
+depending on what type  of message 
+it recieves.  We can do this by implementing our own
+handler and overriding the parent classes method:
+	handleMessage() ;
+
+public static class SpeakHandler extends Handler{
+	public static final int SAY_HELLO = 0 ;
+	public staic final int SAY_BYE = 1 ;
+
+	@Override
+	public void handleMessage(Message msg){
+		switch(msg.what){
+			case SAY_HELLO:sayWord("hello"); break ;
+			case SAY_BYE:sayWord("goodbye"); break ;
+			default:super.handleMessage(msg);
+		} 
+	}
+	private void sayWord(String word){
+	..............
+	}
+} 
+
+Tip: When to call super.method() ;
+=========================================
+We can call super.method() ;  
+anytime we need the none-overriden method() executed
+from whithin our descendent class....even though there
+may be a method in our descendent class that overrides it.
+
+
+Tip: Overriding Handler
+==========================================
+These descendents of Handler should ALWAYS be
+declated static...or defined as a top level class....otherwise we risk memory leaks.
+If we are allowed instantiate these subclasses...it would be
+possible for more than one of these classes in existence....
+and then we introduce race conditions......
+
+Remember...to attach an instance of our Handler to the main thread....we simply
+instantiate it from any method which runs which runs on the main thread:
+
+private Handerler handler ;
+protected void onCreate(Bundle savedInstanceState){
+	handler = new SpeakHandler() ;
+}
+
+
+Tip: We can send messages to Handler from any thread
+==============================================
+/*Inside some random thread*/
+handler.sendEmptyMessage(SAY_HELLO);
+
+
+Messages carry a payload
+===============================================
+Messages may carry an object payload as
+context for the execution of the message.
+Let's extend  our example to allow our
+Handler to say any word that the message 
+send wants.

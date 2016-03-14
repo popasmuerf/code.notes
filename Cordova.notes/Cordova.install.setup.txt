@@ -1,0 +1,72 @@
+https://ccoenraets.github.io/cordova-tutorial/create-cordova-project.html
+https://ccoenraets.github.io/cordova-tutorial/create-cordova-project.html
+
+
+Node was installed at:
+
+   /usr/local/bin/node
+
+npm was installed at:
+
+   /usr/local/bin/npm
+
+Make sure that /usr/local/bin is in your $PATH.
+
+
+
+mbrown$ sudo npm install -g cordova
+========================================================
+"node":"0.12.7","npm":"2.11.3"})
+/usr/local/bin/cordova -> /usr/local/lib/node_modules/cordova/bin/cordova
+cordova@5.2.0 /usr/local/lib/node_modules/cordova
+├── underscore@1.7.0
+├── q@1.0.1
+├── nopt@3.0.1 (abbrev@1.0.7)
+└── cordova-lib@5.2.0 (valid-identifier@0.0.1, osenv@0.1.0, properties-parser@0.2.3, bplist-parser@0.0.6, unorm@1.3.3, shelljs@0.3.0, semver@4.3.6, rc@0.5.2, dep-graph@1.1.0, xcode@0.8.0, npmconf@2.1.2, elementtree@0.1.6, glob@4.0.6, cordova-serve@0.1.3, init-package-json@1.9.1, tar@1.0.2, cordova-registry-mapper@1.1.10, request@2.47.0, aliasify@1.7.2, plist@1.1.0, cordova-app-hello-world@3.9.0, cordova-js@4.1.0, npm@2.14.2)
+C02FV01MDF93:~ mbrown$ 
+
+
+create workshop
+==========================================================
+mbrown$ cordova create workshop com.yourname.workshop Workshop
+mbrown$ cd workshop
+
+iOS Support
+==========================================================
+mbrown$ cd workshop
+mbrown$ cordova platforms add ios
+
+
+Android Support
+===========================================================
+mbrown$ cd workshop
+mbrown$ cordova platforms add android
+
+
+Add basic plugins
+=============================================================
+mbrown$ cd workshop
+mbrown$ cordova plugin add org.apache.cordova.device
+mbrown$ cordova plugin add org.apache.cordova.console
+
+
+Cordova and dartium
+============================================================
+Please note the path to the Dart SDK:
+  /usr/local/opt/dart/libexec
+
+--with-dartium:
+  To use with IntelliJ, set the Dartium execute home to:
+    /usr/local/opt/dart/Chromium.app
+==> Summary
+🍺  /usr/local/Cellar/dart/1.12.0: 268 files, 38M, built in 15 seconds
+C02FV01MDF93:workshop mbrown$ brew install dart --with-content-shell --with-dartium
+Warning: dart-1.12.0 already installed
+
+
+
+
+
+
+
+

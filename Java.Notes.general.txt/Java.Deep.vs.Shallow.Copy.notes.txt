@@ -1,0 +1,148 @@
+Basic Object Copying in Java
+=================================
+Shallow Copying:
+++++++++++++++++++++++++++++++++++
+Creates a new instance of the same class
+and copies all the fields to the new
+intance and returns it.
+               |------>containedObj1
+obj------------
+               |------>containedObj2
+
+               *shallow copy*
+
+               |------>containedObj1<------|
+obj1------------                            ------------obj2
+               |------>containedObj2<------|
+
+
+/* Code  */
+
+public class ShallowCopy{
+	public static void main(String[] args){
+		Person person = new Person("Person-A","Civic");
+		Person person2 = (Person) person.clone() ;
+		person2.setN("Person-B");
+		person2.getC.setN("Accord");
+	}
+}
+
+class Person implements Cloneable{
+	private Car carObject;
+	private String name ;
+	public Car getC(){
+		return cardObject ;
+	}
+	public String getN(){
+		return name ;
+	}
+	public void setN(String s){
+		name = s ;
+	}
+	public Person(String s, String t){
+		name = s ;
+		carObject = new Car(t);
+	}
+	@Override
+	public Object clone(){
+		try{
+			return super.clone();
+		}catch(CloneNotSupportedException e){
+			return null ;
+		}
+	}
+}
+
+class Car {
+
+    private String carName;
+
+    public String getN() {
+
+  return carName;
+    }
+
+    public void setN(String s) {
+
+  carName = s;
+    }
+
+    public Car(String s) {
+
+  carName = s;
+    }
+}
+
+
+
+Deep Copy
++++++++++++++++++++++++++++++++++++
+A deep copy occures when an object is copied along with
+the objects to which it refers.  Below image
+
+               |------>containedObj1
+obj------------
+               |------>containedObj2
+
+               *deep copy*
+
+               |------>containedObj1       |------>containedObj1 
+obj1------------                       obj2
+               |------>containedObj2       |------>containedObj2 
+
+
+
+
+/* code */
+
+public class DeepCopy{
+	public static void main(String[] args){
+		Person person = new Person("Person-A","Civic");
+		Person person2 = (Person) person.clone() ;
+		person2.setN("Person-B");
+		person2.getC.setN("Accord");
+	}
+}
+
+class Person implements Cloneable{
+	private Car carObject;
+	private String name ;
+	public Car getC(){
+		return cardObject ;
+	}
+	public String getN(){
+		return name ;
+	}
+	public void setN(String s){
+		name = s ;
+	}
+	public Person(String s, String t){
+		name = s ;
+		carObject = new Car(t);
+	}
+	@Override
+	public Object clone(){
+		Person p = new Person(name,car.getName());
+	}
+}
+
+class Car {
+
+    private String carName;
+
+    public String getN() {
+
+  return carName;
+    }
+
+    public void setN(String s) {
+
+  carName = s;
+    }
+
+    public Car(String s) {
+
+  carName = s;
+    }
+}
+

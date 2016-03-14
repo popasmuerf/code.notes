@@ -1,0 +1,189 @@
+http://blog.smartbear.com/c-plus-plus/c11-tutorial-introducing-the-move-constructor-and-the-move-assignment-operator/
+http://www.cplusplus.com/articles/y8hv0pDG/
+
+Technically, an rvalue is an unamed value that
+exists only during the evaluation of
+an expression.  For example the following exprssion
+produces an rvalue:
+
+x+(y*z); // A C++ expression that produces a temporary
+
+C++ creates a temporary(an rvalue) that stores the result of y*z,
+and then adds it to x.  Coneceptually, this rvalue evaporates by the
+time you reach the semicolon at the end of the full expression
+
+
+
+A declaration of an rvalue reference looks like this:
+======================================================
+std::string&& rrstr; //C++11 rvalue reference variable
+
+
+The traditional reference variables of C++ e.g.:
+======================================================
+std::string& ref ;
+
+^^^^are now called lvalues
+Rvalue references occur almost anywhere, even if you don't use them directly
+in your code.  They affect the semantics and lifetime of objects in
+C++11.  How exactly this happens is displayed in ove Semantics
+
+
+
+
+Get to Know Move Semantics
+=======================================================
+Hither to, copuying has been the only means for transferring
+a state from one object to another(an object's state is the collective
+set of it's non-static data members' values)
+Formally, copying causes a target objet "t" to end up with same state as the 
+source "s", without modifying "s".
+For example, when we copy a string s1 to s2, the result is two identical strings with same
+state as s1.
+
+
+What we do in real life with respect to copying objects
+=========================================================
+In the real world, we don't copy objects but move them.
+When I cash a check, I don't copy the money...I move it to another
+account from another.
+Moving is faster than copying, as copying requires the creation of new
+resources from scratch.
+Example of copying :
+++++++++++++++++++++++++++++++
+string func()
+{
+	string s;
+	//do something with s
+	return s ;
+}
+string mystr = func() ;
+
+^^^^ when func() returns, C++ constructs a temporary copy of s
+on the caller's stack memory.  Next s is destroyed and the temp
+is used for copy-constructing mystr.  After that, the temp
+itself is destroyed.
+
+Example of moving:
++++++++++++++++++++++++++++++++
+Moving a string is almost free.  It merely assings the values
+of the source's data membrers to the corresponding datamembers of the target.
+In contrast, copying a string requires the allocation of dynamic memory
+and copying hte characters from source.
+
+
+Move Special Member Functions
+=========================================
+C++11 introduced two new member functions:
+	move constructor
+	move assignment operator
+in addtion to the the usual member functions:
+	Default constructor
+	Copy Constructor
+	Copy assignment operator
+	Destructor
+
+What is a copy constructor ?
+==========================================
+Copy constructors are special constructors for
+a class/struct that is used to make a copy 
+of an existing instance.  According to the C++
+standard, the copy constructor for MyClass must 
+have one of the followig signatures:
+
+MyClass(const MyClass &other);
+MyClass(MyClass &other);
+MyClass(volatile const MyClass &other);
+MyClass(volatile MyClass &other);
+
+The following constructors, despite the fact htat
+they could do the sam thing as copy constructors, are
+copy constructors also 
+
+MyClass(MyClass* other);
+MyClass(const MyClass* other);
+
+Or my favorite way of creating an infinite loop in C++:
+
+	MyClass(MyClass other);
+
+A Move Constructor looks like this:
+
+	C::C(C&& other); //C++11 move constructor
+
+^^^ It doesn'nt allocate new resources.  Instead, it pilfers OTHER'S
+resources and then sets "other" to it's default-constructed state.
+
+
+When do we need copy constructors ?
+============================================
+First, we should understand that if you do not 
+declare a copy constructor, the compiler gives you one
+implicityly.  The implicit
+copy constructor des a member-wise 
+copy of the source object:
+
+
+Your class
+==================================
+class MyClass{
+	int x;
+	char c ;
+	std::string s ;
+};
+
+
+The compiler provided copy constructor
+======================================
+MyClass::MyClass(const MyClass& other):x(other.x),c(other.c),s(other.s)
+{}
+
+
+In many cases, this is sufficient. However, there are certain
+circumstances where the member-wise copy version is not good enough.
+By far, the most common reason the default copy constructor is not
+sufficient is because the object contains raw pointers and you need
+to take a "deep" copy of the pointer. That is, you don't want to 
+copy the pointer itself; rather you want to copy what the pointer
+points to. Why do you need to take "deep" copies? This is 
+typically because the instance owns the pointer; that is, the
+instance is responsible for calling delete on the pointer at some
+point (probably the destructor). If two objects end up calling
+delete on the same non-NULL pointer, heap corruption results.
+
+Rarely you will come across a class that does not contain raw
+pointers yet the default copy constructor is not sufficient.
+An example of this is when you have a reference-counted object.
+boost::shared_ptr<> is example.
+
+
+Const correctness
+=========================================
+When passing parameters by reference to functions or constructors,
+be very carful about const correctness.  Pass by non-const reference
+ONLY if the function will modify the parameter and it is the intent 
+to change the caller's copy of the data, othewise pass by const reference;
+
+Example:
+//Temporary object because it has no name
+std:string("this is temp string as it has no name ");
+//This is not a temporary object as it has a name
+std:string s("this is not a temp string")
+
+
+What is the practical implication of all of this?  Consdier the following:
+//Improperly declared function: parameter should be const reference:
+void print_me_bad(std::string& s ){
+	std::cout<< s << std::endl ;
+}
+//Properly declared function: function  as no intent to modify s:
+void print_me_good(const std::string&& s){
+	std:cout<< s <<std:endl ;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+URL encoding
+=========================
+RFC 3986 (The law of the URLs) defines that all safe characters
+to be alphanumeric plus a few safe ones like
+	:
+	/
+
+unsafe characters
+--------------------------
+# : used to delimite a fragment
+^ : isn't always transmitted correctly via web services
+\s : the space character can sometime mysteriously disapear when the URL is printed out
+
+
+how we transimit unsafe characters
+------------------------------
+Fortunately, you can still transmit kunsafe characters in a URL, but all unsafe characters must be
+encoded with a perscent sign "%" followed by some url coding
+For example the "\s" character is encoded as:
+	%20
+
+^^^where the int 20 is the ascii encoding for space characters.
+
+As a more complex example, if I wanted to create a URL for a file named:
+
+	^my resume.txt
+
+The resultant URL would look something like:
+
+	http://host.net/%5Emy%20resume.txt
+
+where:
+	^ : %5
+	" ": %20
+

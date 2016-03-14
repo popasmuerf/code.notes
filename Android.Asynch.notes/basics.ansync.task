@@ -1,0 +1,47 @@
+Main UI thread:
+	Async tasks may not be executed within the main ui thread as it is not thread safe
+	These Async related methods execute with main ui thread....so be careful not to
+	peform long-running/blocking operations in these following methods...:
+		onPreExecute
+		onProgressUpdate
+		onPostExecute 
+
+Declaring AsyncTask types:
+	*Async tasks are generally typed classes, that exposes three types of parameters:
+		Abstract class AsyncTask<Params, Progress, Result>
+	*Example?  what if I wasnt to pass a string parameter to doInBackground that returned a boolean result?:
+		MyAsynchTask<String,Float,Boolean>
+	*Example? what if I do not wish to return a value ?
+		MyAsynchTask<String,Float,Void>
+	*Example? what if I do not wish to keep track of task progress ?
+		MyAsynchTask<String,Void,Float>
+	*Example? What if I do not wish to pass params ?
+		MyAsyncTask<Void, Float, Boolean>
+	*Example? What if I aint pushing shit ?
+		MyAsynchTask<Void,Void,Void>
+	*Just for good info, the package for the Void type is java.lang.Void
+	*java.lang.Void is an unstantiable class representing the "void" keywoard.
+	*Async tasks are one time deals...once one has been started it cannot be reused or resarted, even if started.
+
+	*Example  of an expensive calculation that you likely do not want on your main UI threads:
+
+	public class PrimeTask extends AysncTask<Integer, Void, BigInteger>{
+		private TextView resultView ;
+		public PrimesTask(TextView resultView){
+			this.resultView = resultView;
+		}
+		@Override
+		protected BigInteger doInBackground(Integer... params){
+			int n = params[0];
+			BigInteger prime = new BigInteger("2");
+			for(int i = 0; i < n ; i++){
+				prime = prime.netxtProbablePrime() ;
+			}
+			return prime ;
+		}
+		@Override
+		protected void onPostExecute(BigInteger result){
+			resultView.setText(result.toString())
+		}
+
+	}

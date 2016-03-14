@@ -1,0 +1,77 @@
+hyperlink: http://thbecker.net/articles/rvalue_references/section_01.html
+
+Intro
+==============================
+What are Rvalues good for ?
+++++++++++++++++++++++++++++++++
+1. Implemeenting move semantics
+2. Perfect forwarding
+
+
+Original C++ definitions for r and l values:
+==============================================
+lvalue:
+An expression "e" that may appear on the left or
+onthe right hand side of an assignment
+rvalue:
+Is an expressiont hat can only appear on the right hand side of
+an assignment
+
+Example:
+int a = 42;
+int b = 43 ;
+/* a and b are both l-values */
+a = b ; //ok
+b = a ; //ok
+b = b ; //ok
+a = a ; //ok
+/* the expression : a + b is an rvalue */
+a = a + b ; //Ok
+b = b + a ; //Ok
+b + a = a ; //Not Ok
+a + b = a + b ; //Not Ok
+
+User defined types
+=====================================================================================
+User defined types has made the simple concept above a bit more nuanced(complicated)
+regarding modifiability and assignability that cause this basic definition
+to be somewhat incorrect
+
+Enhanced C++ definitions for r and l values:
+==============================================
+lvalue:
+An expression "e" that referes to a memory location and allows
+us to take the address of that memory location via the "&" operator
+
+rvalue:
+Is an expression that is not an lvalue
+
+Example:
+/* 
+	lvalues as expressions that refer to memory locations where
+	we can take the address of the memory location via "&" operator 
+*/
+
+//lvalues
+int i = 42 ;
+i = 43 ;	//ok, i is an lvalue 
+int *iPtr = &i ;  //ok, i is an lvalue
+foo() = 42 ; //ok, foo() is an lvalue
+int *fooPtr = &foo() ; //ok, foo is lvalue
+//rvalues
+int fooBar() ;  // int fooBar() is an rvalue.  I cannot take the & of it's return value
+int j = 0 ;	  // j is an lvalue and 0  is an rvalue
+j = fooBar() //ok....j is an lvalue and fooBar an rvalue
+int * p2 = &foobar() ; //error, cannot take the addres of an rvalue as fooBar returns an rvalue
+j = 42  ; //ok, j is an lvale and 42 is an rvalue
+
+
+
+
+
+
+
+
+
+
+

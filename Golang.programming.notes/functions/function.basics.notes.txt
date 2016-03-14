@@ -1,0 +1,133 @@
+Note: About recievers
+======================================
+recievers may be either by:
+	value
+	pointer
+
+If you are using the pointer, you can actually
+alter the type via it's associated methods....
+
+/* code */
+
+package main
+
+import "fmt"
+
+
+type B struct{
+	thing int
+}
+func(b B)write()string{
+	return fmt.Sprint(b)
+}
+func(b *B)change(){
+	b.thing = 1
+}
+
+
+
+
+func main() {
+	var b1 B //b1 is a value
+	b1.change()
+	fmt.Println(b1.write())
+}
+
+
+
+Note:
+======================================
+A general programming note:
+If you have to return more than 3
+values from a method...it is best to use
+a data structure....an Array, a Tuple,
+or in GoLang's case...a slice(if the returned data
+is homogenous).
+
+Named return variables in GoLang
+======================================
+The two following functions:
+	getX2AndX3()
+	getX2AndX3_2()
+
+dispaly how unamed or named returned variables
+are made use of.
+Named varriables aused as result parameters
+are automatically initialed to their
+zero-value, and once they recieve their value,
+a simple(empty) return statement is sufficient; futhermore
+even when there is only one named return variable,
+it has to be put inside parents ()
+
+Example
++++++++++++++++++++++++++++++++++++++++
+package main
+import "fmt"
+
+var num int = 10 
+var numx2, numx3 int
+func main(){
+	numx2,numx3 = getX2AndX3(num)
+	PrintValues()
+	numx2,numx3 = getX2AndX3_2(num)
+	printValues()
+}
+func PrintValues(){
+	fmt.Printf("num = %d, 2x num = %d, 3x num = %d\n", num,numx2,numx3)
+}
+func getX2AndX3(input int)(int,int){
+	x2 =  2 * input
+	x3 =  3 * input 
+	//return x2,x3
+	return x2 , x3 
+}
+func getX2AndX3(input int)(x2 int, x3 int){
+	x2 =  2 * input
+	x3 =  3 * input 
+	//return x2,x3
+	return
+}
+func MultiPly3Nums(a int, b int,c int) int {
+	return a * b * c
+}
+
+Why?
+======================================
+Supposedly named return values make the code
+easer to read and are self documenting.....
+i find this somewhat debatable....
+
+
+Blank identifier
+=======================================
+The blank identifier 
+	
+	"_"
+
+can be used to discard values, effectively assigning
+the right-hand-side value to nothing, as the following
+describes:
+
+package main
+import "fmt"
+func main(){
+	var i1
+	var f1 float32
+	i1,_,f1 = ThreeValues()
+	fmt.Printf("The int: %d, the float; %f\n",i1,f1)
+}
+func ThreeValues()(int,int,float32){
+	return 5,6,7.5
+}
+
+^^^The output is 5 and 7.5.  6 is discared.
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,5 @@
+nohup spark-submit --master yarn-client --num-executors 500 --executor-memory 10G --executor-cores 15 --conf spark.akka.frameSize=2000 --driver-java-options \"-XX:+UseParallelGC\" --conf spark.storage.memoryFraction=.3 ./ldaApp.jar &
+
+1. MavenLocal()
+2. Kafka Stuff:
+=======================================

@@ -1,0 +1,179 @@
+http://grails.asia/grails-tutorial-for-beginners-basic-groovy-server-pages-gsp/
+
+Grails Server Pages (GSP)
+===========================
+Groovy Server Pages(or GSP) is the default presentation technology
+for rendering views in Grails.  It is very similar to
+JSP where you can easily combine static and dynamic cotents in your output
+
+
+
+GSPs and MVCs
+==========================
+GSPs are basically used within the "View"(V) in 
+MVC.  GSPs are used for interfacing with the user
+and passing and recieveing data
+
+
+A controller(HelloController.groovy):
+----------------------------
+package asia.grails.tutorial
+class HelloController{
+	def index(){}
+}
+
+
+A view that corresponds our controller(index.gsp)
+--------------------------
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="main"/>
+		<title>Welcome to Grails</title>
+	</head>
+	<body>
+		Hello World
+	</body>
+</html>
+
+
+Displaying Domain Contents
+============================
+
+Our corresponding Domain Class
+------------------------------
+package asia.grails.tutorial
+class Person{
+	String firstName
+	String lastName
+	int age
+}
+
+
+Modify our controller to extract data from the Domain
+(to keep things simple...we will forgoe extracing from
+a database so we will create a new Person object and inject
+data into it)
+------------------------------------------------------
+package asia.grails.tutorial
+class HelloController{
+	def index(){
+		Person person = new Person(firstName:'John',lastName:'Doe',age:55)
+		[person:person]
+	}
+}
+
+^^^^ The last line of code in the controller's action will be the map parameters passed to your
+view...hense the reason the object reference "person" becomes available within your view
+
+
+Modify our view with GSP
+-------------------------------------------------------
+<html>
+	<head>
+		<meta name="layout" content="main"/>
+		<title>Render Domain</title>
+	</head>
+	<body>
+		Last Name : ${person.lastName}
+		First Name : ${person.firstName}
+		Age : ${person.age}
+	</body>
+</html>
+
+
+
+Looping and Displaying a List
+==========================================
+
+<!--Test a simple GSP that renders numbers from 1...10-->
+
+<html>
+	<head>
+		<meta name="layout" content="main"/>
+		<title>Render Test Count 1 -> 10 </title>
+	</head>
+	<body>
+		<g:each in="${(1..10)}" var="number">
+			${numbe}</br>
+		</g:each>
+	</body>
+</html>
+
+
+
+A sample controller and view that passes a list of domain records and renders each in GSP:
+----------------------------------------------------------------------------------
+package asia.grails.tutorial
+class HelloController{
+	def index(){
+		def list = []
+		list << new Person(firstName:'John', lastName:'Doe', age:50)
+		list << new Person(firstName: 'Jane', lastName:'Smith', age:45)
+        list << new Person(firstName: 'Sam', lastName:'Robinson', age:47)
+        [list:list] //make sure return a map with all the variables the view needs
+	}
+}
+A simple GSP page for rendering numbers from 1 to 10
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="main"/>
+		<title>Render Doman</title>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td>Name</td>
+				<td>Age</td>
+			</tr>
+			<g:each in="${list}" var="person">
+			<tr>
+				<td>${person.lastName}, ${person.firstName} </td>
+				<td>${person.age}</td>
+			</tr>
+			</g:each>
+		<table>
+	</body>
+</html>
+
+
+Forms
+======================================================================
+We can write a form to submit a Person's information.  From the controller, you
+can sends a person object that conts it's default values 
+
+/****Controller****/
+package asia.grails.tutorial
+class HelloController{
+	def displayForm(){
+		Person person = new Person(age:55)
+		[person:person]
+	}
+}
+
+
+<!--View-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="main"/>
+		<title>Render Doman</title>
+	</head>
+	<body>
+		<g:form action="save">
+			<label for="lastName">Last Name</label>
+			<g:textField name="lastName" value="${person.lastName}"/></br>
+			<g:textField name="firstName" value="${person.firstName}/"></br>
+			<g:textField name="age" value="${person.age}"</br>
+			<g:submitButton name="create" value="Save"
+		</g:form>
+	</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,144 @@
+http://grails.asia/grails-tutorial-for-beginners-grails-service-layer
+
+Injecting Services into our controllers
+================================================
+Just delclare a varaible named after the service
+within a controller
+
+
+
+
+Example Services
+================================================
+class PersonService{
+	Person createPerson(String lastName, String FirstName){
+		Person person = new Person()
+		person.lastName = lastName
+		person.firstName = firstName
+		p.save()
+		return person
+	}
+}
+
+Example Services (injectin PersonService into Employe Service)
+================================================
+class EmployeeService{
+	def personService
+	Employee createEmployee(String lastName, String firstName){
+		Employee employee = new Employee()
+		employee.person
+		employee.employmentDate = new Date()
+		employee.save()
+		return employee
+	}
+}
+
+You can also inject a service inside a tag library. For example:
+=================================================
+class StudentService{
+	def listStudents(){
+		return Student.list()
+	}
+}
+class MyTagLib{
+	StudentService studentService
+	static namespace = "my"
+	def renderStudents = {
+		def students = studentService.listStudents()
+		students.each{
+			student-> out << "<div> ${student}.firstName} ${student.lastName}, welcome </div>"
+		}
+	}
+}
+
+You can also inject a service inside init/Bootstrap.Groovy for example:
+========================================================================
+class BootStrap{
+	def studentService
+	def init = { servletContext ->
+		if(Student.count() == 0){
+			studentService.createStudent("Doe","John")
+			studentService.createStudent("Smith","Jame")
+		}
+	}
+}
+
+
+Transaction Management
+========================================================================
+If you are new to working with databases, transactionsare a very important concept.
+Usually, we wish certain sequence of database changes to be all successful If not
+successful, we want no operation to happen at all.   For example, consider
+this code to transfer funds between to bank accounts:
+
+class AccountService{
+	def transferFunds(long accountFromID, long accountToID, long amount){
+		Account accountForm = Account.get(accountFromID)
+		Account accountTo = Accountget(accountToID)
+		accountFrom.balance = accountFrom.balance - amount
+		accountTo.balance = accountTo.balance + amount
+	}
+}
+
+^^^ For this entire operation of method transferFunds() must be an all or nothing.
+This concept is also known as "atomicity"
+
+Transaction management is required to ensure atomicity.
+
+
+
+Grails transactonal workflow
+=========================================================================
+* if all db operations are successful, reflect the changes to the database(this is aka commit)
+* if one db operation result in exception, return to the original state and forget/undo all the 
+  previous operations(aka rollback)
+
+
+Transaction Declaration
+=========================================================================
+Grails supports transaction management inside services. By default, all services are
+transactional.  So these 3 declarations have the same effect.
+
+class CountryService{
+	static transactional = true
+}
+
+/*	 -or-	*/
+
+@Transactional
+class CountryService{
+	
+}
+
+
+
+Note:
+=========================================================================
+Transactions introduce overhead...and thus processing cycles.
+Only use Transactions when you must ensure that the processing of 
+sensitive data is of paramount importance.   for instance....blogging
+services do not need to be transactional....but any service dealing 
+with production business logic where atomicity is required...then
+make it transactional.
+
+
+
+Forcing a roll back
+============================================================================
+One of the most important thing to remember is what code to write to force 
+Grails to rollback a current succession of operations.  To do that, just 
+raise and a RuntimeException or a descendant of it.  For example, this will
+rollback the operation : 
+
+	accountFrom.balance = accountFrom.balance - amount
+
+class AccountService{
+	def transferFunds(long accountFromID, long accountToID, long amount){
+		
+		Account accountFrom = new Account(accountFromID)
+		Account accountTo = new Account(accountToID)
+		accountTo.balance  = accountTo.balance + amount
+		accountFrom.balance = accountFrom.balance - amount
+
+	}
+}

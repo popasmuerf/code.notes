@@ -1,0 +1,110 @@
+
+What is Spark SQL ?
+==========================================================
+Spark SQL allows for relational queries to be exprssed in
+	SQL
+	HiveQL
+	Scala
+using Spark.  At the heart of this a new type of RDD known as the SchemaRDD
+
+SchemaRDD inheritance hierarchy:
+
+RDD<Row>
+	|____SchemaRDD
+
+^^^ SchemaRDDs are compose of Row objects, along with a schama that describes the data types
+of each column in the row.  A schmaRDD is simlar to a table in a traditional relational
+database.  A Schema RDD can be created from an existing RDD, a Parquet file,
+a JSON dataset, or by running HiveQL against data stored in Apache Hive.
+
+
+Getting Started
+=========================================================
+The entrypoint  into all relational functionaly in Spark is the class:
+	SQLContext
+or one of it's decendents.  To create a basic SQL context, all you
+need is a SparkContext
+
+Scala
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+val sc:SparkContext //an existing SparkContext
+val sqlContext:SQLContext = new org.apache.spark.sql.SQLContext(sc)
+
+//createSchemaRDD is used to implicitly convert an RDD to a SchemaRDD
+import sqlContext.createSchemaRDD
+
+
+Java
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+JavaSparkContext sc = ...... //an existing SparkContext
+JavaSQLContext sqlContext = new org.apache.spark.sql.api.java.JavaSQLContext(sc);
+
+
+Python
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from pyspark.sql import SQLContext
+sqlContext = SQLContext(sc)
+
+
+
+In addtions to SQLContext, we can create a HiveContext
+========================================================
+The HiveContext provides a strict super set of the functionality
+provided by the basic SQLContext.  Addtional features include:
+
+	Write queries using the more complete HiveQL
+	Access to HiveUDFs
+	Reading data from Hive Tables
+
+You do not need to havd Hive installed to use the HiveContext Object
+Apache is working hard on bring SQLContext up to feature parity 
+with HiveContext
+
+
+
+Specific SQL variants
+=======================================================
+The specific variant of SQL that is used to parse quieries can also be selected
+using the option:
+
+	spark.sql.dialect
+
+which ican be changed using either the method
+
+	SQLContext.setConf()
+
+or by using the command :
+	
+	SET key=value
+
+For SQLContext, the only dialect available is "sql" which uses a simple
+SQL parser provided by Spark SQL .  In a HiveContext, the default is "hiveql", though
+"sql" is also available.   HiveQL parser is much more complete, this is 
+recommended for most use cases.
+
+
+Data Sources
+=======================================================
+
+Spark SQL supporst operating on a variety of data sources:
+
+	RDDs
+	Temporary tables
+
+Regusitering a SchemaRDD as a table allows you to run SQL queries over tis data.
+
+
+
+Before we go any further....what are case classes  in Scala ?
+===============================================================
+
+Inferring the Schema Using Reflection:
+=======================================================
+Converting an RDD containing case classes to a SchemaRDD.
+
+
+
+
+
+

@@ -1,0 +1,126 @@
+http://www.tutorialspoint.com/spring/spring_transaction_management.htm
+
+
+Spring transactions
+================================
+A database transaction is a sequence of actions that are treaed as a single unit of work.
+These actions should either complete entirely or take no effect at all.  Transaction
+management is an important part of an RDBMS oriented enterprise application to sensure
+data integrity and consistency.  The concept of transactions can be described with the
+following four key properties described as ACID(Atomicity, Consistency, Isolation, Durability)
+
+Atomicity
++++++++++++++++++++++++++++++++++
+A transaction should be treated as a single unit of operation
+which means either the entire sequence of operations is successful or unsuccessful
+
+
+Consistency: This represents th econsistency of referential integrity of the 
+database, unique primary keys in tables, etc.
+
+
+
+Isolation: there may be many transactions processing with the same set at the
+same time, each transaction should be isolated from others to
+prevent data corruption
+
+
+
+Durability: once a transaction has compelted, the results of this transaction
+have to be made permanent and cannot be erased fromt he database due to 
+system failure.
+
+
+
+Spring vs EJB transactions
+====================================
+They pretty much are the same things....sans
+the fact that you need an app server to use
+EJB transactions.  Spring transactons management
+can be implemented without the need of an application server.
+
+
+
+Local vs Global Transactions
+======================================
+Local transactions are specific to a single transactional resource like JDBC connection,
+whereas gloal transactions can span multiple transactional resources like transaction in a
+distrubted system.
+
+Local transaction management can be useful in a centralized computing enviroment 
+where application components and resources are located at a single site, and transaction
+management only involves a local dta manager running on a single machine.
+Local transactions are easier to be implemented
+
+Global transaction managment is required in a distrubted computing enviroment where all the resources are distrubted across multiple systems.  In such a case transaction management needs to be done both at local and global levels.  A distrubted or a global
+transaction is executed across multiple systems, and is execution requires coordination between ghe global transaction
+management system and all the local data managers of all the involved systems
+
+
+
+Programmatic vs. Declaritive
+====================================
+As always with spring you have two options....and 
+as always the programmatic way is more flexible but POJOs
+are no longer POJOs and now you have a mess of high coupling
+on your hands.
+XML is less flexible...but allows for very low coupling.
+Always go for the low coupling....
+
+
+This stuff can also be managed by AOP
+
+
+
+
+Spring Transaction Abstractions
+=====================================
+The key to the Spring transaction abastracion is defined by the interface:
+
+	org.springframework.transaction.PlatformTransactionManager
+
+/* PlatformTransactionManager code */
+
+	public interface PlatformTransactionManager{
+		throws TransactionException;
+		TransactionStatus getTransaction(TransactionDefinition definition) throws TransactionException;
+		void commit(TransactionStatus status)  throws TransactionException ;
+		void rollback(TransactionStatus status) throws TransactionException ;
+	}
+
+Methods and Descriptions
+====================================
+ S.N.		Method & Description
+++++++++++++++++++++++++++++++++++++
+1.	TransactionStatus getTransaction(TransactionDefinition definition)
+/* This method returns a currently active transaction or create a new
+   one, according to the specified propagation behavior  */
+2.	void commit(TransactionStatus status)
+/* This method commits the given transaction, with regard
+   to its status  */
+3.	void rollback rollback(TransactionStatus status)
+/* This method performs a rollback of the given transaction  */
+
+
+The TransactionDefinition is the core interface of the transaction support in 
+Spring and it is defined as below:
+====================================
+
+	public inteface TransactionDefinition{
+		int getPropagationBehavior();
+		int getIsolationLevel();
+		String getName() ;
+		int getTimeOut();
+		boolean isReadOnly();
+	}
+
+
+There is no code here for this stuff...for more info..
+
+http://www.tutorialspoint.com/spring/spring_transaction_management.htm
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+User-Defined Functions
+===================================
+User-defined functions or UDFs, allow you to register custom functions in Python
+, Java, and Scala to call within SQL.  They are a very popular way to 
+expose advanced functionality to SQL users in an organizations, so that these
+users can call into it without writing code.  Spark SQL makes it especially
+easy to write UDFs.  It supports both its own UDF interfae and existing Apache
+Hive UDFs
+
+
+Spark SQL UDFs
+======================================
+Spark SQL offers a built-in method to easily register UDFs by passing
+in a function in your programming language.
+
+Scala and Python we can used the native function and lambda syntax of the 
+language, and in Java we need only extend the appropiate UDF class.  Our UDFs
+can work on a variety of types, and we can return a different type than the one wer are
+called with.
+
+
+In Java and Python we also need to specify the return type using one
+of the SchemaRDD types.  In Java thse types are found in :
+
+	org.apache.spark.sql.api.java.DataType
+
+In  Python we import:
+	DataType
+
+Example where a very simple UDF computes the string length:
+----------------------------------------------------------
+#Python string length UDF
+#make a UDF to tell us how long some text is
+hiveCtx.registerFunction("strLenPython", lambda x: len(x),IntegerType())
+lengthSchemaRDD = hiveCtx.sql("SELECT strLenPython('tweet') FROM tweets LIMIT 10")
+
+//Scala string lenghth UDF
+registerFunction ("strLenScala",(_:String).length)
+val tweetLength = hiveCtx.sql("SELECT strLenScala('tweet') FROM tweets LIMIT 10")
+
+ldaPileLinePython.tar
+
+scp mbrown@vm20-staging.drax.gotgdt.net:/home/mbrown/ldaPileLinePython.tar ./
+

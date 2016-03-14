@@ -1,0 +1,84 @@
+http://www.dummies.com/how-to/content/10-differences-between-javafx-and-swing.html
+
+Swing vs JavaFX
+========================================
+Swing is still supported but it has been deprecated
+and no new work is being done on enhancing swing.
+
+
+Differences from JavaFX
+---------------------------------------
+Classes hold the user interface
++++++++++++++++++++++++++++++++++++++++
+The interface is called a frame and is defined via class:
+
+	JFrame
+
+A frame is essentially an empty window to which you can add a panel, which serves
+as a container for you user-interface elements.  A panel is defined by the class
+
+	JPanel
+
+The Jpanel is is used to place user-interface components.
+JavaFX uses
+
+JavaFX uses a lot of theater metaphores..
+-------------------------------------------
+JavaFx uses the metaphor of a theater to model te top-level
+containers of an application.
+
+Stage
+++++++++++++++++++++++++++++
+Defined by the Stage class.
+Higher level container.
+Typically a window on some operating systems
+A sgate may contain a 
+	Scene
+
+In theatrical parlence...The stage is where all the scenes of
+a theatrical play may take place.....:
+
+Stage
+	|
+	scene0
+	|
+	scene1
+	|
+	scene2
+	|
+	scene3
+
+Stage0
+	|
+	scene0
+	|
+	Stage1
+	|
+	scene2
+
+
+Scenes
++++++++++++++++++++++++++++
+*UI components are encapsulated within a scene
+*Applications may have more than one scene
+*Only one scene my be displyaed on the "stage" at anny given time
+*scenes contain a scene graph, which is the most important concept in JavaFX
+*What are scene graphs?
+	-is a collection of al the elements that makeup a user interface:
+		+groups
+		+layouts
+		+controls
+		+shapes
+	-this collection of objects are called "nodes"
+	-all nodes are derivations of the Node class
+
+In JavaFX, layout
++++++++++++++++++++++++++
+In Swing, a lout is assoicated with a JPanel.  The top-level
+JPanel gives the basica layout for the frame.  Nesting additional
+layouts within the top-level layout, you must create addtional JPanels,
+set their associated layouts, and then add then to the higher-level Layout.
+
+
+In JavaFX...layouts are extentions of the Node class just as 
+the UI components are.  Layouts contain a collection of 

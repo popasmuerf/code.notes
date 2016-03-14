@@ -1,0 +1,99 @@
+What is the Delegation pattern ?
+============================================
+In Software engineering, the delegation pattern is a design  pattern
+in object-oriented  programming where an objec, instead of 
+performing it's stated tasks, deledgates that task to an associated
+helper object.  There is an Inversion of Responsibility in which a
+helper object, known as a delegate,is given the responsibility to exectue
+a task for the delgator.
+
+
+
+
+Java examples(Simple):
+============================================
+class RealPrinter{
+	void print(){
+		System.out.println("someting");
+	}
+}
+
+
+
+class Printer{
+	RealPrinter p = new RealPrinter() ;
+	void print(){
+		p.print()  ;
+	}
+}
+
+
+public class Main{
+	public static void main(String[] arguments){
+		Printer printer = new Printer() ;
+		printer.print() ;
+	}
+}
+
+Java examples(Complex):
+============================================
+Here is a more complex case using a Decorater Pattern that 
+employs a Decorator Pattern using interfaces...allows for 
+a more flexible and typesafe way of delegation:
+
+interfae I{
+	void f();
+	void g() ;
+}
+
+
+class A implements I{
+	void f(){
+		System.out.println("A: running f()");
+	}
+	void g(){
+		System.out.println("A: running g()");
+	}
+}
+
+class B implements I{
+	void f(){
+		System.out.println("B: running f()");
+	}
+	void g(){
+		System.out.println("B: running g()");
+	}
+}
+
+
+class C implements I{
+	I i  = null ;
+	//delegation
+	public C(I i){
+		setI(i);
+	}
+	public void f(){
+		i.f() ;
+	}
+	public void g(){
+		i.g()
+	}
+	public void setI(I i){
+		this.i = i ;
+	}
+}
+
+
+public class Main{
+	public static void  main(String[] arguments){
+		C c = new C(new A());
+		c.f() ;
+		c.g();
+		c.setI(new B());
+		c.f() ;
+		c.g() ;
+	}
+}
+
+
+

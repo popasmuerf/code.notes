@@ -1,0 +1,54 @@
+sessionStringsDataFrame: org.apache.spark.sql.DataFrame = [uid: string, sessionid: bigint, stringvector: string]
+|
+|
+|----->Array[org.apache.spark.sql.Row]
+	   |
+	   |------>org.apache.spark.sql.Row
+	           |
+	           |
+	           |---------org.apache.spark.sql.Row = [NMCKA|LAlexis,38,apacheag|GET~46 apacheag|POST~1]
+	                     |
+	                     |
+	                     |--->row(0) = NMCKA
+
+
+
+071033.007.0701
+COIN CLIN 7 SLIN 0701
+
+
+
+
+Nicole Silver
+Natalie
+Latia
+Erin ?
+Angelica
+Vicki
+Lady Boss
+
+
+Street Pharamcist:
+	Avoid the Narcs!
+	Balance Maketing and chemistry to conner the market on Meth and Crack!!!
+	Outwit the feds on both streets and court !!!!
+
+
+var rowString = "[NMCKA|LAlexis,38,apacheag|GET~46 apacheag|POST~1]"
+var uid = rowString.replace("[","")
+uid = uid.replace("]","")
+var vectorList:ListBuffer[Double] = scala.collection.mutable.ListBuffer.empty[Double]
+var uidComponentArray:Array[String] = uid.split(" ")
+var uid0 = uidComponentArray(0).toString
+var count = uid0.split("~")(1)
+var uid1 = uidComponentArray(1).toString
+
+for(index <- 0 to (dnLength - 1)){
+				vectorList += 0.toDouble
+}
+
+
+
+
+
+

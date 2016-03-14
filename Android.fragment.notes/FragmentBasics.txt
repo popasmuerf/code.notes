@@ -1,0 +1,16 @@
+Chapter 1:
+	*Fragments are not Views, or View groups, they are aggregates for Views, ViewGroups
+	*Fragments exist within the context of an Activity
+	*Fragments cannot be swapped within a View container if they have been statically defined within a View
+	using the <fragment> tag within that Views layout.  Similaryly to how an Activity cannot have Dyanism within with respect to it's View components(setting attributes aside) using statically defined View components within it's layout.
+	*Activities using Fragments do not use the setContentView() method to inflate View Groups....The fragment inflates itself
+	*Fragments that are swapable do not have statically defined place holders in their target views:
+		The fragment must be instantiated manually initially using an instance and constructor method
+	*Fragments can talk directly to one another, whoever you may want to implement  fragment interfaces that are defined within the MainActivity....to facilitate low coupling....with some extra overhead
+	*You should really be careful about handling fragments via assigning references to them.....as much of their management is handled by Android, which could ultimately end up in a null pointer reference...
+	better to reference the fragment call stack whenever a fragement needs to be used or hangled via getFragment()
+
+
+	docList = [(wordId,(0,0)),(wordId,(1,0)),(wordId,(2,9))]
+
+	var docList = List( (wordId0,(0,0)), (wordId0,(1,0)) ,(wordId0,(2,0)),(wordId0,(3,0)),(wordId0,(4,12)),(wordId0,(5,0)),(wordId0,(6,3)),(wordId0,(7,0)),(wordId0,(8,0)),(wordId0,(9,0)),(wordId1,(0,0)),(wordId1,(1,1)),(wordId1,(2,0)),(wordId1,(3,0)),(wordId2,(0,0)),(wordId2,(1,0)),(wordId3,(2,0)) )

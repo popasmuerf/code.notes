@@ -1,0 +1,1 @@
+https://ccoenraets.github.io/cordova-tutorial/build-cordova-project.html

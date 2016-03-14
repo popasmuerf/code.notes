@@ -1,0 +1,310 @@
+What is Grails ?
+============================================
+Grails is a a set of Groovy-based Domain Specific languages(DSLs)
+
+that are used to create and configure a traditional  Spring-Hibernate
+application from Java
+
+
+
+Grails Domain Model
+=========================================
+The domain model for this app consists of the following classes
+
+	Person
+	Location
+
+
+Every app's design starts with identifying the pertinent data
+with few exception....
+
+
+Domain class implementations(Person)
+------------------------------------------
+/*person*/
+
+class Person{
+	String title
+	String first
+	String last
+	String toString(){ "$title $first $last"}
+	}
+	static hasMany[location:Location]
+	static contraints = {
+		title inList: ['Mr.','Ms.','Dr.','Prof.','King','Queen','Princess','God-Emperor','Grand Poobah','Benevolent Dictator for Life']
+		first nullable:true
+		last blank:false
+	}
+
+}
+
+^^^^Explaination of above code
+
+We have 3 attributes for this model:
+	String title
+	String first //name)
+	Stringlast  //(name)
+We have an overridden *.toString method that
+returns the three attributes as the String representation
+of this class:
+
+	String toString(){ "$title $first $last"}
+
+We have established that this person object will have a
+"one to many" relationship with objects of type "Location" represented
+by this declaration of an associated array using the keyword for the dict variable
+"hasMany":
+
+	static hasMany = [location:Location]
+
+.....then we have some constraints defined in the Grails that all us to specify
+that the app will insist that:
+
+	The title must be one of the listed values conatined within the special collection:
+		inList
+		-------
+		title inList: ['Mr.','Ms.','Dr.','Prof.','King','Queen','Princess','God-Emperor','Grand Poobah','Benevolent Dictator for Life']
+
+.....another constraint is such that the attributes:
+
+	first nullable:false
+	last blank:false
+
+
+Domain class implementations (Location)
+------------------------------------------
+/*person*/
+
+class Location{
+	String city
+	String state
+	Double latitude
+	Double longitude
+	String toString(){ "$city $state"}
+	static contraints = {
+		city blank:false
+		state blank:false
+		latitude min: -90d, max: 90d
+		longitude()>
+	}
+
+}
+
+
+
+Grails constrollers 
+=========================================
+Controller actions will either render data 
+directly(uncommon unless you are providing RESTful services
+which makes sense because REST services rarely ever
+provide a GUI render as output)
+
+	-or-
+
+redirect to another URL
+
+	-or-
+return a collection of model objects to a view
+
+
+We could auto-magically generate a set of views that allow us to:
+
+	create
+	edit
+	save
+	update
+	delete
+
+(basically CRUD) with the single line:
+
+	static scaffold = true
+
+For example...we want to generate basic views for the 
+Person class:
+
+	class Person{
+	......
+		static scaffold = true
+	......
+	} 
+^^^ This single line "static scaffold = true"
+generates a set of views for the person controller
+that allow for CRUD operations.
+Dynamic scaffolding helps during develoment,
+because it allows you to modify the domain class fields
+fields all you want and the formsd and sQL commands will
+all update automatically
+
+You probably want to use dynamic view scaffolding during development,
+but you also want to remove it for production, and use serperate views.
+You want as much seperation between the components of
+MVC as much as possible to avoid high cupling(you will never achieve 100% decoupling
+in any system tho....)
+
+
+Controller actions
+======================================================================
+In Grails, controllers consist of actions, which are public methods.
+A URL maps directly to an action in a controller, with an optional id passed
+as well if needed.
+
+
+The pattern:
+
+	http://<server>:<port>/appname/controller/action/id
+
+Example:
+	http://localhost:8080/geoapp/personController/toString/0001
+
+
+
+
+Our Controllers for the GeoSpaceAPP
+========================================================================
+@Transactional(readOnly = true)
+class LocationController {
+	static allowedMethods = [save:"POST",update:"PUT",delete:"DELETE"]
+	def index(Integer max){
+		params.max = Math.min(max?: 10,100)
+		respond Location.list(params),model:[locationInstanceCount:Location.count()]
+	}
+	def show(Location locationInstance){
+		respond locationInstance>
+	}
+	def create(){
+		respond new Location(params)
+	}
+	// ....
+}
+
+
+^^^^^Explaination
+
+@Transactional(readOnly = true):
+	annotation comes from the Spring framework.  It means that by default,Spring
+	intercdpts the call to each method in this, begins a trancsaction, invokes the method, and 
+	then commits or rolls back the transaction when the method completes.  By default, the 
+	transactions are read-only, bu this can be customeized on each method
+
+def index(Integer max):
+	Takes in a parameter of type interger.  Each Controller class apparantly
+	inherits a paramters variable of type "Map".  Here the "max" argument is used to 
+	define the max length of the "paramters" Map or associative array.
+	the purpose of the "parameters" Map within each controller is to hold the 
+	parameters of any RESTful requiest operation
+
+	The respond method then returns a list of the the first 10 location instances, or sends back
+	their JSON form if the Accept heder of the HTTP request is:
+		application/json
+
+About MVC and Services
+====================================
+As developers, wer're taught about the MVC architechture very early in 
+our carreers.  In the Java world however, servcies play an equally vital role.
+What if you need to work with multiple controllers and domain objects in the same
+transactions?  What if you want to keep your contrllers reasonablly 
+uncluttered with business logic?  That code has to go somewhere.....
+
+In grails we take care of this issue via service classes.   Grails services
+are transactional by default.  They are also Spring beans, so they
+can be injected as dependencies
+
+In this particual case of our app...we need aservice that can take a location instance and
+populate it's latitude and longitude fields based on its city and state attributes.  Fortunately,
+Google provides  a RESTful web service that can do that for us.
+
+
+Google V3 Geocoder
+====================================
+https://developers.google.com/maps/documentation/geocoding/
+
+
+^^^As a poart of the overall Google Maps API, Google provides a service that geocodes locations.
+The documentation for the service can be found at the above URL
+
+Note that only GET requests are supported so the following will not work:
+	POST
+	PUT
+	DELETE
+...you could say that this is only a "GETful service"....lolz
+
+One of the principles of REST is content negotiation, which is where the client specifies the form of
+the response that they want, such as:
+	XML
+	JSON
+and the service provides it.  Normally the form is a specified via
+a MIME type in the HTTP request header, however this is not how we are handling it here...
+The Google geocoder hard-wires the value into the URL itself
+
+The base URL is either:
+
+	http://maps.googleapis.com/maps/api/geocode/xml
+	-or-
+	http://maps.googleapis.com/maps/api/geocode/json
+
+To send  a GET request, you also need to append an address field holding the:
+	street
+	city
+	state
+in a string where each attribute is a substring seperated by a comma
+
+If any of the submitted values have anythign like apostrophe's or hypens or
+other assorted crap, you will be required to encode them as they cannot appear within
+the URL.  Groovy does not have such powers(URL encoder)...but Java does
+
+
+Test Driven Development(is fucking retarded and waste of time)
+===============================================================
+In true TDD, you write tests first, watch them fail, then write the implementation that successively makes them succeed, and finally refactor your code into what you ultimately want. The phrase used is “Red-Green-Refactor”, after the colors in the JUnit test window. Rather than make this article even longer than it has already become, I’m only going to write one test and then provide the implementation right away.
+
+(I must confess that I’m not good at pure TDD. I tend to follow what I call GDD: Guilt Driven Development. If I write code that isn’t tested, I feel guilty about it until I write a test.)
+
+Here’s a Grails test for the GeocoderService class:
+
+A Spock test for the GeocoderService
+
+
+/* code */
+
+@TestFor(GeocoderService)
+  class GeocoderServiceSpec extends Specification {
+    void "check lat/lng for Atlanta, GA"() {
+      given:
+      def atl_lat = 33.755
+      def atl_lng = -84.390
+      Location loc = new Location(city: 'Atlanta', state: 'GA')
+      
+	  when:
+      service.fillInLatLng(loc)
+
+	  then:
+      (loc.latitude - atl_lat).abs() < 0.01
+      (loc.longitude - atl_lng).abs() < 0.01
+    }
+  }
+
+ ^^^ Grails generates a Spock test for each artifact. The @TestFor annotation shows the class being tested, and, if that class is a controller or service, instantiates it automatically. The test is checking the latitude and longitude of Atlanta, GA. Given the correct values, when the fillInLatLng method of the service is invoked using a Location instance, the test shows that the values of the latitude and longitude fields inside the Location object are close enough.
+
+
+ Implemetation steps for the sevice:
+
+
+ 1. We starte with the base3 URL for the serviceString base =  "https://maps.googleapis.com/maps/api/geocode/xml?"
+
+ 2. Create a Groovy list containing the city and state:
+ 	def encoded = [loc.city, loc.state]
+
+ 3. Transform the list into a new one by URL encoding the value:
+ 	def encoded = [loc.city, loc.state].collect { URLEncoder.encode(it, 'UTF-8')}
+
+ 4. Create a string by joining the list elements with commas
+ 	def encoded = [loc.city, loc.state].collect { URLEncoder.encode(it, 'UTF-8')}.join(',')
+
+ 5. 
+  
+
+
+
+
+
+

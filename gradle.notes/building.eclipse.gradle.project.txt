@@ -1,0 +1,19 @@
+Running Gradle Proj in Eclipse
+=========================================
+*This is how I am currently doing it.....
+*Gradle dependencies are stored in ~/.gradle
+*Add the gradle plugin in build.gradle
+*Run on the commandline : gradle --refresh-dependencies 
+*Run on the commandline : gradle eclipse-clean
+*Run on the commandline : gradle eclipse
+*If you havent already...you might have to remove(not delete!!) the project from eclipse and then
+re-import as a gradle project
+*During the re-import.....you project should build on it's on.  Your dependency jars will not be
+visible in the "Project and External Depenendies" drop down
+
+
+To Do
+=========================================
+*I still have yet to figure out where exactly these dependencies are located exactly.
+*There is a good chance they are located by default in ~/.gradle  
+*There is a .gradle directory within my project root....I wonder if I can specify this as the default ?

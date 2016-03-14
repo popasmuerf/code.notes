@@ -1,0 +1,142 @@
+Grails Convention over Configuration
+============================================
+Relevant sections:
+---------------------------------------------
+* grails-app :
+	top level directory for Groovy sources
+	-controllers :
+		Web controllers
+	-domain :
+		The application domain
+	-i18n :
+		Support for internationaliztion(i18n)
+	-services :
+		The service layer
+	-taglib :
+		Tag libraries
+	-utils :
+		Grails specific utilities
+	-view :
+		Groovy Server Pages
+*scripts :
+	Code generation scripts
+*src/main/groovy :
+	supporting soure code
+*src/test/groovy :
+	Uni and integration tests
+
+
+Running an Application
+--------------------------------------------
+$ cd app-root-directory
+$ grails run-app
+
+
+Running an application where we specify a different port
+----------------------------------------------
+$ grails -Dserver.port=8090 run-app
+
+
+Note:
+-----------------------------------------------
+It is best to start up applications in interactive moved since
+a container restart is much quicker:
+
+$ grails
+grails> run-app
+| Server running. Browse to http://localhost:8080/helloworld
+| Application loaded in interactive mode. Type 'stop-app' to shutdown.
+| Downloading: plugins-list.xml
+grails> stop-app
+| Stopping Grails server
+grails> run-app
+| Server running. Browse to http://localhost:8080/helloworld
+| Application loaded in interactive mode. Type 'stop-app' to shutdown.
+| Downloading: plugins-list.xml
+
+
+
+Testing an Application
+=================================================
+$ grails test-app
+
+Deploying an application via WAR
+===================================================
+If you must deploy your application to a traditonal container
+such as tomcat or jetty, we can easily create a war(Web Application Archive) file:
+
+$grails war
+
+NOTE!!!!:
+----------------------------------------------------
+By default grails embeds tomcat inside the WAR file.  This will cause
+untold issues when deploying to a different version of Tomcat.
+You can avoid this via deploying your war via editing your
+build.gradle file before deployment:
+
+provided "org.springframework.boot:spring-boot-starter-tomcat"
+
+via:
+$ grails war 
+java -Dgrails.env=prod -jar build/libs/mywar-0.1.war
+
+
+
+Supported EE containers:
+=================================================
+Tomcat7
+GlassFish3
+Resin4 and above
+JBoss 6 or above
+Jetty 8 or above
+Oracle WebLogic 12c or above
+IBM Websphere 8.0 or above
+
+
+
+
+Creating Artifacts
+==================================================
+Note:
+For example, to create the basis of an application you typically need a domain model:
+
+
+
+
+Creating applicatons:
+	$grails create-app my-app
+
+Creating controllers:
+	$cd my-app
+	$grails create-controller 
+		-or
+	$grails create-controller Book
+	$grails create-contorller org.bookstroe.book
+
+
+Basic Configuration
+=================================================
+Configuration in Grails is split along two 2 areas:
+	build configuration
+	runtime configuration
+
+Basic Configuration
+-------------------------------------------------
+This is generally done via Gradle via the file:
+	build.gradle
+Runtime configuration is by default specified in
+	YAML
+within the file:
+	grails-app/conf/application.yml
+
+Quick summary basic configuration:
+	Build --> grails-app/build.gradle
+	Runtime --> grails-app/conf/application/.groovy
+within grails-app/conf/application/.groovy:
+	userHome --> Location of the home directory for the account that is running the Grails application
+	grailsHome --> Location of the directory where you installed Grails.  If the GRAILS_HOME enviroment variable is set, it is used
+	appName --> The application name as it appears in application.properites
+	appVersion --> The application version as it apperas in application.propertiers
+
+	
+

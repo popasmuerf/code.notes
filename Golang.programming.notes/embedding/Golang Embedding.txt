@@ -1,0 +1,41 @@
+https://golang.org/doc/effective_go.html#embedding
+
+Golang Interface Embedding
+=============================================
+type Reader interface {
+    Read(p []byte) (n int, err error)
+}
+
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+
+type ReadWriter interface {
+    Reader
+    Writer
+}
+
+The same bascer idea applies to structs, but with more far-reaching imlications.
+The bufio package has two struct types:
+
+bufio.Reader
+bufio.Writer
+
+And bufio also implements a buffered reader/writer, which it does by
+combining a read and a writer into one struct using embedding: it lists the ypes tyeps within the sturct but does not
+give them field names.  ...but do not forget...we need to promote the methods of the fields
+and to satisfy the io interfaces, we would also need to provide the forwarding methods like tis:
+
+//ReadWriter stores pointers to Reader and Writer
+//It implments io.ReadWriter
+
+type ReadWriter struct{
+	reader *Reader
+	writer *Writer 
+}
+func (rw *ReadWriter) Read(p []byte) (n int, err error) {
+    return rw.reader.Read(p)
+}
+
+
+func (fw *ReadWriter) Rea

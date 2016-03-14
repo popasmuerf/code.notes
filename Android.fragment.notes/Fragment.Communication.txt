@@ -1,0 +1,32 @@
+Fragment Communication:
+========================================
+Because the fragment manager knows about all fragments
+attached to the current activity, the activity or any frament in that activity can
+ask for any other framgent using :
+	getter methods
+but this is not ideal.  This would cause your fragments
+to know much more about other activity framents tha they should.
+This leads to an unhealthy amount of coupling which should be avoided.
+As always, interfaces are the ideal method for object communication
+in OOP languages.
+
+Note about the effiency of using 
+interfaces over the FragmenterManager
+for intra fragment communication:
++++++++++++++++++++++++
+It is cleaner, and generally scales better
+than using the FragmentManager...take this
+into account when conscidering mobile power
+consumption and resources
+
+
+Example of Direct Frame-to-Frame 
+Communication using the FragmentManager
+===========================================
+FragmentOther  fragOther = (FramentOther)getFragmentManager().findFragmentByTag("other");
+fragOther.callCustomMethod(arg1,arg2);
+
+
+
+
+

@@ -1,0 +1,23 @@
+Cancelling a pending Runnable
+=====================================
+We can cancel a pending operation by removing
+a posted Runnable callback from the queue.
+We can canceled a scheduled task(Runnable or Message)
+if we have a reference to it.
+This is one of the instances where you 
+actually do not want to load/dynamically create
+a object of type Runnable/Message
+
+
+final Runnable runnable = new Runnable(){
+	public void run(){
+		//do some work...
+	}
+};
+handler.postDelayed(runnable,TimeUnit.SECONDS.toMillis(10));
+Button cancel = (Button) findViewById(R.id.buttonId);
+cancel.setOnClickListener(new OnClickListener(){
+	public void onClick(View v){
+		handler.removeCallbacks(runnable);
+	}
+});

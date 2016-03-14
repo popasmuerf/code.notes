@@ -1,0 +1,121 @@
+http://www.tutorialspoint.com/phonegap/phonegap_app_contents.
+https://cordova.apache.org/docs/en/latest/guide/overview/index.
+https://cordova.apache.org/docs/en/latest/guide/overview/index.html
+
+Offline websites/apps
+========================================
+
+Offline websites are copied to local hard drive and accessed whenever th euser
+needs to whiught any internet connection.  Likewise, this offline web
+app will let you create a web application that is downloaded to its entirety to the mobile
+devices of a user who can access that offline.
+
+An application for this type may include app having collection of stories,
+short tutorials or any other offline  content of users' interest, which he/she can read offline even when internet is not available
+****************************************************************************
+
+
+Application implementation
+========================================
+Teh application istself is implemented as a web page,
+by default a local file named index.html, that references whatever CSS,
+JavaScript, images, media files, or other resources are necessary for it to run.
+All apps execute at as a WebView within the native application wrapper, which you distrubte to 
+app stores.
+
+
+The Cordova-enabeld WebView may provide the application with its entire user interface.  On some
+platforms, it can also be a compoenent with a larger, hybrid application that mixes the WebView with
+native application components.
+
+
+Plugins
+========================================
+Are used for communication between Cordova and native components.
+This allows for invocation of native code from JS.  Plugins are generally(should be consistent)
+across platforms.  Plugins are available via the plugin registery.  You may also develop your own
+plugins.  Cordova provides a plugin development guide
+
+
+Development Paths
+=========================================
+
+Basic Components
+=======================================
+The File layout and configuration follows the specification
+of W3C's Packaged Web App, or widget specification
+
+Offline App
+-----------------------
+
+app root/
+|
+|
+|
+|
+|
+|------config.xml
+|
+|
+|------index.html
+|
+|
+|
+|-------data/
+		|
+		|
+		|- .html files
+|-------css/
+		|
+		|
+		|- .css files		
+|-------js/
+		|
+		|
+		|- .js files	
+|-------js/
+		|
+		|
+		|- .js files
+|-------js/
+		|
+		|
+		|- .js files
+|-------res/
+		|
+		|
+		|-------icon/
+				|-------android/
+				|-------ios/
+
+
+Note:
+=============================
+config.xml -- contains app configs
+index.html -- homepage of web app content
+*.html -- should contain relative paths only in ther hrefs.  Absolutel paths not allowed
+
+
+Note:
+==============================
+You may have noticed that the data folder is missing in the 
+apss online mod...because all the files reside on the 
+atual server and are accessible via the interwebs
+
+
+
+
+
+
+
+	
+		
+
+
+
+
+
+
+
+
+

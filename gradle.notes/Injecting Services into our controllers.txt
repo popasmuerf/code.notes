@@ -1,0 +1,12 @@
+http://grails.asia/grails-tutorial-for-beginners-hql-queries/
+
+Grails HQL intro
+================================================
+Just delclare a varaible named after the service
+within a controller
+
+
+
+
+Example Services
+================================================

@@ -1,0 +1,139 @@
+https://grails.org/single-page-documentation.html
+
+Grails Object Relationa Mapping (GORM)
+=========================================
+Domain classes are core to any business application.
+They hold state about busiess process and hopefully  also implement
+behavior.  They are linked together through relationships:
+	one to one
+	one to many
+	many to mnay
+GORM is grails object relational mapping (ORM) implementation.
+Under the hood is uses Hiberante 3(a flexible ORM)
+
+We can also write Grails domain classes in Java.  See the section on Hibernate
+integration for how to write domain classes in Java but still use dybnamic
+persistent methods.
+
+/*Example*/
+
+def book = Book.findByTitle("Groovy in Action")
+book.addToAuthors(name:"Dierk Koenig").addToAuthors(name:"Guillaume LaForge").save()
+
+
+Creating a domain class
+==========================================
+$ grails create-domain-class hello.Person
+
+^^^The above command will generate the following class in
+grails-app/domain/helloworld/Person.groovy
+
+
+/*code*/
+
+package helloworld
+class Person{
+	
+}
+
+
+/*Let's customize our new domain class*/
+
+package helloworld
+class Person{
+	String name
+	Integer age
+	Date lastVist
+}
+
+
+Grails console
+=========================================
+We can use the grails console for class manipulation:
+
+$ grails console
+
+
+
+Basic CRUD (Create Read Update Destroy)
+=======================================
+Creatin a domain class use Map constructer to set it's properties and then 
+save it.
+
+def p = new Person(name: "Fred",age: 40,lastVist: new Date())
+p.save()
+
+
+Read
+------------------------------------------
+def p = Person.get(1)  //not read only
+def prOnly = Person.load(1)
+
+
+Update
+-------------------------------------------
+def p = Person.get(1)
+p.name = "Bob"
+p.save()
+
+
+Delete/Destroy
+-----------------------------------------
+def p = Person.get(1)
+p.delete()
+
+
+
+
+
+Domain Modelling in GORM
+===========================================
+When building Grails applications,  you have to consider the problem
+domain you are trying to solve.  For example if we where building
+an Amazon-style bookstore you would be thinking about
+	books
+	authors
+	customers
+	publishers
+	etc...
+To create our domain class, you run the command:
+	$ grails create-domain-class org.bookstore.Book
+
+/*result*/
+package org.bookstore
+class Book{
+}
+
+
+/*refining our domain class*/
+package org.bookstore
+class Book{
+	String title
+	Date releaseDate
+	String ISBN
+}
+
+
+
+Association in GORM
+===============================================
+Relationships define how damain classes interact with each other.
+Unless specified explicity at both eneds, a realtionship exists only 
+in the directionit is defined.
+
+/* uni-directionaly face to nose */
+class Face{
+	Nose nose
+}
+class Nose{
+	
+}
+
+/* uni-directionaly face to nose */
+class Face{
+	Nose nose
+}
+class Nose{
+	static belongsTo = [face:Face]
+}
+

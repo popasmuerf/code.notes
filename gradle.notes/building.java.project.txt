@@ -1,0 +1,26 @@
+https://docs.gradle.org/current/userguide/tutorial_java_projects.html
+http://www.mkyong.com/gradle/gradle-create-java-project-structure-automatically/
+https://docs.gradle.org/current/userguide/tutorial_java_projects.html
+
+Creating Java projects from the CLI:
+======================================
+#gradle init --type java-library
+
+
+
+
+Gradle basic build file: gradle.build
+======================================
+apply plugin: 'java'
+repositories {
+	mavenCentral()
+}
+dependencies{
+	compile 'org.slf4j:slf4j-api:1.7.5'
+    testCompile 'junit:junit:4.11'
+}
+
+
+build
+======================================
+# gradle build

@@ -1,0 +1,90 @@
+Function Overloading
+================================
+You may have multiple definitions for the same
+function name in the same scope.
+You many only overload functions within the same
+scope via arguments differing in type and order or return
+type.  
+Overloading via return type only is not allowed.
+
+Example:
+#include <iostream>
+using namespace std ;
+class printData
+{
+	public:
+		void print(int i){
+			cout<<"Printing"<<i<<endl ;
+		}
+		void print(double f){
+			cout<<"Printing float: "<<f<<endl ;
+		}	
+};
+
+
+Operators Overloading
+================================
+You can redefine or overload most of the built-in
+operators available in C++.  Thus a programmer
+can use operators with user-defined types as well.
+
+Overloaded operators are functions with special names
+the keywoard operator followed by the symbol for
+the operator being defined. Like any other function,
+an overloaded operator has a return type and 
+a parameter list:
+
+Box operator+(const Box&);
+
+Delcares the addition operator that can be used to add two
+Box objects and returns final Box object.
+
+If we are going to define the above function as a non-class 
+method, then we would have to pass two arguments for each operand as follows:
+
+Box operator+(const &Box, const &Box);
+
+Example:
+#include <iostream>
+using namespace std ;
+class Box
+{
+	private:
+      	double length;      // Length of a box
+      	double breadth;     // Breadth of a box
+      	double height;      // Height of a box
+	public:
+		double getVolume(void)
+      {
+         return length * breadth * height;
+      }
+      void setLength( double len )
+      {
+          length = len;
+      }
+
+      void setBreadth( double bre )
+      {
+          breadth = bre;
+      }
+
+      void setHeight( double hei )
+      {
+          height = hei;
+      }
+
+      //Overload + operatior to add  two Box objects.
+      Box operator+(const Box& b)
+      {
+      	Box box ;
+      	box.length = this->length + b.length  ;
+      	box.length = this->breadth  + b.breadth ;
+      	box.height = this->height + b.height ;
+      	return box ;
+      }	
+};
+
+
+
+Move Semantics
+================================

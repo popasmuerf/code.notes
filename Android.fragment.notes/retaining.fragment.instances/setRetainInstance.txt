@@ -1,0 +1,5 @@
+https://www.dre.vanderbilt.edu/~schmidt/cs282/PDFs/Concurrency-and-Synchronization-parts6-and-7.pdf
+
+
+Motivating Android Concurrency Idioms
+===========================================================

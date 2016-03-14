@@ -1,0 +1,62 @@
+import org.apache.spark.streaming.StreamingContext._
+import org.apache.spark.streaming.StreamingContext._
+import org.apache.spark.streaming.dstream.DStream
+import org.apache.spark.streaming.Seconds
+
+
+val scc = new StreamingContext(conf,Seconds(1))
+val linesRDDStream = ssc.socketTextStream("localhost",7777)
+val errorLines = linesRDDStream.filter(_.contains("error"))
+errorLines.print()
+
+
+
+
+
+import org.apache.spark.streaming.api.java.JavaStreamingContext ;
+import org.apache.spark.streaming.api.java.JavaDStream ;
+import org.apache.spark.streaming.api.java.JavaPairDStream ;
+import org.apache.spark.streaming.Duration ;
+import org.apache.spark.streaming.Durations ;
+
+JavaStreamingContext jssc = new JavaStreamingContext(conf,Durations.seconds(1));
+JavaDStream<String> lines = jscc.socketTextStream("localhost",7777); 
+JavaDStream<String> errorLines = lines.filter(
+	new Function<String,Boolean>(){
+		public Boolean call(String line){
+			return  line.contains("error");
+		}
+	}
+);
+
+
+/*
+This sests up only the computation that will be done when the system recieves
+Data.
+To start reciveing data, we must expliclity call the 
+	start()
+method on the streaming context
+	ssc.start()
+		-or-
+	jssc.start() ;
+Spark Streaming will start to schedule Spark jobs
+on the underlying SparkContext.  This will
+occur in a sperate theread, so to keep our applicaiton
+from exiting, we also need to call
+	awaitTermination 
+to force the main thread to 
+to wait for the streaming computation thread to finish.
+*/
+
+
+Scala
+======================
+//Start our straming context and wait for it to "finish"
+ssc.start() 
+ssc.awaitTerminationb()
+
+Java
+======================
+
+
+

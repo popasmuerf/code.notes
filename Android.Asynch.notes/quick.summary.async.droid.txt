@@ -1,0 +1,212 @@
+https://www.dre.vanderbilt.edu/~schmidt/cs282/PDFs/Concurrency-and-Synchronization-parts6-and-7.pdf
+
+
+Motivating Android Concurrency Idioms
+===========================================================
+*Non-UI Threads cannot access widgets in the UI
+toolkit since it's not thread safe
+
+*Android supports a few options for concurrency idioms
+for processing long-running operations in the background
+thread(s) and communicating with the UI Threadz
+	Handlers
+	Messages
+	Runnables
+
+
+AsyncTask
+==============================
+Allow an app to run background operations 
+& publih results
+on teh UI thread without 
+manipulating threads or
+handlers.  An AsyncTask runs only once.
+
+
+
+
+
+Android Looper Class
+==============================
+A Looper provides a message queue to a thread
+Only one Looper is allowed  per Thread 
+The UI Thread has a Looper, but Loopers
+can also be used in non-UI threads
+A Looper provides  a  message queue
+to a thread
+
+The method:
+
+	Looper.loop()
+
+runs a Thread's main event loop, which waits for Messages
+and dispatches them to their Handlers
+
+
+/* Example Code */
+
+public class Looper{
+	final MessageQueue mQueue ;
+	public void prepare(){
+		....
+	}
+	public static void loop(){
+		...
+		for(;;){
+			Message msg = queue.next();
+		...
+			msg.target.dispatchMessage(msg);
+		...
+		}
+	} 
+	public void quit(){
+		....
+	}
+}
+
+
+^^^ A Looper provides a message queue to a thread
+Again...only one Looper is allowed per thread.
+The method :
+
+	Looper.loop()
+
+runs a Thread's main event loop, which
+waits for Messages and dispatches
+them to their Handlers
+
+
+
+Loopers by default do not have a message loop associate
+
+
+
+/**
+	To create a Handler that uses our Callback, simply
+	pass the cCallback during Handler construction:
+
+	Handler handler = new Handler(new Speaker());
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+public static class SpeakHandler extends Handler{
+	public static final int SAY_HELLO = 0 ;
+	public static final int SAY_BYE = 1 ;
+	public SpeakHandler(Callback callback){
+		super(callback);
+	}
+	@Override
+	public void handleMessage(Message msg){
+		switch(msg.what){
+			case SAY_HELLO:
+				sayWord("Hello"); break;
+			case SAY_GOODBYE:
+				sayWord("Good Bye"); break ;
+			default:
+				super.handleMessage(msg);
+		}
+	}
+	private void sayWord(String word){
+		//...
+		//...
+		//...
+	}
+}
+
+public static class Speaker implements Handler.Callback{
+	public static final int SAY_WORD = 2 ;
+	@Override
+	public boolean handleMessage(Message msg){
+		if(msg.what == SAY_WORD){
+			sayWord((String)msg.obj);
+			return true ;
+		}
+		return false ;
+	}
+	private void sayWord(String word){
+		//...
+		//...
+		//...
+	}
+}
+
+Handler h = new SpeakHandler(new Speaker());
+h.sendMessage(Message.obtain(handler,Speaker.SAY_WORD,"!?"));
+
+
+
+
+
+/****
+Multithreaded example
+Let's extend our example to bind the app to a network socket
+and echo lines of text it recieves from the socket to the screen.
+Listening for lines of text fromt he network socket is a blaocking operations,
+so we must not do it from the main thread.
+
+1. start with a background thread
+2. bind the server socket 
+3. wait for a client to conect over the network.
+4. background thread recieves text from the socket
+5. background thread will send recievd text encapsulated within a Message object
+6. Message object will be sent to the SpeakHandler instance
+7. SpeakHandler instance will update on the main thread
+
+*/
+
+static class Parrot extends Thread{
+	private Handler handler ;
+	private InetAddress address ;
+	private ServerSocket server ;
+	private int serverPort = 4444 ; 
+	public Parrot(InetAddress address, Handler handler){
+		this.handler = handler ;
+		this.address = address ;
+		setPriority(Thread.MIN_PRIORITY);
+	public void run(){
+		try{
+			server = new ServerSocket(serverPort,1,address) ;
+			while(true){
+				Socket client = server.accept() ;
+				Handler.sendMessage(Message.obtain(handler,SpeakHandler.SAY_HELLO));
+				BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+				String word ;
+				while(!"bye".equals(word = in.readLine())){
+					handler.sendMessage(Message.obtain(handler,SpeakHandler.SAY_WORD, word));
+				}
+				client.close() ;
+				handler.sendMessage(Message.obtain(handler,SpeakHandler.SAY_BYE));
+			}
+		}catch(Exceptin exc){
+			Log.e(TAG,exc.getMessage(),exc);
+		}
+	}
+	}
+}
+/***Explaination of threaded code.
+	All of the "paperwork and accounting"
+	is done within Parrot's Class body,
+	and the work is done within Parrot.run() ;
+
+1.first we create server instance and bind any port above 1024 to it along with
+  an IP address:
+  server = new ServerSocket(4444,1,address);
+2. We loop forever, or until an exception is thrown.  Inside the loop we wait for a client
+   to connect to our server...the accept method is blocking...so the thread
+   is suspened until a client makes a connection:
+   Socket client = server.accept() ;
+3. When a client connects, we send a SAY_HELLO message to our Handler, so the main thread will updae the 
+   user interface for us:
+   handler.sendMessage(Message.obtain(handler,SpeakHandler.SAY_HELLO));
+4. Next, we wrap a buffering reader around our socket's input stream, and loop
+   on its readLine method, which blocks until a line of text is available.

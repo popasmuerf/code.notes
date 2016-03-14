@@ -1,0 +1,36 @@
+AppDelegate.h
+============================
+
+//Header file that provides all UI related items
+#import <UIKit/UIKit.h>
+
+
+//Forward declarations (Used when class will be defined/imported in future)
+@class ViewController ;
+
+
+//Interface for Appdelegate that handles app events
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+//Property window that handles app views
+@property (strong, nonatomic) UIWindow *window ;
+
+
+//Property ViewController handles screen flow.
+@property(strong,nonatomic) ViewController *viewController;
+//this marks the end of the interface..
+@end
+
+
+
+Important items in code-
+
+*AppDelegate inherits from UIResponder that handles iOS events.
+*Implements the delegate methods UIApplicationDelegate, which provides
+ key application events like app launch, termination, and so on.
+*UIWindows object is used to manage app views on teh iOS device screen.
+*UIViewController handles screen flow.
+
+
+
+

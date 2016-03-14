@@ -1,0 +1,106 @@
+http://grails.asia/grails-tutorial-for-beginners-starting-with-controllers/
+
+We can test out our controllers via something like the example below:
+=======================================================================
+
+class HelloController {
+    def index(){
+        render("Hello World")
+    }
+    def hi(){
+        render("How are you?")
+    }
+}
+
+
+^^^^Test out the via instructions below
+--------------------------------------------------------------------------
+(Note: Methods and Actions are synonymous in Grails)
+$grails
+grails> run-app
+#open up your browser or use curl and navigate to http://localhost:8080/myapp/hello
+#open up your browser or use curl and navigate to http://localhost:8080/myapp/hi
+
+-or-
+#open up your browser or use curl and navigate to http://localhost:8080/hello
+#open up your browser or use curl and navigate to http://localhost:8080/hi
+
+Normal routing for grails apps --> "http://localhost:8080/context/controller/action
+
+
+We can test out our controllers via something like the example below:
+=======================================================================
+If we want to actually use views instead of rendering controller output directy...
+something like:
+Normal view routing for grails apps --> "http://localhost:8080/context/controller/view
+Normal view routing for grails apps --> "http://localhost:8080/sample/blog/view
+
+
+Note:  The method "index()" within our controllers is special.  If you did not specify themethod in the URL, the ines is the default action that will be invoked.
+
+Note:  The method "render()" is the simplest method to return resutls to your browser.
+
+
+Rendering Results using GSPs
+=======================================================================
+It is not practical to write resutls insided our controller's actions(This is why early
+web dev in Java sucked....people where rendering results from servlets
+We do them in "server pages"  ...in this case ...GSPs
+GSPs and views are synonymous:
+
+Edit the controller code and remove all render() methods
+
+package somepackage
+class HelloController{
+    def index(){
+        //render("Hello")
+    }
+    def hi(){
+        //render("How's it going ?")
+    }
+}
+
+
+Create index.gsp  and hi.gsp
+We will hardwire our views for testing purposes....
+Let's place these *.gsp files under sample/grails-app/views/hello
+-------------------------------------------------------------------------
+<!-- index.gsp -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="layout" content="main"/>
+        <title>Welcome to Grails</title>
+    </head>
+    <body>
+        Hello World
+    </body>
+</html>
+
+<!-- hi.gsp -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="layout" content="main"/>
+        <title>Welcome to Grails</title>
+    </head>
+    <body>
+        How's it going ?
+    </body>
+</html>
+
+
+We can actually specify within a controller the GSP we want to be rendered
+and not folow the convention.  For example, if you are resusing the same
+GSP for different actions when we need to.
+You can invoke a specific GSP withing the same controller just by invoking the method redner and specifying a view paramter :
+=======================================================================
+package somepackage
+class HelloController{
+    def index(){
+    }
+    def hi(){
+        render(view:'index.gsp')
+    }
+}
+

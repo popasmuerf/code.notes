@@ -1,0 +1,53 @@
+bogotobogo.com/cplusplus/autoptr.php
+
+
+STL containers
+=====================================================================================
+An STL container is a collection of objects of the same type(like Java collections)
+
+
+
+What do STL containers own ?
+=======================================================
+Containers own their respective elements
+Creation and destruction is controlled by the container
+
+
+
+Using std::auto_ptr<type> with containers
+=======================================================
+is not really possible....or really more like allowed...
+for obvious reason.....look...
+
+myAutoPtr--------
+				|
+				----------------->container[]
+				|
+Container's ptr--
+
+
+^^^ So this basically can cause a host of issues...including:
+		Race conditions for updates to the container(in concurrent contexts)
+		Unintended updates to the container
+		Possible for unauthorized updates to the container
+
+What is auto_ptr ?
+=======================================================
+An autor_ptr is simply an object that holds a pointer
+for us within a funciton.  Holding a p
+pointer to guarantee deletion at the end of a scope
+is what auto_ptr is for, and for 
+other uses requires very specilized skills from a programmer
+
+
+Basic STL containers that are used often
+=======================================================
+Sequences:
+*users contrl the order of elements
+*vector, list, deque
+Associate containers:
+*The container controls the posistion f elements within it
+*Elements can be accessed using a key
+*set,multiset,map,multimap
+
+

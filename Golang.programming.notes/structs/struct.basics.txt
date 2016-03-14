@@ -1,0 +1,107 @@
+Definition of a struct
+===============================
+The general format of the definition of a struct
+is as follows:
+
+type identifier struct{
+	field1 type1
+	field2 type2
+}
+
+The following is also a valid syntax
+for the definiton of a struct
+
+type T struct {a, b int}
+
+
+
+Struct fields
+=================================
+The fields in the struct below:
+
+type identifier struct{
+	field1 type1
+	field2 type2
+}
+
+The fields in the above struct
+has names like:
+	field1
+	field2
+if a field is never used in code, it can
+be named :
+	_
+
+What are structs ?
+================================
+Structs are values and as such we can
+declare  a variable of the 
+stuct type and in turn give its 
+fields values like:
+
+var s T
+s.a = 5
+s.b = 4
+
+What else is sort of like a struct ?
+================================
+An array may be seen as a sort of struct but 
+with indexed rather than named fields
+
+Using the new function
+==================================
+Memory for a new struct variable is allocated
+with the new function:
+
+	new()
+
+which returns a 
+pointer to the allocated storage:
+
+	var t *T = new(T)
+
+which can also be declared as such:
+	
+	var t *T
+	t = new(T)
+	-or-
+	t := new(T)
+
+Struct literals
+==================================
+You may also declare an new instance
+of a struct value type
+
+var t *T = &T{10,15.1,"Chris"}
+
+Examples:
+=====================================
+
+
+type struct1 struct{
+	i1 int
+	f1 float32
+	str string
+}
+
+func main(){
+	ms := new(struct1)
+	ms.i1 = 10
+	ms.f1 = 10 
+	ms.str = "Mike Brown"
+	fmt.Println("i1 : %d", ms.i1)
+	fmt.Println("f1 : %f", ms.f1)
+	fmt.Println("f2 : %s", ms.str)
+}
+
+
+
+Struct conversion
+======================================
+
+type number struct{
+	f float32
+}
+
+type nr number //alias type
+

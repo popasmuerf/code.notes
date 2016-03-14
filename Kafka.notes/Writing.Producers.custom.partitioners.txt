@@ -1,0 +1,118 @@
+Creatig a Java Producer with custom partitioning
+=================================================
+Customized message partitioning.  In this example, a log message for
+a website visit fromany IP address is captured and published.
+This log message has three parts:
+
+*The timestamp of the website hit
+*The name of website itself
+*The IP address from where the website is being accessed
+
+
+Producer --------> Data ------------->Create Message--------------->Publish Message------------->Send Message----------->Kafka Cluster
+
+What is a partition class ?
+===============================================
+A custom partitioner class defines the class to be used
+for determining the partition in the topic where the message needs to be
+sent.  If the key is null
+then Kafka used the hash value of the key 
+
+Note:
+Before you compile and run the code below...
+==============================================
+Before compiling and running the Java-based Kafka program in the
+console, make sure you download the jar:
+	slf4j-1.7.7.tar.gz
+from
+	http://www.slf4j.org/download.html
+and then copy
+	slf4j-log412-1.7.7.jar
+contained within
+	slf4j-1.7.7.tar.gz
+to the
+	/opt/kafka_2.9.2-0.8.1.1/libs
+Add the env variable
+	KAFKA_LIB
+enviroment variable and also add all thelibraries
+available in 
+	/opt/kafka_2.9.2-0.8.1.1/libs
+to the classpath using the following commands:
+
+
+Partitioner Class
+==================================
+/*
+This partitioner class implements 
+the class 
+SimplePartitioner
+(writtenin Scala) that takes the key, which in thi secample
+is the IP address.  It then finds thelast octet and does a module
+operation onthenumber of partitions defined within Kafka orthe topic. 
+The gollowing is the code for the
+*/
+
+
+Example Producer Class
+==================================
+
+import java.util.Date;
+import java.util.Properties;
+import kafka.javappi.producer.Producer;
+import kafka.producer.KeyedMessage;
+import kafka.producer.ProducerConfig ;
+public class SimpleProducer{
+	private static Producer<String,String> producer;
+	public SimpleProducer(){
+		Properties props = new Properties();
+		props.put("metadata.broker.list","localhost:9092","localhost:9093","localhost:9094");
+		props.put("serializer.class","kafka.serializer.StringEncoder");
+		props.put("request.required.acks","1");
+		props.put("partitioner.class","kafka.examples.ch4.SimplePartitioner");
+		ProducerConfig config = new ProducerConfig(props);
+		Producer<Interger,String> producer = new Producer<Interger,String>(config);
+	}
+	public void PublishMessage(String topic,int messageCount){
+		for(int mCount = 0 ; mCount < messageCount ; mCount++){
+			String runtime = new Date().toString() ;
+			String msg = "Message Publishing Time - " + runtime ;
+			System.out.println(msg);
+			KeyedMessage<String,String> data = new KeyedMessage(topic,msg);
+			producer.send(data);
+		}
+		producer.close();
+	}
+	public static void main(String[] args){
+		int argsCount = args.length;
+		if(argsCount == 0 || argsCount == 1){
+			throw new IllegalArgumentException("Please provide topic name and Message count as arguments");
+		}
+		String topic  = (String)args[0];
+		String count =  (String)args[1];
+		int messageCount = Integer.parseInt(count);
+		System.out.println("Topic Name - " + topic);
+		System.out.println("Message count - " + messageCount);
+		SimpleProducer simpleProducer = new SimpleProducer();
+		simpleProducer.publicMessage(topic,messageCount);
+	}
+
+
+}
+
+
+
+Summary
+===================================
+The SimpleProducer class takes two arguments
+	topic name
+	number of messages to be published.
+Once the producer is successfully executed and 
+begins publishing the messages to the broker, run the command line
+consumer for consuming the messages as it subscribes to the topic
+being created int he Kafka brodker as:
+# bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topic kafkatopic
+
+
+
+
+

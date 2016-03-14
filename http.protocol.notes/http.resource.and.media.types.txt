@@ -1,0 +1,80 @@
+Resource and Media Types
+=========================
+Typically we use URLs to retrieve some resource.
+Resources range from anything :
+
+	Rendering web pages
+	images
+	text documents
+	video
+	audio
+	XML documents
+	executable appls
+	etc
+	etc
+	etc
+
+
+What happens hwen a host responds to an HTTP request
+-------------------------------------------------------
+When a host responds to an HTTP request, it returns
+a resource and also specifes the content type AKA as the
+media type of the resource.
+
+
+MIME(multipurpose internete meail extentions)
+--------------------------------------------------------
+Although MIME was origionally designed for email communications,
+HTTP uses MIME standars for the same purpose, which is to label
+the content in such a way that the client will know what the
+the content contains.
+
+
+MIME responses:
+---------------------------------------------------------
+syntax
+	media type / media-subtype
+Examples:
+************************
+text/html: html
+image/jpeg
+image/gif
+image/png
+
+
+Notes on extensions
+----------------------------------------------------------
+
+Notes on Type Negotiation
+-----------------------------------------------------------
+
+
+
+how we transimit unsafe characters
+------------------------------
+Fortunately, you can still transmit kunsafe characters in a URL, but all unsafe characters must be
+encoded with a perscent sign "%" followed by some url coding
+For example the "\s" character is encoded as:
+	%20
+
+^^^where the int 20 is the ascii encoding for space characters.
+
+As a more complex example, if I wanted to create a URL for a file named:
+
+	^my resume.txt
+
+The resultant URL would look something like:
+
+	http://host.net/%5Emy%20resume.txt
+
+where:
+	^ : %5
+	" ": %20
+
+Most modern web frameworks will provide an API for easy URL encoding.
+On the server side, you should run your dynamically created URLs
+therouan an encoding API just in case one of the unsafe characters
+appears in the URL.
+
+
+

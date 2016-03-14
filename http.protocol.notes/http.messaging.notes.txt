@@ -1,0 +1,141 @@
+Requests and Responses
+=========================
+http is a request and resonse protocol.
+A lcient snes an HTTP request to a server
+using a carefully formatted message that
+the server will understand.  A server
+responds  by sending an HTTP response
+that the client will udnerstand.   
+The request and the response are:
+
+	TWO DIFFERENT MESSAGE TYPES
+
+The HTTP standards define what goes into the request and
+response messages so that everyone who speaks "HTTP" will
+understand each other and are able to exchange resources.  When a resource 
+does not exist, a server can still reply and let you know.
+
+
+Raw request and response
+================================
+Web browsers send http req. by:
+	-open network connection to remote(or local) server
+	-send http message as text
+http message commands are straight ascii text formatted to
+the http spec.
+The fact that http uses text as a messaging medium means you can send
+http reqs over the network using any application or program that is 
+capable of communicating over the interwebs.
+For example....I can make http reqs using apps like:
+	telnet
+	ssh
+	web browsers
+	curl
+	wget 
+We can also use ports other than the default of 80 when sending these 
+http requests.
+Example:
+We want to use telnet to send a http req ot odetocode.com
+on port 80
+
+
+Connect to remote Server:
+-----------------------------
+$ telnet www.odetocode.com 80
+tryig 96.31.33.25....
+Connected to www.odetocode.com
+Escape character is '^]'
+
+
+From telnet client...sent HTTP request message
+instructing the server that we wish to GET the contents/resources
+located  at root / using protocol HTTP/1.1
+we type www.odetocode.com to specifiy where these
+resources are located(some web apps or sites are spread
+accross mutliple hosts....this is especially true for
+apps that are actually composed of micro services):
+-----------------------------------------------
+GET / HTTP/1.1
+host:www.odetocode.com
+
+evw0x
+
+HTTP request methods
+=================================================
+Every request messae must include an HTTP method.  The 
+method describes the purpose of the request.  The purpose of an
+HTTP GET request is to read, fetch, or retirever a resource.  You
+could GET an image:
+	GET/logo.png
+could GET a PDF file:
+	GET/documents/report.pdf
+
+List of common HTTP methods
+appears below:
+
+method           Description
+----------------------------
+GET              Retrieve a resource
+PUT              Store a resource
+DELETE           Remove a resource
+POST             Update a resource
+HEAD             Retrieve the headers or metadata for a resource
+
+
+^^^The work horses of HTTP requests is 
+GET
+-and-
+POST
+
+Everytime you need to make a change to something....
+it is a POST req.  All amazon purchases are peformed with POST
+as is submitting data....such as you do with submitting form
+input.
+GET is used for retrieveing data.  It is impotent and makes no changes to
+data residing on the remote host.
+
+POST/Redirect/GET(PRG)
+--------------------------------
+Redirecting after a POST with message like "thank you" or "saved!!"
+after the POST req has been recived fna processed
+
+
+Common Scenario GET
+============================
+to view another pater all we need is a hyperlink:
+<a href="http://odetocode.com/articles/365.aspx"> Table Variables</a>
+
+a user clises on the hyper lind in a browser, ant eh browser issues
+a GET request to the URL specified i the href atteribute of the anchor
+tag.  The request would look like this:
+
+GET  http://odetocode.com/articles/365.aspx
+HTTP/1.1
+Host:odetocode.com
+
+
+
+Common Scenario POST
+===================================
+<form action="account/create" method="POST">
+	<label for="firstName"> First Name</label>
+	<input id = "firstName" name="firstName" type = text"/>
+	<label for="latName"> Last Name</label>
+	<input id = "lastName" name="lastName" type = text"/>
+	<input type="submit" value = "Sign up!"/>
+</form>
+
+^^^^When the user clicks the submit button, the browser realizes
+the button is isndied a form.  The form's method
+attribute tells the browser that the HTTP method to use for 
+submission is POST, and the path to POST is:
+
+/account/create
+
+The actuall HTTP request the browser makes will look something 
+like this:
+
+POST http://servername.com/account/create
+HTTP/1.1
+Host:servername.com
+firstName=Scott&lastName=Allen

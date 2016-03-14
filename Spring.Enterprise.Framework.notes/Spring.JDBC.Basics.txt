@@ -1,0 +1,243 @@
+http://www.tutorialspoint.com/spring/spring_jdbc_example.htm
+
+Quick summary of Spring JDBC FrameWork:
+=========================================================================
+While working with database using plain old JDBC, it becomes cumbersome to 
+write unnecessary(exception code is not "unecessary") code to handle exceptions, opening and closing dtabase connections
+etc.
+
+Spring JDBC Framework takes care of all the low-level details staring
+from opening connections, preparing
+and executing the SQL statement, process executions,
+transactions, and finally closing the connection.
+
+All we have to do is define connection parameters
+and the specify the SQL sttement to be executed
+and do the required work for each iteration while fetchin
+data from the database.
+
+Several approaches within Spring JDBC exists for 
+interfacing with databases.  The classic method is
+using the jdbcTemplate class.
+
+The jdbcTemplate class of the framework is the center class that manages
+all the database communication and exception handling.
+
+
+jdbcTemplate Class:
+=========================================================================
+The jdbcTemplate class executes SQL queries, update statements and stored procedure
+calls, peforms iteration over results and extractions of returned
+paramter values.  It also catches JDBC exceptions and 
+translates then to the generic, more informative, exception hierarchy
+defined in the package:
+
+org.springframework.dao; //package
+
+jdbcTemplate class is thread-safe
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+We can create and configure a single instance of jdbcTemplate and then 
+safely inject this shared refrence into multple DAOs.
+JdbcTemplate jdbcRef = context.getJdbcTemplate();
+new DAO(dbcRef);
+new DAO(dbcRef);
+new DAO(dbcRef);
+new DAO(dbcRef);
+
+jdbcTemplate common practices
+=============================================================================
+
+1. 	Configure a DataSource in your Spring configuration file
+	
+2.	Inject the configured Datasource reference into DAO Classes 
+
+
+
+
+Code
+================================================================================
+#####
+#Configure the data Source for the JDBC template
+#####
+
+CREATE DATABASE test;
+USE test ;
+CREATE TABLE Student(
+   ID   INT NOT NULL AUTO_INCREMENT,
+   NAME VARCHAR(20) NOT NULL,
+   AGE  INT NOT NULL,
+   PRIMARY KEY (ID)
+); 
+
+<!--Bean Definition XML file-->
+<bean id="dataSource"
+class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+   <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+   <property name="url" value="jdbc:mysql://localhost:3306/TEST"/>
+   <property name="username" value="root"/>
+   <property name="password" value="password"/>
+</bean>
+</bean>
+
+
+
+What is DAO ?
+==================================================================================
+DAO stands for data access object which is commonly used for database interaction. DAOs exist to provide a means to read and write data to the database and they should expose this functionality through an interface by which the rest of the application will access them.
+
+The Data Access Object (DAO) support in Spring makes it easy to work with data access technologies like JDBC, Hibernate, JPA or JDO in a consistent way:
+
+What we need to make this work....
+=================================================================================
+1. SQL query strings
+2. A POJO that represents a record/row from the target table.
+2. Imlementation of the RowMapper generic interface with attributes based on the schema
+of our target table that returns an object that is a representation of a table row.
+3. Implementation of a DAO for interfacing with the int
+
+
+Executing SQL statements
+==================================================================================
+//Get the record count for some table
+String query = "select count(*) from Student ;" ;
+int rowCount = jdbcTemplateObject.queryForInt(query);
+
+//Query for a long value
+String query = "select count(*) from Student";
+long rowCount = jdbcTemplateObject.queryforLong(query);
+
+//A simple query using a bind variable
+String query = "select age frm Student where id = ?" ;
+int age = jdbcTEmplateObject.queryForInt(query, new Object[]{0})
+
+
+//Querying for a String 
+String query = "select * from Student where id = ?" ;
+String name = jdbcTemplateObject.queryForObject(SQL, new Object[]{10}, String.class) ;
+
+//Querying and returning an object:
+String query = "select * from Student where id = ?";
+Student student = jdbcTemlateObject.queryForObject(query,new Object[]{10}, new StudentMapper());
+
+public StudentMapper implements RowMapper<Student>{
+	public Student mapRow(ResultSet rs, int rowNum) throws SQLException{
+		Student student = new  student() ;
+		student.setId(rs.getInt("id"));
+		student.setName(rs.getString("name"));
+		student.setAge(rs.getInt("age"));
+		return student ;
+	}
+} 
+
+
+//Querying and returning multiple objects
+String query = "select * from Student" ;
+List<Student> students = jdbcTemplateObject.query(query, new StudentMapper());
+
+public class StudentMapper implements RowMapper<Student>{
+	public Student mapRow(ResultSet rs, int rowNum)throws SQLException{
+		Student student = new Student() ;
+		student.setID(rs.getInt("id"));
+		student.setName(rs.getString("name"));
+		student.setAge(rs.getInt("age"));
+		return student ;
+	}
+}
+
+
+//Inserting a row into the table:
+String query = "insert into Student (name, age) values (?, ?)";
+jdbcTemplateObject.update(query new Object[]{"Zara", 11});
+
+//Updating a row in the table :
+String query = "update Student set name = ? where id = ? "
+jdbcTemplateObject.update(query, new Object[]{20});
+
+
+
+//Deleting a row int he table :
+String query = "delete Student where id = ?" ;
+
+
+
+
+
+
+Spring JDBC Code example:
+====================================================================================
+Let's write some code that will do some CRUD(create, repete, update, destroy) work for us...
+
+# test.Student
+CREATE TABLE Student(
+	ID INT NOT NULL AUTO_INCREMENT,
+	NAME VARCHAR(20) NOT NULL,
+	AGE INT NOT NULL,
+	PRIMARY KEY (ID)
+);
+
+
+/*Data Access Object interface file Student*/
+
+import java.util.List ;
+import javax.sql.DataSource ;
+
+public interface StudenDAO{
+	public void setDataSource(DataSource ds);
+	public void create(String name, Integer age) ;
+	public void update(Integer id, Integer age);
+	public Student getStudent(Integer id);
+	public List<Student> listStudents() ;
+	public void delete(Integer id);
+}
+
+/*Student.java*/
+
+package com.mypackage ;
+
+public class Student{
+	private Integer age; 
+	private String name ;
+	private Integer id ;
+	public void setAge(Integer age){
+		this.age = age ;
+	}
+	public void setName(String name){
+		this.name = name ;
+	}
+	public String getName(){
+		return this.name ;
+	}
+	public void setId(Integer id){
+		this.id = id ;
+	}
+	puplic Integer getId(){
+		return this.id ;
+	}
+}
+
+/*SudentJDBCTemplate.java*/
+
+import java.util.List ;
+import javax.sql.DataSource ;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class StudentJDBCTemplate implements StudentDAO{
+	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplateObject ;
+	public void setDataSource(DataSource dataSource){
+		this.dataSource = dataSource ;
+		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+	}
+	public void create(String name, Integer age){
+		String query = "insert into Student (name,age) values ("John Stewart",40)";
+		jdbcTemplateObject.update(query,name,age);
+		System.out.println("Created Recored Name = ") + name + " Age = " + age ) ;
+		return ;
+	}
+}
+
+
+
+
+
+

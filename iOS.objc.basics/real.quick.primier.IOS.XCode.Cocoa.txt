@@ -1,0 +1,238 @@
+XCode/Cocoa and Obj-C real quick
+================================
+class methods:
++(int) classMethod ;
+-(int) instanceMethod ;
+
+
+Pointers
+================================
+RandClass *randObj = [RandClass alloc] ;
+[randObj init]; 
+	-or-
+RandClass *randObj = [[RandClass alloc]init];
+
+
+NOTE:
+unlike languages like C++(don't know with C++11 if this is still true)
+, once we have declared and initalized a pointer in ObjC, we no 
+longer have to use the asterisk for the purpose of dereferencing.
+
+Calling class methods
+==============================
+id someVal = [RandClass methodReturnSomeVal] ;
+[RandClass setSomeInt:45];
+
+Calling instance methods
+==============================
+RandClass *randObj = [[RandClass alloc]init];
+id someVal = [randObj methodReturnSomeVal];
+[randObj setSomeInt:45];
+
+Calling class value/attribute from a Class
+==============================
+id someVal = RandClass.randClassAttrib;
+
+
+Calling class value/attribute from an Object 
+==============================
+RandClass *randObj =[[RandClass alloc]init]; 
+id someVal = randObj.randClassAttrib;
+
+
+
+Main.storyboard
+===============================
+Contains is the main view of your app
+
+Multiple Views
+===============================
+You can add new views merely by 
+dragging them onto your story board
+
+
+interfaces
+===============================
+General Syntax:
+@interface ViewController UIViewController
+	-(IBAction)showAlert ;
+@end
+
+implementations
+===============================
+#import "ViewController.h"
+@implementation ViewController
+	NSString *titleStr =@"Alert-Title";
+	NSString *messageStr=@"Alert-Message";
+	NSString *cancelButtonTitleStr:@"OK";
+	otherButtonTitlesStr: nil ; 
+	-(IBAction)showAlert
+	{
+		UIAlertView *helloWorldAlert = [[UIAlert alloc]initWithTitle:titleStr
+									   message:messsageStr delegate:nil
+									   cancelButtonTitle:cancelButtonTitleStr
+									   otherButtonTitles:nil];
+		[helloWorldAlert show];
+	}
+@end
+
+
+Behaviors have a direction
+===============================
+View:Button -----action---->Controller:IBAction------->Model
+View:Lable<-----outlet<----Controller:IOutletAction<-------Model
+
+User Elements can be:
+	outlets:
+		labels
+		backround
+		animations
+	actions:
+		buttons
+		sliders
+	both:
+		A button that changes color.
+
+example Swift:
+@IBAction func changeLabel(sender: AnyObject){
+	.....
+}
+example ObjC:
+-(IBAction)changeLabel:AnyObject:sender
+{
+	....
+}
+
+
+
+ViewControllers
+=================================
+ViewControllers is where you do the backend
+work.  This is analogus to Android Activity Classes(...is this true?)
+
+
+
+IBAction
+=================================
+You can perform button oriented actions
+with Objects of this type.
+IBAction stands for:
+	"Interface Builder"
+in Swift we can prepend this to some method in our 
+app controller (ViewControler.swift) with this key phrase:
+	@IBAction
+
+
+Connecting widget Objects to stuff in the ViewControllers
+=======================================================
+ctrl-click on widget.
+drag blue like to story board.
+select the action(like a ViewControllers.showAlert method....)
+
+
+Conecting a View Objects to other View Objects in a workflow
+=========================================================
+ctrl-click on the View Object
+drag the blue line to the target View Object
+select what action to take like module(deprecated...look up why)
+
+Configure to back trace the stack of View Objects(like Android Activities)
+=============================================================================
+ctrl-click your button designated for moving back up the Views in the call stack..
+drag the blue line to the "Exit" icon on that view......
+
+
+
+First Responders
+======================================
+A responder is an objec that can respond to events and handle them
+It is sort like an eventlisterner in Android.
+All responder objects are instances of classes that are descendents of:
+	UIResponder(iOS)
+		-or-
+	NSResponder(OSX)
+The visible objects of an app are almost always responders--for example:
+	windows
+	views
+	controls
+The inheritance tree for UIResponder for iOS UIKit Framework is below:
+	NSObject:
+		UIResponder:
+			UIApplication
+			UIView:
+				UIWindow
+				View and Controller Classes
+			UIViewController
+The inheritance tree for UIResponder for NSObject for OS-X AppKit is below:
+	NSObject:
+		NSResponder:
+			NSApplication
+			NSView:
+				UIWindow
+				View and Controller Classes
+			NSWindow:
+				NSPanel
+First responders change frequently.
+Whatever you are tapping on...becomes the first responder.
+You can progromatically specify who is the initial first responder...
+Example:
+	self.textField.resignFirstResponder()
+	[self.textField resignFirstResponder];
+Example of telling all the controlls on a screen that they are no longer the first
+responder:
+	override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        self.view.endEditing(true)
+    }
+    -or-
+    -(void) touchesBegan:touches:NSSest withEvent:event:UIEevent
+    {
+    	[self.view endEditing:true]; 
+    }
+
+
+Protocols
+======================================
+A protocol defines a blueprint of methods, properities and other requirements
+that suit a particular task or piec of functionality....
+(So bascially Protocols in Swift are fucking interfaces.  I suppose they
+did not wish to confuse people who only know about Objective-C....as the concept
+of interfaces are different in Java/C# and C/C++/ObjC)
+
+Syntax:
+	protocol SomeProtocol{
+		var mustBeSettable:Int{get set}
+		var doesNotNeedTobeSettable:Int{get}
+	}
+
+	protocoal AnotherProtocol{
+		static var someTypeProperty: Int{get set}
+	}
+
+struct SomeStructure:FirstProtocol,SecondProtocol{
+	//structure definition goes here
+}
+
+class SomeClass: FirstProtocol, SecondProtocol{
+	//class definition goes here
+}
+
+Examples in Practice:
+	protocol FullyNamed {
+		var fullName:String{get}
+	}
+
+	struct Person: FullyNamed{
+		var fullName:String 
+	}
+
+	class Starship:FullyNamed{
+		var prefix: String?
+		var name: String 
+		init(name:String,prefix:String?=nil){
+			self.name = name 
+			self.prefix = prefix
+		}
+		var fullName: String{
+			return(prefix!=nil ? prefix! + " ") + name 
+		}
+	}

@@ -1,0 +1,32 @@
+http://think-like-a-git.net/sections/graphs-and-git/visualizing-your-git-repository.html
+
+Most of the time when you interactwith Git, you're working
+==============================================================
+with commits in one way or another.
+
+At the surface level, a Git commit consists of two things:
+
+	1. a pointer to the state of your code at some moment in time
+	2. zero or more pointers to "parent" commits
+
+A pointer means you are more than likely talking about a graph....
+A Git commit is a node in a graph, and nodes can point to other nodes
+that came before them.
+
+A Git commit is a node in a graph, and nodes can point to other nodes that
+came before them:
+
+
+Visualizing a Git Repository:
+=====================================
+Visual tools:
+---------------------
+GitX
+Source Tree
+etc
+
+Command line
+----------------------
+git log --online --abbrev-commit --all //flattened view
+git log --online --abbrev-commit --all --graph //branch view
+git log --oneline --abbrev-commit --all --graph --decorate //branch view with labels

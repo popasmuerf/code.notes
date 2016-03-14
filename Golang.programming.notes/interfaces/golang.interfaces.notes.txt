@@ -1,0 +1,30 @@
+Interfaces
+========================================
+Interfaces in Go provide away to specify 
+the behavior of an object:
+If something can do this, then it can be
+used here.  
+Custom printers can be implemented by a String
+method while Fprintf can generate output to anyting with a Write mehod
+
+type Sequence []int
+
+//Methods required by sort.Interface
+
+func(s Sequence) Len int{
+	return len(s)
+}
+func(s Sequence) Less(i,j int){
+	s[i] < s[j]
+}
+func(s Squence) Swap(i,j int){
+	s[i],s[j] = s[j],s[i]
+}
+
+
+//Method for printing - sorts the elements before printing.
+func(s Sequence) String() string{
+	sort.Sort(s)
+	str :=
+}
+
