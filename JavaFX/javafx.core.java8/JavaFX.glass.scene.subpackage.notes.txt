@@ -121,7 +121,22 @@ desinged to have child elements(child objects) within
 it, or below it.
 
 
-
-
+The Java 8 javafx.scene Package
+------------------------------------------
+Scene Graph            Functions         Description of Contents
++++++++++++            ++++++++++++++    +++++++++++++++
+javafx.canvas          Drawing            Canvas class(and Canvas Object)
+javafx.scene.chart     Charting           Char classes:PieChart, Line
+javafx.scene.control   UI Controls        UI contoll classes: Buttons, Menus, Sliders, Labels etc
+javafx.scene.effect    Special effects    Special effects classes: Glow, Blend, Bloom, shadow, relection, MotionBlur
+javafx.scene.image     Imaging            Digital imaging classes:Image, ImageView,WritableImageView, Pixelformat
+javafx.scene.input     Input(Events)      Classes related to getting input from the user into theJavaFX application
+javafx.scene.layout    UI Layouts         UI layout container classes: TilePane,GridPane,FlowPane,Border                     
+javafx.scene.media     Media player       Media playback classes: MediaPlayer, MediaView,Track,AudioTrack,AudioClip
+javafx.scene.paint     Painting           Paint classes:Paint, Color, LinearGradient, RadialGradient,Stop, Material,et
+javafx.scene.shapes    Geometry           2D and 3D geometry classes:Mesh,Shape,Shape3D,Arc,Circle,Line,Path,etc
+javafx.scene.text      Text and font      Text rendering and font rendering classes:Font,Text,TextFlow,etc
+javafx.scene.transform Transforms         Transform classes: Transform,Scale,Rotate,Shear,Translate,Affine
+javafx.scene.web       WebKit             Web support classes: WebView, WebEvent, WebEngine,HTMLEditors
 
 
