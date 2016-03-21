@@ -121,7 +121,7 @@ desinged to have child elements(child objects) within
 it, or below it.
 
 
-The Java 8 javafx.scene Package
+The Java 8 javafx.scene Package(low level)
 ------------------------------------------
 Scene Graph            Functions         Description of Contents
 +++++++++++            ++++++++++++++    +++++++++++++++
@@ -138,5 +138,27 @@ javafx.scene.shapes    Geometry           2D and 3D geometry classes:Mesh,Shape,
 javafx.scene.text      Text and font      Text rendering and font rendering classes:Font,Text,TextFlow,etc
 javafx.scene.transform Transforms         Transform classes: Transform,Scale,Rotate,Shear,Translate,Affine
 javafx.scene.web       WebKit             Web support classes: WebView, WebEvent, WebEngine,HTMLEditors
+
+
+
+he Java 8 javafx.scene Package(high level)
+------------------------------------------
+Scene Graph            Functions         Description of Contents
++++++++++++            ++++++++++++++    +++++++++++++++
+javafx.animation       Animation          Timeline, Transition, AnimationTimer,Interpolator,KeyFrame,KeyValue
+javafx.application     Application        Application(init,start,stop methods),Preloader,Parameters,Platofrom
+javafx.beans           JavaFX beans       Java interfaces that define the most generic form of observability
+javafx.collections     Collections        Java collections that define the most generic form observability
+javafx.concurrent      Threading          Threading classes: Task,Service,ScheduleService,WorkerStateEvent
+javafx.css             CSS                Classes related to implementing CSS in JavaFX
+javafx.embed           Embeds             Embeds deprecated JavaSwing and Java AWT GUI paradigms                     
+javafx.event           Event Handler      Event handling classes: Event,ActionEvent, EventType,WeakEventHandler
+javafx.fxml            FXML               FXML
+javafx.geometry        3D                 3D geometry classes
+javafx.print           Printing           Printing classes
+javafx.scene           Scene Control      classes relate to scene creation, organization, control, realization
+javafx.stage           Stage creation     Stage creation classes
+javafx.util            JavaFX             JavaFX utility classes
+netscape.javascript    JavaScript         Allows java code to invoke JavaScript methods and examine JavaScript properite
 
 

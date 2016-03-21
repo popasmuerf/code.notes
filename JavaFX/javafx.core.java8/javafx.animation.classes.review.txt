@@ -1,0 +1,65 @@
+JavaFX Animation for Games: Using javafx.animation Classes
+=============================================================
+The package:
+
+	javafx.animation 
+
+contains the Animation superclass, which has the 
+subclasses:
+
+	Timeline
+	Transistion
+
+javafx.animation.Animation
+				|
+				|
+				|------TimeLine
+				|------Transistion
+				|------AnimatinTimer
+				|------Interpolator
+				|------KeyFrame
+				|------KeyValue
+
+
+Animation class(object) provides the core functionality of animation in JavaFX
+===============================================================================
+Constructors
+--------------------
+Animation()
+Animation(double targetFramerate)
+
+Creating an animation object
+---------------------
+Animation animationObj = new Animation()
+	-or-
+double frame_rate = 60
+Animation animationObj = new Animation(frame_rate)
+
+*.play and *.playFrom()
+==========================
+The following are used to to start playback
+Animation.play()
+	-or-
+Animation.play(cuePoint)
+	-or-
+Animation.play(Duration time)
+
+
+
+JavaFX TimeLine Class: Animation Subclass for Property Timeline Management
+===============================================================================
+The JavaFX TimeLine class is a subclass of the JavaFX Animation superclass, so its
+inhertiance hierarchy starts with the Java 8 mastercalss, java.lang.Object,
+progressing down to the the Timeline class, as follows:
+java.lang.Object
+	|
+	|
+	|--------
+		  	|
+			javafx.animation.Animation
+				|
+				|
+				|------javafx.animation.TimeLine
+				
+
+T
