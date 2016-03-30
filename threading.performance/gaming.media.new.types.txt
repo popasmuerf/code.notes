@@ -1,0 +1,67 @@
+//https://www.youtube.com/watch?v=qk5F6Bxqhr4
+Image stuff to know.....
+======================================
+PNG is recommened format for Java 8 games
+or any game written in any platform.  PNG
+is a professional image image-compositing formate, and your games will
+essentially be a real-time sprite-compsitn engine, so you will need to use PNG32 imagery
+PNG's compression algorithm is loseless.
+
+NOTE:
+=======================================
+GIF : only supports indexed color to obtain compression...though at the cost of efficiency
+JPEG : is the most popular but it leaves compression artifacts that are products of it's lossy compression algorithm
+
+PNG truecolor versions:
+=====================================
+PNG24 : cannot be used in image compositing
+PNG32 : which carries an alpha channel used to define transparency.
+
+
+
+
+Digital Image Resolution and Aspect Ratio: Defining Image Size and Shape
+=========================================================================
+* 2D(two-dimensional) arrays of pixels("pixel" stands for picture[pix] element[el]).
+* Sharpness of impage is known as "resolution"
+* Resolution = image_pixels_per_width * image_pixels_per_height ( x-axis * y-axis)
+* The more pixels an image has....the more resolution it possesses
+* To find the total number of image pixels, multiply the width pixels by the height pixels
+
+Example: derive the number of pixels in a (VGA) 800 x 480 image:
+
+	total_number_pixels = w * h
+	total_number_pixels = 800 * 480
+	total_number_pixels = 384,000
+
+Aspect ratio
+====================================================================
+The aspect ratio is defines the square(or rectangle as it may be) that any image
+may occupy.
+A 1:1 aspect ratio display (or image) is always perfectly square, as is a :
+	2:2
+	-or-
+	3:3
+	-or-
+	N:N
+ratios.  
+Ratios of 2:1 (widescreen) aspect ratio, such as 2,160 * 1,080 resolution, are now available.
+
+aspect_ratio =  width:height
+
+
+Digital Image Color Theory and Color Depth: Defining Precise Image Pixel Colors
+===============================================================================
+*  The color values for each digital image pixel can be defined by the amount of three
+   differnt colors of red, green, and blue (RGB), which is present in some amount in every
+   pixel
+
+* There are 256 levels of brightness for each read, green, and blue color value within each pixel (8-bit)
+* each pixel has a 8 bits of value-controlling color brightness variation
+* Pixel 8 bit range ---> 0(#00 white) --> 255(#FF black)
+
+
+
+
+
+

@@ -160,5 +160,3 @@ javafx.scene           Scene Control      classes relate to scene creation, orga
 javafx.stage           Stage creation     Stage creation classes
 javafx.util            JavaFX             JavaFX utility classes
 netscape.javascript    JavaScript         Allows java code to invoke JavaScript methods and examine JavaScript properite
-
-

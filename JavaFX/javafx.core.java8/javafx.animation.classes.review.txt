@@ -60,6 +60,14 @@ java.lang.Object
 				|
 				|
 				|------javafx.animation.TimeLine
+
+Timeline animations are defined using KeyFrame objects, created via the
+KeyFrame class, which both creates and manages these objects.  A KeyFrame object is prcocessed by a Timeline object,
+according to a time variable(accessed via KeyFrame.time)
+
+NOTE:
+--------------------------
+			
 				
 
 T

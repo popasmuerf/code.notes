@@ -1,0 +1,113 @@
+//https://www.youtube.com/watch?v=qk5F6Bxqhr4
+Process
+======================================
+Main Thread(UI Thread)
+-------------------------------------
+System Events
+Input EVents
+Application
+Service Alarm
+UI Drawiing
+
+
+
+data = [70,170,40],[65,120,26],[77,250,19]]
+
+Java.lang.Object
+|
+|---------java.util.EventObject
+|						|
+|					    |
+|					    --------------javafx.event.Event
+|					    					|
+|					    					|
+|					    					|--------------javafx.eventActionEvent
+|
+|
+|---------javafx.concurrent.Service
+			|
+			|
+			|-----------javafx.concurrent.ScheduledService
+
+
+Optimization Balancing Static Elements with Dynamic
+==============================================================
+Game optimization come down to balancing static elements, which do not
+require processing in real time, with dynamic elements, which require constant processing.
+Too much dynamic porcessing, especially when it is not really needed, can make your game
+play yerky, or stilted.  This is why game programming is an art form:  it requires balance as well as great characters, a story line, creativity, illusion, anticipation,
+accuracy, and , finally, optimization.
+
+
+Ascpects of Game Play that can be optimized to minimize system memeory and processor cycle useage
+===========================================================================================
+Game Play Aspects                               Basic Optimization Principle
+--------------------------------				--------------------------------
+Sprite posistion(Move)							Move sprites by as many pixels as possible
+												to achieve smooth movement on the screen
+
+Collision detection								Check for collisions between objects on
+--------------------------------                screen only when necessary (in close prox)
+
+
+Physics simulation                              Minimize the number of objects in a scene
+--------------------------------                that require physics calculations 
+
+Sprite animation								Minimize the number of frames that need
+-------------------------------- 				to be cycled to create an illusion of 													smooth animation
+
+
+Background animation							Minimize background areas that are 
+-------------------------------- 				animated so that the entire background
+												looks animated but is not
+
+
+Game play logic                                 Program game play logic(simulated or AI)
+-------------------------------- 				to be as efficient as possible
+
+
+Scoreboard updates                              Update scoreboard only when scoring, and
+--------------------------------                minimize score updates to once per second 
+												maximum
+
+UI design										Use a static UI design so that pulse
+--------------------------------				events are not used for UI element posistioning CSS3
+
+
+^^^^^ As you can see....writing decent games is not a trivial endeavor....
+For instance, the sprite andimation will create the illusion of a character running,
+jumping, or flying, but without combing that code with sprite posistioning(movement)
+code, the reality of the of the illusion will not be achieved.
+
+
+Note:
+================================
+If we can manage to achieve the results that we want by spending the least
+amount of cpu cycles and memory to do so.
+
+
+
+Note:
+=================================
+In graphics, a portion of each pixel's data that
+is reserved for transparency information. 32-bit 
+graphics systems contain 4 channles:
+	Three 8-bit channels(RGB)
+	One 8-bit alpha channel
+Alpha Channels specify how the pixel's colors should be merged
+with another pixel when the two are overlaid, one on top of the other.
+
+
+Static vs dynamic classification
+===================================
+Static games are not processor bound and as such are turned based
+and not reliant on hand-eye coordination as dynamic games:
+	Static games:
+	-------------------------------
+	* Puzzles
+	* Knowledge games
+	* Memory games
+	* Strategy games
+
+
+
