@@ -59,9 +59,27 @@ Digital Image Color Theory and Color Depth: Defining Precise Image Pixel Colors
 * There are 256 levels of brightness for each read, green, and blue color value within each pixel (8-bit)
 * each pixel has a 8 bits of value-controlling color brightness variation
 * Pixel 8 bit range ---> 0(#00 white) --> 255(#FF black)
+*  The number of bits that are used to represent digital image pixel color is referred to as the color depth of the image
+* Common color depths used in the dital imaging industry include:
+	8 bit
+	16 bit
+	24 bit
+	32 bit
 
+Alpha channel transparency
+=================================================================================
+To accomplish alpha channel transparency value, which we can use
+to control the precision of the blending amount of a given pixel
+with another pixel(in the same (x,y) posistion ) on other layers
+(above or below it).
 
+Like other RGB channels, an alpha channel has 256 transparency levels.
+In Java programming, the alpha channel is represented by the first
+two slots in a hexadecimal representation of #AARRGGBB data values.
 
+Alpha channel ARGB data values use eight slots(32 bit) of data instead of
+the six data slots(#RRGGBB) used in a 24-bit image, which is really
+a 32-bit image with zero alpha channel data.
 
 
 
