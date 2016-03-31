@@ -79,7 +79,60 @@ two slots in a hexadecimal representation of #AARRGGBB data values.
 
 Alpha channel ARGB data values use eight slots(32 bit) of data instead of
 the six data slots(#RRGGBB) used in a 24-bit image, which is really
-a 32-bit image with zero alpha channel data.
+a 32-bit image with zero alpha channel data therefore....we will not be using PNG24
+as it has no alpha channel we need for compositing, unless it is the bottom
+image plate in a compositing layer stack....only PNG32 images will be used for top
+plate in a compositing layer stack.
+
+We can accomplish image compositing(called blending modes) using JavaFX's Blend
+class found in :
+	
+	javafx.scene.effect
+		|
+		|
+		|-----------Blend
+
+Blend constants in class javafx.scene.effect.Blend:
+
+	ADD
+	SCREEN
+	OVERLAY
+	DARKEN
+	LIGHTEN
+	MULTIPLY
+	DIFFERENCE
+	EXCLUSION
+	SRC_ATOP
+	SRC_OVER
+	SOFT_LIGHT
+
+In Java and thus JavaFX different levels of ARGB color intensity values are represented
+using hex notation(Base 16) which unlike Base10 which has a range of 0-9,
+Hex Base16 uses a range 0 to F.   Hex values in Java start always with a "0" for example:
+
+	White with no Alpha Channel: 0xFFFFFF  (in this case a 24-bit value)
+
+Each of the six slots in thi s24-bit hex representation stands for a single Base16 value,
+so to get the 256 values required for each RGB clor will take two slots,
+as 16 x 16 = 256.....so therefore in order to represent a 24 bit image using hex
+notation, you will need to have six slots after teh pound sign to hold each of the six hex data
+values.
+
+16^6 = 16,777,216 possible colors for a 24-bit true-color image data.
+The hexidecimal data slots repreent RGB values in the following format:
+
+	0xRRGGBB
+
+Two for Red, tow for green, two for Blue.
+
+White 32-bit with no Alpha-C(24 bit):
+0xFFFFFF
+
+Yellow 32-bit with no Alpha-C(24 bit):
+0xFFFF00
+
+
+
 
 
 
