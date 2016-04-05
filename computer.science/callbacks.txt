@@ -1,0 +1,64 @@
+What is a callback ?
+==================================
+
+In computer programming, a callback is a piece of executable code that is passed as an
+argument to another segment of code.  
+A callback is essentiall a closer
+
+
+/**  JavaScript **/
+
+function someAction(x,y,someCallback){
+	return someCallBack(x,y) ;
+}
+
+function calcProduct(x,y){
+	return x * y  ;
+}
+
+function calcSum(x,y){
+	return x + y 
+}
+
+
+
+
+/*  The C programming language   */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+void PrintTwoNumbers(int (*numberSource)(void)) {
+    printf("%d and %d\n", numberSource(), numberSource());
+}
+
+/* A possible callback */
+int overNineThousand(void) {
+    return (rand() % 1000) + 9001;
+}
+
+/* Another possible callback. */
+int meaningOfLife(void) {
+    return 42;
+}
+
+
+int main(void){
+	PrintTwoNumbers(&rand); 
+	PrintTwoNumbers(&overNineThousand);
+	PrintTwoNumbers(&meaningOfLife);
+	return 0 ;
+}
+
+
+##  The Python Programming language
+
+def my_callback(val):
+	print("function my_callback was called with {0}".format(val))
+
+def caller(val,func):
+	func(val)
+
+for i in range(5):
+	call(i, my_callback)

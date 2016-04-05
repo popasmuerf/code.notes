@@ -132,6 +132,42 @@ Yellow 32-bit with no Alpha-C(24 bit):
 0xFFFF00
 
 
+Images with Alpha-C in hex
+==================================
+Hex representation:
+	
+	0xAARRGGBB
+
+^^^ So now we 10 slots:
+	8 slots: RR GG BB
+	2 slots: AA (our Alpha Channels)
+
+Now we have a 32-bit Image.
+
+White 32-bit with  Alpha-C(32 bit with full opacity):
+0xFFFFFFFF
+
+Yellow 32-bit with  Alpha-C(32 bit with full opacity):
+0xFFFFFF00
+
+
+Note:  images with Alphas designating full transparency
+========================================================
+The whole 16,777,216 colors possible  won't mean a thing....
+....for obvious reasons....
+
+
+Digital Image Masking: Using Alpha Channels to Create Game Sprites
+=====================================
+The primary application for alpha channels in game design is to mask
+out areas of an image or animation(series of images) so that it can be used as a game sprite in
+a game play image-compositing scenear.  Masking is the process of cutting subject matter out of a
+digital image so that the subject matter can be placed on its own virutal software
+package, such as GIMP
+
+
+
+
 
 
 

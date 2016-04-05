@@ -1,0 +1,69 @@
+Pointers to pointers
+===============================
+Pointers can not only point to value addresses.
+Pointers can also point to other pointers....
+
+
+A pointer after all is a variable that holds a value
+at some address.
+
+syntax :
+----------------------------------------------------
+
+int val = 4 ;
+int *ptr = & val ;
+int **pptr_int  = &ptr ;
+
+
+
+We can create a two dimentional array out of a pointer-to-pointers (ptrs->ptrs)
+=================================================================================
+The first pointer will point to an array or collection of pointers....that will in turn 
+each point to memory locations representing collections or arrays of integer values.....
+
+int **p_p_tictactoe ;
+
+p_p_tictactoe = new int*[3] ; //allocation of array of pointers
+
+for(int i = 0 ; i < 3; i++){
+	p_p_ticitactoe[i] = new int[3] ;   //each pointer will store the address of an array of integers
+}
+
+for(int i = 0 ; i <3 ; i++){
+	for(int j = 0 ; j <3 ; j++){
+		p_p_tictactoe[i][j] = 0 ;
+	}
+}
+
+
+If we want to free up memory after we are done playing tic-tac-toe:
+---------------------------------------------------------------------
+
+for(int i = 0 ; i <3 ; i++){
+	delete p_p_tictactoe[i] ;
+}
+delete [] p_p_tictactoe[i] ;
+
+
+In the above example...why not just create a 3 x 3 2D array  the convential way ? 
+==================================================================================
+int ptr[10][10];  //statically allocated....we can't do much with this if we wish to resize...
+int **ptr = new int *[10] ;  //dynamically create an array of 10 elements of type int *
+
+/* Dynamically allocate a new array or ints for each element in the pointer array*/
+for(int i = 0 ; i <3 ; i++){
+	ptr[i] = new int[10] ;  
+}
+/*Clean up after the game is over by releasing previously used resources */
+for
+
+for(int i = 0 ; i <3 ; i++){
+	delete ptr[i] ;  
+}
+delete []  ptr ;
+
+
+Note:
+==================================
+A pointer to pointer array of pointers....will likely not have a contiguous
+memory layout like a statically allocated 2D array allocation.  This makes since.
