@@ -138,3 +138,45 @@ font-family: 'Trebuchet MS', Helvetica, sans-serif;
 
 Setting the background image
 =========================================
+We just need to set  the back-ground property to 
+a value of some URL:
+
+.hero {
+  background-image: url("https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-2/bg.jpg");
+}
+
+	-or-
+
+.hero {
+  background-image: url("file://home/mikeyb/pictures/stuffs/lesson-2/bg.jpg");
+}
+
+
+We set the size of that background-image
+----------------------------------------
+ background-size: cover;
+
+
+
+Individual page element to be styled uniquely
+==================================================
+We can style one ahnchor element differently than all the others
+on a webpage, you could the HTML id attribute:
+
+<a id="learn-code" href="https://www.codecademy.com">Click here to learn to code!</a>
+
+
+#learn-code {
+  color: #2e69a3;  
+}
+
+
+About using tag id's and CSS
+===============================================
+*	An id attribute can only be used once because the id is unique to the element it is assigned to.
+
+*	Ids have greater specificity than classes. If an HTML element is using both id and class attributes, the CSS rule for the id will take precedence over that of the class.
+
+
+
+
