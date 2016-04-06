@@ -6,3 +6,135 @@ CSS
 	GUI styling concerns
 *	Used to seperate front-end concerns w/r to modulerizing 
 	GUI styling concerns
+*	CSS possesses json like syntax 
+*	CSS may be written inline of HTML or in external stylesheet files (*.css)
+
+
+main.css(an example css file)
+======================
+##### code 
+body {
+	font-family: Georgia, serif;
+	height: 100%;
+	margin: 0;
+	text-align: center;
+	width: 100%;
+}
+
+h1 {
+	font-size: 32px;
+}
+h2 {
+	color: #ffffff;
+	font-size: 56px; 
+}
+.hero {
+	background-image: url('https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-2/bg.jpg');
+	background-position: center top;
+	background-size: cover;
+	padding: 250px 0;
+	margin: 30px;
+	text-shadow: 0 2px #000000;
+	font-family: 'Trebuchet MS', 'Helvetica';
+}
+p {
+	color: #ffffff;
+	font-size: 2em;
+}
+.hero a {
+	color: #00FFAA;
+	font-size: 24px;
+	text-decoration: none;
+}
+#footer {
+	color: DarkSlateGray;
+	font-size: 16px;
+}
+
+
+
+
+
+
+
+We associate CSS with HTML via linking
+=======================
+The HTML link element links a CSS file to an HTML
+file so that CSS sytling can be applied.  Here's an example of the link
+established between some HTML file and a css file named 
+element:
+
+	<link href="sytelsheet" type="text/css" href="main.css"
+
+^^^ attributes of the "link" html element
+------------------------------------------
+	* rel : Specifies the relationship between the current file and the file being linked to
+	* type: Specifies the type of file linked to
+	* href: Provides the URL of the fle being linked to.
+
+
+Linking our main.css file to our HTML file
+============================================
+...we generally place our linking tag within the head
+tag of our html....
+
+<!--code-->
+<!doctype html>
+<html>
+<head>
+  
+	<title>Sprout</title>
+	<link rel="stylesheet" type="text/css" href="main.css"/>
+</head>
+<body>
+	<h1>Mystwood Publishers Ltd.</h1>
+	<div class="hero">
+		<h2>Sprout.</h2>
+		<p>A book by George Bedford Daniel.</p>
+		<a href="#">Read now.</a>
+	</div>
+	<p id = "footer">&copy; Mystwood Publishers Limited</p>
+</body>
+</html>
+
+
+Breakdown of CSS Syntax
+==========================================
+*rule:  a list of CSS instructions for how to style a specific HTML element or group of HTML elements
+*selector: specificies the effected html element
+*properties/values : specifies aspect of the selector to style
+
+selector --->		h1{
+						color: red ;  <---value
+					}
+
+
+Color property/value
+==========================================
+* CSS comes equipped with 140 named colors built in
+* For most situations...these named colors will suffice
+* For outlier situations...you can create custom colors via hex notation  #RRGGBB
+* We can also represent colors we customize via this syntax: rgb(128,0,128)  --> purple
+
+Some of the built-in colors
+------------------------------------------------
+AntiqueWhite
+Chocolate
+DarkOliveGreen
+DeepSkyBlue
+
+
+
+Fallbacks
+========================================
+We can specify fallbacks for things like text styling..and such...
+Why?  I guess to compensate for how chaotic the feature set of rendering engines
+for HTML are....there is not a small amount of inconsistency w/r to this.....
+
+
+#example of backups
+font-family: 'Trebuchet MS', Helvetica, sans-serif;
+
+
+Setting the background image
+=========================================
