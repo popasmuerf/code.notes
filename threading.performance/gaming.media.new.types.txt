@@ -165,7 +165,27 @@ a game play image-compositing scenear.  Masking is the process of cutting subjec
 digital image so that the subject matter can be placed on its own virutal software
 package, such as GIMP
 
+*masking can be done automatically
+*masking can be done manually in conjunction with various sharpening, and blurring algorithms
 
+
+Some considerations regarding masking....
+=============================================
+* getting smooth, sharp edges around a masked object(subject matter)
+* the selection work process can help us out with masking over objects and the "sharp edges"
+
+
+
+Antialiasing
+=============================================
+Antialiasing is a popular digital image-compositing technque, in which two
+adjacent colors in a a digital image are blended together along the edge that
+borders the two color areas.  This generates an illusion that the adjacent edges
+are blending in with one another and removes any jagged edges between pixels.
+JavaFX will antialias 2D and 3D objects againgst all backround colors and background imagery,
+using the Java2D software renderer or the hardware rendered with the Prism engine, which can use
+OpenGL or DirectX.  You will still be responsible for correctly copmositing, that is providing
+antialiasing for our multilayered imagery using each image's alpha channel
 
 
 
