@@ -1,0 +1,50 @@
+The JSON Format evaluates to JavaScript Objects
+==================================================
+
+
+
+JSON Syntax Rules
+--------------------------
+*	Data is in name/value pairs
+*	Data is seperated by commas
+*	Curly braces hold objects
+*	Square brackets hold arrays
+
+
+
+JSON Data - A name and a Value
+==================================================
+"firstName" : John
+
+
+JSON Objects
+==================================================
+JSON objects are just like in JavaScript, objects contain mutple name/value
+pairs:
+
+{"firstName":"John", "lastName":"Doe"}
+
+
+JSON Arrays
+==================================================
+JSON arrays are written inside square brackets.
+Just like in JavaScript, an array can contain objects:
+
+{ employees: 
+   [ { firstName: 'John', lastName: 'Doe' },
+     { firstName: 'Anna', lastName: 'Smith' },
+     { firstName: 'Peter', lastName: 'Jones' } ] }
+
+
+Conversion of JSON into a JS object
+==================================================
+JSON arrays are written inside square brackets.
+Just like in JavaScript, an array can contain objects:
+
+var text = '{ "employees" : [' +
+'{ "firstName":"John" , "lastName":"Doe" },' +
+'{ "firstName":"Anna" , "lastName":"Smith" },' +
+'{ "firstName":"Peter" , "lastName":"Jones" } ]}';
+
+
+var jObj = JSON.parse(text);
