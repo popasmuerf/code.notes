@@ -32,7 +32,7 @@ clicked.  what are our options ?:
 
 /** code **/
 
-let click_event_action = function(areg_event){
+let click_event_action = function(arg_event){
 	if(event.target && event.taget.nodeName == "LI"){
 		console.log("You clicked on this list item !!!! :"  + document.getElementById(event.target.id).toString());
 	}
