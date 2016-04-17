@@ -1,0 +1,52 @@
+Many to many relationships
+========================================================
+
+Author
+==============
+<<pk>> author_id[int(11)]
+first_name[varchar(20)]
+last_name [varchar(20)]
+
+
+
+Book
+==============
+<<pk>> book_id[int(11)]
+book_title[varchar(255)]
+ISBN[varchare(255)]
+version[varchar(10)]
+
+
+
+A join is table is nothing more than a table containing the <<fk>> (Foreign Key) of one
+or more tables.  The join table for a many to many relationship for Author and Book entities/objects:
+
+
+Author_Book
+=========================
+<<FK>> author_id[int(11)]
+<<FK>>  book_id[int(11)]
+
+
+
+
+Somtimes it is useful to assign a <<PK>> primary key column to a join table
+============================================================================
+
+Author_Book
+=========================
+<<PK>> author_book
+<<FK>> author_id[int(11)]
+<<FK>>  book_id[int(11)]
+
+
+
+A few things to note here:
+===================================
+* By convention, the name of this join table is usually just a combination
+  of the two tables of the many-to-many(MM) relationship.
+* This join table only contains the primary keys from the author and book tables which within the 
+  context of this join table, are actually <<FK>>
+* Somtimes it is useful to assign a <<PK>> primary key column to a join table
+
+
