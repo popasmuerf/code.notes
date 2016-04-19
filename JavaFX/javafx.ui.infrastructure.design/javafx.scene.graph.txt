@@ -1,0 +1,67 @@
+The Foundation of Game Design:  The JavaFX Scene
+=================================================================
+
+
+
+Control game play updates
+===================================
+javafx.animation.AnimationTimer
+
+
+
+Game components
+===================================
+*	sprites engine
+*	collision engine
+*	physics enginer
+*	actor engine
+
+
+
+javafx.scene.layout.StackPain
+===================================
+*	StackPane lays out its children in a back-to-front stack
+*	The z-order of the children is defined by the order of the children list with the 
+	0th child being the bottom and the last child on top.
+
+		StackPane Z-Order
+		--------------
+			nth-child
+			|
+			|
+			|
+			|
+			|
+			|
+			|
+			|
+			0th-child
+
+*	The stackpane will attmpt to resize each child to fill its content area
+	If the chld could not be sied to fillthe stackpane(either because it was not resiable or its max size prevented it) then it will be aligned within the area using the alignment property, which defaults to
+	Pos.CENTER.
+
+*	StackPane code example:
+
+	StackPane stack = new StackPane() ;
+	stack.getChildren().addAll(new Rectangle(100,100,Color.BLUE),new Label("Go!"));
+
+
+javafx.scene.layout.StackPain
+===================================
+*	StackPane lays out its children in a back-to-front stack
+*	The z-order of the children is defined by the order of the children list with the 
+	0th child being the bottom and the last child on top.
+
+
+javafx.scene.image.ImageView
+===================================
+
+
+
+
+
+
+
+
+

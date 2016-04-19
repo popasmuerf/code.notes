@@ -17,28 +17,70 @@ a memory resource dedicated to this anmiation of 900KB * 5 = 4,500 MB.  We can r
 allocation of system memory by using static background images and only drawing exactly what we
 need on to it....thus reducting the size of each individual frame.
 
+Digital video you must take into account that you not only must take into account the total size
+of each frame...but the number of seconds the video will play
 
 
-Digital Image Resolution and Aspect Ratio: Defining Image Size and Shape:
+We can reduce the total amount of space used by animations and video by using efficienct codes(codecs/decode)
+
+
+Codec used by JavaFX, HTML5, and Android(a most efficinet codec)
+===================================================================
+MPEG-4 H.264 AVC.
+Not only is it ver efficienct...but we can also use it accross platforms.
+
+
+
+Digital Video Compression Concepts: Bit Rate, Data Streaming, SD, HD, UHD
+===========================================================================
+
+Primary standard resolutiosn that are used for commerical video are also commonly
+used for device screen resolutions....this allows for easy screen resolution
+matches and that do not require scaling and thus avoids scaling artifacts:
+
+*	Standard definition(SD) : 480px (vertical)
+*	VGA(a form of "wide" SD)		: 720 x 480
+*	High Definition(psuedo HD)	:1280 * 720
+*	High Definition(true  HD 16:9)	:1280 * 1080
+*	High Definition(true  HD ratio 16:9)	:1280 * 1080
+*	High Definition(true  HD ratio 16:9)	:1280 * 1080  //used in TVs mobile devices, game consoles
+*   Ultra High Definition(UHD)	:4096 x 2160
+
+Data Streaming is more complicated concept than resolution, as it involves playing back
+video data over some medium from a remote location.  Streaming is supported by
+the codec(encoder-decoder pair):
+
+	MPEG-4 H.264 AVC
+
+Bit-rate
+==========================================================================
+Bit rate is the key setting used in the video compresion process.
+Bit rates represent your target bandwidth, or the data pipe size that is able to
+accomomdate a certain number of bits streaming through it every second.  Bit rates
+should always take into account cpu processing power and bus bandwidths.  Single corew
+CPUs may not be able to decode high-resolution, high-bit rate digital video assets without
+dropping frames, so do make sure to optimize low-bit rate video assets
+if you are going to target older or less expensive consumer electronic devices
+
+
+
+
+Closed and Open source compression/streaming codecs worth mentioning
 =========================================================================
-Digital imagery is made up of 2D(two-dimensional) arrays of pixels
-(pixel stands for picture[pix]
- element[el]]).  The sharpmess of an image
- is expressed by its resolution, which is the number of pixels in the image
- width and height.
- 	w = x-axis
- 	h = y-axis
-
-The more pixels an image has, the higher its resolution.  This is similar to how
-digital cameras work, as the more megapixels in aimage capture device
-(a camera CDD), the higher the image quality tha can be achieved....
+*	Sorenson Squeeze Pro
+*	Editshare Light Works
 
 
-How to find the total number of image pixels
+Like image compression and resolution, video/animation needs optimization
 ========================================================================
-To find the total number of image pixels, multiple the swidth pixels  by
-the height pixels:
-	w*h = total number of image pixels
+*	Each frame of the video is where initial optimizaton takes place
+	-If we are using 800 x 480 or 1280 x 720 smartphones, e-readers, etc then
+	we do not need to use true HD to get good visuals for our visual assets
+	-With superfine density(small dot pitch) displays, we can scala a 1280 video up 33 percent
+	while looking reasonably good
+*	Frames per second(FPS)..
+	-always try to shorten the number of seconds
+	-always try to reduce the the number of frames per second
 
 Example:
 ************************************************************
@@ -59,91 +101,13 @@ An aspect ration of a rectangle  where w=8 && h=12  has a ratio of  8/12  == 2/3
 
 
 
-Color theory
-====================================================================================================
-The color values for each digital image pixel can be deined by the
-amount of three different colors:
-
-	red, green, and blue (RGP)
-
-which are present in different amounts in every pixel.  Consumer electronics display screens
-leverage additive colors, in which wavelength sof light for each RGB channel are added
-together creating 16.8 milion different color values.  Additvie color is used
-in liquid crystal display (LCD), light-emitting diode(LED), and organic lightemitting
-diode(OED) displays.
-
-256 levels of brightness for each read, green, and blue color value that is held for each
-pixel...this allows for  8bits of velue-controlling color brightness variation
-for each fo teh red, green, and blue values, from a minimum of :
-
-	0(#00, or offf, all dark or black)  --> 255(#FF, or fully on, macismum color contributed)
-
-color depths often used in digital imaging industry include:
-	8 bit 256 colors
-	16 bit 65,536 colors
-	24 bit 16,777,216 colors
-	32 bit 32,000,000
-^^^ All of these use GIF and PNG8 formats to hold this indexed color type
-of data.
-
-Note: Formats aside from GIF, JPEG, PNG
-=============================
-If you want to use fomats like TIFF, or TGA in your JavaFX
-projects, then import a 3rd Party ImageJ library. 
 
 
-Digital Image Composisting: Using Alpha Channels and Transparency in Layers
-=============================================================================
-
-What is compositing?
-****************************************************
-Compositing is the process of seamlessly blending together multiple layers
-of digital imagery.  As you might imagine, this is an extremely important concept
-for game design and development.
-
-Where is compositing used ?
-*****************************************************
-Compositing is useful when you want to create an image
-on the display that appears as though it is one single image(or animation),
-when i is actually the seamless collection of two or more composited image layers.
-One of the principle reasons you would want to set up an image or animation
-composite is to allow programmatic control over various elements in those images,
-by having them on different layers.
-
-How do we accomplish composition ?
-*******************************************************
-To accomplish this, you  need to have an:
-
- alpha channel transparency
-
-value, which you can use to control the precision of the blending amount of a given pixel
-with another pixel(meaning in the same x,y image location)
-
-Like the other RGB channels, an alpha channel has 256 transparency levels.
-In Java programming the alpha channel is represented by the first two slots in
-a hexadecimal representation of 
-
-	#AARRGGBB
-
-data values.  Alpha channel ARGB data values use eight slots(32 bit) of
-data rather than the six data slots used in 24-bit image, which is really
-a 32-bit image with zero alpha channel data.
 
 
-Elite: Dangerous  neutron star
 
 
-Dithering
-=======================================
-Dither is an intentionally applied form of noice used to randomize quantization error, preventing
-large-scale patterns such as color banding in images.  Dithering is also used
-in digital audio and video data.
 
-colour banding is a problem of inaccurate colour presentation in computer graphics.  Banding is most apparent
-in 8-bit gradients where where dithering is not an option.
-
-Dithering will always increase the data footprint by a few percentage points...and as such will increase
-the resultant file size.
 
 
 
