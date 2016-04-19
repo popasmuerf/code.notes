@@ -56,6 +56,33 @@ javafx.scene.layout.StackPain
 
 javafx.scene.image.ImageView
 ===================================
+* The ImageView is a Node used for painting images loaded with Image class.
+This class allows resising the displayed image(perserving the original aspect ratio or not) and specifying
+a viewport into the source image for restricting the pixels displayed by this ImageView.
+
+/* Example code using ImageView */
+
+import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
+import javafx.scene.Scene; 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage; 
+
+public class HelloMenu extends Application{
+
+	@Override 
+	public void start(Stage stage){
+		Image image = new Image("flower.png");
+		ImageView iv1 = new ImageView();
+		iv1.setImage(image);
+	}
+	
+
+}
 
 
 
