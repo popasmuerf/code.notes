@@ -1,0 +1,30 @@
+Many to many relationships
+========================================================
+
+order
+==============
+<<pk>> order_id[int(11)]
+customer_id [int(11)]
+pizza_type [int(1)]
+order_date [datetime]
+
+
+
+customer
+==============
+<<pk>> customer_id[int(11)]
+first_name[varchar(20)]
+last_name [varchar(20)]
+phone_number [varchar(12)]
+
+
+pizza
+==============
+cost [decimal]
+pizza_type [int(1)]
+order_date [datetime]
+
+
+
+
+
