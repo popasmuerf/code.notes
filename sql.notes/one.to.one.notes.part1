@@ -57,7 +57,7 @@ create table license
     person_id int(11)  primary key,
     issue_date datetime,
     license_number varchar(255),
-    expiry_date datetime ,
+    expiry_date datetime 
 );
 
 
