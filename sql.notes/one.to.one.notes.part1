@@ -1,0 +1,42 @@
+one to one notes part 1 
+========================================
+The trick to creatin a one-to-one relationship in SQL is to identify
+which table is on the righ hand side or child relationship.
+This is accomplished via what entity between the two can exist without
+the other.
+
+* I can exist without my passport :  I am on the left side
+* I can exist without my soul :  Doesn't work
+
+
+* You should never assign an auto_increment to a foreign key
+* Join tables for many to many relationships should never contain a primary key
+  as a many to many relationship does not denote uniqueness of relationships
+* Multiple foreign keys are legal in ANY table
+
+The design:
+================================
+
+Person   (parent)
+---------------------
+<<PK>> person_id [int(11)]
+first_name [varchar(20)]
+last_name [varchar(20)]
+Drivers_License
+
+
+License (child)
+------------------------
+<<PK/FK>> person_id [int(11)]
+license_number [varchar(20)]
+issue_date [datetime]
+expiry_date [datetime]
+
+
+
+
+^^^^ Note that the child table design does not have its own drivers_license_id
+column, as that would break the design as  one to one relationship
+The Child is 100% dependent on it's parent. 
+
+Notice how we also do not need a join table as you would in a many to many relationship.
