@@ -40,3 +40,25 @@ column, as that would break the design as  one to one relationship
 The Child is 100% dependent on it's parent. 
 
 Notice how we also do not need a join table as you would in a many to many relationship.
+
+
+Code
+======================================
+create database mva ;
+use mva;
+create table person
+(
+ person_id int(11) auto_increment primary key, 
+ first_name varchar(20) ,
+ last_name varchar(20) 
+);
+create table license
+(
+    person_id int(11)  primary key,
+    issue_date datetime,
+    license_number varchar(255),
+    expiry_date datetime ,
+);
+
+
+
