@@ -1,0 +1,114 @@
+Digital Imaging Concepts: Resolution, Color Depth, Alpha, Layers
+=================================================================
+All the concepts regarding image resolution applies to digital
+video and animation.  Video and animation ultimately consist of individual
+frames.   24 frames/sec is enough to provide an illusion of motion. 
+Animations and Video are essentially the swaping of digitial images.
+This should be taken into consideration w/r to memory footprints.
+Not only must you be conscerned with the the memory footprint of each
+indidvidual image required for the animation...and the resources required
+to load and swap each image with such speed that it appears to be
+be an animation in motion.
+
+Note:
+==============
+If we were to use 900KB images for a 5 frame animation...that would require
+a memory resource dedicated to this anmiation of 900KB * 5 = 4,500 MB.  We can reduce the 
+allocation of system memory by using static background images and only drawing exactly what we
+need on to it....thus reducting the size of each individual frame.
+
+Digital video you must take into account that you not only must take into account the total size
+of each frame...but the number of seconds the video will play
+
+
+We can reduce the total amount of space used by animations and video by using efficienct codes(codecs/decode)
+
+
+Codec used by JavaFX, HTML5, and Android(a most efficinet codec)
+===================================================================
+MPEG-4 H.264 AVC.
+Not only is it ver efficienct...but we can also use it accross platforms.
+
+
+
+Digital Video Compression Concepts: Bit Rate, Data Streaming, SD, HD, UHD
+===========================================================================
+
+Primary standard resolutiosn that are used for commerical video are also commonly
+used for device screen resolutions....this allows for easy screen resolution
+matches and that do not require scaling and thus avoids scaling artifacts:
+
+*	Standard definition(SD) : 480px (vertical)
+*	VGA(a form of "wide" SD)		: 720 x 480
+*	High Definition(psuedo HD)	:1280 * 720
+*	High Definition(true  HD 16:9)	:1280 * 1080
+*	High Definition(true  HD ratio 16:9)	:1280 * 1080
+*	High Definition(true  HD ratio 16:9)	:1280 * 1080  //used in TVs mobile devices, game consoles
+*   Ultra High Definition(UHD)	:4096 x 2160
+
+Data Streaming is more complicated concept than resolution, as it involves playing back
+video data over some medium from a remote location.  Streaming is supported by
+the codec(encoder-decoder pair):
+
+	MPEG-4 H.264 AVC
+
+Bit-rate
+==========================================================================
+Bit rate is the key setting used in the video compresion process.
+Bit rates represent your target bandwidth, or the data pipe size that is able to
+accomomdate a certain number of bits streaming through it every second.  Bit rates
+should always take into account cpu processing power and bus bandwidths.  Single corew
+CPUs may not be able to decode high-resolution, high-bit rate digital video assets without
+dropping frames, so do make sure to optimize low-bit rate video assets
+if you are going to target older or less expensive consumer electronic devices
+
+
+
+
+Closed and Open source compression/streaming codecs worth mentioning
+=========================================================================
+*	Sorenson Squeeze Pro
+*	Editshare Light Works
+
+
+Like image compression and resolution, video/animation needs optimization
+========================================================================
+*	Each frame of the video is where initial optimizaton takes place
+	-If we are using 800 x 480 or 1280 x 720 smartphones, e-readers, etc then
+	we do not need to use true HD to get good visuals for our visual assets
+	-With superfine density(small dot pitch) displays, we can scala a 1280 video up 33 percent
+	while looking reasonably good
+*	Frames per second(FPS)..
+	-always try to shorten the number of seconds
+	-always try to reduce the the number of frames per second
+
+Example:
+************************************************************
+A wide video graphics array (VGA) 800 * 480 image contains:
+	384,000 pixels
+which is 3/8 of a megabyte.  This is how you would fid the size of yoru image,
+both in terms of kilobytes(or megabytes) and the height and width of it displayed on
+the screen.
+
+
+Aspect ration
+*************************************************************
+An aspect ratio of a retangle(of matching sides) would be irrelvant of the actual width and height:
+
+	1:1 | 3:3 | 100:100 == 1:1
+
+An aspect ration of a rectangle  where w=8 && h=12  has a ratio of  8/12  == 2/3  == 2:3
+
+
+
+
+
+
+
+
+
+
+
+
+
+

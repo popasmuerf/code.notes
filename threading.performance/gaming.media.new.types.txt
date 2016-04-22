@@ -189,6 +189,11 @@ antialiasing for our multilayered imagery using each image's alpha channel
 
 
 
+Digital image optimization: Using Compresssion, Indexed Color and Dithering
+============================================================================
+
+
+
 
 
 
