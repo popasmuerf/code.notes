@@ -1,0 +1,68 @@
+SQL Joins 
+========================================
+There are 3 categories of joins that ou can make use of in SQL:
+1.  Inner Join
+2.  Outer Join
+3.  Cross Join
+
+
+
+An understanding of what a JOIN really is
+=====================================================
+Joins are used in SQL to bring together all the releveant data from 
+multiple database tables...based on relevant criteria.
+
+
+
+
+One to many
+================================
+<<PK>> author_id[int(11)]
+first_name [varchar(20)]
+last_name [varchar(20)]
+
+
+
+<<PK>> book_id[int(11)]
+<<FK>> author_id[int(11)]
+book_title[varchar(55)]
+ISBN[varchar(255)]
+version [varchar(10)]
+
+
+
+SQL inner join
+===============================
+Inner joins(aka as basic joins) will
+join mathces from all involved tables based on 
+some criteria.  No match...no rows returned:
+
+#syntax:
+
+select * from author 
+inner join book on author.author_id = book.author_id ;
+
+
+
+SQL Outer Join
+=======================================
+Outer joins actually brak down into three categories:
+
+    *   Left outer join:
+        -Includes all rows from "left" table and all matched rows from right table
+    *   Right outer join
+        -Includes all rows from "right" table and all matched rows from right table
+    *   Full outer join
+        -
+    *   The left outer join is the most commonly used outer join
+    
+    SQL Left Join syntax
+    --------------------------------------
+    select * from author 
+    left join book
+    on
+    author.author_id = book.book_id  ;
+    
+    
+    
+    

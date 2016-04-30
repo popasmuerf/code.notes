@@ -23,7 +23,6 @@ create table author
 create table book
 (
     book_id int(11) auto_increment primary key, 
-    author_id int(11),
     book_title varchar(255),
     ISBN varchar(10),
     version int(11)    
@@ -31,37 +30,87 @@ create table book
 create table author_book(
     author_id int(11),
     book_id int(11),
-    foreign_key (author_id) references author(author_id),
-    foreign_key (book_id) references book(book_id)
+    foreign key (author_id) references author(author_id),
+    foreign key (book_id) references book(book_id)
 );
 
 
 ==================================================
 
 
-insert into users(
-    username,
-    password
+insert into person(
+    first_name,
+    last_name
  )values(
-    'Conchita Brown',
-    'redblack'
+    'Mike',
+    'Brown'
+ );
+ insert into person(
+    first_name,
+    last_name
+ )values(
+    'Kevin',
+    'Robinson'
  );
  
+ insert into person(
+    first_name,
+    last_name
+ )values(
+    'Phillip',
+    'Boissierre'
+ );
+ 
+------------------------------------------------------------
 
-insert into address (
-    user_id,
-    street_address_1,
-    street_address_2,
-    region ,
-    zip_code,
-    country  
-)values(
-    2,
-    '7922 Grant Drive, Glenarden MD 20706',
-    'N/A',
-    'Mid-Atlantic',
-    '20706',
-    'US'
+ create table license(
+    person_id int(11) primary key,
+    license_number varchar(20),
+    issue_date datetime,
+    expiry_date datetime,
+    foreign key (person_id) references person(person_id),
 );
-===============================================================
+
+insert into license(
+    person_id,
+    license_number,
+    issue_date ,
+    expiry_date
+) values(
+    1,
+    'F255-9215-0094',
+    '2007-12-18',
+    '2010-12-18'
+) ;
+
+insert into license(
+    person_id,
+    license_number,
+    issue_date ,
+    expiry_date
+) values(
+    2,
+    'H255-9815-1094',
+    '2006-11-18',
+    '2009-11-18'
+) ;
+
+insert into license(
+    person_id,
+    license_number,
+    issue_date ,
+    expiry_date
+) values(
+    3,
+    'Z655-9815-1094',
+    '2006-11-18',
+    '2009-11-18'
+) ;
+
+
+select  person.first_name, person.last_name, license.license_number from license
+join person on person.person_id = license.person_id; 
+
+
+
 
