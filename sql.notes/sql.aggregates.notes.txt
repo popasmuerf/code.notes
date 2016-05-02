@@ -1,0 +1,19 @@
+SQL  Aggregate Funcitons 
+========================================
+Aggregates are basically functions that you will call that will process
+data in your database and return a value.
+
+Common aggregate functions
+=======================================
+1.  MAX
+2.  MIN
+3.  SUM 
+4.  AVG
+5.  COUNT
+
+
+
+    
+    
+    
+    
