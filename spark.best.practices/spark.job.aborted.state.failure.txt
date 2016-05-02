@@ -1,0 +1,34 @@
+https://databricks.gitbooks.io/databricks-spark-knowledge-base/content/troubleshooting/javaionotserializableexception.html
+
+Job aborted due to stage failure: Task not serializable:
+==========================================================================
+if we see this error:
+
+	org.apache.spark.SparkException: Job aborted due to stage failure: Task not serializable: java.io.NotSerializableException: ...
+
+The Cause
+============================================================================
+The above error can be triggered when you initialize a variable on the driver(master), but then 
+try to use it on one of the workers.  In that case, Spark Streaming will try to serialize the object to send
+it over to the worker, and fail if the object is not serializable.  Consider the following code snippet:
+
+/*********Code Snippet************/
+
+NotSerializable notSerializable = new NotSerializable() ;
+JavaRDD<String> rdd = sc.textFile("/tmp/myfile");
+rdd.map(s -> notSerializable.doSomething(s)).collect() ;
+
+
+^^^^This will trigger that error.
+
+
+Mitigation  solutions
+=============================================
+*	Declare the affected class as Serializable
+*	Declare the instance only within the lambda function passed in the map operation
+*	Declare the currently unserializable object as a static and create it once per machine
+*	Call rdd.forEachPartition and create teh NotSerializable object within the lambda as such:
+
+	rdd.forEachPartition(iter -> {NotSerializable notSerializable = new NotSerializable()
+		// ...process iter
+	});

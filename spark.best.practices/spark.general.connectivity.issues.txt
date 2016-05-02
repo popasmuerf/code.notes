@@ -1,0 +1,10 @@
+https://databricks.gitbooks.io/databricks-spark-knowledge-base/content/troubleshooting/port_22_connection_refused.html
+
+
+
+Error running start-all.sh Connection refused
+==========================================================================
+You likely need to enable sshd on the target machine on the cluster.
+
+
+

@@ -1,0 +1,58 @@
+https://api.jquery.com/class-selector/
+
+JQuery(JQ) running code after the page has finished running
+========================================================
+This is important....as we really cannot successfully
+run our scripts if the elements of our page has not
+completely loaded yet.
+
+/*------code------*/
+var main = function(){
+	//do stuff
+}
+
+
+jquery(document).ready(main)
+
+	--or--
+
+$(document).ready(main)
+
+
+
+JQ and selecting classes that have been assigned to some element
+================================================================
+An element may hae multiple classes.  Only one one them must match
+
+Example code of doing stuff with classed up tags:
+
+<!--html-->
+
+<html>
+	<body>
+		<div>
+			<button class="button_class" type="button">click this button!!!!</button>
+			<button class="button_class another_button_class" type="button">click this button too!!!!</button>
+		</div>
+		<script>
+			jquery(".button_class").click()
+			jquery(".button_class.another_button_class").css("border","13px solid red")
+		</script>
+	</body>
+</html>
+
+
+
+JQ example of moving some element around 
+==============================================================
+var main = function() {
+  $('.icon-menu').click(function() {
+    $('.menu').animate({
+      left: '0px'
+    }, 200);
+
+    $('body').animate({
+      left: '285px'
+    }, 200);
+  });
+};

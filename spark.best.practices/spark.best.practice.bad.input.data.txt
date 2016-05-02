@@ -1,0 +1,23 @@
+https://databricks.gitbooks.io/databricks-spark-knowledge-base/content/best_practices/dealing_with_bad_data.html
+
+Gracefully Dealing with Bad Input Data
+===========================================
+When dealing with vast amounts of data, a common problem is that a small amount
+is malformed or corrupt.  Using the transformation:
+
+	field
+
+transmormation, you can easily discard bad inputs, or the transformation :
+
+	flatMap
+
+where we can try fixing the input but fall back to discarding the input if you cannot:
+
+
+/** code **/
+
+
+How could we accomplish this ?
+==========================================
+We could filter based on some match to a regex....
+I beleive I have done this before.
