@@ -1,2 +1,7 @@
 1. can derive current spark/sql context from the passed DFrame
 2. Constant switching between Seq and ArrayBuffers is probably redundant.  See if  you can not do that anymore
+
+
+
+
+
