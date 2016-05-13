@@ -1,0 +1,48 @@
+
+
+Why use SQL group by ?
+===========================================
+Let's assume we hae three different bank accounts and each
+has both credit and debit transactions.  e would also like 
+to see a quick summary of all the credits and all the debits for
+each bank account.  This kind of "requirement" lends itself 
+pefectly for grouping.
+
+
+
+create table bank_account
+(
+   bank_account_id int(11) auto_increment primary key,
+   bank_account_number varchar(20)
+) ;
+
+
+create table transaction
+(
+    transaction_id int(11) auto_increment primary key ,
+    bank_account_id int(11),
+    transaction_date date,
+    debit_amount numeric(10,2) default 0.0,
+    credit_amount numeric(10,2) default 0.0
+);
+
+
+insert into bank_account (bank_account_number) value('A-283748293') ;
+insert into bank_account (bank_account_number) value('B-174984638') ;
+insert into bank_account (bank_account_number) value('C-97461738') ;
+
+insert into transaction ( bank_account_id , credit_amount,transaction_date) value(1,250.12,'2014-06-10') ;
+insert into transaction ( bank_account_id , credit_amount,transaction_date) value(2,-123.93,'2014-06-10') ;
+insert into transaction ( bank_account_id , credit_amount,transaction_date) value(3,832.11,'2014-06-11') ;
+insert into transaction ( bank_account_id , credit_amount,transaction_date) value(4,-100.3,'2014-06-10') ;
+insert into transaction ( bank_account_id , credit_amount,transaction_date) value(2,322.33,'2014-06-11') ;
+insert into transaction ( bank_account_id , credit_amount,transaction_date) value(3,131.92,'2014-06-11') ;
+insert into transaction ( bank_account_id , credit_amount,transaction_date) value(1,142.50,'2014-06-12') ;
+
+select max(data_point) from data_points ;
+select min(data_point) from data_points ;
+select sum(data_point) from data_points ;
+
+
+update transaction set debit_amount= -100.30, credit_amount=0.00 where transaction_id = 4 ;
+

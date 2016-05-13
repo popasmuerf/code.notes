@@ -1,16 +1,3 @@
-SQL  Aggregate Funcitons 
-========================================
-Aggregates are basically functions that you will call that will process
-data in your database and return a value.
-
-Common aggregate functions
-=======================================
-1.  MAX
-2.  MIN
-3.  SUM 
-4.  AVG
-5.  COUNT
-
 create table data_points
 (
     data_points_id int(11) auto_increment primary key,
@@ -50,7 +37,3 @@ insert into data_points (data_point,varchar_data_point) values(10,'Kiwi');
 
  select max(varchar_data_point) from data_points ;
 
-    
-    
-    
-    
