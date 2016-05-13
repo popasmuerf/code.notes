@@ -1,0 +1,1 @@
+spark-submit --class Driver --master local /Users/mbrown/src/darpa/clustering/branches/supervised_learning/out/artifacts/supervised_learning_jar/supervised_learning.jar  

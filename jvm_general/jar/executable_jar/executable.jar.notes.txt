@@ -1,0 +1,79 @@
+http://www.mkyong.com/java/how-to-make-an-executable-jar-file/
+
+How to make a Java exe file or executable JAR file
+=============================================
+Source code for our example :
+
+
+/*****Code*****/
+
+package com.mkyong.awt;
+
+import java.awt.Frame;
+import java.awt.Label;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class AwtExample {
+
+	public static void main(String[] args) {
+
+		Frame f = new Frame();
+		f.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+		f.add(new Label("This JAR file is executable!"));
+		f.setSize(500, 500);
+		f.setVisible(true);
+	}
+}
+
+
+
+We need a manifest file
+==============================================
+The Main-Class at the entry point of this Jar file,
+when you double click on this Jar file, the class:
+
+	AwtExample.class
+
+main() method will be launched
+
+############MANIFEST FILE CODE###############
+
+Main-Class: com.mykong.awt.AwtExample
+
+
+NOTE: Be sure that you end your manifest file with a new line, else your
+manifest file will not be parsed and failed to generate the file
+manifest.mf
+
+
+
+Create a Jar file by adding "AwtExample.class" and 
+"manifest.txt" files together.
+
+
+
+
+fat-jar(FJ) AKA uber-jar
+=============================================
+FJs are executable jars that include all your dependencies
+along with your executable code.
+
+
+Why do we need fat-jars ?
+=============================================
+We get used to large WAR archives which contain all dependencies packed
+together under some common folder structure.  With JAR-like packaging
+the story is a bit different.  In order to make your application runnable
+via the command:
+
+	$ java -jar  *.jar
+
+all dependencies should be provided over classpath parameter or enviroment
+variable. Usually it means there would be some lib folder
+with all dependencies and some runnable script which will do the job to 
+construct classpath and run JVM.

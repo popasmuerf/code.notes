@@ -1,0 +1,31 @@
+https://databricks.gitbooks.io/databricks-spark-knowledge-base/content/troubleshooting/connectivity_issues.html
+
+
+Network connectivity issues between Spark components
+==========================================================================
+Network connectivity issues between Spark components can lead to a variety
+of warnings/errors:
+
+Spark Context failing to coonect to Spark standalone master
+---------------------------------------------------------------------
+ERROR AppClient$ClientActor: All masters are unresponsive! Giving up.
+ERROR SparkDeploySchedulerBackend: Spark cluster looks dead, giving up.
+ERROR TaskSchedulerImpl: Exiting due to error from cluster scheduler: Spark cluster looks down
+
+
+
+If the driver is able to connect to the master but the master is unable to communicate
+back to the dirver, then the Master's logs may record multiple attempts to connect
+even though the driver will report that it could not connect
+---------------------------------------------------------------------
+INFO Master: Registering app SparkPi
+INFO Master: Registered app SparkPi with ID app-XXX-0000
+INFO: Master: Removing app app-app-XXX-0000
+[...]
+INFO Master: Registering app SparkPi
+INFO Master: Registered app SparkPi with ID app-YYY-0000
+INFO: Master: Removing app app-YYY-0000
+[...]
+
+
+
