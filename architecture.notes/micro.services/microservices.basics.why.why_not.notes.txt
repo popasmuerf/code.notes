@@ -1,0 +1,31 @@
+http://davydotcom.com/blog/2015-06-09-using-microservices-to-design-for-scale
+
+
+When micro-services make sense and when they don't
+=====================================================
+
+
+
+
+Don't Kill off monolith apps because it is trendy to do so
+==========================================================
+	*	Don't redesign your entire architecture unless your current level of scale demands it
+	*	Every micro-service has to be maintained seperately
+	*	The more apps to maintain...the greater the strain on admin/dev-ops teams
+	*	A massive web applicaton might at then end of the day if deconstructed...be comprised of 20 microservices
+	*	Inter-communication between components may be redundant in some cases...all of which without regard must be accounted for
+	*	All microservices will form a "super organism"...and all microservices are now individual points of failure
+	*	Mitigation of single point of failure for micro-services involves redundant clones of those microservices
+		which increases use of network resources, and places even more burdens on admin/dev-ops staff
+
+
+
+When to use Microservices
+==========================================================
+	* 	Mix integrated systems(monolithic systems) with microservices as needed
+	*	Only splitt integrated systems  wen it is dicovered that you need to scale a feature
+		independently of the rest of the system.
+	*	Keep datasets as isolated as possible.
+	*	Sharing databases increasing DB latency.  Clone the DB if need be....even better...only dump the data you actually need into
+		The new DB
+	*	

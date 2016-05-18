@@ -1,0 +1,23 @@
+
+
+
+The layer underneath HTTP is a transport layer protocol.  Almost all HTTP traffic
+travesl over TCP, though it is not required by HTTP(UDP could work just as well).
+
+
+
+When a user types a URL into th ebrowser, the browser first extracts the hostname from the URL
+as well as port number(default is 80)
+
+*	Extracts URL and port(default port is 80)
+*	Browser/client opens a socket
+*	Browser/client begins writing data to the new socket
+*	The trasport protocol, may or may not resend the data...if it is reliable....
+
+
+Quck HTTP Request with Sockets and C#
+=======================================================
+If you are wondering what it looks like to write an application that will make HTTP
+requests....in C#
+
+/*****Code in C# for making simple HTTP request *******/
