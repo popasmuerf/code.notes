@@ -46,3 +46,105 @@ select sum(data_point) from data_points ;
 
 update transaction set debit_amount= -100.30, credit_amount=0.00 where transaction_id = 4 ;
 
+
+
+
+More GROUP BY  practice
+===================================
+
+use sakila ;
+select customer.last_name from customer where city.city = "New York" group by customer.last_name ;
+
+
+
+Work
+====================================
+create database testDB ;
+use testDB; 
+
+create table customers
+(
+    id int(11) auto_increment primary key ,
+    name varchar(20) not null,
+    age int,
+    address char(25),
+    salary decimal(18,2)
+);
+
+insert into customers (id,name,age,address,salary) value('A-283748293') ;
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES ('Ramesh', 32, 'Ahmedabad', 2000.00 );
+
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES ('Khilan', 25, 'Delhi', 1500.00 );
+
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES ('kaushik', 23, 'Kota', 2000.00 );
+
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES ('Chaitali', 25, 'Mumbai', 6500.00 );
+
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES ('Hardik', 27, 'Bhopal', 8500.00 );
+
+
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY)
+VALUES ('Komal', 22, 'MP', 4500.00 );
+
+
+Select
+=====================================================
+select name , address from customers where salary > 2000.00;
+select average(salary) from customers where salary > 2000.00 ;
+
+AND
+=======================================================
+select id, name , salary where salary > 6500.00 and salary < 10000.00 ;
+select id, name , salary from customers where salary > 2000.00 and salary < 10000.00 ;
+select id, name , salary from customers where salary > 2000.00 or salary < 10000.00 ;
+
+
+UPDATE
+=======================================================
+update customers set address = 'Pune', salary = 1000.00 where name = 'kaushik' ;
+select * from customers ;
+
+
+Delete
+=======================================================
+delete from customers where id = 3 ;
+
+LIKE
+=======================================================
+The basic syntax of % and _ is as follows :
+------------------------------------------------
+select from table_name where column like 'xxxx%'
+
+    -or-
+   
+select from table_name where colunm like '%xxxx%'
+
+  -or-
+   
+select from table_name where colunm like '%xxxx'
+
+
+    -or-
+   
+select from table_name where colunm like 'xxxx_'
+
+    -or-
+   
+select from table_name where colunm like '_xxxx_'
+
+    -or-
+   
+select from table_name where colunm like '_xxxx'
+
+
+#####Example  of sql wild cards##################
+
+select * from customers where salary like '2__0.__' ;
+
+select * from customers where salary like '2%%0.%%' ;
+

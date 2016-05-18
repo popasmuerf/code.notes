@@ -1,0 +1,14 @@
+
+
+SQL TOP clause
+===========================================
+The sql top clause is used to fetch a TOP N number
+of X percent records from a table
+
+##### example #########
+
+use testDB; 
+SELECT  * FROM customers limit 3;
+select name from customer where rownum >= 4;
+
+
