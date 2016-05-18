@@ -1,0 +1,144 @@
+http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServlet.html
+
+
+Inheritance Tree
+================================
+java.lang.Object
+				|
+				javax.servlet.GenericServlet
+								|
+								javax.servlet.http.HttpServlet
+
+All implemented interfaces
+=================================
+Serializable
+Servlet
+servletConfig
+
+Interface javax.servlet.http.HttpServlet
+=======================================
+Provides an abstract class for creating an HTTP servlet
+suitable for a Web site.  A subclass of HttpServlet must override 
+at least one of these methods:
+
+	doGet //if the servlet supports http requests
+	doPost //if the servlet suppots http post requests
+	doPut // if the servlet supports http put requests
+	doDelete // if the servlet supports http delete requests
+	doOption //  ....
+	doTrace // .....
+	init // initialize and destory for managin resoruces that are held for the life of theservlet
+	getServletInfo //which the servlet uses to provide information about itself
+	service // handles standard HTTP requests by dispatching them to the handler mehtods for HTTP request type (the doXXX methods listed above)
+
+Notes:
+=====================================
+*	There's really no reason to override service() as it handles standard HTTP requests by dispatching them to the handler methods(doXXX)
+*	There's almost no reason to override the doOptions and doTrace methods
+
+
+What do we typically use servlets for ?
+============================================
+Servlets typically run on multithreaded servers, so one should keep in mind that
+that servlets should be designed to mitigate issues involving concurrency such as:
+	*	in-memory instances
+	*	in-memory variables
+	*	files
+	*	database connections
+	*	network connections
+
+
+
+javax.servlet.http.HttpServlet
+=======================================
+Provides an abstract class for creating an HTTP servlet
+suitable for a Web site.  A subclass of HttpServlet must override 
+at least one of these methods:
+
+	doGet //if the servlet supports http requests
+	doPost //if the servlet suppots http post requests
+	doPut // if the servlet supports http put requests
+	doDelete // if the servlet supports http delete requests
+	doOption //  ....
+	doTrace // .....
+	init // initialize and destory for managin resoruces that are held for the life of theservlet
+	getServletInfo //which the servlet uses to provide information about itself
+	service // handles standard HTTP requests by dispatching them to the handler mehtods for HTTP request type (the doXXX methods listed above)
+
+
+
+
+javax.servlet
+=======================================
+Provides an abstract class for creating an HTTP servlet
+suitable for a Web site.  A subclass of HttpServlet must override 
+at least one of these methods:
+
+	doGet //if the servlet supports http requests
+	doPost //if the servlet suppots http post requests
+	doPut // if the servlet supports http put requests
+	doDelete // if the servlet supports http delete requests
+	doOption //  ....
+	doTrace // .....
+	init // initialize and destory for managin resoruces that are held for the life of theservlet
+	getServletInfo //which the servlet uses to provide information about itself
+	service // handles standard HTTP requests by dispatching them to the handler mehtods for HTTP request type (the doXXX methods listed above)	
+
+
+Inheritance Tree   http://docs.oracle.com/javaee/7/api/javax/servlet/Servlet.html
+================================
+javax.servlet
+
+
+All implemented interfaces
+=================================
+HttpJspPage
+JspPage
+
+All known Implementing classes:
+=================================
+FacesServlet
+GenericServlet
+HttpServlet
+
+
+public interface  javax.servlet.Servlet
+======================================
+Defies methods that all servlets must implement 
+A servlet is nothing more than a small Java program that runs within 
+a Web server:
+
+	*	Servlets recieve and respond to requests from Web clients, usually across HTTP, but not limited to HTTP
+
+	*	Example....we can implement a generic servlet that extends javax.servlet.http.HttpServlet
+
+
+Life-Cycle of a Servlet 
+====================================
+
+	1.	Servlet is constructed, then initialized with the init() method
+	2.	Any calls from clients to the service() method  are handled
+	3.	The servlet is taken out of service, then destroyed with the destroy() method, then garbage collectec and finalized
+
+Methods
+====================================
+void destroy() // Called by the servlet container to indicate to a servlet that the servlet is being taken out of service
+
+ServletConfig getServletConfig() // Returns a ServletConfig object, which contains initialization and startup parameters for this servlet
+
+String 	getServletInfo() // Returns information about the servlet, such as author, version, and copyright
+
+void init(ServletConfig config) 	//Called by the servlet container to indicate to a servlet that the servlet is bieng placed into service
+
+void service (ServletRequest request, ServletResponse response)  // Called by the srvlet container to allow the servlet to respond to a request
+
+
+
+
+
+
+
+
+
+
+
