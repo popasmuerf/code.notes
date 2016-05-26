@@ -1,0 +1,21 @@
+Singleton Pattern
+=================================
+One of the more simplest design patterns in Java
+This type of desin pattern comes under creation pattern as this
+pattern provides one of the best ways to creat an object.
+
+This pattern involves a single class which is responsible to create an object while making 
+sure that only a single object is crested.  This class provides a way to access its only object with can be acessed directly
+
+
+/****Code********/
+
+public class SingleObject{
+	private static SingleObject instance = new SingleObject() ;
+	private void SingleObject(){
+		//pass
+	}
+	public SingleObject getInstance(){
+			return instance ;
+	}
+}

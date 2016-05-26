@@ -1,0 +1,57 @@
+http://spark.apache.org/docs/latest/mllib-guide.html
+
+What is Spark Machine Learning Library(MLlib) ?
+================================
+MLib is sparks's machine learning(ML) library.  Its goal is to make practical machine learning scalable and easy.
+It consists of common learning algorithms and utilities, including classificatio, regression, clustering, collaborative filtering,
+dimensionality reductionk as well as  lower-level optimatization primitieves and higer-level pipeline APIs
+
+
+
+MLib is currently divided into two packages:
+=============================================================================
+
+
+	*	spark.mllib // contains the original API built on top of RDDs
+	*	spark.ml 	// provides higher-level API built on top of DataFrames for construcint ML pipelines
+
+Note: it is recommended that because with DataFrames the API is more versatile  and flexible.
+spark.mllib though....will still be supportd.
+
+
+spark.mllib: datatypes, algorithms, and utilities
+============================================================================
+DataTypes
+	*	Local Vector
+	*	Labled Point
+	*	Local matrix
+	*	Distributed matrix
+	*	Row Matrix
+	*	Indexed Row Matrix
+	*	CoordinateMatrix
+	*	BlockMatrix
+
+
+Local Vector
+----------------------------------------------------------------------------
+A local vector has interger-type and 0-based inices and double-type values, stored ona a single machine.
+Types of supported by MLlib:
+	*	sparse
+	*	dense
+	*	Dense vectors are backed by double arrays representing its entry values
+	*	Sparse vectors is backed by two parrallel arrays: indics and values.
+
+	Example:
+	##################################
+	*	A dense vector  of (1.0,2.0,3.0)  is represented as [1.0,2.0,3.0]
+
+	*	A sparse vector of (1.0,2.0,3.0) is represented as (3,[0,2.0],[1,2.0],[2,3.0])
+		where 3 is the number of elements int he sparse vector
+
+
+
+
+
+
+
+

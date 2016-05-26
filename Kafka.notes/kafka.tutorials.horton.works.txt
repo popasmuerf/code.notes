@@ -1,0 +1,34 @@
+http://hortonworks.com/hadoop-tutorial/simulating-transporting-realtime-events-stream-apache-kafka/
+
+Apache Kafka
+=====================
+A fas, scalable, durable and fault-tolerant publish-subscribe messaging system.  Kafka is onften used
+in place of tradidtional message brokers like JMS and AMQP because of its higher throughput, reliability and replication.
+
+Kafka works in conjunction with 
+--------------------------------
+	-Apache Storm
+	-Apache HBase
+	-Apache Spark
+for real time  analisys and rendering of streaming data.
+kafka can message geospatial data  froma fleet of longh-haul trucks or
+sensor data from heating and colling equipment in 
+office buildings.  Kafka brokers massive message streams for low-latency
+analysis in Enterpreise Apache Hadoop....or not ?
+
+
+What Kafka does
+==================================
+	-Stream Processing
+	-Website Activity Tracking
+	-Metrics collection and Monitoring
+	-Log Aggregation
+
+Attributes of Kafka 
+==================================
+Scalability : Distrubted system scales easily with no downtime
+Durability	: Persists messages on disk, and provides intra-cluster replication
+reliability : Replicates data, suppiorts multiple subscribers, and automatically balances consumers in case of failure
+Performacnce : High troughput for both publishing and subscribing, with disk structures that provide constant performance
+			   even with many terbaytes of stored messages
+

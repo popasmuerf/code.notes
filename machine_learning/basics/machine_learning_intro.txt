@@ -1,0 +1,47 @@
+http://www.tutorialspoint.com/mahout/mahout_machine_learning.htm
+
+What is Machine Learning ?
+================================
+Machien learning is a branch of science that deals with programming the systems in such
+a way that they automatically learn and imporve with experience.
+Here, learning means recognizing and understanding the input data and making
+wise decisions based on the supplied data.
+
+It is very difficlut to cater to all the decissions based on all possible inputs.
+To tackle this problem, algorithms are developed.  These algorithms build knowledge from
+specific data and past experience with the principles of statistics, probability theory, logic, conbinatorial optimizaton,
+search reinforcement learning, and control learning.
+
+
+Extent developed algorithms form the basis of varioius applications such as:
+=============================================================================
+
+
+	*	Vision processing
+	*	Language processing
+	*	Forecasting(e.g., staock market trends)
+	*	Pattern recognition
+	*	Games
+	*	Data minining
+	*	Expert Systems
+	*	Robots
+
+
+Machine Learning is a vast discipline...
+============================================================================
+Let's concentrate on :
+	*	Supervised learning
+	*	Unsupervised Learning
+
+
+Suervised Learning: examples of  where it is appropiate
+=========================================================
+	* 	classifying e-mails as spam
+	*	self-organizing maps
+	*	heirachical clustering
+	*	recomondations (Amazon, Google ads for things you may be interested in)
+
+
+	
+
+

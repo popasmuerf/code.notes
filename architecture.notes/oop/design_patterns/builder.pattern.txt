@@ -1,0 +1,33 @@
+http://www.tutorialspoint.com/design_pattern/builder_pattern.htm
+
+Builder Patterns
+=================================
+Builder pattern builds a complex object using simple objects and using 
+a step by step approach.  this tuype of design pattern comes under creationbal pattern
+as this patterns provides one of the best ways to create an object.
+
+A builder class builds the final object step by step .  This builder is independent of other
+objects.
+
+
+
+Implementation
+=================================
+We have considered a business case of fast-food restaurant where a typical 
+meal could be a burger and a cold drink. Burger could be either a Veg burger
+or Chicken burger and will be packed by a wrapper.  Cold drink could be either
+a coke or pepsi and will be packed in a bottle.
+
+
+
+/****Code********/
+
+public interface Item {
+	public String name() ;
+	public Packing packing() ;
+	public float price() ;
+}
+
+public interface Packing(){
+	public String pack() ;
+}

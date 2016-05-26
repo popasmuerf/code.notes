@@ -160,6 +160,4 @@ public static void main(String[] args){
 	color1 = colorFactory.getShape("RED");
 	color1.draw() ;
 	color1.fill() ;
-
-
 }

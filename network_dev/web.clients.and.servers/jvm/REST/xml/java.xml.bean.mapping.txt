@@ -1,0 +1,289 @@
+http://docs.oracle.com/javaee/5/api/javax/xml/bind/annotation/XmlElement.html
+
+
+javax.xml.bind.annotation
+================================
+@Retention(value=RUNTIME)
+@Target(value={FIELD,METHOD})
+public @interface XmlElement
+
+
+What?
+=========================================================================
+Maps a JavaBean property to a XML element derived from property name
+
+Usage? 
+========================================================================
+@XmlElement annotation can be used with the following program elements:
+
+	* a JavaBean property
+	* a non static, non transient field
+	* with XmlElements
+
+The usage is subject to the following constraints
+==================================================
+*	This annnotation can be used with following annotations:
+	xmlID
+	XmlIDREF
+	XmlList
+	XmlSchemaType
+	XmlValue
+	XmlMimeType
+	XmlInlineBinaryData
+	XmlElementWrapper
+	XmlJavaTypeData
+
+*	If the type of JavaBean property is a colleciton type of array, an indexed property, or parameterized
+	list, and this annotation is used with XmlElements then, @XmlElement.type()
+	must be DEFAULT.class since the collection item typ is already known
+
+A JavaBean property , when annotated with @XmlElement annotation is mapped to a local element
+in the XML schema complex type to whit the containing class is mapped
+==========================================================================
+<!-- Example: Local XML Schema element -->
+<xs:complexType name="USPrice"/>
+	<xs:sequence>
+		<xs:element name="itemprice" type="xs:decimal" minOccurs="0"/>
+	</sequence>
+</xs:complextType>
+
+
+
+
+//Example: Code fragment
+public class USPrice{
+	@XmlElement(name = "itemprice")
+	public java.math.BigDecimal price ;
+}
+
+
+
+
+Notes:
+=====================================
+*	There's really no reason to override service() as it handles standard HTTP requests by dispatching them to the handler methods(doXXX)
+*	There's almost no reason to override the doOptions and doTrace methods
+
+
+What do we typically use servlets for ?
+============================================
+Servlets typically run on multithreaded servers, so one should keep in mind that
+that servlets should be designed to mitigate issues involving concurrency such as:
+	*	in-memory instances
+	*	in-memory variables
+	*	files
+	*	database connections
+	*	network connections
+
+
+
+javax.servlet.http.HttpServlet
+=======================================
+Provides an abstract class for creating an HTTP servlet
+suitable for a Web site.  A subclass of HttpServlet must override 
+at least one of these methods:
+
+	doGet //if the servlet supports http requests
+	doPost //if the servlet suppots http post requests
+	doPut // if the servlet supports http put requests
+	doDelete // if the servlet supports http delete requests
+	doOption //  ....
+	doTrace // .....
+	init // initialize and destory for managin resoruces that are held for the life of theservlet
+	getServletInfo //which the servlet uses to provide information about itself
+	service // handles standard HTTP requests by dispatching them to the handler mehtods for HTTP request type (the doXXX methods listed above)
+
+
+
+
+javax.servlet
+=======================================
+Provides an abstract class for creating an HTTP servlet
+suitable for a Web site.  A subclass of HttpServlet must override 
+at least one of these methods:
+
+	doGet //if the servlet supports http requests
+	doPost //if the servlet suppots http post requests
+	doPut // if the servlet supports http put requests
+	doDelete // if the servlet supports http delete requests
+	doOption //  ....
+	doTrace // .....
+	init // initialize and destory for managin resoruces that are held for the life of theservlet
+	getServletInfo //which the servlet uses to provide information about itself
+	service // handles standard HTTP requests by dispatching them to the handler mehtods for HTTP request type (the doXXX methods listed above)	
+
+
+Inheritance Tree   http://docs.oracle.com/javaee/7/api/javax/servlet/Servlet.html
+================================
+javax.servlet
+
+
+All implemented interfaces
+=================================
+HttpJspPage
+JspPage
+
+All known Implementing classes:
+=================================
+FacesServlet
+GenericServlet
+HttpServlet
+
+
+public interface  javax.servlet.Servlet
+======================================
+Defies methods that all servlets must implement 
+A servlet is nothing more than a small Java program that runs within 
+a Web server:
+
+	*	Servlets recieve and respond to requests from Web clients, usually across HTTP, but not limited to HTTP
+
+	*	Example....we can implement a generic servlet that extends javax.servlet.http.HttpServlet
+
+
+Life-Cycle of a Servlet 
+====================================
+
+	1.	Servlet is constructed, then initialized with the init() method
+	2.	Any calls from clients to the service() method  are handled
+	3.	The servlet is taken out of service, then destroyed with the destroy() method, then garbage collectec and finalized
+
+Methods
+====================================
+void destroy() // Called by the servlet container to indicate to a servlet that the servlet is being taken out of service
+
+ServletConfig getServletConfig() // Returns a ServletConfig object, which contains initialization and startup parameters for this servlet
+
+String 	getServletInfo() // Returns information about the servlet, such as author, version, and copyright
+
+void init(ServletConfig config) 	//Called by the servlet container to indicate to a servlet that the servlet is bieng placed into service
+
+void service (ServletRequest request, ServletResponse response)  // Called by the srvlet container to allow the servlet to respond to a request
+
+
+
+
+How it works.....using (HTTP)
+========================================
+
+
+
+ -----------------                                            ---------------
+|Servlet Container| ------>init(ServletConfig config)------->|Servlet Program|
+ -----------------                                            ---------------
+
+ -----------------                                                                           ---------------
+|Servlet Container| ------>service(ServletRequest request, ServletResponse response)------->|Servlet Program|
+ -----------------                                                                           ---------------
+
+
+
+http://docs.oracle.com/javaee/7/api/javax/servlet/GenericServlet.html
+Inheritance Tree
+================================
+java.lang.Object
+				|
+				javax.servlet.GenericServlet
+							
+
+All implemented interfaces
+=================================
+Serializable
+Servlet
+servletConfig
+
+
+Direct  Known Subclasses
+=================================
+HttpServlet   
+
+Class javax.servlet.GenericServlet
+======================================= 
+Defomes a generic, protocol-independent servlet.  To write an HTTP servlet for use on the Web,
+extend HttpServlet instead.
+
+GenericServlet implements the Servlet and SevletConfig interfaces.  GenericServlet may  be directly extended by a servlet,
+although it's more common to extend a protocol-specific subclass such as HttpServlet.
+
+GenericServlet makes weriting servlets easier.  It provides simple versions of the lifecycle methods:
+	
+	init()  //ServletConfig interface
+	destroy() //ServletConfig interface
+	log() //ServletContext interface
+
+
+
+Inheritance Tree
+================================
+java.lang.Object
+				|
+				javax.servlet.GenericServlet
+								|
+								javax.servlet.http.HttpServlet
+
+All implemented interfaces
+=================================
+Serializable
+Servlet
+servletConfig
+
+javax.servlet.http
+Class HttpServlet
+
+java.lang.Object
+javax.servlet.GenericServlet
+javax.servlet.http.HttpServlet
+All Implemented Interfaces:
+Serializable, Servlet, ServletConfig
+
+public abstract class HttpServlet
+extends GenericServlet
+Provides an abstract class to be subclassed to create an HTTP servlet suitable for a Web site. A subclass of HttpServlet must override at least one method, usually one of these:
+doGet, if the servlet supports HTTP GET requests
+doPost, for HTTP POST requests
+doPut, for HTTP PUT requests
+doDelete, for HTTP DELETE requests
+init and destroy, to manage resources that are held for the life of the servlet
+getServletInfo, which the servlet uses to provide information about itself
+There's almost no reason to override the service method. service handles standard HTTP requests by dispatching them to the handler methods for each HTTP request type (the doXXX methods listed above).
+
+Likewise, there's almost no reason to override the doOptions and doTrace methods.
+
+Servlets typically run on multithreaded servers, so be aware that a servlet must handle concurrent requests and be careful to synchronize access to shared resources. Shared resources include in-memory data such as instance or class variables and external objects such as files, database connections, and network connections. See the Java Tutorial on Multithreaded Programming for more information on handling multiple threads in a Java program.
+
+
+protected void	doDelete(HttpServletRequest req, HttpServletResponse resp)
+//Called by the server (via the service method) to allow a servlet to handle a DELETE request.
+
+protected void	doGet(HttpServletRequest req, HttpServletResponse resp)
+//Called by the server (via the service method) to allow a servlet to handle a GET request.
+
+protected void	doHead(HttpServletRequest req, HttpServletResponse resp)
+//Receives an HTTP HEAD request from the protected service method and handles the request.
+
+protected void	doOptions(HttpServletRequest req, HttpServletResponse resp)
+//Called by the server (via the service method) to allow a servlet to handle a OPTIONS request.
+
+protected void	doPost(HttpServletRequest req, HttpServletResponse resp)
+//Called by the server (via the service method) to allow a servlet to handle a POST request.
+
+protected void	doPut(HttpServletRequest req, HttpServletResponse resp)
+//Called by the server (via the service method) to allow a servlet to handle a PUT request.
+
+protected void	doTrace(HttpServletRequest req, HttpServletResponse resp)
+//Called by the server (via the service method) to allow a servlet to handle a TRACE request.
+
+protected long	getLastModified(HttpServletRequest req)
+//Returns the time the HttpServletRequest object was last modified, in milliseconds since midnight January 1, 1970 GMT.
+
+protected void	service(HttpServletRequest req, HttpServletResponse resp)
+//Receives standard HTTP requests from the public service method and dispatches them to the doXXX methods defined in this class.
+
+void	service(ServletRequest req, ServletResponse res)
+//Dispatches client requests to the protected service method.
+
+
+
+
+
+
