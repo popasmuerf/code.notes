@@ -32,7 +32,7 @@ DataTypes
 	*	BlockMatrix
 
 
-Local Vector
+Local Vector :  import org.apache.spark.mllib.linalg.{Vector, Vectors}
 ----------------------------------------------------------------------------
 A local vector has interger-type and 0-based inices and double-type values, stored ona a single machine.
 Types of supported by MLlib:
@@ -49,9 +49,109 @@ Types of supported by MLlib:
 		where 3 is the number of elements int he sparse vector
 
 
+	Example:
+	#################################
+	scala> val dv = Vectors.dense(1,2,3)
+	dv: org.apache.spark.mllib.linalg.Vector = [1.0,2.0,3.0]
+
+	scala> val sv1 = Vectors.sparse(3, Array(0, 2), Array(1.0, 3.0))
+	sv1: org.apache.spark.mllib.linalg.Vector = (3,[0,2],[1.0,3.0])
+
+
+Note: Scala imports scala.collection.immutable.Vector by default, so you have to import org.apache.spark.mllib.linalg.Vector explicitly to use MLlib’s Vector.
+
+
+Labeled Point :  import org.apache.spark.mllib.regression.LabeledPoint
+----------------------------------------------------------------------------
+A labled point is a local vector, either dense or sparse, assoicated with a lable/respons.
+In MLlib, labeled points are used in supervised learning algorithms.  We use double to store a lable, so we can use
+labled points in both regression and classification.  For binary classifications, a label should be either 0(negative) or 1(positive).
+For multiclass classification, labels should be class indices starting from zero: 0,1,2....n
+
+	Example:
+	##################################
+	//labeled point with a posistive label and a sense feature vector
+	*	val pos = LabeledPoint(1.0, Vectors.dense(1.0,0.0,3.0))
+	//Create a labled point with a positive label and a dense feature vector.
+	*	val neg = LabeledPoint(0.0,Vectors.dense(1.0,0.0,3.0))
 
 
 
+	Sparse Data:
+	#################################
+	It is very common in practice to have sparse training data.  MLib supports reading training examples stored in LIBSVM
+	format, which is the default format used by LIBSVM(http://www.csie.ntu.edu.tw/~cjlin/libsvm/) and LIBLINEAR(http://www.csie.ntu.edu.tw/~cjlin/liblinear/).  It is a text format in which each line represents a labeled sparse
+	feature vector using the following format:
+
+		label index1:value1 index2:value2 ...
+
+	where the indices are one-based and in ascending order.  After loading, the feature indices are converted to zero-based.
+	MLUtils.loadLibSVMFile reads training examples stored in LIBSVM format
+
+	Example:
+	++++++++++++++++++++++++++++++++++
+	import org.apache.spark.mllib.regression.LabeledPoint
+	import org.apache.spark.mllib.util.MLUtils
+	import org.apache.spark.rdd.RDD
+
+	val examples: RDD[LabelPoint] = MLUtils.loadLibSVMFile(sc,"data/mllib/sample_libsvm_data.txt")
+
+	Local Matrix import org.apache.spark.mllib.linalg.{Matrix, Matrices}:
+	#######################################################################
+	Local matrix  has a interger-tuped rown and columen indcies and double typed values sotred on
+	a single machine.  MLib supports dense matrices, whose entry values are stroed in a single double array in
+	column-major order, and sparce matrices, whose
+	non-zero entry values are stord in the Compressed Sparse Column(CSC) format in cloumn-major order
+
+	For example the following dense matrix:
+
+		|1.0 2.0|
+		|3.0 4.0|
+		|5.0 6.0|
+
+	is stored in a one-dimensional array
+	[1.0,3.0,5.0,2.0,4.0,6.0] with the matrix size(3,2)
+
+	Dense Matrix  vs. Sparse Matrix import org.apache.spark.mllib.linalg.{Matrix, Matrices}:
+	#######################################################################
+	The base class of lcoal matrices is Matrix, and we provide tow implementations:
+		*	DenseMatrix
+		*	SparseMatrix
+	We recommened using the factory methods implemented in Matrices to create local matrcies.
+	Remember, local matrices in MLib are stord in column-major order.
+
+	Example
+	+++++++++++++++++++++++++++++++++++++++++++++++++
+	import org.apache.spark.mllib.linalg.{Matrix, Matrices}
+	
+	//Create a dense matrix ((1.0, 2.0), (3.0, 4.0), (5.0, 6.0)) of shape 3x2(rxc)
+	val dm: Matrix = Matrices.dense(3, 2, Array(1.0,2.0,3.0,4.0,5.0,6.0))
+	
+	dm: org.apache.spark.mllib.linalg.Matrix = 
+	1.0  4.0  
+	2.0  5.0  
+	3.0  6.0 
 
 
+	//Create a sparse matrix ((9.0, 0.0), (0.0, 8.0), (0.0, 6.0))
+	val sm: Matrix = Matrices.sparse(3, 2, Array(0, 1, 3), Array(0, 2, 1), Array(9, 6, 8))
 
+	sm: org.apache.spark.mllib.linalg.Matrix = 
+	3 x 2 CSCMatrix
+	(0,0) 9.0
+	(2,1) 6.0
+	(1,1) 8.0 
+
+	
+
+	Example
+	+++++++++++++++++++++++++++++++++++++++++++++++++
+
+	remember when I had that gig at ORNL in TN ?
+	Where I was tasked with hacking SCSM such that it would serve as an invetory
+	interface to assests they had residing on an Oracle database ?
+
+	What the fuck where they thinking ?  It would have cost them consciderably
+	less to have us(or anyone for that matter) to build an interface using any web framework in particular.
+	I could have built that fucker within a week using straight PHP sans the framework.   It would have looked
+	dry as fuck....but again...What the fuck where they thinking ?

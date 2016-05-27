@@ -1,0 +1,218 @@
+https://jersey.java.net/documentation/latest/getting-started.html
+
+
+Intro product
+================================
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType ;
+
+/**
+*	Root resource(exposed at "myresource" path)
+*/
+@Path("myresource")
+public class MyResource{
+	/**
+	*
+	* Method handling HTTP GET requests.  The returned object will be sent
+	* to the client as "text/plain" media type
+	*/
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getIt(){
+		return "Got It!!!!"
+	}
+}
+
+
+^^^^ The Main class is responsible for bootstrapping the Grizzly container
+as well as configuring and deploying the project's JAX-RS application to the container.
+This JAX-RS resource is an annotated POJO that provides so-called resource that are able to handle HTTP
+requests for URI paths that the resource.
+Hre the resource exposes a single resource method that is able to handle HTTP GET requests is bound to
+/myresource URI path and can produce respnses with respnse message content represented  in 
+the "text/plain" mediea type.
+
+
+
+
+
+
+
+
+
+
+What?
+=========================================================================
+Maps a JavaBean property to a XML element derived from property name
+
+Usage? 
+========================================================================
+@XmlElement annotation can be used with the following program elements:
+
+	* a JavaBean property
+	* a non static, non transient field
+	* with XmlElements
+
+The usage is subject to the following constraints
+==================================================
+*	This annnotation can be used with following annotations:
+	xmlID
+	XmlIDREF
+	XmlList
+	XmlSchemaType
+	XmlValue
+	XmlMimeType
+	XmlInlineBinaryData
+	XmlElementWrapper
+	XmlJavaTypeData
+
+*	If the type of JavaBean property is a colleciton type of array, an indexed property, or parameterized
+	list, and this annotation is used with XmlElements then, @XmlElement.type()
+	must be DEFAULT.class since the collection item typ is already known
+
+A JavaBean property , when annotated with @XmlElement annotation is mapped to a local element
+in the XML schema complex type to whit the containing class is mapped
+==========================================================================
+//Example 1: Map a public non static non final field to local element
+
+<!-- Example-1: Local XML Schema element -->
+<xs:complexType name="USPrice"/>
+	<xs:sequence>
+		<xs:element name="itemprice" type="xs:decimal" minOccurs="0"/>
+	</sequence>
+</xs:complextType>
+
+//Example: Code fragment
+public class USPrice{
+	@XmlElement(name = "itemprice")
+	public java.math.BigDecimal price ;
+}
+
+==========================================================================
+
+<!-- Example-2: Local XML Schema element -->
+<xs:complexType name="USPrice"/>
+	<xs:sequence>
+		<xs:element name="itemprice" type="xs:decimal" nillable="true" minOccurs="0"/>
+	</sequence>
+</xs:complextType>
+
+//Example: Code fragment
+public class USPrice{
+	@XmlElement(name = "itemprice")
+	public java.math.BigDecimal price ;
+}
+
+==========================================================================
+
+<!-- Example-3: Local XML Schema element -->
+<xs:complexType name="USPrice"/>
+	<xs:sequence>
+		<xs:element name="itemprice" type="xs:decimal" nillable="true" minOccurs="0"/>
+	</sequence>
+</xs:complextType>
+
+//Example: Code fragment
+public class USPrice{
+	@XmlElement(name = "itemprice")
+	public java.math.BigDecimal price ;
+}
+
+Notes:
+=====================================
+*	There's really no reason to override service() as it handles standard HTTP requests by dispatching them to the handler methods(doXXX)
+*	There's almost no reason to override the doOptions and doTrace methods
+
+
+What do we typically use servlets for ?
+============================================
+Servlets typically run on multithreaded servers, so one should keep in mind that
+that servlets should be designed to mitigate issues involving concurrency such as:
+	*	in-memory instances
+	*	in-memory variables
+	*	files
+	*	database connections
+	*	network connections
+
+
+
+javax.servlet.http.HttpServlet
+=======================================
+Provides an abstract class for creating an HTTP servlet
+suitable for a Web site.  A subclass of HttpServlet must override 
+at least one of these methods:
+
+	doGet //if the servlet supports http requests
+	doPost //if the servlet suppots http post requests
+	doPut // if the servlet supports http put requests
+	doDelete // if the servlet supports http delete requests
+	doOption //  ....
+	doTrace // .....
+	init // initialize and destory for managin resoruces that are held for the life of theservlet
+	getServletInfo //which the servlet uses to provide information about itself
+	service // handles standard HTTP requests by dispatching them to the handler mehtods for HTTP request type (the doXXX methods listed above)
+
+
+
+
+javax.servlet
+=======================================
+Provides an abstract class for creating an HTTP servlet
+suitable for a Web site.  A subclass of HttpServlet must override 
+at least one of these methods:
+
+	doGet //if the servlet supports http requests
+	doPost //if the servlet suppots http post requests
+	doPut // if the servlet supports http put requests
+	doDelete // if the servlet supports http delete requests
+	doOption //  ....
+	doTrace // .....
+	init // initialize and destory for managin resoruces that are held for the life of theservlet
+	getServletInfo //which the servlet uses to provide information about itself
+	service // handles standard HTTP requests by dispatching them to the handler mehtods for HTTP request type (the doXXX methods listed above)	
+
+
+Inheritance Tree   http://docs.oracle.com/javaee/7/api/javax/servlet/Servlet.html
+================================
+javax.servlet
+
+
+All implemented interfaces
+=================================
+HttpJspPage
+JspPage
+
+All known Implementing classes:
+=================================
+FacesServlet
+GenericServlet
+HttpServlet
+
+
+public interface  javax.servlet.Servlet
+======================================
+Defies methods that all servlets must implement 
+A servlet is nothing more than a small Java program that runs within 
+a Web server:
+
+	*	Servlets recieve and respond to requests from Web clients, usually across HTTP, but not limited to HTTP
+
+	*	Example....we can implement a generic servlet that extends javax.servlet.http.HttpServlet
+
+
+Life-Cycle of a Servlet 
+====================================
+
+	1.	Servlet is constructed, then initialized with the init() method
+	2.	Any calls from clients to the service() method  are handled
+	3.	The servlet is taken out of service, then destroyed with the destroy() method, then garbage collectec and finalized
+
+
+
+
+
+
+
+
