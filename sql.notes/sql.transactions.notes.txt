@@ -52,9 +52,28 @@ COMMIT and ROLLBACK
     
 
 
-conscider the following two tables
+Generic Example on Transaction
 ========================================
-Consider the following two tables, (a) CUSTOMERS table is as follows:
+This sequence of events is independent of the programming language used;
+the locgical path can be created in whichever lanaguage you use to
+create your application.
+
+*   You can execute these SQL commands in PHP by using mysql_query()
+*   Issue one or more SQL commands like SELECT, INSERT, UPDATE or DELETE
+*   Check if there is no error and everything is according to your requirement
+*   If there is any error, then issue ROLLBACK command, otherwise issue a COMMIT command
+
+
+Transaction-Safe Table Types in MySQL
+===================================================================
+We cannot use transactions directly, you can but they would be safe
+and guaranteed.  If you plan to use transactions in your MySQL programming,
+then you need to create your tables in a special way.
+
+*   You can execute these SQL commands in PHP by using mysql_query()
+*   Issue one or more SQL commands like SELECT, INSERT, UPDATE or DELETE
+*   Check if there is no error and everything is according to your requirement
+*   If there is any error, then issue ROLLBACK command, otherwise issue a COMMIT command
 
 +----+----------+-----+-----------+----------+
 | ID | NAME     | AGE | ADDRESS   | SALARY   |
@@ -79,6 +98,17 @@ Consider the following two tables, (a) CUSTOMERS table is as follows:
 | 103 | 2008-05-20 00:00:00 |           4 |   2060 |
 +-----+---------------------+-------------+--------+
 
+Transaction support in your table
+===================================================================
+root@host# mysql -u root -p password;
+Enter password:*******
+CREATE DATABASE tutorials;
+create table tcount_tbl
+ (
+  tutorial_author varchar(40) NOT NULL,
+  tutorial_count  INT
+ ) ENGINE=INNODB;
+DESCRIBE tcount_tbl 
 
 
 Pattern	What the pattern matches
