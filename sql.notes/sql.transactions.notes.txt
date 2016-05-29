@@ -12,10 +12,43 @@ fails, the entire transaction will fail.
 Properties of Transactions
 ============================================
 Transactions have the following four standard properties, usually referred
-to by the acronum ACID:
+to by the acronym ACID:
 
 
+Atomicity:
+-----------------------------------------------
+ensures that all operations within the work unit are completed successfully;
+otherwise, the transaction is aboted at the point of failure and previous
+operations are rollec back to theri former state
 
+Consistency
+------------------------------------------------
+ensures that the database properly changes states upon a
+successfully commited transaction.
+
+
+Isolation
+------------------------------------------------
+Enables transactions operate independently on and transparent to
+each other
+
+
+Durability
+-------------------------------------------------
+Ensures that the result or effect of a commited transaction persists
+in case ofa system failure
+
+
+COMMIT and ROLLBACK
+-------------------------------------------------
+    * When a successful transaction is compted, the COMMIT command should be issued
+      so that the changes to all invovled tables will take effect...
+    * If a failure occurs, a ROLLBACK command should be issued to return every table 
+      referenced in the transaction to its preverious state.
+    * Check if there is no error and everything is according to your requirement
+    * If thre is any error, then issue ROLLBACK command, otherwise issue a COMMIT command.
+    
+    
     
 
 
