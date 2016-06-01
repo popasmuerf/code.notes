@@ -1,0 +1,130 @@
+http://www.tutorialspoint.com/mysql/mysql-indexes.htm
+
+SQL indexes
+===========================================
+A database index is a data structure that improves the speed of operations in a table.
+Indexes can be created using one or more columns, provoding the basis for both rapid random lookups
+and efficient ordering of access to records.
+While creating indices, it should be considered what are the columns which will be used to make
+SQL quieries and create one or more indices on those columns.
+
+Practically, indices are also a type of table, which keep primary key or index field and a pointer
+to each record into the actual table.
+
+The users cannotsee the indices, they are just used to speed up quieries and will be used by 
+Database Search Engine to locate records very fast.
+
+
+Note about Indices and INSERT, UPDATE, SELECT
+============================================
+INSERT and UPDATE commands take more time on tables using indices where as
+SELECt statements become fast on said tables.  The reason being is that while doing
+INSERT and UPDATE, databases need to inser or update index values as well. 
+
+Atomicity:
+-----------------------------------------------
+ensures that all operations within the work unit are completed successfully;
+otherwise, the transaction is aboted at the point of failure and previous
+operations are rollec back to theri former state
+
+Consistency
+------------------------------------------------
+ensures that the database properly changes states upon a
+successfully commited transaction.
+
+
+Isolation
+------------------------------------------------
+Enables transactions operate independently on and transparent to
+each other
+
+
+Durability
+-------------------------------------------------
+Ensures that the result or effect of a commited transaction persists
+in case ofa system failure
+
+
+COMMIT and ROLLBACK
+-------------------------------------------------
+    * When a successful transaction is compted, the COMMIT command should be issued
+      so that the changes to all invovled tables will take effect...
+    * If a failure occurs, a ROLLBACK command should be issued to return every table 
+      referenced in the transaction to its preverious state.
+    * Check if there is no error and everything is according to your requirement
+    * If thre is any error, then issue ROLLBACK command, otherwise issue a COMMIT command.
+    
+    
+    
+
+
+Generic Example on Transaction
+========================================
+This sequence of events is independent of the programming language used;
+the locgical path can be created in whichever lanaguage you use to
+create your application.
+
+*   You can execute these SQL commands in PHP by using mysql_query()
+*   Issue one or more SQL commands like SELECT, INSERT, UPDATE or DELETE
+*   Check if there is no error and everything is according to your requirement
+*   If there is any error, then issue ROLLBACK command, otherwise issue a COMMIT command
+
+
+Transaction-Safe Table Types in MySQL
+===================================================================
+We cannot use transactions directly, you can but they would be safe
+and guaranteed.  If you plan to use transactions in your MySQL programming,
+then you need to create your tables in a special way.
+
+*   You can execute these SQL commands in PHP by using mysql_query()
+*   Issue one or more SQL commands like SELECT, INSERT, UPDATE or DELETE
+*   Check if there is no error and everything is according to your requirement
+*   If there is any error, then issue ROLLBACK command, otherwise issue a COMMIT command
+
++----+----------+-----+-----------+----------+
+| ID | NAME     | AGE | ADDRESS   | SALARY   |
++----+----------+-----+-----------+----------+
+|  1 | Ramesh   |  32 | Ahmedabad |  2000.00 |
+|  2 | Khilan   |  25 | Delhi     |  1500.00 |
+|  3 | kaushik  |  23 | Kota      |  2000.00 |
+|  4 | Chaitali |  25 | Mumbai    |  6500.00 |
+|  5 | Hardik   |  27 | Bhopal    |  8500.00 |
+|  6 | Komal    |  22 | MP        |  4500.00 |
+|  7 | Muffy    |  24 | Indore    | 10000.00 |
++----+----------+-----+-----------+----------+
+
+(b) Another table is ORDERS as follows:
+
++-----+---------------------+-------------+--------+
+|OID  | DATE                | CUSTOMER_ID | AMOUNT |
++-----+---------------------+-------------+--------+
+| 102 | 2009-10-08 00:00:00 |           3 |   3000 |
+| 100 | 2009-10-08 00:00:00 |           3 |   1500 |
+| 101 | 2009-11-20 00:00:00 |           2 |   1560 |
+| 103 | 2008-05-20 00:00:00 |           4 |   2060 |
++-----+---------------------+-------------+--------+
+
+Transaction support in your table
+===================================================================
+root@host# mysql -u root -p password;
+Enter password:*******
+CREATE DATABASE tutorials;
+create table tcount_tbl
+ (
+  tutorial_author varchar(40) NOT NULL,
+  tutorial_count  INT
+ ) ENGINE=INNODB;
+DESCRIBE tcount_tbl 
+
+
+Pattern	What the pattern matches
+^	        Beginning of string
+$	        End of string
+.	        Any single character
+[...]	    Any character listed between the square brackets
+[^...]	    Any character not listed between the square brackets
+p1|p2|p3	Alternation; matches any of the patterns p1, p2, or p3
+*	        Zero or more instances of preceding element
++	        One or more instances of preceding element
+{n}	        n instances of preceding element
+{m,n}	    m through n instances of preceding element
