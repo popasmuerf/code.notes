@@ -32,3 +32,21 @@ results.  As you may have ascertained by usig your recently acquired knowledge o
 optimization, the more "chaos", or noise, present in your sound wave(and in new media data in general)
 the harder it will be to compress for a codec.  therefore, more complex sound waves will result in larger digital
 audio file sizes, owing to the chaso in the data
+
+
+Converting  Analogy Audio to Digital Audio Data: Sampling, Accuracy, HD Audio
+==============================================================================
+The process of turing analog audio(soundwaves) into digital audio data is called
+"sampling".  Devices that perform this in the music industry are called "Samplers".
+Sampling involves the process of slicing an analog audio wave into segments so that yu can store the shape
+of the wave as digital audio data, that is, into zeroes and ones(0's -and- 1's) using a digital audio
+format.  This turns an infinitely accurate analog sound wave into a discrete amount of digital data.
+Each digital segment of a sampled audio sound wae is called a sample, becaus it samples that sound  wave
+at an exact opoint in time.  The "Sample Accuracy"(resolution) you want will determine the level o percision
+of a sample.  
+
+NOTE:  Media Percision
+=======================
+Audio : determined by the amount of data used to define each wave slice's height/amplitude
+Image/Video : determined by the amount of data used to define the image/video resolution
+
