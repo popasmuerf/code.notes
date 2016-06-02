@@ -1,0 +1,34 @@
+Digital Audio concepts: Amplitude, Frequency, Samples
+======================================================
+Digital audio is complex.  Part of the that complexity involves 
+bridging analog audio technology, created with speaker cones, with digital
+audio codecs.
+
+
+Sound waves and requency
+======================================================
+Sound waves generate various tones, depending on the frequency of the 
+sound wave.  A wide, or infrequent(long), wave produces
+a low(bass) tone, whereas frequent (short) wavlengths produce
+high frequency sounds.
+
+
+Volume of sound
+=======================================================
+The volume of a sound wave will be determined by its amplitude,
+or "height" of it's wave.  The frequency of a sound wave equates
+to how closely together the waves are spaced, along the x-axis
+and the amplitude are measured along the y-axis
+
+
+Shape of a sound wave
+=======================================================
+Sound waves can be uniquely shaped, allowing them to "piggyback"
+varous sound effets.  A "pure" or baseline, type of sound wave is called a 
+"sine wave", which is the same sine-wave you learned about in trigonometry.
+
+Even randomoized waveforms, such as noise, are used in sound design to obtain edgy sound
+results.  As you may have ascertained by usig your recently acquired knowledge of data footprint
+optimization, the more "chaos", or noise, present in your sound wave(and in new media data in general)
+the harder it will be to compress for a codec.  therefore, more complex sound waves will result in larger digital
+audio file sizes, owing to the chaso in the data
