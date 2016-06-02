@@ -50,3 +50,25 @@ NOTE:  Media Percision
 Audio : determined by the amount of data used to define each wave slice's height/amplitude
 Image/Video : determined by the amount of data used to define the image/video resolution
 
+Both (image resolution/sample resolution) are both measured in values of : 8bit, 12bit, 16bit, 24bit,32bit
+
+
+How games leverage sample resolution
+=======================
+	*	explosions = 8 bit....no need for that much clarity
+
+	*	speech	=	12 bit.....provides very clear sound for speech.  This is the reason why voices sounded 	terrible back in the height of the 8-bit console era
+
+	*	background music = possible 16 bit....though 12 bit resolution will usually suffice
+
+	*	Essenstially the more data used for sampling...the better the resolution.
+
+	*	There is a reason why CD-Audio(16-bit audio) was once such a big deal....and why HD audio is now.
+
+	*	Modern game conoles have hardware capable of 24-bit audio.  Awesome....
+
+	*	For our game.....HD audio is probably a bit overboard...unless we are writing a sound-based game....
+
+
+
+
