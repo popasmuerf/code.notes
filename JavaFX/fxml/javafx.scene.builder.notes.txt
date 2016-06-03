@@ -1,16 +1,37 @@
-Digital Audio concepts: Amplitude, Frequency, Samples
+JavaFX Scene Builder:  Using FXML for UI Design
 ======================================================
-Digital audio is complex.  Part of the that complexity involves 
-bridging analog audio technology, created with speaker cones, with digital
-audio codecs.
+JavaFX Scene Builder is a visual design tool that generates an FXML
+(JavaFX markup language). The UI JavaFX definition are inflated
+in Java 8 to crate your application's JavaFX scene Graph, nodes, groups
+and SubScene objects  filled with package:
+
+	javafx.scene.contol
+
+Because FXML and Sene Builder are optimized for UI design:
+
+	*	buttons
+	*	check boxes
+	*	text fields
+	*	etc
 
 
-Sound waves and requency
+^^^ Because of what what our scene builder was designed for....
+You generally don't use scene builders in general 
+for building dynamic UIs
+
+We will use some features of it....for things like menus and score
+boards....but most of our UI code will be programmitic.
+
+
+	
+
+
+
+
+Streaming and bit rate
 ======================================================
-Sound waves generate various tones, depending on the frequency of the 
-sound wave.  A wide, or infrequent(long), wave produces
-a low(bass) tone, whereas frequent (short) wavlengths produce
-high frequency sounds.
+The bit rate is defined during the compression process.
+
 
 
 Volume of sound
@@ -104,6 +125,52 @@ digital audio as well, such as movie dialogue or an e-book narration track.
 Higer rates like 44.1 kHz is appropiate for music, high-fidelity stuff like rumbling
 thunder, THX quality audio, etc....
 
+Bit rates are defined during the compresssion process
+=======================================================
+Digital audio files that need to support lower bit-rate bandwidth are going to have
+more compression applied to the audio data, which results in lower aquality.
+these will steam(play black) more smoothly accross a greater number of devices,
 
 
+
+Digital Audio in JavaFX: Supported Digital Audio Codecs and Data Formats
+===================================================================
+There are considerably mor digital audio codecs in JavaFX than digital
+video codecs, as there is only one video codec, MPEG-4 H.264 AVC.
+
+-----------------------------------
+Platform	|	Supported Codecs
+----------------------------------
+JavaFX		|	.mpeg-4 H.264 AVC
+			|	.mp3
+----------------------------------
+Android     |   .mp3
+			|	wave
+			|	.mp4(.mp4-a)
+			|	.mpeg-4 aac
+			|	.aiff(pcm)
+			|	
+-----------------------------------
+
+^^^ mpg is a lossy audio file format.  If you use mp3...make sure you 
+get the most out of it.
+
+Wave is one of the origional audio formats used with the Apple Macintosh and Microsoft
+Windows OSs, respectivey.  These wave files use PCM(pulse code modulation) audio which is loseless(if there is no compression applied)   PCM is commonly used for DC-ROM contents as well as telephony 
+applications.  With no compression PCM becomes relatively much less CPU-intensive as no compression/decompression algorithms need be ran during streaming. 
+
+For this reason...PCM should be your basline file format. It allows you to review the
+differences between wave, mp3, mp4, etc file formats and their compression results.
+
+
+
+Digital Audio optimization: Start with CD-Quality Audio, and Work Backward
+============================================================================
+JavaFX also supports the popular MPEG-4 AAC codec.  These digital audio data can be contained in 
+MPEG4 contanters (.mp4,.m4a,.m4v), or file extensions, and can be played back using any Operating System.
+
+Note: JavaFX does not contain an MPEG-4 decoder...it useds the OS's MPEG-4 decoder
+
+Digital Audio Optimization: Start with CD-Quality Audio, and Work Backward
+==============================================================================
 

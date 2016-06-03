@@ -1,16 +1,25 @@
-Digital Audio concepts: Amplitude, Frequency, Samples
+Digital Audio streamin: Captive Audio vs Streaming Audio
 ======================================================
-Digital audio is complex.  Part of the that complexity involves 
-bridging analog audio technology, created with speaker cones, with digital
-audio codecs.
+As with digital video data, digital audio data can be either captive within the
+application distribution file(in the case of Java, a .JAR file)
+or streamed, using remote data servers.  Similar to digital video, the upised to 
+streaming digital audio data is that ic an reduce the data footpring of the application
+file.  The downside is reliability.  Many of the same concepts
+apply equally well to audio and video.  Streaming audio will save the data footprint, because you do not
+have to include all the heavy new media digital audio data in your .jar files.  If you 
+are planning on coding a jukebox application, you may want to consider streaming your digital
+ audio data....or.....you could try to optimize your digital audio data so that you can include
+ them (captive) insided the .jar file......such that it will be available always.
+
+ Availabilty vs. reduced pay load.   It's a trade-off.
 
 
-Sound waves and requency
+
+
+Streaming and bit rate
 ======================================================
-Sound waves generate various tones, depending on the frequency of the 
-sound wave.  A wide, or infrequent(long), wave produces
-a low(bass) tone, whereas frequent (short) wavlengths produce
-high frequency sounds.
+The bit rate is defined during the compression process.
+
 
 
 Volume of sound
@@ -104,6 +113,52 @@ digital audio as well, such as movie dialogue or an e-book narration track.
 Higer rates like 44.1 kHz is appropiate for music, high-fidelity stuff like rumbling
 thunder, THX quality audio, etc....
 
+Bit rates are defined during the compresssion process
+=======================================================
+Digital audio files that need to support lower bit-rate bandwidth are going to have
+more compression applied to the audio data, which results in lower aquality.
+these will steam(play black) more smoothly accross a greater number of devices,
 
 
+
+Digital Audio in JavaFX: Supported Digital Audio Codecs and Data Formats
+===================================================================
+There are considerably mor digital audio codecs in JavaFX than digital
+video codecs, as there is only one video codec, MPEG-4 H.264 AVC.
+
+-----------------------------------
+Platform	|	Supported Codecs
+----------------------------------
+JavaFX		|	.mpeg-4 H.264 AVC
+			|	.mp3
+----------------------------------
+Android     |   .mp3
+			|	wave
+			|	.mp4(.mp4-a)
+			|	.mpeg-4 aac
+			|	.aiff(pcm)
+			|	
+-----------------------------------
+
+^^^ mpg is a lossy audio file format.  If you use mp3...make sure you 
+get the most out of it.
+
+Wave is one of the origional audio formats used with the Apple Macintosh and Microsoft
+Windows OSs, respectivey.  These wave files use PCM(pulse code modulation) audio which is loseless(if there is no compression applied)   PCM is commonly used for DC-ROM contents as well as telephony 
+applications.  With no compression PCM becomes relatively much less CPU-intensive as no compression/decompression algorithms need be ran during streaming. 
+
+For this reason...PCM should be your basline file format. It allows you to review the
+differences between wave, mp3, mp4, etc file formats and their compression results.
+
+
+
+Digital Audio optimization: Start with CD-Quality Audio, and Work Backward
+============================================================================
+JavaFX also supports the popular MPEG-4 AAC codec.  These digital audio data can be contained in 
+MPEG4 contanters (.mp4,.m4a,.m4v), or file extensions, and can be played back using any Operating System.
+
+Note: JavaFX does not contain an MPEG-4 decoder...it useds the OS's MPEG-4 decoder
+
+Digital Audio Optimization: Start with CD-Quality Audio, and Work Backward
+==============================================================================
 
