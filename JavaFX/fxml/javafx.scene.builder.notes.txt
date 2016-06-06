@@ -23,23 +23,65 @@ We will use some features of it....for things like menus and score
 boards....but most of our UI code will be programmitic.
 
 
-	
 
 
-
-
-Streaming and bit rate
+To use FXML 
 ======================================================
-The bit rate is defined during the compression process.
+To use FXML, and soon adter use the Scene Build visual UI design tool,
+you must create a special kind of FXML application, as you
+learned previously.  Creating an FXML application imports the javafx.fxml
+package and classes.  This allows the Java 8 code to inflate FXML constructs created by
+the UI designers so that they can be used by the programmers 
+to attch Java logic to the various UI controls.  The Android OS does this well, 
+using basic XML, but in Anddrod, this approach is not optional; it is part of the
+way things are done. More about Android UI can be explored in books like "Pro Android UI"
+
+The Scene Builder visual layout tool that writes FXML UI design contructs for you is 
+WYSIWYG drag and drop interface design.
+
+We can also apply all CSS styels to the Scene Buider tool and FXML structure in real time and see the results of those coding changes as well, again, withoug ANY Java compliation.
+
+Note:  The Scene builder kit API is 100% open source.
+
+3D is fully suported in the scened builder, though it is not yet possible to build
+3D objects using Scene Builder.  Further work integrating this tool with OpenGL3D
+will likely change this.
 
 
 
-Volume of sound
+FXML Definition: Anatomy of an XML UI Definition Construct
+===========================================================
+FXML structure is based on teh JavaFX classes(objects), and their attributes,
+that the FXML tags, and praameters structures, which you can easily create,
+allow you to "mock up" a front-end UI more easily, using a mark-up language.  The FXML
+structure lets you more easily construct your Scene Graph hierarchy, and the FXML
+tags and their parameters, which you will be looking at in the next section, match
+up 1:1 with JavaFX API classes.
 =======================================================
 The volume of a sound wave will be determined by its amplitude,
 or "height" of it's wave.  The frequency of a sound wave equates
 to how closely together the waves are spaced, along the x-axis
 and the amplitude are measured along the y-axis
+
+
+
+HelloWorld  UI FXML Definition: Replication Your Current UI Design, Using FXML
+==================================================================================
+The first thing that you define in the FXML structure is the FXML processing instructions.
+
+<? xml version="1.0" encoding="UTF-8" ?>
+<? import java.lang.* ?>
+<? import javas.lang.* ?>
+<? import javafx.scene.* ?>
+<? import javafx.scene.layout.* ?>
+<? import javafx.scene.control.* ?>
+<StackPain id="root" preHeight="250" prefWidth="300" >
+	<children>
+		<Button id="btn" text = "Say 'Hello World'" layoutX="125" layoutY="116"/>
+	</children>
+</StackPane>
+
+
 
 
 Shape of a sound wave

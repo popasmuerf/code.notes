@@ -1,0 +1,26 @@
+http://www.eclipse.org/jetty/about.html
+
+Jetty://
+=========================================================
+The jetty projects was stared in 1995 and since then has 
+been associated with many names and brands
+
+
+
+Distributions
+=========================================================
+The Jetty Web Server provides an HTTP server and Servlet container capable
+of serving static and dymanic content either from a standalone or embedded
+instantiations.  From jetty-7 on, the jetty webserver and other core components
+are hosted by the Eclipse Foundation. The project provides:
+
+	*	Asynchronous HTTP Server
+	*	Standards based Servlet Container
+	*	Web Sockets server
+	*	SPDY server
+	*	Asynchronous HTTP Client
+	*	OSGI, JNDI, JMX, JASPI, AJP support
+
+	
+
+
