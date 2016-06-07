@@ -1,20 +1,30 @@
-http://www.eclipse.org/jetty/documentation/current/quickstart-deploying-webapps.html
+http://www.eclipse.org/jetty/documentation/current/quickstart-jetty-coordinates.html
 
-Deploying web applications using  Jetty://
+Finding Jetty in Maven  Jetty://
 =========================================================
-Jetty sever instances that configure the deploy module will have a web application deployer
-that hot deploys files found in the webaps directory.  Standard WAR files and jetty configuration
-files that you place in the webapps directory are hot deployed to the server with the following conventions:
+Jetty has existed in Maven Central almost since its inception, however under a couple of different coordinates over the years. When Jetty was based at SourceForge and then The Codehaus it was located under the groupId of org.mortbay.jetty. With Jetty 7 the project moved to the Eclipse foundation and to a new groupId at that time to reflect its new home:
 
-	 *	A directory called app/ is deployed as a standard web appliation if it contains a WEB-INF/ subdirecotry, otherwise
-	 	it is deployed as context of static content.  the context path is /app ....that is http://localhost:8080/app
-	 	unless the base name is ROOT(case insensitve) , in which case the context path is "/"
-	 	If the directory name ends with ".d" it is ignored (but maybe be used by explicit configuration)
-	 *	A file called app.war is deplyed as a standard we application with the context path /example
-	 	provided that  http:/localhost:8080/example/.  If the base name is ROOT(case sensistive), the context path is /
-	 *	An XML file like example.xml is deployed as a context whose configuration is defined by the XML. The configuration 		   itself must set the context path. If example.xml and example.war exist, only the XML is deployed (which may use the  W AR   in its configuration).
+Top Level Project Objet Model (POM) for the Jetty project is located under the following coordinates
+----------------------------------------------------------------------------------------------------
 
+<#!---Maven Coordinates----->
+<dependency>
+	<groupId>org.eclipse.org</groupId>
+	<artifactId>jetty-project</artifactId>
+	<version>${project.version}</version>
+</dependency>
 
+Changelogs in Centeral
+----------------------------------------------------------------------------------------------------
+The changes between versions of Jetty are tracked in a file called VERSIONS.txt, which is under source control and is generated on release. Those generated files are also uploaded into Maven Central during the release of the top level POM. You can find them as a classifier marked artifact.
+
+<dependency>
+  <groupId>org.eclipse.jetty</groupId>
+  <artifactId>jetty-project</artifactId>
+  <version>${project.version}</version>
+  <classifier>version</classifier>
+  <type>txt</type>
+</dependency>
 
 Hot deploying a  standard web application, you can hot deploy it into Jetty by copying it into
 the directory "webaps"
