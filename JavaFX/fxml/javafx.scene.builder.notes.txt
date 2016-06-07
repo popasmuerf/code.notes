@@ -83,18 +83,158 @@ The first thing that you define in the FXML structure is the FXML processing ins
 
 
 
+Order in which we call things under the hood in our JavaFX framework..
+=========================================================================
+1. Object declirations
+2. instantiate nodes within the start method()
+3. add nodes to the stackPane root node with the start method...
+4. make scene configurations via scene.setWhatever()
+5. pass the scene object to the primaryStage object using .setScene(Scene scene)
+6. Once your objects are in memory, only now will you be able to process ActionEvent handling routines
+7. Ensure thatyour digital image assests are referencable..
 
-Shape of a sound wave
+
+Location of our image assets for InviciBagle
+=================================================
+Computer/ComputerName/Users/use/MyDocuments/NetBeansProjects/InviciBagle/src
+
+
+
+
+Classes that we need high level overview:
+=================================================
+	*	class Pos //posistioning
+	*	class Insets //padding
+	*	class HBox //UI layout container
+	*	class Image //digital image container
+	*	class ImageView //digital image display
+	*	class TableView //table data display
+
+
+The JavaFX Pos Class:  Generalized Screen Posistion Contants
 =======================================================
-Sound waves can be uniquely shaped, allowing them to "piggyback"
-varous sound effets.  A "pure" or baseline, type of sound wave is called a 
-"sine wave", which is the same sine-wave you learned about in trigonometry.
+The Pos class is an Enum<Pos> class, which stands for "enumeration".
+This class contains a list of constants that are translated into integer values for use inthe
+code.  The constant values (in this case, positioning constants:
+	
+	*	TOP
+	*	CENTER
+	*	BASELINE
+
+The class extension hierarchy for the Pos calss starts at the java.lang.Object
+masterclass and progresses to the java.lang.Enum<Pos> clas, finally ending
+with javafx.geometry.Pos class:
+
+java.lang.Object
+	|
+	|
+	\------javafx.geometry.Insets
+			
+
+The Pos class has a set of constants for providing a generalized horizaontal
+and vertical posistion and alignment
+
+
+Pos Cosntant					Posistioning Result(Object)
+=============================================================
+BASELINE_CENTER					On the basline, vertically; at the center, horizontally					
+BASELINE_LEFT					On the basline, vertically; ont he right, horiontally
+BASELINE_RIGHT
+BOTTOM_CENTER 
+
+
+Pos class only offers genralized posistioning, it should be used in conjunction
+with the INsets class to effect pixel-precies posistioning...
+
+
+
+
+Insets Class: providing Padding Values 
+===============================================
+Insets class directly extends java.lang.Object masterclass.
+It was coded from scratch to proved insets, or offsets inside a rectangular area.
+
+Imagine  a picture frame in which you place a mat, or an attractive border between the frame
+on the outside and the picture on the insided.  This is what the Inset class
+does with constructor methods that provide:
+	*	equal or een insets
+	*	unequal or uneven insets
+
+We will be using unequal insets:
+
+	*  javafs.geometryInsets
+
+The Insets class furnishes a set of four double offset values specifying the four
+sides:
+	*	top
+	*	bottom
+	*	right
+	*	left
+of a rectangle.
+
+Think of the Insets  objects as a way to draw a box inside another box, which shows the
+spacing that you want the objects inside the rectangle to "respect" around
+its edges.  The simple constructor fo an INsets object uses the following
+format:
+	Insets(double topRightBottomLeft) //single value for all spacing sides
+	Insets(doulbe top, double right, double left, double bottom) //an overloaded constructor allowing for serperate vaules
+
+JavaFX HBox Class: Using a Layout Container in a Design
+=======================================================
+Button objects cannot be easily posistioned...so we are using a layout object of type:
+
+	*	javafx.scene.layout.HBox
+
+HBox inheritance hierarchy
+----------------------------------------------------------
+java.lang.Object
+	|
+	\------javafx.scene.Node
+				|
+				\------javafx.scene.Parent
+						|
+						\------javafx.scene.layout.Region
+									|
+									\------javafx.scene.layout.Pane
+												|
+												\------javafx.scene.layout.HBox
+
+This layout class lays it's child objects out in a row, which works as we want these buttons
+at the bottom in an unintrusive manner of our splash screen....
 
 Even randomoized waveforms, such as noise, are used in sound design to obtain edgy sound
 results.  As you may have ascertained by usig your recently acquired knowledge of data footprint
 optimization, the more "chaos", or noise, present in your sound wave(and in new media data in general)
 the harder it will be to compress for a codec.  therefore, more complex sound waves will result in larger digital
 audio file sizes, owing to the chaso in the data
+
+We are going to use Insets objects and Pos constant along with HBox Object
+to group the UI Button objects together and, later, to fine-tune their position as
+a Button control bank.
+
+The HBox layout container will thus become the Parent node(or branch node)
+and the buttons will become the leaf nodes...
+
+
+
+Example of declaring and instantiating an HBox
+==============================================================
+HBox()   //empty constructor
+
+HBox(double Spacing) //single value fo all leaf node objects
+
+HBox(double spacing, Nodes...children) //Specifying the child nodes with spacing
+
+HBox(Nodes... children) //Specifying the child nodes without spacing
+
+/********Example Code********/
+
+	Hbox buttonContainer = new HBox(12, gameButton, helpButton, scoreButton, legalButoon) ;
+
+Note:  HBox and  Resizing, aspect ratios, etc
+==============================================================
+It handles these eventualities for you...
+
 
 
 Converting  Analogy Audio to Digital Audio Data: Sampling, Accuracy, HD Audio

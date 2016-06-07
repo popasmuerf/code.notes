@@ -1,25 +1,37 @@
-http://www.eclipse.org/jetty/about.html
+http://www.eclipse.org/jetty/documentation/current/introduction.html#what-is-jetty
 
-Jetty://
+What is Jetty://
 =========================================================
-The jetty projects was stared in 1995 and since then has 
-been associated with many names and brands
+Jetty is an open-source project provding:
+	 *	HTTP server
+	 *	HTTP client
+	 *	javax.servlet container
 
 
 
-Distributions
+Jetty and Java EE Web Profile
 =========================================================
-The Jetty Web Server provides an HTTP server and Servlet container capable
-of serving static and dymanic content either from a standalone or embedded
-instantiations.  From jetty-7 on, the jetty webserver and other core components
-are hosted by the Eclipse Foundation. The project provides:
+Jetty implements aspects of the Java EE specification, primarily the Servlet
+specification.  Recent releases of the Java EE platform have
+introduced a "web profile" in recognition  that many developers need only a subset
+of the many technologies under the Java EE umbrella
 
-	*	Asynchronous HTTP Server
-	*	Standards based Servlet Container
-	*	Web Sockets server
-	*	SPDY server
-	*	Asynchronous HTTP Client
-	*	OSGI, JNDI, JMX, JASPI, AJP support
+While Jetty itself does not ship all of the Web Profile technologies, Jetty architecture is such
+that you can plug in third party implementions to produce a container customized to your exact
+needs
+
+
+Java EE 7 Web Profile :
+========================================================================================================
+http://www.eclipse.org/jetty/documentation/current/jetty-javaee.html#jetty-javaee-7
+
+Java EE 6 Web Profile :
+========================================================================================================
+http://www.eclipse.org/jetty/documentation/current/jetty-javaee.html#jetty-javaee-6
+
+
+
+
 
 Hightide
 --------------------------------------------------------
