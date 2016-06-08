@@ -236,123 +236,127 @@ Note:  HBox and  Resizing, aspect ratios, etc
 It handles these eventualities for you...
 
 
+HBox Alignment  control
+=========================================================
 
-Converting  Analogy Audio to Digital Audio Data: Sampling, Accuracy, HD Audio
-==============================================================================
-The process of turing analog audio(soundwaves) into digital audio data is called
-"sampling".  Devices that perform this in the music industry are called "Samplers".
-Sampling involves the process of slicing an analog audio wave into segments so that yu can store the shape
-of the wave as digital audio data, that is, into zeroes and ones(0's -and- 1's) using a digital audio
-format.  This turns an infinitely accurate analog sound wave into a discrete amount of digital data.
-Each digital segment of a sampled audio sound wae is called a sample, becaus it samples that sound  wave
-at an exact opoint in time.  The "Sample Accuracy"(resolution) you want will determine the level o percision
-of a sample.  
+Alighnment of an HBox is controlled by the alignment attribute(property or variable)
+which default to TOP_LEFT constant from teh Pos class:
 
-NOTE:  Media Percision
-=======================
-Audio : determined by the amount of data used to define each wave slice's height/amplitude
-Image/Video : determined by the amount of data used to define the image/video resolution
+	Pos.TOP_LEFT
 
-Both (image resolution/sample resolution) are both measured in values of : 8bit, 12bit, 16bit, 24bit,32bit
+If an HBox is sized about its specified width, the child objects use
+their preferred width values, and theextra space goes unused.  The HBox
+layout engine will lay out the manged child elements, regardless of their visibility attribute(property or variable) setting.
 
 
-How games leverage sample resolution
-=======================
-	*	explosions = 8 bit....no need for that much clarity
+JavaFX Image Class: Refernceing Digital Images in a Design
+=============================================================
+The Image class is public and extends the java.lang.Object masterclass,
+meaning that it was written from scratch to provide image loading and scaling
+(Aspect ratios and scaling may be locked if need be).
+All URLs that are supported by:
 
-	*	speech	=	12 bit.....provides very clear sound for speech.  This is the reason why voices sounded 	terrible back in the height of the 8-bit console era
+	java.net.URL
 
-	*	background music = possible 16 bit....though 12 bit resolution will usually suffice
+meaning that we can load images either from local storage or from anywhere 
+form the interwebs:
 
-	*	Essenstially the more data used for sampling...the better the resolution.
+	*	http://www.fuckheadimages.com/fuckface.png
 
-	*	There is a reason why CD-Audio(16-bit audio) was once such a big deal....and why HD audio is now.
+or from the local OS/host:
 
-	*	Modern game conoles have hardware capable of 24-bit audio.  Awesome....
+	*	file://fuckface.png
 
-	*	For our game.....HD audio is probably a bit overboard...unless we are writing a sound-based game....
-
-
-Sampling Frequency
-=======================================
-AKA as the "sampling rate".  This is a measure of how many smaples
-at particular sample resolution are taken during 1 second of sampling time frame.
-In terms of digital image editing, samplking frequency is analougous to the number of colors
-contained in a digital image.  For example:
+or from a jar file:
 	
-	CD-quality audio = 16-bit 44.1 kHz sampling rate
-	------------------------------------------------
-	44.1 thousand samples per second with 16-bit sample resolution
+	*	/fuckface.png
 
-Calculating the raw data of an audio file
-========================================
-(sampling bit rate) * (number of seconds in the sample)
+Inheritance hierarchy of JavaFX Image class
+-------------------------------------------------------
+Java.lang.Object
+	|
+	\------javafx.scene.image.Image
 
+Overloaded constructors for javafx.scene.image.Image
+------------------------------------------------------
+	*	Image(String url, double requestedWidth, double requestedHeight, boolean perserveRatio, boolean smooth, boolean backGroundLoading) //not simple
 
-Most common audio sampling rates
-====================================
-	*	8 kHz
-	*	22 kHz
-	*	32 kHz
-	*	44.1 kHz
-	*	48 kHz
-	*	96 kHz
-	*	192 kHz
-	*	384 kHz
+	*	Image(String url) //simple
 
-8 kHz, 11kHz, 22 kHz, are the ones that we are going to use
-in our games, as with careful optimization, these can yield high-quality
-sound effects and arcade music.  These rates would be optimal for samplin any voic-based
-digital audio as well, such as movie dialogue or an e-book narration track.
-Higer rates like 44.1 kHz is appropiate for music, high-fidelity stuff like rumbling
-thunder, THX quality audio, etc....
+	*	Image(String url, double scaleWidth, double scaleHeight, boolean perseveAspect, boolean  smooth)// inital scale
 
-Bit rates are defined during the compresssion process
-=======================================================
-Digital audio files that need to support lower bit-rate bandwidth are going to have
-more compression applied to the audio data, which results in lower aquality.
-these will steam(play black) more smoothly accross a greater number of devices,
+	*	Image(String url, boolean backgroundLoading) //async load in the background....
+
+	*	Image(InputStream is) //This is the simple format for realtime stream 
+
+	*	Image(InputStream is, double newWidth, double newHeight, preserveAspect, boolean smooth)
 
 
+What Image objects do...
+--------------------------------------------
+	*	Prepare image assets for general use
+	*	Resize images assets
+	*	Read image data from a URL
+	*	Load images from URL sync/async
+	*	Scales image assets.
 
-Digital Audio in JavaFX: Supported Digital Audio Codecs and Data Formats
-===================================================================
-There are considerably mor digital audio codecs in JavaFX than digital
-video codecs, as there is only one video codec, MPEG-4 H.264 AVC.
+What Image Objects do not do
+--------------------------------------------
+	*	The job of the ImageView class..which is to dislay images...
+	*	Serve as a node on the scene graph(In this case the , a StackPane Scene Graph root that is parent to all the leaf nodes in our program....which is the job of ImageView class
+	*	"Painting" the image..which is the job of the ImageView Class
 
------------------------------------
-Platform	|	Supported Codecs
-----------------------------------
-JavaFX		|	.mpeg-4 H.264 AVC
-			|	.mp3
-----------------------------------
-Android     |   .mp3
-			|	wave
-			|	.mp4(.mp4-a)
-			|	.mpeg-4 aac
-			|	.aiff(pcm)
-			|	
------------------------------------
-
-^^^ mpg is a lossy audio file format.  If you use mp3...make sure you 
-get the most out of it.
-
-Wave is one of the origional audio formats used with the Apple Macintosh and Microsoft
-Windows OSs, respectivey.  These wave files use PCM(pulse code modulation) audio which is loseless(if there is no compression applied)   PCM is commonly used for DC-ROM contents as well as telephony 
-applications.  With no compression PCM becomes relatively much less CPU-intensive as no compression/decompression algorithms need be ran during streaming. 
-
-For this reason...PCM should be your basline file format. It allows you to review the
-differences between wave, mp3, mp4, etc file formats and their compression results.
+From a digital image compisting perspective....
+---------------------------------------------------
+The StackPane class(object) is the image-compositing engine, or layer manager, if yo will and
+each Image View object represents an individual layer in the layer stack.  An Image
+object contains the ditial image data in the ImageView layer or in mosre than one ImageView, if
+needed, as the Image objects and th mageView objects are decoupled and exist indpendently of
+each other.
 
 
 
-Digital Audio optimization: Start with CD-Quality Audio, and Work Backward
-============================================================================
-JavaFX also supports the popular MPEG-4 AAC codec.  These digital audio data can be contained in 
-MPEG4 contanters (.mp4,.m4a,.m4v), or file extensions, and can be played back using any Operating System.
+JavaFX ImageView Class: Displaying Digital Images in a Design
+===================================================================================
+The ImageView class is a public class that directly extends the class:
 
-Note: JavaFX does not contain an MPEG-4 decoder...it useds the OS's MPEG-4 decoder
+	*	javafx.scence.Node
 
-Digital Audio Optimization: Start with CD-Quality Audio, and Work Backward
-==============================================================================
+		-which is in turn an extenstion of-
 
+	*	java.lang.Object
+
+Java.lang.Object
+	|
+	\------javafx.scene.Node
+				|
+				\------javafx.scene.image.ImageView
+
+Therefore, the ImageView object is a type of Node object in the JavaFX Scene
+Graph that is used to painting a view, using the data containe in an Image object.
+The ImageView class has methods that allow for:
+	*	Image resampling(resizing)
+	*	Image scaling(changing/locking aspect ratio)
+	*	Specification of sampling algorithm(image smoothing)
+
+
+ImageView constructors
+=======================
+	*	ImageView() // empty ImageView
+
+	*	ImageView(Image image) // simple image load to ImageView
+
+	*	ImageView(String url) // load image from some url
+
+
+Examples of declaring an ImageView object that loads images...
+------------------------------------------------------------------------------
+	Image splashScreen = new Image.set("/splash.png",640,400,true,false,true);
+	ImageView splashScreenBackPlate = null ;
+	splashScreenBackPlate = new ImageView() ;
+	spashScreenBackPlate.setImage(splashScreen);
+
+		-or-
+
+	Image splashScreen = new Image.set("/splash.png",640,400,true,false,true);
+	ImageView spashScreenBackPlate = new ImageView(splashScreen);
