@@ -155,3 +155,7 @@ For multiclass classification, labels should be class indices starting from zero
 	less to have us(or anyone for that matter) to build an interface using any web framework in particular.
 	I could have built that fucker within a week using straight PHP sans the framework.   It would have looked
 	dry as fuck....but again...What the fuck where they thinking ?
+
+
+
+	

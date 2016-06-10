@@ -1,0 +1,74 @@
+HTTP reverse Proxie
+===============================
+Are public facing and may be used for
+load balancing web apps behind them
+
+
+
+
+HTTP forward proxy
+===============================
+Are used in intra-nets where they
+often serve as pain in the asses
+for their users via blocking sites
+like imgur that help maintain your sanity.
+
+
+
+
+Public cache
+===============================
+Cache that is shared among multiple uses
+Public cache usually resided on proxy servers.
+Cache on a forward proxy usually caching popular resources
+commonly used by users....for example...at NPS....
+Amazon.com and Netflix are probably in the 
+forward proxy cache.
+
+
+
+Private cache
+==================================
+Private cache are for single uses.
+The private cache may be more familiar to people
+as  Internet Explorer's "Temporary Internet Fies",
+or users of Google Chrome as the "about:cache"  "url".
+
+
+Cache Rules(lolz....I see what I did there..)
+==================================================
+	* 200 (OK) server responses to GET requests are by default cached
+	  in HTTP 1.1 (meaning that proxies and clients may cache in response)	
+	* Applications may influence this default caching via the header
+		Cache-Control
+			-or-
+		Expires
+	* The Expires header is deprecated but still widely used.
+	* The header:
+		Pragma 
+	  is also used to control caching behavior, but like Expires...it is only still
+	  used for backwards compatibility reasons.
+
+HTTP response values for Cache-Control
+===================================================
+	*	public
+	*	private
+	*	no-cache
+
+	*	A value of public means public proxy servers can cache the response.
+	*	A value of private means only the user's browser can cache the response.
+	*	A Value of no-cache means on one should cache the response.
+	*	A Value of no-store means the message might contain sensitive information and not only should the 
+		message not be cached, orsaved, but the browser should remove the message from memory
+		as son as possible
+
+Example of a partial response from Flickr.com for one of the Flickr CSS files
+==============================================================================
+HTTP/1.1 200 OK
+Last-Modified: Wed 25 Jan 2012 17:55:15 GMT
+Expires:Sat, 22 Jan 2022 17:55:15 GMT
+Cache-Control: max-age=315360000, public
+
+
+
+

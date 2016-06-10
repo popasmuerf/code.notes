@@ -1,0 +1,13 @@
+Web Architecture
+=====================================
+
+*	Identify the resource first. 
+*	Once identified...assign a URL to this resource
+*	URL are for the location of a resource
+*	URLs are a very efficient way of locating resources
+*	URLs are technology/platform agnostic
+*	HTTP is technology/platform agnostic
+
+
+
+

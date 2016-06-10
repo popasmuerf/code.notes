@@ -360,3 +360,6 @@ Examples of declaring an ImageView object that loads images...
 
 	Image splashScreen = new Image.set("/splash.png",640,400,true,false,true);
 	ImageView spashScreenBackPlate = new ImageView(splashScreen);
+
+
+The JavaFX TableView Class: Displaying Data Tables in a Design
