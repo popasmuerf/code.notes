@@ -19,3 +19,73 @@ http://.....JohnSmith
 	|
 	|
 	\-----John Smith
+
+
+^^^
+The resource, John Smith, is shown as an elipse and is identified by the UniformResource Identifier(URI), in this case:
+
+	*	Resources have propeties
+	*	Name of properites are URIs also
+	*	URIs are long and cumbersome
+	*	URIs may be represented in XML qname form
+
+
+
+XML NameSpaces
+=============================================================================
+XML namespaces are used for providing uniquely named elemetns and attributes
+in an XML document.  They are defined in a W3C recommendation.
+An XML instance may contain element or attribute names from more than one XML vocabulary.
+If each vocabulary is given a namespace, the ambiguity  between identically named elements 
+or attributes can be resolved.
+
+NameSpace declaration
+------------------------------------------------------------------------------
+An XML namespace is declared using XML attribute xmlns or xmlns:prefix, the value of
+which must be valid namespace name.  For example, the following declaration maps the "xhtml:" prefix
+to the XHTML namespace:
+
+	*	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+
+It is also possible to declare a default namespace for example:
+
+	*	xmlns="http://www.w3.org/1999/xhtml"
+
+^^^ In this case, any element without a namepsce prefix is consdered to be in the XHTML namespace, if it or an
+ancestor has the above default namespace declaration.
+
+
+QNames:
+-----------------------------------------------------
+QNames were introdued by XML Namespaces in order to be used as URI references.  QName stands for
+"qualified name" and defines a valid identifier for elements and attributes.  QName are generally
+used to reference particular elements or attributes within XML documents.
+
+Motivation for Qnames:
+------------------------------------------------------
+Since URI references can be long and may contain prohibited characters for element/attribute naming,  QNames
+are used to create a mapping between the URI and a namespace prefix.  The mapping enables the the abbreviation of URIs,
+therefore it achieves a more convienient way to write XML docs.
+
+
+Formal Definition of QNames
+------------------------------------------------------
+QNames are formally defined by the W3C as:
+
+	QNames 			::= 	PrefixedName | Unprefixed name
+	PrefixedName	::= 	Prefix ':'  LocalPart
+	UnPrefixedName	::= 	LocalPart
+	Prefix          ::= 	NCName
+
+
+
+QName Example
+------------------------------------------------------
+ <?xml version='1.0'?>
+  <doc xmlns:x="http://example.com/ns/foo">
+    <x:p/>
+  </doc>
+
+
+
+^^^ Here the prefix "x" is declared to be assoicated with the URI "http://example.com/ns/foo"
