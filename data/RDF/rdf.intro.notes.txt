@@ -1,4 +1,6 @@
 https://jena.apache.org/tutorials/rdf_api.html
+https://en.wikipedia.org/wiki/QName
+https://jena.apache.org/tutorials/rdf_api.html
 Introduction
 ======================================
 The Resource Description Framework(RDF) is a standard(technically a W3C Recommendation)
@@ -28,6 +30,32 @@ The resource, John Smith, is shown as an elipse and is identified by the Uniform
 	*	Name of properites are URIs also
 	*	URIs are long and cumbersome
 	*	URIs may be represented in XML qname form
+	*	The part before the ':' is called a namespace prefix and represents a namespace
+	*	The part after the ':' represents the local name that exists within that namespace:
+
+		-	namespace:localname
+
+	*	Properties are usually represented in thi sqname form when written as RDF XML and it is a convienient shorthand for
+		representing them in diagrams and in text.
+	*	The nsprefix:localname form is a shorthand for the URI of the namespace concatenated with the local name
+	*	There is no requirement that the the URI of a property  resolve to anything when accessed by a browser.
+	*	Each property has a value.  In this case the value is a literal, which for now we can think of as a strings of
+		Literals are shown in rectangles.
+	*	Jena is a Java API which can be usec to create and manipulate RDF graphs like this one.
+	*	Jena can be used to create and manipulate RDF graphs like this one:
+
+		//some definitions
+		static String personURI = "http://somewhere/JohnSmith"
+		static String fullName = "John mith";
+
+		//create an empty Model
+		Model model = ModelFactory.crateDefaultModel() ;
+
+		//create the resouce
+		Resource johnSmith = model.createResource(personURI);
+
+		//add the property
+		johnSmith.addProperty(VCARD.FN,fullName)
 
 
 
@@ -82,10 +110,15 @@ QNames are formally defined by the W3C as:
 QName Example
 ------------------------------------------------------
  <?xml version='1.0'?>
-  <doc xmlns:x="http://example.com/ns/foo">
+<doc xmlns:x="http://example.com/ns/foo">
     <x:p/>
-  </doc>
+</doc>
 
 
 
 ^^^ Here the prefix "x" is declared to be assoicated with the URI "http://example.com/ns/foo"
+This prefix can furhter on be used as abbreviation for this namespace.
+Subsequently the tag "x:p" is a valid QName
+because it uses the "x" as namespace reference and "p" as local part.
+the tag "doc" is also a QName, but it consists only of a local part.
+
