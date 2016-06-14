@@ -70,5 +70,68 @@ Expires:Sat, 22 Jan 2022 17:55:15 GMT
 Cache-Control: max-age=315360000, public
 
 
+^^^
+	*	The Cache-Control value is an aggressive caching strategy
+	*	The Cache-Control value of public denotes that forward proxies should cache these resources
+	*	The Last-Modified value can serve as a validation value 
+	*	If a client is HTTP 1.1 compliant and unserstand Cache-Control, the client shoulduse the value in 
+		max-age instead of the value of Expires
+
+
+Example of a GET request where we need to check up on a resource before downloading it
+==============================================================================================
+-request-
+GET .... HTTP/1.1
+If-Modified-Since: Wed, 25 Jan 2012 17:55:15 GMT
+
+-response-
+HTTP/1.1 304 Not Modified
+Expires:Sat, 22 Jan 2022 17:16:19 GMT
+Cache-Control: max-age=315360000,public
+
+
+
+^^^
+	*	The If-Modified-Since header is telling the server the client only needs
+		the full response if the resource has changed.  If the resource hasn't changed, the server
+		can  respond with a 304(not modified) message:
+	*	The server here is telling the client that nothing has been modified...so use what you already
+		have that has not been cached.
+	*	The Last-Modified value can serve as a validation value 
+	*	If a client is HTTP 1.1 compliant and unserstand Cache-Control, the client shoulduse the value in 
+		max-age instead of the value of Expires
+
+Using the ETag as a validator
+----------------------------------------------------------------------
+-response-
+HTTP/1.1 304 Not Modified
+Expires:Sat, 22 Jan 2022 17:16:19 GMT
+ETag:"8e5bcd-59f-4b5dfef1-4d00"
+Content-Type:text/xml
+Vary:Accept-Encoding
+Content-Encoding:gzip
+Content-Length:437
+
+
+^^^^	
+	*	The ETag is an opaque identifier, meaning the ETag does not hae any inherit
+		meaning.
+	*	ETags may take the form of a timestampe, a GUID, or a value computed by running
+		hashing algorithms against a resource.
+	*	The client knows if a resource has changed via the server issuing a new ETag
+	*	If the ETag in the next response is the same as the previous...then the client knows that
+		the resource has not changed and thus should use the resources from the previous response
+		that has been cached.
+
+
+Summary
+==========================================================================
+	*	The ability to layer caching and other services between a server and a client
+		has been the drivng force behind the success of HTTP and the web
+	*	The visibility of the self-describing HTTP messages and indirection provided by URLs
+		make the "magic" of the web possible.
+
+
+
 
 
