@@ -1,0 +1,21 @@
+https://jena.apache.org/tutorials/rdf_api.html
+Introduction
+======================================
+The Resource Description Framework(RDF) is a standard(technically a W3C Recommendation)
+for describing resources.  What is a resource ?  A resource is anything that we can 
+identify:
+	*	A person
+	*	Location
+	*	Documents
+	*	etc
+
+
+
+Example of RDF representation of VCARDS
+===========================================
+http://.....JohnSmith
+	|
+	|
+	|
+	|
+	\-----John Smith
