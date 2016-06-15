@@ -42,8 +42,8 @@ property values.
 Explanation of Resource, Property , and Property value
 
 	*	A Resource is anything that can have a URI, such ast  "http://www.w3schools.com/rdf"
-	*	A Property is a Resource that has a name, such as "author" or "homepage"
-	*	A Property value is the value of a Property, such as "JanEgil Refsnes" or  "http://www.w3schools.com/rdf"
+	*	A Property is a Resource that has a name, such as "author" or "homepage" (thing attribute/field/class variable)
+	*	A Property value is the value of a Property, such as "JanEgil Refsnes" or  "http://www.w3schools.com/rdf" (value of )
 	*	A Property value may be in fact anouther resource
 
 Note:   A URL could be conscidered a subclass of URI....as it not only identifies a resource...but provides a means of 
@@ -52,5 +52,101 @@ discerning it's location via revealing it's mechanism of access...:
 URI :  plutonium_p38_modulator
 URL :  http://www.marvin_the_martians_depo.com/plutonium_p38_modulator
 
+
+
+RDF Document Example  # 0 
+======================================
+<?xml version="1.0"?>
+
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:si="http://www.w3schools.com/rdf/">
+
+<rdf:Description rdf:about="http://www.w3schools.com">
+  <si:title>W3Schools</si:title>
+  <si:author>Jan Egil Refsnes</si:author>
+</rdf:Description>
+
+</rdf:RDF>
+
+
+RDF Document Example  # 0 
+---------------------------------------
+Two records from a CD-list:
+
+title			 |		Artist		|		Country		|		Company 	|		Price		|		Year
+-----------------------------------------------------------------------------------------------------------------
+P.revealing		 |      Future      |    USA            |   Columbia        |  10.90            |  1985
+------------------------------------------------------------------------------------------------------------------
+Now				 |      Drake       |    USA            |   CBS Records     |  9.90             |  1988
+-------------------------------------------------------------------------------------------------------------------
+
+^^^^ XML RDF representation :
+++++++++++++++++++++++++++++++++++++++++++
+<?xml version="1.0"?>
+
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:cd="http://www.recshop.fake/cd#">
+
+<rdf:Description
+rdf:about="http://www.recshop.fake/cd/futRSure">
+	<cd:artist>Future</cd:artist>
+	<cd:country>USA</cd:country>
+	<cd:company>Columbia</cd:company>
+	<cd:price>10.90</cd:price>
+	<cd:year>1985</cd:year>
+</rdf:Description>
+<rdf:Description
+rdf:about="http://www.recshop.fake/cd/futRSure">
+	<cd:artist>Drake</cd:artist>
+	<cd:country>USA</cd:country>
+	<cd:company>CBS Records</cd:company>
+	<cd:price>9.90</cd:price>
+	<cd:year>1988</cd:year>
+</rdf:Description>
+
+
+^^^^  Breakdown
+-----------------------------------------------
+The first line of the RDF documemtnent is the XML declaration.  The XML declaration is followed by 
+the root element of RDF documents:
+	*	<rdf:RDF>
+The xmlns:rdf namespace, specifies that elements witht eh rdf prefix are from thenamespace
+	*	"http://www.w3.org/1999/02/22-rdf-syntax-ns#".
+
+The xmlns:cd namespace, specifies that elements withthe cd prefix are from the namespace
+	*	"http://www.recshop.fake/cd#".
+
+The <rdf:Description> element contains the descdription of teh resource indentified by
+the rdf:about attribute.
+	*	rdf:about
+
+The elements :
+	*	<cd:artist>
+	*	<cd:country>
+	*	<cd:company>
+
+
+
+Note:  there exists a Validation service for your RDF/XML
+==============================================================
+https://www.w3.org/RDF/Validator/
+
+
+
+
+Main elements of RDF/XML
+---------------------------------------------------------------
+The main elements of RDF are the root element, <RDF>, and the <Description>
+elment, which identifies a resource :
+<xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	<rdf:RDF>
+		<rdf:Description> 
+			.......
+			.......
+			.......
+		</rdf:Description> 
+	</rdf:RDF>
 
 
