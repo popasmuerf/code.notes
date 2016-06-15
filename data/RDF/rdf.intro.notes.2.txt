@@ -1,0 +1,56 @@
+RDF is Written in XML
+=====================================
+RDF documents are written in XML.  The XML language used by RDF
+is called RDF/XML.  By using XML, RDF information can easily be exchanged between different
+types of computers using different types of operationg systems and application languages.
+
+RDF Document Example
+======================================
+<?xml version="1.0"?>
+
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:si="http://www.w3schools.com/rdf/">
+
+<rdf:Description rdf:about="http://www.w3schools.com">
+  <si:title>W3Schools</si:title>
+  <si:author>Jan Egil Refsnes</si:author>
+</rdf:Description>
+
+</rdf:RDF>
+
+
+RDF and "The Semantic Web"
+========================================================
+The RDF language is a part of the W3C's semantic web activity. W3C's 
+"Semantic Web Vision" is as follows:
+
+	*	Web information has exact meaning
+	*	Web information can be understood and prcessed by computers
+	*	Computers can integrte information from the web
+
+RDF uses Web identifies (URIs) to identify resources.
+RDF describes resources with properties and property values.
+
+
+
+RDF Resource, Property, and Property Value
+========================================================
+RDF intentifies things using Web Identifies(URIs), and describes resources with proeperties and 
+property values.
+
+Explanation of Resource, Property , and Property value
+
+	*	A Resource is anything that can have a URI, such ast  "http://www.w3schools.com/rdf"
+	*	A Property is a Resource that has a name, such as "author" or "homepage"
+	*	A Property value is the value of a Property, such as "JanEgil Refsnes" or  "http://www.w3schools.com/rdf"
+	*	A Property value may be in fact anouther resource
+
+Note:   A URL could be conscidered a subclass of URI....as it not only identifies a resource...but provides a means of 
+discerning it's location via revealing it's mechanism of access...:
+-----------------------------------------------------------------------------------------------------------
+URI :  plutonium_p38_modulator
+URL :  http://www.marvin_the_martians_depo.com/plutonium_p38_modulator
+
+
+
