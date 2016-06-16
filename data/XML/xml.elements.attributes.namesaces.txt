@@ -1,8 +1,23 @@
-RDF is Written in XML
+http://www.w3schools.com/xml/xml_elements.asp
+
+XML Elements
 =====================================
-RDF documents are written in XML.  The XML language used by RDF
-is called RDF/XML.  By using XML, RDF information can easily be exchanged between different
-types of computers using different types of operationg systems and application languages.
+An XML document contains XML Elements...(You don't say....)
+
+What is an XML element
+======================================
+An XML element is everything from (including) the elements start tag to (including)
+the element's end tag to (including) the element's end tag.
+
+	*	<price>29.99</price>
+
+An element can contain:
+
+	*	text
+	*	attributes
+	*	other elements
+	*	or a mix of the above
+
 
 RDF Document Example
 ======================================
@@ -203,3 +218,7 @@ Note: 	Entity references ; the 5 predefined
 
 Note:	Comments in XML
 =======================================================
+<!-- this is a comment -->
+
+
+
