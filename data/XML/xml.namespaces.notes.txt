@@ -1,10 +1,10 @@
-http://www.w3schools.com/xml/xml_attributes.asp
+http://www.w3schools.com/xml/xml_namespaces.asp
 
-XML Elements
+XML Namespaces
 =====================================
-An XML document contains XML Elements...(You don't say....)
+XML namespaces provide a method to avoid element namesspace conflicts
 
-What is an XML element
+Name Conflicts
 ======================================
 An XML element is everything from (including) the elements start tag to (including)
 the element's end tag to (including) the element's end tag.
