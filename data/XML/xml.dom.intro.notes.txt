@@ -1,0 +1,82 @@
+http://www.w3schools.com/xml/dom_intro.asp
+
+XML DOM Intro
+=====================================
+The DOM defines a standard for accessing and manipulating documents.
+The XML DOM presents an XML document as a tree-structure.
+The HTML DOM presents an HTML document as a tree-structure.
+
+
+
+What is the DOM?
+======================================
+The DOM defines a standard for access documents like XML and HTML:
+"The W3C Document Object Model (DOM) is a platform and language-neutral interface that allows programs and
+scripts to dynamically access and update the content, structure, and style of a document"
+
+The DOM is seperated into 3 different parts/levels:
+------------------------------------------------------
+  * Core DOM - standard model for any structured document
+  * XML DOM  - standard model for XML documents
+  * HTML DOM - standard model for HTML documents
+
+
+XML DOM Tree Example ?
+=====================================
+<?xml version="1.0"?>
+<class>
+    <student rollno="393">
+        <firstname>dinkar</firstname>
+        <lastname>kad</lastname>
+        <nickname>dinkar</nickname>
+        <marks>85</marks>
+    </student>
+    <student rollno="493">
+        <firstname>Vaneet</firstname>
+        <lastname>Gupta</lastname>
+        <nickname>vinni</nickname>
+        <marks>95</marks>
+    </student>
+    <student rollno="593">
+        <firstname>jasvir</firstname>
+        <lastname>singn</lastname>
+        <nickname>jazz</nickname>
+        <marks>90</marks>
+    </student>
+</class>
+
+
+^^^^XML DOM Tree BreakDown
+----------------------------------------
+root element  |  element   | text | Attribute
+------------------------------------------
+  class       |    x       |   x  |  x
+------------------------------------------
+       x      | Student    |   x  |  roolno="393"
+------------------------------------------
+       x      | <firstname>|dinkar|  x
+------------------------------------------
+       x      | <lastname> |kad   |  x
+------------------------------------------
+       x      | <nickname> |dinkar|  x
+------------------------------------------
+       x      | <marks>    | 85  |  x
+
+
+
+
+
+
+The HTML DOM
+=====================================
+  * The HTML DOM defines a standard way for accessing and manipulating HTML documents
+  * All HTML elements can be accessed through the HTML DOM 
+  * The HTML DOM defines the objects, properties and methods of all HTML elements
+
+Change the value of an HTML DOM
+--------------------------------------------------
+<h1 id="demo">This is a Heading</h1>
+<script>
+document.getElementById("demo").innerHTML = "Hello World!";
+</script>
+

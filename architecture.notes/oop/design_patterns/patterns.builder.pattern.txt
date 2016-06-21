@@ -1,16 +1,11 @@
-http://www.tutorialspoint.com/design_pattern/abstract_factory_pattern.htm
-http://www.tutorialspoint.com/design_pattern/abstract_factory_pattern.htm
+http://www.tutorialspoint.com/design_pattern/builder_pattern.htm
 
-Abstract Factory Patterns
-=================================
-Abstract patterns work around a super-factory which creates other 
-factories.  This factory is also a factory of factories.
-This type of design pattern comes under creation pattern as this pattern provides
-one of the best ways to create an object...
-
-In Abstract Factory pattern an interface is responsible for creating a factory
-of related objects without  explicitly specifying their classes.  Each generated 
-factory can give the objects a per the Factory pattern
+Builder Patterns
+==============================================================
+Builder pattern builds a complex object using simple objects
+and using a step by step approach.  This type of design pattern
+comes under creational pattern provides one of the best ways to 
+create an object
 
 
 public interface Shape{
