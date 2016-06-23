@@ -109,12 +109,67 @@ Web frameworks and cookie manipulation
 	*	ASP.NET will associate the correct session data(via cookie ID)  with the correct session cookie in the client's request message
 	*	If there is no incoming cookie with a session ID, ASP.NET will create one with a Set-Cookie header
 
+
+		/***Session Code snippet***/
+		Session["firstName"] = "Scott" ; //writing Session state
+		var lastName = Session["lastName"] ;//reading session state
+
+	*	^^^^The firstName and lastName data sotred in the session object is not living in the cookie
+	*	The cookie only contains a session identifier.
+	*	The values associated with the session identifer are safe on the sever.
+	*	By default, the session data goes into an in-memory data structure and stays alive for about 20 minutes by default in ASP.NET
+	*	ASP.NET will associate the correct session data(via cookie ID)  with the correct session cookie in the client's request message
+	*	If there is no incoming cookie with a session ID, ASP.NET will create one with a Set-Cookie header
+
 Note: Session hijacking via sniffing cookie session id response headers
 ========================================================================
 *	Frameworks combat this by generating large random numbers as identifiers (ASP.NET uses 120 bit randomness).
 *	What a real-life ASP.NET session identifier looks like :
 	
 	Set-Cookie:ASP.NET_SessionId=en5yl2opwkdamv2ur53z45;path=/HttpOnly
+
+
+HTTPOnly Cookies
+==================================================
+	*	Another security concern around cookies is how vulnerable they are to cross-site scripting attack
+		(XSS).  In an XSS attack, a malicious user injects malevolent JavaScript code into someone else's web site.
+		If the other web site sends the malicious script to their users, the malicous script can inspect/manipulate
+		cookie information
+	*	(XSS) is mitigated via the flag:
+			
+			HTTPOnly  
+				-example-
+			Set-Cookie:ASP.NET_SessionId=en5yl2opwkdamv2ur53z45;path=/HttpOnly
+
+
+	*	The HTTPOnly tag within the Set-Cookie HTTP Response header 
+		restricts access to the cookie via JavaScript
+
+	*	The HTTPOnly tag will instruct supporting browsers to disable all access to the recived cookie
+		via JS
+
+	
+Types of Cookies
+==================================================
+	*	Session Cookies:
+		-Exist for Single Session
+	*	Persistant Cookies:
+		-May outlive a single browsing session and a broser will store the cookies to disk
+		This comes in handy when you acidentally lose your broswer connection to the remote sever.
+		You can pick back up right where you left off
+			
+	*	Example of peristant cookie header configuration  
+			
+			Set-Cookie:name=value; expires=Monday,09-July-2012 21:12:00 GMT
+
+
+	*	The HTTPOnly tag within the Set-Cookie HTTP Response header 
+		restricts access to the cookie via JavaScript
+
+	*	The HTTPOnly tag will instruct supporting browsers to disable all access to the recived cookie
+		via JS
+
+
 
 
 HTTP response values for Cache-Control
@@ -169,12 +224,17 @@ Cache-Control: max-age=315360000,public
 	*	If a client is HTTP 1.1 compliant and unserstand Cache-Control, the client shoulduse the value in 
 		max-age instead of the value of Expires
 
+
+
+
+
 Using the ETag as a validator
 ----------------------------------------------------------------------
 -response-
 HTTP/1.1 304 Not Modified
 Expires:Sat, 22 Jan 2022 17:16:19 GMT
 ETag:"8e5bcd-59f-4b5dfef1-4d00"
+Set-Cookie:ASP.NET_SessionId=en5yl2opwkdamv2ur53z45;path=/HttpOnly
 Content-Type:text/xml
 Vary:Accept-Encoding
 Content-Encoding:gzip
@@ -199,7 +259,4 @@ Summary
 	*	The visibility of the self-describing HTTP messages and indirection provided by URLs
 		make the "magic" of the web possible.
 
-
-
-
-
+http://www.w3schools.com/xml/xml_rdf.asp
