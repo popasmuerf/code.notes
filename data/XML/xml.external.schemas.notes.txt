@@ -1,15 +1,13 @@
-https://jena.apache.org/tutorials/rdf_api.html
-https://en.wikipedia.org/wiki/QName
-https://jena.apache.org/tutorials/rdf_api.html
-Introduction
+https://www.jetbrains.com/help/idea/2016.1/schemas-and-dtds.html
+
+
+External Schemas and DTDs
 ======================================
-The Resource Description Framework(RDF) is a standard(technically a W3C Recommendation)
-for describing resources.  What is a resource ?  A resource is anything that we can 
-identify:
-	*	A person
-	*	Location
-	*	Documents
-	*	etc
+Local XML schema (XSD) and DTD files that are used to validate your
+XML files are listed in this section.
+
+Each entry is a mapping of a URI that may be rferenced in your XML
+file onto an appropriate local schema or DTD file. 
 
 
 

@@ -1,0 +1,160 @@
+HTTP State and Security
+===============================
+*	HTTP is stateless protocol, meaning that each request-response transaction
+	is indepenent of any previous or future transaction.  Unlike some other communication
+	protocols, HTTP does not require a server to retain information about an HTTP request, or the 
+	client making the request.  All the server needs to do is generate a response for
+	every request....
+*	Every HTTP request  will carry all the information a sever needs to create the 
+	response
+
+*	The stateless nature of HTTP is one of the driving factors in it's success and the 
+	success of the web
+	-	Layered services like caching are made easier as HTTP messages are 100% self describing
+	-	Without caching, the web would not be able to scale to meet the demands of the
+		interwebs
+
+*	States are needed for many web applications.  This can be simulated
+	- Embedding state within HTTP resources keeping state within HTTP messages
+	- Storing state on the server
+	- Session storage...easy but only good for short lived sessions
+
+
+
+HTTP Inentification and Cookies
+===============================
+Websites that wish to track users often turn to cookies.
+Cookies are defined by :
+
+	RFC6265 : HTTP State Management Mechanism.
+
+
+When a user visits a a web site, the site can give the user's browser a cookie
+using an HTTP header.  The browser then knows to send the cookie in the headers of every 
+additional request it sends to the site.
+
+
+Cookie Limitations
+===============================
+	*	Although cookies can identify users in teh sense that your cookie is different from my cookie,
+		cookies do not necessarily authenticate users
+	*	Authentication requires unique identifiers to differenetiate one user from another...
+	*	Cookies raise privacy concerns w/r to the way they track users...
+	*	Disabled cookies will cause problems for web apps that require user tracking
+
+Cookieless sessions
+================================
+	*	CookieLess session is technique where we place the user identifier into the URL.
+	*	Cookieless sessions require that every URL a site gives to a user must contain the proper identifier
+	*	URLs used in lieue of Cookies are called "Fat URLs".
+
+
+
+Private cache
+==================================
+Private cache are for single uses.
+The private cache may be more familiar to people
+as  Internet Explorer's "Temporary Internet Fies",
+or users of Google Chrome as the "about:cache"  "url".
+
+
+Cache Rules(lolz....I see what I did there..)
+==================================================
+	* 200 (OK) server responses to GET requests are by default cached
+	  in HTTP 1.1 (meaning that proxies and clients may cache in response)	
+	* Applications may influence this default caching via the header
+		Cache-Control
+			-or-
+		Expires
+	* The Expires header is deprecated but still widely used.
+	* The header:
+		Pragma 
+	  is also used to control caching behavior, but like Expires...it is only still
+	  used for backwards compatibility reasons.
+
+HTTP response values for Cache-Control
+===================================================
+	*	public
+	*	private
+	*	no-cache
+
+	*	A value of public means public proxy servers can cache the response.
+	*	A value of private means only the user's browser can cache the response.
+	*	A Value of no-cache means on one should cache the response.
+	*	A Value of no-store means the message might contain sensitive information and not only should the 
+		message not be cached, orsaved, but the browser should remove the message from memory
+		as son as possible
+
+Example of a partial response from Flickr.com for one of the Flickr CSS files
+==============================================================================
+HTTP/1.1 200 OK
+Last-Modified: Wed 25 Jan 2012 17:55:15 GMT
+Expires:Sat, 22 Jan 2022 17:55:15 GMT
+Cache-Control: max-age=315360000, public
+
+
+^^^
+	*	The Cache-Control value is an aggressive caching strategy
+	*	The Cache-Control value of public denotes that forward proxies should cache these resources
+	*	The Last-Modified value can serve as a validation value 
+	*	If a client is HTTP 1.1 compliant and unserstand Cache-Control, the client shoulduse the value in 
+		max-age instead of the value of Expires
+
+
+Example of a GET request where we need to check up on a resource before downloading it
+==============================================================================================
+-request-
+GET .... HTTP/1.1
+If-Modified-Since: Wed, 25 Jan 2012 17:55:15 GMT
+
+-response-
+HTTP/1.1 304 Not Modified
+Expires:Sat, 22 Jan 2022 17:16:19 GMT
+Cache-Control: max-age=315360000,public
+
+
+
+^^^
+	*	The If-Modified-Since header is telling the server the client only needs
+		the full response if the resource has changed.  If the resource hasn't changed, the server
+		can  respond with a 304(not modified) message:
+	*	The server here is telling the client that nothing has been modified...so use what you already
+		have that has not been cached.
+	*	The Last-Modified value can serve as a validation value 
+	*	If a client is HTTP 1.1 compliant and unserstand Cache-Control, the client shoulduse the value in 
+		max-age instead of the value of Expires
+
+Using the ETag as a validator
+----------------------------------------------------------------------
+-response-
+HTTP/1.1 304 Not Modified
+Expires:Sat, 22 Jan 2022 17:16:19 GMT
+ETag:"8e5bcd-59f-4b5dfef1-4d00"
+Content-Type:text/xml
+Vary:Accept-Encoding
+Content-Encoding:gzip
+Content-Length:437
+
+
+^^^^	
+	*	The ETag is an opaque identifier, meaning the ETag does not hae any inherit
+		meaning.
+	*	ETags may take the form of a timestampe, a GUID, or a value computed by running
+		hashing algorithms against a resource.
+	*	The client knows if a resource has changed via the server issuing a new ETag
+	*	If the ETag in the next response is the same as the previous...then the client knows that
+		the resource has not changed and thus should use the resources from the previous response
+		that has been cached.
+
+
+Summary
+==========================================================================
+	*	The ability to layer caching and other services between a server and a client
+		has been the drivng force behind the success of HTTP and the web
+	*	The visibility of the self-describing HTTP messages and indirection provided by URLs
+		make the "magic" of the web possible.
+
+
+
+
+

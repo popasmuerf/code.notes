@@ -1,0 +1,58 @@
+http://www.linkeddatatools.com/introducing-rdf-part-2
+
+Building an RDF Document
+=====================================
+First we add teh RDF root node:
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <!--Body Code Omitted -->
+</rdf:RDF>
+
+
+^^^^Explain
+-------------------------------------
+  * xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"> 
+    - namespace informs parser this is an RDF document
+
+Adding a statement to the RDF statment
+=====================================
+An RDF document can contain more than one statement.  For simplicity, we'll
+only add one.  Stare by adding a description element/tag rom teh the  rdf namespace
+
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="http://www.linkeddatatools.com/clothes#t-shirt">
+    <!--statements omitted-->
+    </rdf:Description>
+</rdf:RDF>
+
+
+^^^^Explain
+-------------------------------------
+  * The rdf:Description tag simply means "I'm going to describe something (a subject) and I'm giving it the unique ID   http://www.linkeddatatools.com/clothes#t-shirt".
+
+
+Adding a Predicate
+=====================================
+There is not point in saying your going to describe somethign, give it a 
+unique ID but then not describe anything about it.  RDF
+statements describe the characteristics of their subjects using
+properties, or predicates in RDF terminology.  
+
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="http://www.linkeddatatools.com/clothes#t-shirt">
+      <feature:size>12</feature>
+      <feature:color>rdf:resource="http://www.linkeddatatools.com/colors#white"/</feature>
+    </rdf:Description>
+</rdf:RDF>
+
+
+^^^^Explain
+-------------------------------------
+  *  <feature:size>12</feature>  
+    - Size of the t-shirt
+  * <feature:color>rdf:resource="http://www.linkeddatatools.com/colors#white"/</feature>
+    - Color of the t-Shirt
+  * You'll notice this one isn't quite the same as the last one. Whereas the last one had the literal value 12, this one is referring to the subject (ID) of another statement. That's right - objects in RDF can refer (reference) the subjects of other statements.
+  * A subject in an RDF document may also be referenced as a object of a property in another RDF statement (in the resource attribute). This can be a confusing concept for those starting out with RDF.
