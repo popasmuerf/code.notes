@@ -46,31 +46,76 @@ Cookieless sessions
 ================================
 	*	CookieLess session is technique where we place the user identifier into the URL.
 	*	Cookieless sessions require that every URL a site gives to a user must contain the proper identifier
-	*	URLs used in lieue of Cookies are called "Fat URLs".
+	*	URLs used in lieu of Cookies are called "Fat URLs".
 
+Setting Cookies
+================================
+	*	websites that want to give a user a cookie, it uses a Set-Cookie header in an HTTP response:
 
+		HTTP/1.1 200 OK
+		Content-Type:text/html; charset=utf-8
+		Set-Cookie:fname=Mike&lname=Brown;
+		domain=.permutation.com;path=/
+		....
 
-Private cache
+^^^
+There are three areas of information in the cookie shown above.  First, there are one or more
+name-value pairs in a cookie.  these name value pairs are delimited by a dollar
+sign($), and look very similar to how query parameters are formatted into a URL
+
+	*	Cookieless sessions require that every URL a site gives to a user must contain the proper identifier
+	*	URLs used in lieu of Cookies are called "Fat URLs".
+
+What does an app place into a Cookie ?
 ==================================
-Private cache are for single uses.
-The private cache may be more familiar to people
-as  Internet Explorer's "Temporary Internet Fies",
-or users of Google Chrome as the "about:cache"  "url".
+*	An app can place any info it likes into a cookie
+*	Cookies have a 4KB limit
+*	GUIDs are often placed within cookies
+*	A server an never trust any data on the client unless th server encrypts and signs the data
+*	Session data is usually kept on the server while the session id (GUID) is given to the client:
 
 
-Cache Rules(lolz....I see what I did there..)
+HTTP/1.1 200 OK
+Set-Cookie:GUID=0903875ur797fh;
+domain=.msn.com;path=/
+
+
+^^^ Assuming the browser is accepting cookies, the browser will send the cookies, the browser will send the cookie
+to the server in every subsequent HTTP request:
+
+GET ...HTTP/1.1
+Cookie:Set-Cookie:GUID=0903875ur797fh;
+....
+
+^^^ When the GET request is recieved, the sever software can look up any associated user data from an
+in-memomory data structure, database, or distrubted cache.  
+
+Web frameworks and cookie manipulation
 ==================================================
-	* 200 (OK) server responses to GET requests are by default cached
-	  in HTTP 1.1 (meaning that proxies and clients may cache in response)	
-	* Applications may influence this default caching via the header
-		Cache-Control
-			-or-
-		Expires
-	* The Expires header is deprecated but still widely used.
-	* The header:
-		Pragma 
-	  is also used to control caching behavior, but like Expires...it is only still
-	  used for backwards compatibility reasons.
+	*	Web frameworks manipulate cookies and automatically look up session state
+	*	For example, in ASP.NET the Session object exposes an easy API for reading and writing a
+		user's session state.  As developer's we never have to worry(unless we want to) worry abut 
+		sending a Set-Cokkie header, or reading incoming cookies to find the associated session state(unless we want to)
+	*	Behind the scenes, ASP.NET will manage the session cooke:
+
+		/***Session Code snippet***/
+		Session["firstName"] = "Scott" ; //writing Session state
+		var lastName = Session["lastName"] ;//reading session state
+
+	*	^^^^The firstName and lastName data sotred in the session object is not living in the cookie
+	*	The cookie only contains a session identifier.
+	*	The values associated with the session identifer are safe on the sever.
+	*	By default, the session data goes into an in-memory data structure and stays alive for about 20 minutes by default in ASP.NET
+	*	ASP.NET will associate the correct session data(via cookie ID)  with the correct session cookie in the client's request message
+	*	If there is no incoming cookie with a session ID, ASP.NET will create one with a Set-Cookie header
+
+Note: Session hijacking via sniffing cookie session id response headers
+========================================================================
+*	Frameworks combat this by generating large random numbers as identifiers (ASP.NET uses 120 bit randomness).
+*	What a real-life ASP.NET session identifier looks like :
+	
+	Set-Cookie:ASP.NET_SessionId=en5yl2opwkdamv2ur53z45;path=/HttpOnly
+
 
 HTTP response values for Cache-Control
 ===================================================
