@@ -170,7 +170,54 @@ Types of Cookies
 		via JS
 
 
+Cookie Paths & Domains
+==================================================
+So far, we'eve daid tha once a cookie is set by a web site, the cookie will travel to
+to the web site with every subsequent request, assuming the cookie hasn't expired.
+However, not all cookies travel to every web site.  The only cookies a browser should send to 
+a site are the cookies given to the browser by the same site.  It woldn't make sense for
+cookies form amazon.com to be in an HTTP request to google.com.  This type of behavior
+coul only open up additional security and privacy concerns.  If you set a cookie in a response to
+a request to www.server.com, the resulting cookie will only
+travel in the requests to www.server.com.
 
+A web application can change the scope of a cookie to restrict the cookie to a specific 
+host or domain, and even to a specific resource path.  The web application controls
+the sope using domain and path attributes.
+
+
+HTTP/1.1 200 OK
+Set-Cookie:name=value,domain=.sever.com;path=/stuff;expires=Monday,09-July-2012 21:12:00 GMT
+.....
+..
+Cookie domain attribute
+=============================================================================
+	*	Allows for a cookie to span sub-domains
+
+	*	If a cookie has been set for "server.com", it will:
+		-	The browser will allow for requests sent to server.com 
+		-	The browser will allow for requests sent to a.server.com
+		-	the broswer will allow for requests sent to b.server.com
+		-	The browser will allow for request sent to whatever_sub_domain.server.com
+			
+	*	The browser will not allow use of the cookie domain attribute to span domains
+		-	Setting the domain to .bsd.org in response .server.com is not legal and the
+			browser will reject the cookie
+			
+Cookie path attriubte
+=============================================================================
+	*	Allows for a cookie to span sub-domains
+
+	*	If a cookie has been set for "server.com", it will:
+		-	The browser will allow for requests sent to server.com 
+		-	The browser will allow for requests sent to a.server.com
+		-	the broswer will allow for requests sent to b.server.com
+		-	The browser will allow for request sent to whatever_sub_domain.server.com
+			
+	*	The browser will not allow use of the cookie domain attribute to span domains
+		-	Setting the domain to .bsd.org in response .server.com is not legal and the
+			browser will reject the cookie
+			
 
 HTTP response values for Cache-Control
 ===================================================
