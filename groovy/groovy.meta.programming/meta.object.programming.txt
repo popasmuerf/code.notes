@@ -1,0 +1,43 @@
+http://www.tutorialspoint.com/groovy/groovy_meta_object_programming.htm
+
+
+Meta object programming or MOP can be ued to invoke methods dymanically and 
+alo create classes and methods on they fly.
+================================================================================
+
+So what does this mean ?
+===========================================================================
+* We have a class named Student:
+
+  def myStudent = new Student()
+  myStudent.Name = "Joe"
+  myStudent.Display() 
+
+^^^ In meta programming....even if the class did not have fields Name defined previously...
+the above code would still work.
+
+
+How ?
+==========================================================================
+
+One ahs to implement the Groovy interface :
+
+  * GroovyInterceptable
+
+in order to hook inot the execution process of Groovy.
+
+
+GroovyInterceptable
+===========================================================================
+Public interface GroovyInterceptable{
+   Public object invokeMethod(String methodName, Object args) 
+   Public object getproperty(String propertyName) 
+   Public object setProperty(String propertyName, Object newValue) 
+   Public MetaClass getMetaClass() 
+   Public void setMetaClass(MetaClass metaClass) 
+}
+
+
+
+Every Class has a metaClass
+
