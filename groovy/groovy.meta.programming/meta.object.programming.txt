@@ -4,6 +4,37 @@ http://www.tutorialspoint.com/groovy/groovy_meta_object_programming.htm
 Meta object programming or MOP can be ued to invoke methods dymanically and 
 alo create classes and methods on they fly.
 ================================================================================
+Metaprogramming can make us much more productive as developers.  With it, Grails adds methdos
+to our objects that we are going to need and use but never write.
+
+In a nutshell
+=====================================================================
+Groovy provides mechanisms for adding methods and properties to classes
+at runtime, and /or withour touching their coe.  This is done in several ways;
+we'll disucess two that are used in Grails:
+
+  * metaClass //writeen by someone else and assigned at runtime
+              //Any methods or properties added in a class's metaClass will also  be available
+              //The behavior of a class can be changed dymanically by  assigning a difernt metaClass to it'
+
+  * methodMissing //Called when a non-extant method(in either the class or it's meta class) is called
+                  //The missing method and any arguments passed to it are passed to methodMissing
+
+Example of metaprogramming in groovy involving methodMissing()
+==================================================================
+We could add a methodMissing to the metaClass of Integer, 
+and havd it look for the string incrementBy in teh called method.  If the rest
+of the method name converts to a number, our methodMissing could add that
+to the current value.  Then we cold do something crazy like:
+
+25.incrementBy5()
+
+In practice
+-----------------------------------------------------------------
+When creating Domain Classes in Grails, it will have methods, such
+as save() that you didn't have to implement.  At first it
+may seem like magic, but it's really just Groovy metaprogramming
+at work.
 
 So what does this mean ?
 ===========================================================================

@@ -1,0 +1,35 @@
+Description
+===================================
+TekDays.com is going to be a site where peiple can announce, plan, and promote
+local, grassroots technical conferences.  It will all stat when visionary individuals
+suggest an event in their city.  Then, as others hear about it and register their
+interest and/or support, we'll provide tools to help them organize the event: a to-do list,
+an organizer's dashborad(to keep track of volunterrs, sponsrs, andpotential attendees),
+a discussion forum, and,  fianlly, an event home page to help with promotion.  This may
+sound like a tall order, but Grails can make it happen.
+
+Application Requirements
+===================================
+1. Create new events
+2. Display event details
+3. Edit event details
+4. Create users/organizers
+5. Allow users to volunteer to help
+6. Add users to events
+7. Allow anonymous users to register interest
+8. Allow anonymous users to register interest
+9. Create sponsors
+10. Add Sponsors to events
+11.	Have default list of tasks
+12.	Add/remove tasks
+13.	Assign tasks to users
+14.	Post forum message
+15.	Reply to forum message
+16.	Display forum message threads
+17.	Allow access to event home page with simple URL
+
+
+
+
+Iteration Zero
+=================================
