@@ -1,0 +1,64 @@
+http://www.eclipse.org/jetty/documentation/current/quickstart-jetty-coordinates.html
+
+Finding Jetty in Maven  Jetty://
+=========================================================
+Jetty has existed in Maven Central almost since its inception, however under a couple of different coordinates over the years. When Jetty was based at SourceForge and then The Codehaus it was located under the groupId of org.mortbay.jetty. With Jetty 7 the project moved to the Eclipse foundation and to a new groupId at that time to reflect its new home:
+
+Top Level Project Objet Model (POM) for the Jetty project is located under the following coordinates
+----------------------------------------------------------------------------------------------------
+
+<#!---Maven Coordinates----->
+<dependency>
+	<groupId>org.eclipse.org</groupId>
+	<artifactId>jetty-project</artifactId>
+	<version>${project.version}</version>
+</dependency>
+
+Changelogs in Centeral
+----------------------------------------------------------------------------------------------------
+The changes between versions of Jetty are tracked in a file called VERSIONS.txt, which is under source control and is generated on release. Those generated files are also uploaded into Maven Central during the release of the top level POM. You can find them as a classifier marked artifact.
+
+<dependency>
+  <groupId>org.eclipse.jetty</groupId>
+  <artifactId>jetty-project</artifactId>
+  <version>${project.version}</version>
+  <classifier>version</classifier>
+  <type>txt</type>
+</dependency>
+
+Hot deploying a  standard web application, you can hot deploy it into Jetty by copying it into
+the directory "webaps"
+=========================================================
+
+Jetty Demonstration Web Applications
+
+The demo-base/webapps directory contains the following deployable and auxiliary files:
+
+*ROOT/
+	A directory of static content that is deployed to the root context / due to it’s name. Contains the Jetty demo welcome page.
+*test.xml
+	A context configuration file that configures and deploys test.war. The additional configuration includes the context path as well as setting additional descriptors found in the test.d directory.
+*test.war
+	The demonstration web application that is configured and deployed by test.xml.
+*test.d
+	A directory containing additional configuration files used by test.xml to inject extra configuration into test.war.
+*async-rest.war
+	A web application demonstration of asynchronous REST to eBay, automatically deployed to /async-rest based on the file name.
+*test-jaas.war
+	A demonstration web application utilizing JAAS for authentication.
+*test-jaas.xml
+	A context configuration file that configures test-jaas.war. Additional configuration includes setting up the LoginService for authentication and authorization.
+*test-jndi.war
+	A demonstration web application showing the use of JNDI.
+*test-jndi.xml
+	A context configuration file that configures test-jndi.war. Additional configuration includes defining objects in the naming space that can be referenced from the webapp.
+*test-spec.war
+	A demonstration web application that shows the use of annotations, fragments, ServletContainerInitializers and other Servlet Specification 3.0/3.1 features.
+*test-spec.xml
+	A context configuration file that configures test-spec.war. Additional configuration includes setting up some objects in the naming space that can be referenced by annotations.
+*xref-proxy.war
+	A demonstration web application that uses a transparent proxy to serve the Jetty src xref from the Eclipse Jetty website.
+*example-moved.xml
+	A demonstration context configuration file that shows how to use the MovedContextHandler to redirect from one path to another.
+
+

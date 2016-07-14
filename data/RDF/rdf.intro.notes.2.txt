@@ -1,0 +1,205 @@
+RDF is Written in XML
+=====================================
+RDF documents are written in XML.  The XML language used by RDF
+is called RDF/XML.  By using XML, RDF information can easily be exchanged between different
+types of computers using different types of operationg systems and application languages.
+
+RDF Document Example
+======================================
+<?xml version="1.0"?>
+
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:si="http://www.w3schools.com/rdf/">
+
+<rdf:Description rdf:about="http://www.w3schools.com">
+  <si:title>W3Schools</si:title>
+  <si:author>Jan Egil Refsnes</si:author>
+</rdf:Description>
+
+</rdf:RDF>
+
+
+RDF and "The Semantic Web"
+========================================================
+The RDF language is a part of the W3C's semantic web activity. W3C's 
+"Semantic Web Vision" is as follows:
+
+	*	Web information has exact meaning
+	*	Web information can be understood and prcessed by computers
+	*	Computers can integrte information from the web
+
+RDF uses Web identifies (URIs) to identify resources.
+RDF describes resources with properties and property values.
+
+
+
+RDF Resource, Property, and Property Value
+========================================================
+RDF intentifies things using Web Identifies(URIs), and describes resources with proeperties and 
+property values.
+
+Explanation of Resource, Property , and Property value
+
+	*	A Resource is anything that can have a URI, such ast  "http://www.w3schools.com/rdf"
+	*	A Property is a Resource that has a name, such as "author" or "homepage" (thing attribute/field/class variable)
+	*	A Property value is the value of a Property, such as "JanEgil Refsnes" or  "http://www.w3schools.com/rdf" (value of )
+	*	A Property value may be in fact anouther resource
+
+Note:   A URL could be conscidered a subclass of URI....as it not only identifies a resource...but provides a means of 
+discerning it's location via revealing it's mechanism of access...:
+-----------------------------------------------------------------------------------------------------------
+URI :  plutonium_p38_modulator
+URL :  http://www.marvin_the_martians_depo.com/plutonium_p38_modulator
+
+
+
+RDF Document Example  # 0 
+======================================
+<?xml version="1.0"?>
+
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:si="http://www.w3schools.com/rdf/">
+
+<rdf:Description rdf:about="http://www.w3schools.com">
+  <si:title>W3Schools</si:title>
+  <si:author>Jan Egil Refsnes</si:author>
+</rdf:Description>
+
+</rdf:RDF>
+
+
+RDF Document Example  # 0 
+---------------------------------------
+Two records from a CD-list:
+
+title			 |		Artist		|		Country		|		Company 	|		Price		|		Year
+-----------------------------------------------------------------------------------------------------------------
+P.revealing		 |      Future      |    USA            |   Columbia        |  10.90            |  1985
+------------------------------------------------------------------------------------------------------------------
+Now				 |      Drake       |    USA            |   CBS Records     |  9.90             |  1988
+-------------------------------------------------------------------------------------------------------------------
+
+^^^^ XML RDF representation :
+++++++++++++++++++++++++++++++++++++++++++
+<?xml version="1.0"?>
+
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:cd="http://www.recshop.fake/cd#">
+
+<rdf:Description
+rdf:about="http://www.recshop.fake/cd/futRSure">
+	<cd:artist>Future</cd:artist>
+	<cd:country>USA</cd:country>
+	<cd:company>Columbia</cd:company>
+	<cd:price>10.90</cd:price>
+	<cd:year>1985</cd:year>
+</rdf:Description>
+<rdf:Description
+rdf:about="http://www.recshop.fake/cd/futRSure">
+	<cd:artist>Drake</cd:artist>
+	<cd:country>USA</cd:country>
+	<cd:company>CBS Records</cd:company>
+	<cd:price>9.90</cd:price>
+	<cd:year>1988</cd:year>
+</rdf:Description>
+
+
+^^^^  Breakdown
+-----------------------------------------------
+The first line of the RDF documemtnent is the XML declaration.  The XML declaration is followed by 
+the root element of RDF documents:
+	*	<rdf:RDF>
+The xmlns:rdf namespace, specifies that elements witht eh rdf prefix are from thenamespace
+	*	"http://www.w3.org/1999/02/22-rdf-syntax-ns#".
+
+The xmlns:cd namespace, specifies that elements withthe cd prefix are from the namespace
+	*	"http://www.recshop.fake/cd#".
+
+The <rdf:Description> element contains the descdription of teh resource indentified by
+the rdf:about attribute.
+	*	rdf:about
+
+The elements :
+	*	<cd:artist>
+	*	<cd:country>
+	*	<cd:company>
+
+
+
+Note:  there exists a Validation service for your RDF/XML
+==============================================================
+https://www.w3.org/RDF/Validator/
+
+
+
+
+Main elements of RDF/XML
+---------------------------------------------------------------
+The main elements of RDF are the root element, <RDF>, and the <Description>
+elment, which identifies a resource :
+<xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	<rdf:RDF>
+		<rdf:Description> 
+			.......
+			.......
+			.......
+		</rdf:Description> 
+	</rdf:RDF>
+
+Elements artist, country, company, price and year
+----------------------------------------------------------
+Are all defined in the xmlnamespace
+http://www.recshop.fack/cd# namespace.  This namesapce
+is outside RDF(and not part of RDF).  RDF defines only the framework.
+The elements, artis, country, company, price, and year must be 
+defined by someone else(company, oranization,person etc)
+
+
+Note:  XML prologs
+==========================================================
+The xml prolog is optional.  It often takes this form:
+
+	*	 <?xml version="1.0", encoding="UTF-8"?>
+
+As stated before, the prolog is optional, but documents where it 
+appears, it must be preceed any other markup in the document.
+XML documents may cant international characters, like Norwegian, French
+Hangul, etc.   To avoid errors, you should specify the encodeing used, or save your XML files
+as UTF-8.  UTF8 is xml default encoding.  UTF8 is also the default for 
+
+	*	HTML
+	*	CSS
+	*	JavaScript
+	*	PHP
+	*	SQL
+
+Note:	XML attribute values  must be qouted
+=======================================================
+	*	incorrect:
+	----------------------------
+		<note date=12/11/2007>
+  			<to>Tove</to>
+  			<from>Jani</from>
+		</note>
+
+	*	correct:
+	----------------------------
+		<note date="12/11/2007">
+  			<to>Tove</to>
+  			<from>Jani</from>
+		</note>
+
+Note: 	Entity references ; the 5 predefined
+======================================================
+
+	*	&lt;	--->	<
+	*	&gt;	--->	>
+	*	&amp;	--->	&
+	*	&apos;	--->	'
+	*	&qout;	--->	"
+
+Note:	Comments in XML
+=======================================================

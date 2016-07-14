@@ -1,0 +1,208 @@
+http://www.w3schools.com/xml/xml_xpath.asp
+
+XML and XPath
+=====================================
+XPath (the XML Path language) is a language for finding information in an XML document
+
+
+What is XPath ?
+======================================
+  * XPath is a syntax for defining parts of an XML document
+  * XPath uses path expressions to navigate in XML document
+  * XPath contains a library of standard functions
+  * XPath is a major element in XSLT
+  * XPath is also used in XQuery, XPointer, and XLink
+  * XPath is a W3C recommendation 
+
+XPath Path Expressions
+======================================
+  * XPath is a major element in the XSLT standard.  Without XPath
+    knowledge you will not be able to create XSLT
+
+XPath Examples
+======================================
+  <?xml version="1.0" encoding="UTF-8"?>
+
+<bookstore>
+
+<book category="cooking">
+  <title lang="en">Everyday Italian</title>
+  <author>Giada De Laurentiis</author>
+  <year>2005</year>
+  <price>30.00</price>
+</book>
+
+<book category="children">
+  <title lang="en">Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book>
+
+<book category="web">
+  <title lang="en">XQuery Kick Start</title>
+  <author>James McGovern</author>
+  <author>Per Bothner</author>
+  <author>Kurt Cagle</author>
+  <author>James Linn</author>
+  <author>Vaidyanathan Nagarajan</author>
+  <year>2003</year>
+  <price>49.99</price>
+</book>
+
+<book category="web">
+  <title lang="en">Learning XML</title>
+  <author>Erik T. Ray</author>
+  <year>2003</year>
+  <price>39.95</price>
+</book>
+
+</bookstore>
+
+
+^^^^ In the table below we have listed some XPath expressions and the result of the expressions:
+===================================================================================================
+--------------------------------------------------------------
+XPath Expressions         |       Result
+--------------------------------------------------------------
+/bookstore/book[1]        |      Selects the first book element that is a child ofthe bookstore element
+---------------------------------------------------------------
+ /bookstore/book[last()]  |      Selects the last book element that is the child of the bookstore
+--------------------------------------------------------------
+/bookstore/book[last()-1] |      Selects the last but one book element that is the child of the bookstore element
+---------------------------------------------------------------
+/bookstore/book[position()<3]  |  Selects the first two book elements that are children of the bookstore element  
+---------------------------------------------------------------
+//title[@lang]            |     Selects all the title elements that have an attribute named lang
+---------------------------------------------------------------
+//title[@lang='en']       |     Selects all the title elements that have a "lang" attribute with a value of "en"
+---------------------------------------------------------------
+bookstore/book[price>35.00]/title  |  Selects all the title elements of the book elements of the bookstore element that have a price element with a value greater than 35.00
+---------------------------------------------------------------
+^^^^Let's use XSLT  to transform XML into HTML, efore it is displayed in a browser:
+======================================================================================
+<?xml version="1.0" encoding="UTF-8"?>
+<html xsl:version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<body style="font-family:Arial;font-size:12pt;background-color:#EEEEEE">
+<xsl:for-each select="breakfast_menu/food">
+  <div style="background-color:teal;color:white;padding:4px">
+    <span style="font-weight:bold"><xsl:value-of select="name"/> - </span>
+    <xsl:value-of select="price"/>
+    </div>
+  <div style="margin-left:20px;margin-bottom:1em;font-size:10pt">
+    <p>
+    <xsl:value-of select="description"/>
+    <span style="font-style:italic"> (<xsl:value-of select="calories"/> calories per serving)</span>
+    </p>
+  </div>
+</xsl:for-each>
+</body>
+</html>
+
+
+This XML carries HTML table information:
+--------------------------------------------------
+<table>
+  <tr>
+    <td>Apples</td>
+    <td>Bananas</td>
+  </tr>
+</table>
+
+
+
+If these XML fragments were added together, there would be a name conflict.
+Both contain a <table> element, but the elements have different content and meaning.
+------------------------------------------------------------------------------------
+<h:table xmlns:h="http://www.w3.org/TR/html4/">
+
+<h:table>
+  <h:tr>
+    <h:td>Apples</h:td>
+    <h:td>Bananas</h:td>
+  </h:tr>
+</h:table>
+
+<f:table xmlns:f="http://www.w3schools.com/furniture">
+<f:table>
+  <f:name>African Coffee Table</f:name>
+  <f:width>80</f:width>
+  <f:length>120</f:length>
+</f:table>
+
+
+^^^^ FAIL
+
+Let's do it right...be sure to include the proper element namespaces(xmlns) in the root element
+of the combined xml document
+---------------------------------------------------------------------------------------------
+<root 
+xmlns:h="http://www.w3.org/TR/html4/"
+xmlns:f="http://www.w3schools.com/furniture">
+
+<h:table>
+  <h:tr>
+    <h:td>Apples</h:td>
+    <h:td>Bananas</h:td>
+  </h:tr>
+</h:table>
+
+<f:table>
+  <f:name>African Coffee Table</f:name>
+  <f:width>80</f:width>
+  <f:length>120</f:length>
+</f:table>
+</root>
+
+
+
+Note:  Namespace URI  and parsing
+====================================================================
+The namespace URI is not used by the parser to look up information.
+The purpose of using an URI is to give the namespace a unique name
+
+
+URI(Uniform Resource Identifier)
+================================================================
+A Uniform  Resource Identifier(URI) is a string of characters which identifies
+an Internet Resource 
+
+
+
+Namespaces in Real Use
+==========================================================
+XSLT is a language that can be used to transform XML documents into other formats.
+XML document below, is a document used to transform XML into HTML.
+the namespace : "http://www.w3.org/1999/XSL/Transform" identifies XSLT elements inside
+an HTML document
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:template match="/">
+<html>
+<body>
+  <h2>My CD Collection</h2>
+  <table border="1">
+    <tr>
+      <th style="text-align:left">Title</th>
+      <th style="text-align:left">Artist</th>
+    </tr>
+    <xsl:for-each select="catalog/cd">
+    <tr>
+      <td><xsl:value-of select="title"/></td>
+      <td><xsl:value-of select="artist"/></td>
+    </tr>
+    </xsl:for-each>
+  </table>
+</body>
+</html>
+</xsl:template>
+</xsl:stylesheet>
+
+
+
+
+Formatting XML with CSS is not recommened...just JavaScript or XSLT instead.

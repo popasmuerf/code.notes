@@ -1,0 +1,183 @@
+http://www.w3schools.com/xml/xml_xsl.asp
+
+Displaying XML with XSLT(eXtensible Stylesheet Language Transformations)
+=====================================
+XSLT is the recomended style sheet language for XML.
+XSLT is far more sophisticated than CSS.  With SXLT you can add/remove elements and attributes to 
+or from the output file.  You can alaso rearrange and sort elements, perform tests and make decisions about which elemeents
+tohide and display, and a lot more.
+
+XSLT Example
+======================================
+we will be using the following XML document:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<breakfast_menu>
+
+  <food>
+  <name>Belgian Waffles</name>
+  <price>$5.95</price>
+  <description>Two of our famous Belgian Waffles with plenty of real maple syrup</description>
+  <calories>650</calories>
+  </food>
+
+  <food>
+  <name>Strawberry Belgian Waffles</name>
+  <price>$7.95</price>
+  <description>Light Belgian waffles covered with strawberries and whipped cream</description>
+  <calories>900</calories>
+  </food>
+
+  <food>
+  <name>Berry-Berry Belgian Waffles</name>
+  <price>$8.95</price>
+  <description>Light Belgian waffles covered with an assortment of fresh berries and whipped cream</description>
+  <calories>900</calories>
+  </food>
+
+  <food>
+  <name>French Toast</name>
+  <price>$4.50</price>
+  <description>Thick slices made from our homemade sourdough bread</description>
+  <calories>600</calories>
+  </food>
+
+  <food>
+  <name>Homestyle Breakfast</name>
+  <price>$6.95</price>
+  <description>Two eggs, bacon or sausage, toast, and our ever-popular hash browns</description>
+  <calories>950</calories>
+  </food>
+
+</breakfast_menu>
+
+
+
+
+^^^^Let's use XSLT  to transform XML into HTML, efore it is displayed in a browser:
+======================================================================================
+<?xml version="1.0" encoding="UTF-8"?>
+<html xsl:version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<body style="font-family:Arial;font-size:12pt;background-color:#EEEEEE">
+<xsl:for-each select="breakfast_menu/food">
+  <div style="background-color:teal;color:white;padding:4px">
+    <span style="font-weight:bold"><xsl:value-of select="name"/> - </span>
+    <xsl:value-of select="price"/>
+    </div>
+  <div style="margin-left:20px;margin-bottom:1em;font-size:10pt">
+    <p>
+    <xsl:value-of select="description"/>
+    <span style="font-style:italic"> (<xsl:value-of select="calories"/> calories per serving)</span>
+    </p>
+  </div>
+</xsl:for-each>
+</body>
+</html>
+
+
+This XML carries HTML table information:
+--------------------------------------------------
+<table>
+  <tr>
+    <td>Apples</td>
+    <td>Bananas</td>
+  </tr>
+</table>
+
+
+
+If these XML fragments were added together, there would be a name conflict.
+Both contain a <table> element, but the elements have different content and meaning.
+------------------------------------------------------------------------------------
+<h:table xmlns:h="http://www.w3.org/TR/html4/">
+
+<h:table>
+  <h:tr>
+    <h:td>Apples</h:td>
+    <h:td>Bananas</h:td>
+  </h:tr>
+</h:table>
+
+<f:table xmlns:f="http://www.w3schools.com/furniture">
+<f:table>
+  <f:name>African Coffee Table</f:name>
+  <f:width>80</f:width>
+  <f:length>120</f:length>
+</f:table>
+
+
+^^^^ FAIL
+
+Let's do it right...be sure to include the proper element namespaces(xmlns) in the root element
+of the combined xml document
+---------------------------------------------------------------------------------------------
+<root 
+xmlns:h="http://www.w3.org/TR/html4/"
+xmlns:f="http://www.w3schools.com/furniture">
+
+<h:table>
+  <h:tr>
+    <h:td>Apples</h:td>
+    <h:td>Bananas</h:td>
+  </h:tr>
+</h:table>
+
+<f:table>
+  <f:name>African Coffee Table</f:name>
+  <f:width>80</f:width>
+  <f:length>120</f:length>
+</f:table>
+</root>
+
+
+
+Note:  Namespace URI  and parsing
+====================================================================
+The namespace URI is not used by the parser to look up information.
+The purpose of using an URI is to give the namespace a unique name
+
+
+URI(Uniform Resource Identifier)
+================================================================
+A Uniform  Resource Identifier(URI) is a string of characters which identifies
+an Internet Resource 
+
+
+
+Namespaces in Real Use
+==========================================================
+XSLT is a language that can be used to transform XML documents into other formats.
+XML document below, is a document used to transform XML into HTML.
+the namespace : "http://www.w3.org/1999/XSL/Transform" identifies XSLT elements inside
+an HTML document
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:template match="/">
+<html>
+<body>
+  <h2>My CD Collection</h2>
+  <table border="1">
+    <tr>
+      <th style="text-align:left">Title</th>
+      <th style="text-align:left">Artist</th>
+    </tr>
+    <xsl:for-each select="catalog/cd">
+    <tr>
+      <td><xsl:value-of select="title"/></td>
+      <td><xsl:value-of select="artist"/></td>
+    </tr>
+    </xsl:for-each>
+  </table>
+</body>
+</html>
+</xsl:template>
+</xsl:stylesheet>
+
+
+
+
+Formatting XML with CSS is not recommened...just JavaScript or XSLT instead.

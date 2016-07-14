@@ -1,0 +1,164 @@
+Digital Audio streamin: Captive Audio vs Streaming Audio
+======================================================
+As with digital video data, digital audio data can be either captive within the
+application distribution file(in the case of Java, a .JAR file)
+or streamed, using remote data servers.  Similar to digital video, the upised to 
+streaming digital audio data is that ic an reduce the data footpring of the application
+file.  The downside is reliability.  Many of the same concepts
+apply equally well to audio and video.  Streaming audio will save the data footprint, because you do not
+have to include all the heavy new media digital audio data in your .jar files.  If you 
+are planning on coding a jukebox application, you may want to consider streaming your digital
+ audio data....or.....you could try to optimize your digital audio data so that you can include
+ them (captive) insided the .jar file......such that it will be available always.
+
+ Availabilty vs. reduced pay load.   It's a trade-off.
+
+
+
+
+Streaming and bit rate
+======================================================
+The bit rate is defined during the compression process.
+
+
+
+Volume of sound
+=======================================================
+The volume of a sound wave will be determined by its amplitude,
+or "height" of it's wave.  The frequency of a sound wave equates
+to how closely together the waves are spaced, along the x-axis
+and the amplitude are measured along the y-axis
+
+
+Shape of a sound wave
+=======================================================
+Sound waves can be uniquely shaped, allowing them to "piggyback"
+varous sound effets.  A "pure" or baseline, type of sound wave is called a 
+"sine wave", which is the same sine-wave you learned about in trigonometry.
+
+Even randomoized waveforms, such as noise, are used in sound design to obtain edgy sound
+results.  As you may have ascertained by usig your recently acquired knowledge of data footprint
+optimization, the more "chaos", or noise, present in your sound wave(and in new media data in general)
+the harder it will be to compress for a codec.  therefore, more complex sound waves will result in larger digital
+audio file sizes, owing to the chaso in the data
+
+
+Converting  Analogy Audio to Digital Audio Data: Sampling, Accuracy, HD Audio
+==============================================================================
+The process of turing analog audio(soundwaves) into digital audio data is called
+"sampling".  Devices that perform this in the music industry are called "Samplers".
+Sampling involves the process of slicing an analog audio wave into segments so that yu can store the shape
+of the wave as digital audio data, that is, into zeroes and ones(0's -and- 1's) using a digital audio
+format.  This turns an infinitely accurate analog sound wave into a discrete amount of digital data.
+Each digital segment of a sampled audio sound wae is called a sample, becaus it samples that sound  wave
+at an exact opoint in time.  The "Sample Accuracy"(resolution) you want will determine the level o percision
+of a sample.  
+
+NOTE:  Media Percision
+=======================
+Audio : determined by the amount of data used to define each wave slice's height/amplitude
+Image/Video : determined by the amount of data used to define the image/video resolution
+
+Both (image resolution/sample resolution) are both measured in values of : 8bit, 12bit, 16bit, 24bit,32bit
+
+
+How games leverage sample resolution
+=======================
+	*	explosions = 8 bit....no need for that much clarity
+
+	*	speech	=	12 bit.....provides very clear sound for speech.  This is the reason why voices sounded 	terrible back in the height of the 8-bit console era
+
+	*	background music = possible 16 bit....though 12 bit resolution will usually suffice
+
+	*	Essenstially the more data used for sampling...the better the resolution.
+
+	*	There is a reason why CD-Audio(16-bit audio) was once such a big deal....and why HD audio is now.
+
+	*	Modern game conoles have hardware capable of 24-bit audio.  Awesome....
+
+	*	For our game.....HD audio is probably a bit overboard...unless we are writing a sound-based game....
+
+
+Sampling Frequency
+=======================================
+AKA as the "sampling rate".  This is a measure of how many smaples
+at particular sample resolution are taken during 1 second of sampling time frame.
+In terms of digital image editing, samplking frequency is analougous to the number of colors
+contained in a digital image.  For example:
+	
+	CD-quality audio = 16-bit 44.1 kHz sampling rate
+	------------------------------------------------
+	44.1 thousand samples per second with 16-bit sample resolution
+
+Calculating the raw data of an audio file
+========================================
+(sampling bit rate) * (number of seconds in the sample)
+
+
+Most common audio sampling rates
+====================================
+	*	8 kHz
+	*	22 kHz
+	*	32 kHz
+	*	44.1 kHz
+	*	48 kHz
+	*	96 kHz
+	*	192 kHz
+	*	384 kHz
+
+8 kHz, 11kHz, 22 kHz, are the ones that we are going to use
+in our games, as with careful optimization, these can yield high-quality
+sound effects and arcade music.  These rates would be optimal for samplin any voic-based
+digital audio as well, such as movie dialogue or an e-book narration track.
+Higer rates like 44.1 kHz is appropiate for music, high-fidelity stuff like rumbling
+thunder, THX quality audio, etc....
+
+Bit rates are defined during the compresssion process
+=======================================================
+Digital audio files that need to support lower bit-rate bandwidth are going to have
+more compression applied to the audio data, which results in lower aquality.
+these will steam(play black) more smoothly accross a greater number of devices,
+
+
+
+Digital Audio in JavaFX: Supported Digital Audio Codecs and Data Formats
+===================================================================
+There are considerably mor digital audio codecs in JavaFX than digital
+video codecs, as there is only one video codec, MPEG-4 H.264 AVC.
+
+-----------------------------------
+Platform	|	Supported Codecs
+----------------------------------
+JavaFX		|	.mpeg-4 H.264 AVC
+			|	.mp3
+----------------------------------
+Android     |   .mp3
+			|	wave
+			|	.mp4(.mp4-a)
+			|	.mpeg-4 aac
+			|	.aiff(pcm)
+			|	
+-----------------------------------
+
+^^^ mpg is a lossy audio file format.  If you use mp3...make sure you 
+get the most out of it.
+
+Wave is one of the origional audio formats used with the Apple Macintosh and Microsoft
+Windows OSs, respectivey.  These wave files use PCM(pulse code modulation) audio which is loseless(if there is no compression applied)   PCM is commonly used for DC-ROM contents as well as telephony 
+applications.  With no compression PCM becomes relatively much less CPU-intensive as no compression/decompression algorithms need be ran during streaming. 
+
+For this reason...PCM should be your basline file format. It allows you to review the
+differences between wave, mp3, mp4, etc file formats and their compression results.
+
+
+
+Digital Audio optimization: Start with CD-Quality Audio, and Work Backward
+============================================================================
+JavaFX also supports the popular MPEG-4 AAC codec.  These digital audio data can be contained in 
+MPEG4 contanters (.mp4,.m4a,.m4v), or file extensions, and can be played back using any Operating System.
+
+Note: JavaFX does not contain an MPEG-4 decoder...it useds the OS's MPEG-4 decoder
+
+Digital Audio Optimization: Start with CD-Quality Audio, and Work Backward
+==============================================================================
+

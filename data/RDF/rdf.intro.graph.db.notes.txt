@@ -1,0 +1,99 @@
+http://www.linkeddatatools.com/introducing-rdf
+
+Introducting Graph Data and RDF
+=====================================
+RDF is a common acronum with semantic web community because
+it forms one of the basic building blocks for forming the web of
+semantic data.  Althought RDF uses xml syntax....
+
+Hierarchical vs relational via Graph Databases?
+================================================
+  * Relational DB - tables are related by primary key
+  * Hierarchical DB - parent nodes have more intrinsic importance
+  * Graph DB -  arbitrary object relations with no intrinsic importance
+
+For most type of data storage, there is the concept of some elements of data(whether they be for
+example data nodes or data tables) have greater precedence, or importance, over other 
+elements.
+
+For example, take an XML document typically contains nodes of information each
+with parent node.  At the root of the document is the highest level node, wich has
+no parent.
+
+A graph consists of resources related to other resources, with no single resources
+
+What is the RDF...again?
+======================================
+The relationships implied by this graph are fairly intuitive but to be thorough let's review
+them.  We can can see that our two things
+
+The DOM is seperated into 3 different parts/levels:
+------------------------------------------------------
+  * Core DOM - standard model for any structured document
+  * XML DOM  - standard model for XML documents
+  * HTML DOM - standard model for HTML documents
+
+
+Example of RDF 
+=========================================================================================
+Note: I think my particular problem with RDF (at least the schema I am dealing with)
+parsing is that  the xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"  does not 
+have any reference for the element <Topic>.   Possible solutions ?:
+
+  * Modify the rdf namespace such that it is not global
+  * Add a fake namespace for the <Topic> element
+  * Replace the <Topic> element with element similar/appropiate to take it's place
+-----------------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:region="http://www.country-regions.fake/">
+
+  <rdf:Description rdf:about="http://en.wikipedia.org/wiki/Oxford">
+    <dc:title>Oxford</dc:title>
+    <dc:coverage>Oxfordshire</dc:coverage>
+    <dc:publisher>Wikipedia</dc:publisher>
+    <region:population>10000</region:population>
+    <region:principaltown rdf:resource="http://www.country-regions.fake/oxford"/>
+  </rdf:Description>
+</rdf:RDF>
+
+
+
+The RDF Statement(Triple)
+=====================================
+The RDF/XML encapsulated between the description element tags is known as :
+  * RDF statement
+    -or-
+  * RDF Triple
+
+
+
+The triple in this example:
+--------------------------------------------------
+    <dc:title>Oxford</dc:title>
+    <dc:coverage>Oxfordshire</dc:coverage>
+    <dc:publisher>Wikipedia</dc:publisher>
+    <region:population>10000</region:population>
+    <region:principaltown rdf:resource="http://www.country-regions.fake/oxford"/>
+
+
+Why is the triple important
+----------------------------------------------------
+Triples are 3 constituent parts that provide:
+  * subject
+  * predicate
+  * object
+
+
+
+Summary
+-------------------------------------------------
+  * What a data graph is.
+  * That the semantic web is a giant, global data graph defined in RDF (Resource Description Framework).
+  * The all-important shift in thinking from storing data in relational, or hierarchical models to a storing in graph models.
+  * The subject, predicate and object in terms of basic data graphs and RDF statements.
+  * A basic familiarity with the layout of an RDF document.
+  * You should now be able to start the following tutorial:

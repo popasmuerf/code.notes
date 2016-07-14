@@ -1,0 +1,153 @@
+http://www.tutorialspoint.com/design_pattern/builder_pattern.htm
+
+Builder Patterns
+==============================================================
+Builder pattern builds a complex object using simple objects
+and using a step by step approach.  This type of design pattern
+comes under creational pattern provides one of the best ways to 
+create an object
+
+
+public interface Shape{
+	void draw() ;
+}
+
+public class Square implements Shape{
+	@Override
+	void draw(){
+		System.out.println("Inside Square::draw() method.");
+	}
+}
+
+public class Rectangle implements Shape{
+	@Override
+	void draw(){
+		System.out.println("Inside Rectangle::draw() method.");
+	}
+}
+
+
+public class Circle implements Shape{
+	@Override
+	public void draw() {
+      System.out.println("Inside Circle::draw() method.");
+   }
+}
+
+
+public interface Color{
+	void fill() ;
+}
+
+
+public class Red implements Color{
+	@Override
+	public void fill(){
+		System.out.println("Inside Red::fill() method");
+	}
+}
+
+public class Blue implements Color{
+	@Override
+	public void fill(){
+		System.out.println("Inside Blue::fill() method");
+	}
+}
+
+public class Green implements Color{
+	@Override
+	public void fill(){
+		System.out.println("Inside Green::fill() method");
+	}
+}
+
+The Abstract Factory Interface 
+============================================
+public abstract class AbstractFactory{
+	abstract Color getColor(String color);
+	abstract Shape getShape(String shape);
+}
+
+
+ShapeFactory
+============================================
+
+
+public class ShapeFactory extends AbstractFactory{
+	@Override
+	public Shape getShape(String stringType){
+		if(shapeType == null){
+			return null ;
+		}
+		if(shapeType.equalsIgnoreCase("CIRCLE")){
+			return new Cirle() ;
+		}
+		if(shapeType.equalsIgnoreCase("SQUARE")){
+			return new Square() ;
+		}
+		if(shapeType.equalsIgnoreCase("RECTANGLE")){
+			return new Rectangle() ;
+		}
+		return null ;
+	}
+	@Override
+	Color getColor(String color){
+		return null ;
+	}
+}
+
+Color Factory
+============================================
+
+
+public class ColorFactory extends AbstractFactory{
+	@Override
+	public Color getColor(String color){
+		if(color == null){
+			return null ;
+		}
+		if(color.equalsIgnoreCase("RED")){
+			return new Cirle() ;
+		}
+		if(color.equalsIgnoreCase("BLUE")){
+			return new Square() ;
+		}
+		if(color.equalsIgnoreCase("GREEN")){
+			return new Rectangle() ;
+		}
+		return null ;
+	}
+	@Override
+	pubic Shape getShape(String shapeType){
+		return null ;
+	}
+}
+
+Generator / Producer class to get factories by 
+passing information such as Shape or Color
+============================================
+
+public class FactoryProducer{
+	public static AbstrctFactory getFactory(String choice){
+		if(choice.equalsIgnoreCase("SHAPE")){
+			return new ShapeFacory() ;
+		}
+		if(choce.equalsIgnoreCase("COLOR")){
+			return new ColorFactory() ;
+		}
+	}
+}
+
+
+Demo  Driver
+============================================
+public static void main(String[] args){
+	FactoryProducer factoryProducer = new FactoryProducer() ;
+	ShapeFactory shapeFactory = factoryProducer.getFactory("SHAPE");
+	Shape shape1 = shapeFactory.getShape("CIRCLE");
+	shape1.draw() ;
+	ColorFactory colorFactory = factoryProducer.getFactory("COLOR");
+	color1 = colorFactory.getShape("RED");
+	color1.draw() ;
+	color1.fill() ;
+}

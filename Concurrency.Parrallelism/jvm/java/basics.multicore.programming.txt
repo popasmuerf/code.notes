@@ -1,0 +1,18 @@
+https://community.oracle.com/docs/DOC-921264
+
+
+
+Concurrency on the JVM: Beyond Thread.start()
+==================================================
+Despite popular belief, Moore's law is still holding. However, due to physical limits hardware manufacturers are no longer increasing the frequency of single-core CPUs. Instead we see more cores and more CPUs, even on mobile devices.
+
+
+ExecutorService
+==============================================
+ExecutorService was introduced in Java SE 5.0, on of the most ground breaking Java updates when it comes to concurrency.
+Despite it being more than a decade old, many developers still facd issues when using htis
+handy interface:
+
+	/* Code */
+
+	ExecutorService pool = new ThreadPoolExecutor(10,10,0L, TimeUnit.Milliseconds), new ArrayBlockingQueue<>(1_000)) ;

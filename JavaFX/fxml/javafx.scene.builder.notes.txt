@@ -1,0 +1,365 @@
+JavaFX Scene Builder:  Using FXML for UI Design
+======================================================
+JavaFX Scene Builder is a visual design tool that generates an FXML
+(JavaFX markup language). The UI JavaFX definition are inflated
+in Java 8 to crate your application's JavaFX scene Graph, nodes, groups
+and SubScene objects  filled with package:
+
+	javafx.scene.contol
+
+Because FXML and Sene Builder are optimized for UI design:
+
+	*	buttons
+	*	check boxes
+	*	text fields
+	*	etc
+
+
+^^^ Because of what what our scene builder was designed for....
+You generally don't use scene builders in general 
+for building dynamic UIs
+
+We will use some features of it....for things like menus and score
+boards....but most of our UI code will be programmitic.
+
+
+
+
+To use FXML 
+======================================================
+To use FXML, and soon adter use the Scene Build visual UI design tool,
+you must create a special kind of FXML application, as you
+learned previously.  Creating an FXML application imports the javafx.fxml
+package and classes.  This allows the Java 8 code to inflate FXML constructs created by
+the UI designers so that they can be used by the programmers 
+to attch Java logic to the various UI controls.  The Android OS does this well, 
+using basic XML, but in Anddrod, this approach is not optional; it is part of the
+way things are done. More about Android UI can be explored in books like "Pro Android UI"
+
+The Scene Builder visual layout tool that writes FXML UI design contructs for you is 
+WYSIWYG drag and drop interface design.
+
+We can also apply all CSS styels to the Scene Buider tool and FXML structure in real time and see the results of those coding changes as well, again, withoug ANY Java compliation.
+
+Note:  The Scene builder kit API is 100% open source.
+
+3D is fully suported in the scened builder, though it is not yet possible to build
+3D objects using Scene Builder.  Further work integrating this tool with OpenGL3D
+will likely change this.
+
+
+
+FXML Definition: Anatomy of an XML UI Definition Construct
+===========================================================
+FXML structure is based on teh JavaFX classes(objects), and their attributes,
+that the FXML tags, and praameters structures, which you can easily create,
+allow you to "mock up" a front-end UI more easily, using a mark-up language.  The FXML
+structure lets you more easily construct your Scene Graph hierarchy, and the FXML
+tags and their parameters, which you will be looking at in the next section, match
+up 1:1 with JavaFX API classes.
+=======================================================
+The volume of a sound wave will be determined by its amplitude,
+or "height" of it's wave.  The frequency of a sound wave equates
+to how closely together the waves are spaced, along the x-axis
+and the amplitude are measured along the y-axis
+
+
+
+HelloWorld  UI FXML Definition: Replication Your Current UI Design, Using FXML
+==================================================================================
+The first thing that you define in the FXML structure is the FXML processing instructions.
+
+<? xml version="1.0" encoding="UTF-8" ?>
+<? import java.lang.* ?>
+<? import javas.lang.* ?>
+<? import javafx.scene.* ?>
+<? import javafx.scene.layout.* ?>
+<? import javafx.scene.control.* ?>
+<StackPain id="root" preHeight="250" prefWidth="300" >
+	<children>
+		<Button id="btn" text = "Say 'Hello World'" layoutX="125" layoutY="116"/>
+	</children>
+</StackPane>
+
+
+
+Order in which we call things under the hood in our JavaFX framework..
+=========================================================================
+1. Object declirations
+2. instantiate nodes within the start method()
+3. add nodes to the stackPane root node with the start method...
+4. make scene configurations via scene.setWhatever()
+5. pass the scene object to the primaryStage object using .setScene(Scene scene)
+6. Once your objects are in memory, only now will you be able to process ActionEvent handling routines
+7. Ensure thatyour digital image assests are referencable..
+
+
+Location of our image assets for InviciBagle
+=================================================
+Computer/ComputerName/Users/use/MyDocuments/NetBeansProjects/InviciBagle/src
+
+
+
+
+Classes that we need high level overview:
+=================================================
+	*	class Pos //posistioning
+	*	class Insets //padding
+	*	class HBox //UI layout container
+	*	class Image //digital image container
+	*	class ImageView //digital image display
+	*	class TableView //table data display
+
+
+The JavaFX Pos Class:  Generalized Screen Posistion Contants
+=======================================================
+The Pos class is an Enum<Pos> class, which stands for "enumeration".
+This class contains a list of constants that are translated into integer values for use inthe
+code.  The constant values (in this case, positioning constants:
+	
+	*	TOP
+	*	CENTER
+	*	BASELINE
+
+The class extension hierarchy for the Pos calss starts at the java.lang.Object
+masterclass and progresses to the java.lang.Enum<Pos> clas, finally ending
+with javafx.geometry.Pos class:
+
+java.lang.Object
+	|
+	|
+	\------javafx.geometry.Insets
+			
+
+The Pos class has a set of constants for providing a generalized horizaontal
+and vertical posistion and alignment
+
+
+Pos Cosntant					Posistioning Result(Object)
+=============================================================
+BASELINE_CENTER					On the basline, vertically; at the center, horizontally					
+BASELINE_LEFT					On the basline, vertically; ont he right, horiontally
+BASELINE_RIGHT
+BOTTOM_CENTER 
+
+
+Pos class only offers genralized posistioning, it should be used in conjunction
+with the INsets class to effect pixel-precies posistioning...
+
+
+
+
+Insets Class: providing Padding Values 
+===============================================
+Insets class directly extends java.lang.Object masterclass.
+It was coded from scratch to proved insets, or offsets inside a rectangular area.
+
+Imagine  a picture frame in which you place a mat, or an attractive border between the frame
+on the outside and the picture on the insided.  This is what the Inset class
+does with constructor methods that provide:
+	*	equal or een insets
+	*	unequal or uneven insets
+
+We will be using unequal insets:
+
+	*  javafs.geometryInsets
+
+The Insets class furnishes a set of four double offset values specifying the four
+sides:
+	*	top
+	*	bottom
+	*	right
+	*	left
+of a rectangle.
+
+Think of the Insets  objects as a way to draw a box inside another box, which shows the
+spacing that you want the objects inside the rectangle to "respect" around
+its edges.  The simple constructor fo an INsets object uses the following
+format:
+	Insets(double topRightBottomLeft) //single value for all spacing sides
+	Insets(doulbe top, double right, double left, double bottom) //an overloaded constructor allowing for serperate vaules
+
+JavaFX HBox Class: Using a Layout Container in a Design
+=======================================================
+Button objects cannot be easily posistioned...so we are using a layout object of type:
+
+	*	javafx.scene.layout.HBox
+
+HBox inheritance hierarchy
+----------------------------------------------------------
+java.lang.Object
+	|
+	\------javafx.scene.Node
+				|
+				\------javafx.scene.Parent
+						|
+						\------javafx.scene.layout.Region
+									|
+									\------javafx.scene.layout.Pane
+												|
+												\------javafx.scene.layout.HBox
+
+This layout class lays it's child objects out in a row, which works as we want these buttons
+at the bottom in an unintrusive manner of our splash screen....
+
+Even randomoized waveforms, such as noise, are used in sound design to obtain edgy sound
+results.  As you may have ascertained by usig your recently acquired knowledge of data footprint
+optimization, the more "chaos", or noise, present in your sound wave(and in new media data in general)
+the harder it will be to compress for a codec.  therefore, more complex sound waves will result in larger digital
+audio file sizes, owing to the chaso in the data
+
+We are going to use Insets objects and Pos constant along with HBox Object
+to group the UI Button objects together and, later, to fine-tune their position as
+a Button control bank.
+
+The HBox layout container will thus become the Parent node(or branch node)
+and the buttons will become the leaf nodes...
+
+
+
+Example of declaring and instantiating an HBox
+==============================================================
+HBox()   //empty constructor
+
+HBox(double Spacing) //single value fo all leaf node objects
+
+HBox(double spacing, Nodes...children) //Specifying the child nodes with spacing
+
+HBox(Nodes... children) //Specifying the child nodes without spacing
+
+/********Example Code********/
+
+	Hbox buttonContainer = new HBox(12, gameButton, helpButton, scoreButton, legalButoon) ;
+
+Note:  HBox and  Resizing, aspect ratios, etc
+==============================================================
+It handles these eventualities for you...
+
+
+HBox Alignment  control
+=========================================================
+
+Alighnment of an HBox is controlled by the alignment attribute(property or variable)
+which default to TOP_LEFT constant from teh Pos class:
+
+	Pos.TOP_LEFT
+
+If an HBox is sized about its specified width, the child objects use
+their preferred width values, and theextra space goes unused.  The HBox
+layout engine will lay out the manged child elements, regardless of their visibility attribute(property or variable) setting.
+
+
+JavaFX Image Class: Refernceing Digital Images in a Design
+=============================================================
+The Image class is public and extends the java.lang.Object masterclass,
+meaning that it was written from scratch to provide image loading and scaling
+(Aspect ratios and scaling may be locked if need be).
+All URLs that are supported by:
+
+	java.net.URL
+
+meaning that we can load images either from local storage or from anywhere 
+form the interwebs:
+
+	*	http://www.fuckheadimages.com/fuckface.png
+
+or from the local OS/host:
+
+	*	file://fuckface.png
+
+or from a jar file:
+	
+	*	/fuckface.png
+
+Inheritance hierarchy of JavaFX Image class
+-------------------------------------------------------
+Java.lang.Object
+	|
+	\------javafx.scene.image.Image
+
+Overloaded constructors for javafx.scene.image.Image
+------------------------------------------------------
+	*	Image(String url, double requestedWidth, double requestedHeight, boolean perserveRatio, boolean smooth, boolean backGroundLoading) //not simple
+
+	*	Image(String url) //simple
+
+	*	Image(String url, double scaleWidth, double scaleHeight, boolean perseveAspect, boolean  smooth)// inital scale
+
+	*	Image(String url, boolean backgroundLoading) //async load in the background....
+
+	*	Image(InputStream is) //This is the simple format for realtime stream 
+
+	*	Image(InputStream is, double newWidth, double newHeight, preserveAspect, boolean smooth)
+
+
+What Image objects do...
+--------------------------------------------
+	*	Prepare image assets for general use
+	*	Resize images assets
+	*	Read image data from a URL
+	*	Load images from URL sync/async
+	*	Scales image assets.
+
+What Image Objects do not do
+--------------------------------------------
+	*	The job of the ImageView class..which is to dislay images...
+	*	Serve as a node on the scene graph(In this case the , a StackPane Scene Graph root that is parent to all the leaf nodes in our program....which is the job of ImageView class
+	*	"Painting" the image..which is the job of the ImageView Class
+
+From a digital image compisting perspective....
+---------------------------------------------------
+The StackPane class(object) is the image-compositing engine, or layer manager, if yo will and
+each Image View object represents an individual layer in the layer stack.  An Image
+object contains the ditial image data in the ImageView layer or in mosre than one ImageView, if
+needed, as the Image objects and th mageView objects are decoupled and exist indpendently of
+each other.
+
+
+
+JavaFX ImageView Class: Displaying Digital Images in a Design
+===================================================================================
+The ImageView class is a public class that directly extends the class:
+
+	*	javafx.scence.Node
+
+		-which is in turn an extenstion of-
+
+	*	java.lang.Object
+
+Java.lang.Object
+	|
+	\------javafx.scene.Node
+				|
+				\------javafx.scene.image.ImageView
+
+Therefore, the ImageView object is a type of Node object in the JavaFX Scene
+Graph that is used to painting a view, using the data containe in an Image object.
+The ImageView class has methods that allow for:
+	*	Image resampling(resizing)
+	*	Image scaling(changing/locking aspect ratio)
+	*	Specification of sampling algorithm(image smoothing)
+
+
+ImageView constructors
+=======================
+	*	ImageView() // empty ImageView
+
+	*	ImageView(Image image) // simple image load to ImageView
+
+	*	ImageView(String url) // load image from some url
+
+
+Examples of declaring an ImageView object that loads images...
+------------------------------------------------------------------------------
+	Image splashScreen = new Image.set("/splash.png",640,400,true,false,true);
+	ImageView splashScreenBackPlate = null ;
+	splashScreenBackPlate = new ImageView() ;
+	spashScreenBackPlate.setImage(splashScreen);
+
+		-or-
+
+	Image splashScreen = new Image.set("/splash.png",640,400,true,false,true);
+	ImageView spashScreenBackPlate = new ImageView(splashScreen);
+
+
+The JavaFX TableView Class: Displaying Data Tables in a Design

@@ -1,0 +1,122 @@
+https://www.jetbrains.com/help/idea/2016.1/schemas-and-dtds.html
+
+
+External Schemas and DTDs
+======================================
+Local XML schema (XSD) and DTD files that are used to validate your
+XML files are listed in this section.
+
+Each entry is a mapping of a URI that may be rferenced in your XML
+file onto an appropriate local schema or DTD file. 
+
+
+
+Example of RDF representation of VCARDS
+===========================================
+http://.....JohnSmith
+	|
+	|
+	|
+	|
+	\-----John Smith
+
+
+^^^
+The resource, John Smith, is shown as an elipse and is identified by the UniformResource Identifier(URI), in this case:
+
+	*	Resources have propeties
+	*	Name of properites are URIs also
+	*	URIs are long and cumbersome
+	*	URIs may be represented in XML qname form
+	*	The part before the ':' is called a namespace prefix and represents a namespace
+	*	The part after the ':' represents the local name that exists within that namespace:
+
+		-	namespace:localname
+
+	*	Properties are usually represented in thi sqname form when written as RDF XML and it is a convienient shorthand for
+		representing them in diagrams and in text.
+	*	The nsprefix:localname form is a shorthand for the URI of the namespace concatenated with the local name
+	*	There is no requirement that the the URI of a property  resolve to anything when accessed by a browser.
+	*	Each property has a value.  In this case the value is a literal, which for now we can think of as a strings of
+		Literals are shown in rectangles.
+	*	Jena is a Java API which can be usec to create and manipulate RDF graphs like this one.
+	*	Jena can be used to create and manipulate RDF graphs like this one:
+
+		//some definitions
+		static String personURI = "http://somewhere/JohnSmith"
+		static String fullName = "John mith";
+
+		//create an empty Model
+		Model model = ModelFactory.crateDefaultModel() ;
+
+		//create the resouce
+		Resource johnSmith = model.createResource(personURI);
+
+		//add the property
+		johnSmith.addProperty(VCARD.FN,fullName)
+
+
+
+XML NameSpaces
+=============================================================================
+XML namespaces are used for providing uniquely named elemetns and attributes
+in an XML document.  They are defined in a W3C recommendation.
+An XML instance may contain element or attribute names from more than one XML vocabulary.
+If each vocabulary is given a namespace, the ambiguity  between identically named elements 
+or attributes can be resolved.
+
+NameSpace declaration
+------------------------------------------------------------------------------
+An XML namespace is declared using XML attribute xmlns or xmlns:prefix, the value of
+which must be valid namespace name.  For example, the following declaration maps the "xhtml:" prefix
+to the XHTML namespace:
+
+	*	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+
+It is also possible to declare a default namespace for example:
+
+	*	xmlns="http://www.w3.org/1999/xhtml"
+
+^^^ In this case, any element without a namepsce prefix is consdered to be in the XHTML namespace, if it or an
+ancestor has the above default namespace declaration.
+
+
+QNames:
+-----------------------------------------------------
+QNames were introdued by XML Namespaces in order to be used as URI references.  QName stands for
+"qualified name" and defines a valid identifier for elements and attributes.  QName are generally
+used to reference particular elements or attributes within XML documents.
+
+Motivation for Qnames:
+------------------------------------------------------
+Since URI references can be long and may contain prohibited characters for element/attribute naming,  QNames
+are used to create a mapping between the URI and a namespace prefix.  The mapping enables the the abbreviation of URIs,
+therefore it achieves a more convienient way to write XML docs.
+
+
+Formal Definition of QNames
+------------------------------------------------------
+QNames are formally defined by the W3C as:
+
+	QNames 			::= 	PrefixedName | Unprefixed name
+	PrefixedName	::= 	Prefix ':'  LocalPart
+	UnPrefixedName	::= 	LocalPart
+	Prefix          ::= 	NCName
+
+
+
+QName Example
+------------------------------------------------------
+ <?xml version='1.0'?>
+<doc xmlns:x="http://example.com/ns/foo">
+    <x:p/>
+</doc>
+
+
+
+^^^ Here the prefix "x" is declared to be assoicated with the URI "http://example.com/ns/foo"
+This prefix can furhter on be used as abbreviation for this namespace.
+Subsequently the tag "x:p" is a valid QName
+because it uses the "x" as namespace reference and "p" as local part.
+the tag "doc" is also a QName, but it consists only of a local part.
+

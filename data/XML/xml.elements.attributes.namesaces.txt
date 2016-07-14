@@ -1,0 +1,198 @@
+http://www.w3schools.com/xml/xml_attributes.asp
+
+XML Elements
+=====================================
+An XML document contains XML Elements...(You don't say....)
+
+What is an XML element
+======================================
+An XML element is everything from (including) the elements start tag to (including)
+the element's end tag to (including) the element's end tag.
+
+	*	<price>29.99</price>
+
+An element can contain:
+
+	*	text
+	*	attributes
+	*	other elements
+	*	or a mix of the above
+
+
+Empty XML Elements
+======================================
+An element with no content is said to be empty.
+In XML, you can indicate an empty element like this:
+
+	<element></element>
+
+You can also use a so called self-closing tag:
+
+	<element/>
+
+
+Note: Elements cannot contain spaces in their names
+---------------------------------------------------
+^^^TTT
+
+
+
+
+XML Elements are Extensible
+========================================================
+XML elements can be extended to carry more information.
+Look at the following XML example:
+
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <body>Don't forget me this weekend!</body>
+</note>
+
+Imagine that the author of this XML document added some extra information to it:
+--------------------------------------------------------------------------------
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>
+
+^^^
+Should this crash the app?  No...as the application should still be able to find
+the elements:
+	*	<to>
+	*	<from>
+	*	<body>
+and produce the same output.  This is one of the beauties of XML.  It can be extended withougt breaking
+applications.
+
+
+XML Attributes Must be Qouted
+========================================================
+Attributes values must always be qouted.  Either single or double qoutes can be used.
+for a person's gender, the <person> element can be written like this:
+
+	*	<person gender="female">
+
+	-or-
+
+	*	<person gender='female'>
+
+	-or if the if the attribute value is actaully a qouted value -
+
+	*	<person gender="&qout;female&qout;>
+
+
+XML Elements vs. Attributes
+========================================================
+<person gender = "female">
+  <firstname>Anna</firstname>
+  <lastname>Smith</lastname>
+</person>
+
+	-and-
+
+
+<person>
+  <gender>female</gender>
+  <firstname>Anna</firstname>
+  <lastname>Smith</lastname>
+</person>
+
+^^^ In the first example gender is an antribute(a class value or field where the element person is a class);
+and in the last, gender is an element; a sub-element of the person element(where gender is a sub-class of person)
+Both provide the same information.  There are no rules on when to use attributes in place of elements
+or elements in place of attributes.
+
+
+
+My perferred way....
+========================================================
+
+v.0
+----------------------------
+<note date="2008-01-10">
+  <to>Tove</to>
+  <from>Jani</from>
+</note>
+
+	-vs-
+
+
+v.1
+----------------------------
+<note>
+  <date>
+  	<year>2008</year>
+  	<month>01</month>
+  	<day>10</day>
+  </date>
+  <to>Tove</to>
+  <from>Jani</from>
+</note>
+
+
+^^^ V.1  is much more scalable....
+
+
+Should we avoid XML attributes
+========================================================
+Some things to conscider while using XML attributes:
+
+	*	Attributes cannot contain multiple values while elements can
+	*	Attributes cannot contain tree structures while elements can
+	*	attributes are not easily expandable/scalable
+
+Example of how really awful  heavy use of XML attributes in lieue of elements can get
+==================================================================================
+<note day="10" month="01" year="2008"
+to="Tove" from="Jani" heading="Reminder"
+body="Don't forget me this weekend!">
+</note>
+
+^^^ Yes...this is possible...and stupid 
+
+
+XML Attributes for Metadata
+===================================================
+Sometimes ID references are assigned to elements.  These IDs
+can be used to identify XML  elements  in much the same way
+as the id attribure in HTML.  Just in case you where wondering.....the use of
+identifiers or ids in persistence or model technology are in fact a form of metadata.
+
+Like HTML, we can use element attributes to assign ids to stuff:
+Meta data like ids allow us to quickly target elements or traverse the XML document
+tree, find what we need.
+
+Example of using element attributes in a not stupid way.......
+-------------------------------------------------------------
+<messages>
+  <note id="501">
+    <to>Tove</to>
+    <from>Jani</from>
+    <heading>Reminder</heading>
+    <body>Don't forget me this weekend!</body>
+  </note>
+  <note id="502">
+    <to>Jani</to>
+    <from>Tove</from>
+    <heading>Re: Reminder</heading>
+    <body>I will not</body>
+  </note>
+</messages>
+
+
+^^^ The id attributes above are for identifying the differenct  notes.  It is not a part
+of the note itself.  What I'm trying to say here is that metadata (data about data)
+shold be stored as attributes, and the data itself shold be stord as elements
+
+^^^ LET'S SAY THIS AGAIN.....FOR GOOD BUSINESS......
+Attributes are best used as metada.  Elements are best used store data
+
+
+
+
+
+
+

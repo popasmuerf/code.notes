@@ -1,0 +1,117 @@
+http://www.w3schools.com/xml/xml_namespaces.asp
+
+XML Namespaces
+=====================================
+XML namespaces provide a method to avoid element namesspace conflicts
+
+Name Conflicts
+======================================
+In XML, element names are defined by the developer.  This often results in a conflict
+when attempting to combine different xml documents from different xml applications:
+
+This XML carries HTML table information:
+--------------------------------------------------
+<table>
+  <tr>
+    <td>Apples</td>
+    <td>Bananas</td>
+  </tr>
+</table>
+
+
+
+If these XML fragments were added together, there would be a name conflict.
+Both contain a <table> element, but the elements have different content and meaning.
+------------------------------------------------------------------------------------
+<h:table xmlns:h="http://www.w3.org/TR/html4/">
+
+<h:table>
+  <h:tr>
+    <h:td>Apples</h:td>
+    <h:td>Bananas</h:td>
+  </h:tr>
+</h:table>
+
+<f:table xmlns:f="http://www.w3schools.com/furniture">
+<f:table>
+  <f:name>African Coffee Table</f:name>
+  <f:width>80</f:width>
+  <f:length>120</f:length>
+</f:table>
+
+
+^^^^ FAIL
+
+Let's do it right...be sure to include the proper element namespaces(xmlns) in the root element
+of the combined xml document
+---------------------------------------------------------------------------------------------
+<root 
+xmlns:h="http://www.w3.org/TR/html4/"
+xmlns:f="http://www.w3schools.com/furniture">
+
+<h:table>
+  <h:tr>
+    <h:td>Apples</h:td>
+    <h:td>Bananas</h:td>
+  </h:tr>
+</h:table>
+
+<f:table>
+  <f:name>African Coffee Table</f:name>
+  <f:width>80</f:width>
+  <f:length>120</f:length>
+</f:table>
+</root>
+
+
+
+Note:  Namespace URI  and parsing
+====================================================================
+The namespace URI is not used by the parser to look up information.
+The purpose of using an URI is to give the namespace a unique name
+
+
+URI(Uniform Resource Identifier)
+================================================================
+A Uniform  Resource Identifier(URI) is a string of characters which identifies
+an Internet Resource 
+
+
+
+Namespaces in Real Use
+==========================================================
+XSLT is a language that can be used to transform XML documents into other formats.
+XML document below, is a document used to transform XML into HTML.
+the namespace : "http://www.w3.org/1999/XSL/Transform" identifies XSLT elements inside
+an HTML document
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:template match="/">
+<html>
+<body>
+  <h2>My CD Collection</h2>
+  <table border="1">
+    <tr>
+      <th style="text-align:left">Title</th>
+      <th style="text-align:left">Artist</th>
+    </tr>
+    <xsl:for-each select="catalog/cd">
+    <tr>
+      <td><xsl:value-of select="title"/></td>
+      <td><xsl:value-of select="artist"/></td>
+    </tr>
+    </xsl:for-each>
+  </table>
+</body>
+</html>
+</xsl:template>
+</xsl:stylesheet>
+
+
+
+
+Formatting XML with CSS is not recommened...just JavaScript or XSLT instead.
