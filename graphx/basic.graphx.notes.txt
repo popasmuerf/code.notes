@@ -1,0 +1,79 @@
+Regular graph 
+=================
+each vertex/node has the same number of edges.
+Example of regular graph
+-----------------------
+FaceBook Freinds
+
+
+property graph
+=====================
+Graphyx extends the SparkRDD with a Resiltent Distrubted Property Graph.
+The property graph is a directed mutlgraph which can have multiple edges
+in parrallel
+
+Every edge and vertex has user defined properties associated with it.
+The parallel edges allow mutiple relationships between the same vertices
+
+
+
+/* code example of instansiating vertices/nodes */
+val nodes:[(VertexId,String)]  = Array((1L,("node_0")),(2L,("node_1")),(3L,("node_2")))
+val nodesRDD = sc.parallize(nodes)
+
+/* code example of instansiating edges/paths */
+val edges:[(Edge[PartitionId])]  = Array((1L,2L,1800),(2L,3L,800),((3L,1L,1400))
+val edgesRDD = sc.parrallize(edges)
+
+/* create a new graph with your vertices and edges.....
+
+val graph:Graph[String, PartitionID] = Graph(nodesRDD, edgesRDD)
+
+
+
+
+    val fullRDD: RDD[(String, String, String, VertexId)] = binnedDF.map(line => (line(0).toString, line(1).toString, line(2).toString, line(3).asInstanceOf[Long]))
+
+val sample = fullRDD.take(1).toSeq.toString()
+    println("=================================")
+    println("fullRDD take sample(1)")
+    println(sample)
+    println("=================================")
+
+netflow                                                                        |
+| netflow_dyads                                                                  |
+| netflow_node_connections                                                       |
+| netflow_nodes                                                                  |
+| netflow_nodes_shallalist                                                       |
+| netflow_ob_one_demo                                                            |
+| netflow_sessions                                                               |
+| netflow_symmetry       
+create table mdb_dns as (select * from   moloch_dns_view count limit 50;)
+
+./rsh  
+
+
+There is not shortage of talk concerning "The Male Ego"...especially during 
+all female bitch-fests and the useless advice often bandied about via the likes of Steve Harvey
+or that clown whom always finds his best inspiration concerning "relationship advice" while driving his car.....but rarely does anyone make mention of the insanely huge egos of women....of attractive women in particular.   
+
+For example.....I recently ran into an extremely hot woman whom about 3 years ago...played me to the left.  Once it dawned on me that I was wasting my time with her...I decided to take my business elsewhere and quickly forgot about her.  So long story short...this woman had the audacity to feel some kind of way about me not remembering who the hell she was...as she clearly remembered my name.  This is something I see all to often.  I mean...what?  You thought because you are blazing you could look me off...and for years afterward I would be still thinking about you to the extend I would bother remembering your name?  I cannot tell you how many times throughout my adult life I have had similar situations....I would run into one of these woman....politely say "what's up", smile, and kept it moving....and as a result recieve a look of astonishment and disbelief for having the audacity to walk right past you with out without bothering to engage in conversation, or attempt to buy you a drink, ask you out again, etc...etc....
+So what's up ladies?   Do women(some) also have outsized and totally udeserved sense(s) of self-worth and obnoxious egos unsupported by reality....or am I just a mean jerk ?
+#Discuss
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
