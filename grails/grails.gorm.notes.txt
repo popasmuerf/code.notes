@@ -1,0 +1,369 @@
+
+
+
+
+Dynamic Finders
+===================================
+As we mentioned in Metaprogramming, Grails takes advanteage of 
+Groovy's metaprogramming capabilities to synthesize finders for our domain class properties at runtime
+We can call methods that begin with:
+
+	*	findBy()
+	*	findAllBy()
+	*	countBy()
+
+followed by one or more properties and optional operators.
+Some examples will make this clearer.  All of these would be valid methods on TekEvent:
+
+	*	countByCity('New York')
+	*	findAllByStartDateGreaterThan(new Date())
+	*	findByCityAndDescriptionLike("Minneapolis","%Groovy%")
+
+
+Properties in dynamic finders can be joined by:
+
+	*	And
+	*	Or
+
+The following are some of the operators that can be used:
+
+	*	LessThan
+	*	Between
+	*	IsNotNull
+	*	Like
+
+
+
+Examples...Dynamic Finders
+===========================================
+/*** Code ***/
+package com.tekdays
+
+class TekEvent {
+	String city
+	String name
+	//String organizer
+    TekUser organizer
+	String venue
+	Date startDate
+	Date endDate
+	String description
+    static constraints = {
+    	name()
+    	city()
+    	description maxSize: 5000
+    	organizer()
+    	venue()
+    	startDate()
+    	endDate()
+    }
+    String toString(){
+    	return "$name, $city"
+    }
+}
+
+
+//*** in code search of extand TekEvent objects ***//
+
+String[] venues = TekEvent.findVenueLike("Java")
+
+
+
+One-to-Many Relationships
+======================================
+Grails uses static property called:
+
+	*	hasMany
+	*	hasMany is a map with the key being the name of the collection
+		in the owning classand the value being theype of child class.
+	
+
+TekEvent should have as many TekUser volunteers...
+----------------------------------------------------------- 
+
+/*** Code ***/
+package com.tekdays
+
+class TekEvent {
+	String city
+	String name
+	//String organizer
+    TekUser organizer
+	String venue
+	Date startDate
+	Date endDate
+	String description
+	static hasMany = [volunteers : TekUser]
+    static constraints = {
+    	name()
+    	city()
+    	description maxSize: 5000
+    	organizer()
+    	venue()
+    	startDate()
+    	endDate()
+    }
+    String toString(){
+    	return "$name, $city"
+    }
+}
+
+
+Grails also supports bidrectional one-to-many relationships with cascading
+deletes using the static:
+
+	*	belongsTo 
+
+property, which is declared in the child class, like so:
+
+class Parent{
+	....
+	static hasMany = {children: Child}
+}
+
+class Child{
+	....
+	static belongsTo = Parent 
+}
+
+
+
+
+
+
+
+If we had a workig BootStrap.groovy setup
+==================================================
+
+/****  code  *****/
+
+def g1 = TekEvent.findByName('Gateway Code')
+g1.addToVolunteers(new TekUser(fullName:'Sarah Martin',userName:'sarah',password:'54321',email:'sarah@martinworld.com',bio: 'web designer and Grails'))
+g2.addToVolunteers(new TekUser(fullName:'Bill Smith',userName:'Mr_Bill',password:'12345',email:'mrbill@email.com',bio: 'Software Developer,Claymation artist'))
+g1.save()
+g2.save
+
+
+
+Collections of Simple Data Types
+=======================================
+Previosly we have added an organizer and a collection of volunteers to our
+TekEvent.  That takes care of three more freatures from out list.  We have some time lef
+in this iteration, so let's take on another feature.  We shall add the ability for 
+people to register anonymous interest in the event.
+
+Wait....
+
+Anonymous interest is useless.  Perhaps it would be better to at least
+have those whom are interested in the Event to provide an email address
+such that they will be alerted to Event updates via email....
+
+From an application view-point....we don't need a domain class to represent this
+information(email address)...
+
+As before...Grails has a decent way for providing us a way to 
+associate these addresses with a TekEvent:
+
+	hasMany
+
+property to set up a collection of Strings containing email addresses.
+We should give a meaningful name to this collection of email address.
+
+
+Let's modify the TekEvent domain object....
+
+	/***new code for TekEvent object***/
+
+	class TekEvent{
+	......
+	static hasMany =[volunteers:TekUser, respondents:String]
+	......
+	}
+
+
+
+Note:  Remember....always import the the package and everything in it within your BootStrap.groovy file when you are trying to seed your protoytpes with data.....for example...our BootStrap.groovy file within :  
+
+
+
+/*** Code for BootStrap.groovy for web application TekDays...   ***/
+import com.tekdays.*
+class BootStrap {
+
+    def init = { servletContext ->
+    	new TekUser(fullName:'Mike Brown',
+    				userName: 'MikeyB',
+    				password: '54321',
+    				email:'mikeyb@mdbworld.com',
+    				website:'www.mdbworld.com',
+    				bio:'Web designer and Grails afficinado').save()
+ 		new TekUser(fullName:'Rob Lowe',
+    				userName: 'Rob',
+    				password: '54321',
+    				email:'rob@robsworld.com',
+    				website:'www.robsworld.com',
+    				bio:'Web designer and Grails afficinado').save()
+ 		new TekUser(fullName:'Angie Harman',
+    				userName: 'aharman',
+    				password: '54321',
+    				email:'aharman@lando.com',
+    				website:'www.lando.com',
+    				bio:'Attorny and Groovy sychophant').save()
+ 		def event1 = new TekEvent(name: 'event1',
+ 								  city: 'Saint Louis, MO',
+ 								  organizer: TekUser.findByFullName('Mike Brown'),
+ 								  venue: 'TBD',
+ 								  startDate: new Date('11/21/2013'),
+ 								  endDate: new Date('11/21/2013'),
+ 								  description: '''This conference will be about event1'''
+ 								 ).save()
+ 		def event2 = new TekEvent(name: 'event2',
+ 								  city: 'Annapolis, MD',
+ 								  organizer: TekUser.findByFullName('Mike Brown'),
+ 								  venue: 'TBD',
+ 								  startDate: new Date('10/23/2015'),
+ 								  endDate: new Date('10/23/2015'),
+ 								  description: '''This conference will be about event2'''
+ 								 ).save()
+    	def g1 = TekEvent.findByName('event1')
+    	g1.addToVolunteers(new TekUser(fullName:'Rob Lowe',
+    									userName: 'Rob',
+    									password: '54321',
+    									email:'rob@robsworld.com',
+    									website:'www.robsworld.com',
+    									bio:'Web designer and Grails afficinado'))
+    	g1.save()
+    	g1.addToVolunteers(new TekUser(fullName:'Curtis MayField',
+    									userName: 'Curtis',
+    									password: '54321',
+    									email:'cmayfield@superfly.com',
+    									website:'www.superfly.com',
+    									bio:'The Man'))
+    	g1.addToRespondents("cmayfield@superfly")
+    	g1.addToRespondents("mbrown@gmail.com")
+    	g1.addToRespondents("kgQ45@gmail.com")
+    	def g2 = TekEvent.findByName('event2')
+    	g2.addToVolunteers(new TekUser(fullName:'Rob Lowe',
+    									userName: 'Rob',
+    									password: '54321',
+    									email:'rob@robsworld.com',
+    									website:'www.robsworld.com',
+    									bio:'Web designer and Grails afficinado'))
+    	g2.save()
+    	g2.addToVolunteers(new TekUser(fullName:'Curtis MayField',
+    									userName: 'Curtis',
+    									password: '54321',
+    									email:'cmayfield@superfly.com',
+    									website:'www.superfly.com',
+    									bio:'The Man'))
+    	g2.addToRespondents("cmayfield@superfly")
+    	g2.addToRespondents("mbrown@gmail.com")
+    	g2.addToRespondents("kgQ45@gmail.com")
+    }
+    def destroy = {
+    }
+}
+
+
+
+We need to add a Sponsor Class
+================================
+Conventions/Conferences cost money.
+-----------------------
+| Sponsor             |
+-----------------------
+|   String name       |
+|   String website    |
+|   String description|
+|   byte[] logo       |
+|                     |
+-----------------------
+
+
+Run this command in the root directory of your project...:
+-----------------------------------------------------------
+$ grails create-domain-class com.tekdays.Sponsor
+
+//******** Code for com.tekdays.Sponsor ***********//
+package com.tekdays
+
+class Sponsor {
+    String name
+    String website
+    String description
+    byte[] logo
+    static constraints = {
+        name blank: false
+        website blank: false, url:true
+        description nullable: true, maxSize: 5000
+        logo nullable: true, maxSize: 1000000
+    }
+}
+
+
+^^^^Stuff we need to point out pertaining to this code...
+--------------------------------------------------------------
+    *   logo property's type: byte[] as the logo is an image that will be stored in an array of bytes
+    *   logo's constrants:
+        -   maxSize --> image can be no larger than 5000 bytes or 5kB
+        -   maxSize --> let's the DB know we are using a blob(or other appropiate data type)
+        -   maxSize --> let's the DB know that it needs to produce a field large enough to hold 
+            something the size of an icon
+
+What about the corresponding Controller for our Sponsor domain class ?
+-------------------------------------------------------------------------
+    *   $grails create-controller com.tekdays.Sponsor
+
+    //******** Code for com.tekdays.Sponsor ***********//
+package com.tekdays
+
+class SponsorController {
+  def scaffold = Sponsor
+  def index(){}
+}
+
+
+Many-To-Many Relationships
+====================================
+One of the concerns aout brining in a sponsor for a tehcnical event is that
+the whole thing might turn into a commerical for a vendor.  This becomes less
+of a concern if there are multiple sonsors for an event.  On the other hand...a single
+company might be interested in sponsoring more than one event.  So, should a TekEvent
+have a collection of Sponsor instances, or shoud Sponsor have a collection
+of TekEvent instances ?  The short of it is...BOTH...while the longer(which we
+we will address later...is NEITHER)
+
+The relationship between TekEvent and Sponsor is a many-to-many relationshp.
+Grails supports many-to-many relationships implicitly by having each class
+include the other in its block :
+
+    *   hasMany={}
+
+In this arrangement, each class will have a collection of the other,
+but one side has to be declared as the owning side....
+Grails uses the static variable:
+
+    *   belongsTo
+
+
+/*******Altered code for TekEvent***********/
+    class TekEvent{
+        .....
+        static hasMany=[respondents:String,volunteers:TekUser,sponsors:Sponser]
+        .....
+    }
+
+/*******Altered code for Sponsor***********/
+  class Sponsor{
+        .....
+        static hasMany=[events:TekEvent]
+        static belongsTo = TekEvent
+        .....
+    }
+
+
+^^^The above code would create the relationships, or links, between a TekEvent
+and its collectio of Sponsor instances, as well as between a Sponsor and its collection
+of Sponsor instances, as well as betwen a Sponsor and its collection of TekEvent
+instances.
+
