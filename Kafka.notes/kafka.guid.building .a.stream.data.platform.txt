@@ -2,3 +2,4 @@ http://www.confluent.io/blog/stream-data-platform-1/
 
 
 Putting Apache Kafka To Use: A Practical Guide to Building a Stream Data Platform (Part 1)
+

@@ -15,11 +15,22 @@ The users cannotsee the indices, they are just used to speed up quieries and wil
 Database Search Engine to locate records very fast.
 
 
-Note about Indices and INSERT, UPDATE, SELECT
+Simple and Unique Index
 ============================================
-INSERT and UPDATE commands take more time on tables using indices where as
-SELECt statements become fast on said tables.  The reason being is that while doing
-INSERT and UPDATE, databases need to inser or update index values as well. 
+#Syntax
+CREATE UNIQU INDEX index_name ON TABLE (column1, column2,....) ;
+
+#You can create a unique index a table.  A unique index means that two rows
+#cannot hae the same index value.  Here is the syntax to create an index on
+#a table
+
+CREATE UNIQUE INDEX index_name
+ON table_name (column1, column2,....) ;
+
+#We can use one or more columns to make an index...
+
+
+#simple indexes are created by simply ommiting the 
 
 Atomicity:
 -----------------------------------------------
