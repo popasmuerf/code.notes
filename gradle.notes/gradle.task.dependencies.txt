@@ -1,0 +1,143 @@
+Tasks and dependencies
+================================
+
+method : dependsOn
+--------------------------------
+creates task dependences
+
+
+
+/******* code *********/
+
+
+    task clean << {
+        println 'Executing task'
+    }
+    task compile << {
+        println 'Executing compile task'
+    }
+    task("package", dependsOn : 'compile') << {
+        println 'Executing package task'
+    }
+    
+  
+$ gradle -b task.dependencies.build package
+:clean
+Executing clean task
+:compile
+Executing compile task
+:package
+Executing package task
+
+BUILD SUCCESSFUL
+
+^^^^ Order of execution
+-----------------------------------
+To determine the order in which tasks need to be run,
+Gradle creates a Directed Acyclic Graph or DAG.  Each task
+to be executed becomes a node in the graph.  Dependencies between
+tasks are used to create edges between nodes:
+
+package --->  compile ----> clean
+
+ 
+    
+ Note:  about <<
+ =====================================
+ the << operator is short hand for the method:
+ 
+    doLast()
+    
+    
+//************ code for task.dependency.build A ******************//
+
+    task A << {println 'In task A'}
+    task B << {println 'In task B'}
+    task C << {println 'In task C'}
+
+    A.dependsOn 'C'
+    B.dependsOn 'C'
+    
+    
+^^^^ When task A is run, the dependsOn method ensures that B and C are
+run prior to executing A.  
+
+:B
+In task B
+:C
+In task C
+:A
+In task A
+
+BUILD SUCCESSFUL
+
+
+Note: Order of dependency execution
+========================================
+There is no guarantee of the order of dependency 
+execution!!!!!
+
+
+
+
+Skipping Tasks
+===================================================
+There will be occaisons where you want to skip the execution of a task.
+For example, you want to run certain taks only in the development eveniroment 
+while skipping them in the test and production enviroments.  This is accompilshed
+via the method:
+
+    onlyIf()
+    
+which accepts a closure
+
+
+//************ code for task.dependency.build A ******************//
+
+
+task skipInProd{
+    onlyIf{
+        !project.hasProperty('env') || project.env !="Prod"
+    }
+    doLast{
+        println 'Task execution complete'
+    }
+}
+
+
+
+Gradle Task Types
+================================================================================
+
+Zip
+------------------------------
+The Zip task allows you to create ZIP archives from a set of 
+files/directories.  Here's an example Zip task:
+
+
+//************ Zip  code ******************//
+task archiveZip(type:Zip){
+    archiveName 'images.zip'
+    from 'images'
+    into "$buildDir/dist"
+}
+
+
+//************ Copy  code ******************//
+task copyTask(type:Copy){
+    from 'src/config/dev.cert
+    from 'src/db'
+    into 'dist'
+}
+
+//************ Exec code ******************//
+task showWindowsVersion(type:Exec){
+    commandLine 'cmd',version
+}
+
+//************ Delete code ******************//
+task cleanTask(type:Delete){
+   delete 'build/libs', 'build/docs'
+}
+
+
