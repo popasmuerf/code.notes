@@ -1,0 +1,107 @@
+Constraints
+=================
+inList:
+----------------------------------
+The inList constraint takes as its value a list of
+Strings.  Only values matching one of the items in the list will be allowed.
+Any other value will cause a constraint  violation when saving.  But wait, there's more!!!!...
+Grails will also use this constrait to render an HTML <select> element in the scaffold views.
+We'll take a look at that shortly, but furst we have al ittle more plubming to do.
+
+We need to modify TekEvent and Sponsor so they each of a collection of Sponsorship instances.
+
+
+///------code for Sponsorship------///
+package com.tekdays
+class Sponsorship{
+	TekEvent event
+	Sponsor sponor
+	String contributionType
+	String description
+	String notes
+
+	static constraints = {
+		event nullable: false
+		sponsor nullable : false
+		contributionTyep inList: ["Other", "Venue","A/V","Promotion","Cash"]
+		description nullable: true, blank: true
+		notes nullable: true, blank: true, maxSize: 5000
+	}
+}
+
+///------code for Sponsor------///
+package com.tekdays
+
+class Sponsor {
+	.......
+	static hasMany[sponsorships:Sponsorship]
+	static constraints = {
+		name blank :false
+		website blank: false, url: true
+		description nullable:true maxSize: 50000
+		logo nullable: true , maxSize: 1000000
+		sponsorship nullable : true
+	}
+}
+///------code for TekEvent------///
+package com.tekdays
+
+class TekEvent {
+	.......
+	static hasMany[sponsorships:Sponsorship]
+	static hasMany = [volunteers:TekUser,
+					  responsdents:String,
+					  sponsorships:Sponsorship]
+	static constraints = {
+		name()
+		city()
+		description maxSize: 5000
+		organizer()
+		venue()
+		startDate()
+		endDate()
+		volunteers nullable: true
+		sponsorships nullable: true
+	}
+	..........
+}
+
+///------code for TekEvents  BootStrap update------///
+
+def s1 = new Sponsor(name:'Contegix',
+					 website:'http://www.contegix.com',
+					 description:'Beyond Managed Hosting for your Enterprise').save()
+def s2 = new Sponsor(event:g1,
+					 sponosors:s1,
+					 contributionType:'Other'
+					 description:'Will be paying for the Moscone').save()
+def sp1 = new Sponsorship(event:g1,
+						  sponsors:s,
+						  contributionType:'Other',
+						  description:'Cool T-Shirts').save()
+def sp2 = new Sponsorship(event:g1,
+						  sponsors:s2,
+						  contributionType:'Venue',
+						  description:'Will be paying for the Moscone').save()
+
+
+
+About Constraints and Validation
+=====================================================
+Constraints are used in generating scaffolded views for a domain class as well as for hints
+in generating the database schema.  But the real power of constraints is the part they play in
+validation.  When we call:
+	save()
+	-or-
+	validate
+On one of our domain class instances, Grails will try to alidate the instance
+against any constraints we have assigned.  If any of the constrains are not
+met, the save or validate call will fail, and appropiate eerror information will be stored
+in the instance's erros
+
+Grails built in constraints
+=======================================================
+	*	blank(true/false): Allows an empty strin value
+	*	nullable(true/false):	Allows null values
+	*	maxSize: Specifies the maximum value
+	*	

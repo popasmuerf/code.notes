@@ -1,0 +1,207 @@
+Understanding Gradle Builds
+=====================================
+Basic building blocks of Gradle are :
+	-	Projects
+	-	Tasks
+
+Projects
+====================================
+A project in Gradle is an abstract concept that represents an artifact
+that needs to be built.  Gradle projects may be thought of as representative
+of a piece of work that needs to be accomplished.
+
+Examples of a Gradle projects:
+	-	Java application that needs to be deployed as an executable JAR
+	-	Deploying applications
+
+
+org.gradle.api.Project
+====================================
+Gradle creates an instance of :
+	-	org.gradle.api.Project
+for every project and assoicates it with the 
+build script.  This allows the build
+scripts to use Project's API to access properties and customeize build
+behavior at runtime
+
+
+org.gradle.api.Project
+---------------------------------------
+Property/Method			Description
+**************			*****************
+name					name of the project and can be changed using : settings.gradle
+
+Description				Description of the project.  Typically set in the : build.gradle file
+
+version					Project's version
+
+parent					Returns the parent project (if exists)
+
+group					User-defined indentifier indicating group or organization
+						responsible for the project.  For example, org.hibernate or
+					 	org.springframework
+
+tasks  					Overloaded method to create a new task
+
+dependencies			Configures dependencies	for a project
+
+repositories			Configures repositories for a project
+
+defautTasks				Configures the names of the default tasks to run a project
+
+
+
+
+^^^^^Accessing 	 the above properties/methods then you can use the implicit
+variable :
+
+	-	project
+
+/**** Example of accessing org.gradle.api.Project properties/methods in some gradle build file	****/
+
+	project.description = "Hello World Project"
+	println	"Project Description ${project.descdription}" 
+
+
+Note: names of build files
+==============================
+You can name your build file to something
+other than "build.gradle"  
+You can tell gradle to build using these codes....
+using the command:
+
+	$ gradle -b my_build_file
+
+		-or-
+
+	$ gradle --build-file my_build_file
+
+
+
+Note: about the implicit variable "project"
+============================================
+You don't need it.  How bout that ?
+
+	/**** Example of accessing org.gradle.api.Project properties/methods in some gradle build file	****/
+
+	project.description = "Hello World Project"
+	println	"Project Description ${project.descdription}" 
+
+		-or-
+
+	description = "Hello World Project"
+	println	"Project Description ${descdription}" 
+
+
+The "ext" closure
+================================================
+We can define additional project-level properties using teh 
+syntax:
+
+	<<name>> = <<value>> 
+
+inside an ext{} closure or the shortcut ext.
+
+
+Example using ext={} to add addtional project-level properties to our project:
+====================================================================
+/********* code **************/
+
+	description = " Hello World Project"
+	println	"Project Descrtion ${description}"
+	ext={
+		outputLang = "English"
+	}
+	ext.enviroment = "local"
+	println "Output Language: ${project.outputLang}"
+	println "Enviroment: ${enviroment}"
+
+Tasks
+=====================================================================
+Gradle projects are made up of one or more tasks that perform build
+steps.  Tasks execute actions such as:
+
+	*	Compile Java source
+	*	Generate clases
+	*	Clean target folders
+	*	Launch other inter-dependent tasks:
+		-	run tests cases dependent on task that compiles Java code
+
+	*	Each task has an instance of :
+
+		-	org.gradle.api.Task
+
+
+
+org.gradle.api.Task properties/methods
+===================================================================
+name 				Name of the task
+
+description		Description of the task
+
+group			The task group that the task belongs to.  Task groups
+				provide a way to logically group related tasks
+
+enabled			Decides if a task is enabled or disabled
+
+dependson		Configures task dependencies
+
+doFirst			Adds an action to the beginning of the task's action list
+
+doLast			Adds an action to the end of task's action list
+
+onlyIf			Runs a task only if the passed in closure returns ture
+
+
+
+
+
+
+Creating Tasks
+====================================================================
+
+At the simplest level, creating a task just requires the task name:
+
+	/*** more task code ***/
+	task displayProperties   //valid...but does absolutely nothing
+
+
+
+	/*** more task code ***/
+
+	description = "Sample Description for Project"
+	task displayProperties{
+		description = "Task to display properties"
+		ext{
+			taskProp1 = "Prop Val"
+		}
+		doFirst{
+			println "Project Description : $project.description"
+			println "Task name $name"
+			println "Task Description: $description"
+		}
+		doLast{
+			println "Task Property 1: $taskProp1"
+		}
+	}
+
+Default Tasks
+=====================================================================
+
+For Gradle to execute task(s), you need to pass in the name of the task(s) as
+part of the Gradle command, as you saw in the previous execution.
+Gradle provides a method for you to define one or more default tasks that
+can be run when no other tasks are provided using the method:
+
+	defaultTasks
+
+Example code below:
+
+/******  displayProperties with Default Task  *******/
+
+description = "Sample Description for Project"
+defaultTasks 'displayProperties'
+task displayProperties{
+	description = "Task to display properties"
+	//Conent removed fro brevity....
+}
