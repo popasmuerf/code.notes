@@ -1,143 +1,208 @@
-Tasks and dependencies
-================================
+Task Dependencies
+=====================================
+Nontrivial 
+Basic building blocks of Gradle are :
+	-	Projects
+	-	Tasks
 
-method : dependsOn
---------------------------------
-creates task dependences
+Projects
+====================================
+A project in Gradle is an abstract concept that represents an artifact
+that needs to be built.  Gradle projects may be thought of as representative
+of a piece of work that needs to be accomplished.
 
-
-
-/******* code *********/
-
-
-    task clean << {
-        println 'Executing task'
-    }
-    task compile << {
-        println 'Executing compile task'
-    }
-    task("package", dependsOn : 'compile') << {
-        println 'Executing package task'
-    }
-    
-  
-$ gradle -b task.dependencies.build package
-:clean
-Executing clean task
-:compile
-Executing compile task
-:package
-Executing package task
-
-BUILD SUCCESSFUL
-
-^^^^ Order of execution
------------------------------------
-To determine the order in which tasks need to be run,
-Gradle creates a Directed Acyclic Graph or DAG.  Each task
-to be executed becomes a node in the graph.  Dependencies between
-tasks are used to create edges between nodes:
-
-package --->  compile ----> clean
-
- 
-    
- Note:  about <<
- =====================================
- the << operator is short hand for the method:
- 
-    doLast()
-    
-    
-//************ code for task.dependency.build A ******************//
-
-    task A << {println 'In task A'}
-    task B << {println 'In task B'}
-    task C << {println 'In task C'}
-
-    A.dependsOn 'C'
-    B.dependsOn 'C'
-    
-    
-^^^^ When task A is run, the dependsOn method ensures that B and C are
-run prior to executing A.  
-
-:B
-In task B
-:C
-In task C
-:A
-In task A
-
-BUILD SUCCESSFUL
+Examples of a Gradle projects:
+	-	Java application that needs to be deployed as an executable JAR
+	-	Deploying applications
 
 
-Note: Order of dependency execution
-========================================
-There is no guarantee of the order of dependency 
-execution!!!!!
+org.gradle.api.Project
+====================================
+Gradle creates an instance of :
+	-	org.gradle.api.Project
+for every project and assoicates it with the 
+build script.  This allows the build
+scripts to use Project's API to access properties and customeize build
+behavior at runtime
+
+
+org.gradle.api.Project
+---------------------------------------
+Property/Method			Description
+**************			*****************
+name					name of the project and can be changed using : settings.gradle
+
+Description				Description of the project.  Typically set in the : build.gradle file
+
+version					Project's version
+
+parent					Returns the parent project (if exists)
+
+group					User-defined indentifier indicating group or organization
+						responsible for the project.  For example, org.hibernate or
+					 	org.springframework
+
+tasks  					Overloaded method to create a new task
+
+dependencies			Configures dependencies	for a project
+
+repositories			Configures repositories for a project
+
+defautTasks				Configures the names of the default tasks to run a project
 
 
 
 
-Skipping Tasks
-===================================================
-There will be occaisons where you want to skip the execution of a task.
-For example, you want to run certain taks only in the development eveniroment 
-while skipping them in the test and production enviroments.  This is accompilshed
-via the method:
+^^^^^Accessing 	 the above properties/methods then you can use the implicit
+variable :
 
-    onlyIf()
-    
-which accepts a closure
+	-	project
 
+/**** Example of accessing org.gradle.api.Project properties/methods in some gradle build file	****/
 
-//************ code for task.dependency.build A ******************//
+	project.description = "Hello World Project"
+	println	"Project Description ${project.descdription}" 
 
 
-task skipInProd{
-    onlyIf{
-        !project.hasProperty('env') || project.env !="Prod"
-    }
-    doLast{
-        println 'Task execution complete'
-    }
+Note: names of build files
+==============================
+You can name your build file to something
+other than "build.gradle"  
+You can tell gradle to build using these codes....
+using the command:
+
+	$ gradle -b my_build_file
+
+		-or-
+
+	$ gradle --build-file my_build_file
+
+
+
+Note: about the implicit variable "project"
+============================================
+You don't need it.  How bout that ?
+
+	/**** Example of accessing org.gradle.api.Project properties/methods in some gradle build file	****/
+
+	project.description = "Hello World Project"
+	println	"Project Description ${project.descdription}" 
+
+		-or-
+
+	description = "Hello World Project"
+	println	"Project Description ${descdription}" 
+
+
+The "ext" closure
+================================================
+We can define additional project-level properties using teh 
+syntax:
+
+	<<name>> = <<value>> 
+
+inside an ext{} closure or the shortcut ext.
+
+
+Example using ext={} to add addtional project-level properties to our project:
+====================================================================
+/********* code **************/
+
+	description = " Hello World Project"
+	println	"Project Descrtion ${description}"
+	ext={
+		outputLang = "English"
+	}
+	ext.enviroment = "local"
+	println "Output Language: ${project.outputLang}"
+	println "Enviroment: ${enviroment}"
+
+Tasks
+=====================================================================
+Gradle projects are made up of one or more tasks that perform build
+steps.  Tasks execute actions such as:
+
+	*	Compile Java source
+	*	Generate clases
+	*	Clean target folders
+	*	Launch other inter-dependent tasks:
+		-	run tests cases dependent on task that compiles Java code
+
+	*	Each task has an instance of :
+
+		-	org.gradle.api.Task
+
+
+
+org.gradle.api.Task properties/methods
+===================================================================
+name 				Name of the task
+
+description		Description of the task
+
+group			The task group that the task belongs to.  Task groups
+				provide a way to logically group related tasks
+
+enabled			Decides if a task is enabled or disabled
+
+dependson		Configures task dependencies
+
+doFirst			Adds an action to the beginning of the task's action list
+
+doLast			Adds an action to the end of task's action list
+
+onlyIf			Runs a task only if the passed in closure returns ture
+
+
+
+
+
+
+Creating Tasks
+====================================================================
+
+At the simplest level, creating a task just requires the task name:
+
+	/*** more task code ***/
+	task displayProperties   //valid...but does absolutely nothing
+
+
+
+	/*** more task code ***/
+
+	description = "Sample Description for Project"
+	task displayProperties{
+		description = "Task to display properties"
+		ext{
+			taskProp1 = "Prop Val"
+		}
+		doFirst{
+			println "Project Description : $project.description"
+			println "Task name $name"
+			println "Task Description: $description"
+		}
+		doLast{
+			println "Task Property 1: $taskProp1"
+		}
+	}
+
+Default Tasks
+=====================================================================
+
+For Gradle to execute task(s), you need to pass in the name of the task(s) as
+part of the Gradle command, as you saw in the previous execution.
+Gradle provides a method for you to define one or more default tasks that
+can be run when no other tasks are provided using the method:
+
+	defaultTasks
+
+Example code below:
+
+/******  displayProperties with Default Task  *******/
+
+description = "Sample Description for Project"
+defaultTasks 'displayProperties'
+task displayProperties{
+	description = "Task to display properties"
+	//Conent removed fro brevity....
 }
-
-
-
-Gradle Task Types
-================================================================================
-
-Zip
-------------------------------
-The Zip task allows you to create ZIP archives from a set of 
-files/directories.  Here's an example Zip task:
-
-
-//************ Zip  code ******************//
-task archiveZip(type:Zip){
-    archiveName 'images.zip'
-    from 'images'
-    into "$buildDir/dist"
-}
-
-
-//************ Copy  code ******************//
-task copyTask(type:Copy){
-    from 'src/config/dev.cert
-    from 'src/db'
-    into 'dist'
-}
-
-//************ Exec code ******************//
-task showWindowsVersion(type:Exec){
-    commandLine 'cmd',version
-}
-
-//************ Delete code ******************//
-task cleanTask(type:Delete){
-   delete 'build/libs', 'build/docs'
-}
-
-

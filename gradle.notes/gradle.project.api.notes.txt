@@ -118,8 +118,55 @@ Example using ext={} to add addtional project-level properties to our project:
 
 Tasks
 =====================================================================
+Gradle projects are made up of one or more tasks that perform build
+steps.  Tasks execute actions such as:
+
+	*	Compile Java source
+	*	Generate clases
+	*	Clean target folders
+	*	Launch other inter-dependent tasks:
+		-	run tests cases dependent on task that compiles Java code
+
+	*	Each task has an instance of :
+
+		-	org.gradle.api.Task
+
+
+
+org.gradle.api.Task properties/methods
+===================================================================
+name 				Name of the task
+
+description		Description of the task
+
+group			The task group that the task belongs to.  Task groups
+				provide a way to logically group related tasks
+
+enabled			Decides if a task is enabled or disabled
+
+dependson		Configures task dependencies
+
+doFirst			Adds an action to the beginning of the task's action list
+
+doLast			Adds an action to the end of task's action list
+
+onlyIf			Runs a task only if the passed in closure returns ture
 
 
 
 
 
+
+Creating Tasks
+====================================================================
+
+At the simplest level, creating a task just requires the task name:
+
+	/*** more task code ***/
+	task displayProperties   //valid...but does absolutely nothing
+
+
+
+	/*** more task code ***/
+
+	
