@@ -10,120 +10,180 @@ domain model, and all the while we've been able to see the effects in our views.
 However, it's time to remove the training wheels and start taking control of
 our code.
 
+Generating Scaffolding Code
+=================
+Grails gives us an easy way to generate the code that does what the dynamic
+scaffolding has been doing for us. has been doing for us.  We won't see any changes to the application,
+but we will have the code necessary to make changes.  To get started, we will use the script:
+
+*	grails generate-all
 
 
-inList:
-----------------------------------
-The inList constraint takes as its value a list of
-Strings.  Only values matching one of the items in the list will be allowed.
-Any other value will cause a constraint  violation when saving.  But wait, there's more!!!!...
-Grails will also use this constrait to render an HTML <select> element in the scaffold views.
-We'll take a look at that shortly, but furst we have al ittle more plubming to do.
+generate-all script may be called in a few different ways
+=============================================================
+	* no params/arguments:
+		-will be prompted for a domain class name
+	* with params:
+		-the obvious
 
-We need to modify TekEvent and Sponsor so they each of a collection of Sponsorship instances.
+^^^^ Either method will generate :
+
+	* controller
+	* 4 .gsp views
+	* a .gsp template
+
+If you already have controllers and views for your domain classes...
+(like we do), we can use what is known in the grails community
+as the 
+
+	*	uber-generate-all
+
+script:
+
+	*	grails generate-all "*"
+
+If we run this script...all of our views and controllers will be replaced...
+(if they where extant in the first place).
+
+You may recall that we created controllers and enabled dynamic scaffolding for only
+three  of our doain classes:
+
+	*	TekEvent
+	*	TekUser
+	*	Sponsor
+
+We now have controllers for:
+
+	*	Sponsorship
+	*	Task
+	*	TekMessage
+
+We are likel not going to keep all of this code , however it makes for a great
+learning tool., and these files can serve as stubs to which we can add custom
+code.  Let's take a closer look at the code we've generated
 
 
-///------code for Sponsorship------///
+
+
+
+
+Anatomy of a Grails Controller
+================================================================
+Let's examine the TekEventController....what it is doing for us, and what
+else we can do with it?
+
+
+//****** TekDays  ******//
+
 package com.tekdays
-class Sponsorship{
-	TekEvent event
-	Sponsor sponor
-	String contributionType
-	String description
-	String notes
-
-	static constraints = {
-		event nullable: false
-		sponsor nullable : false
-		contributionTyep inList: ["Other", "Venue","A/V","Promotion","Cash"]
-		description nullable: true, blank: true
-		notes nullable: true, blank: true, maxSize: 5000
+import static org.springframework.http.HttpStatus.*
+import grails.transaction.Transactional
+@Transactional(readOnly = true)
+class TekEventController{
+	static allowedMethods = [save:"POST",update:"PUT",delete:"DELETE"]
+	def index(Integer max){
+		params.max = Math.min(max ?: 10,100)
+		//respond TekEvent.list(params),model:[tekEventInstanceCount:TekEvent.count()]
+		respond(TekEvent.list(params),model:[tekEventInstanceCount:TekEvent.count()])
 	}
 }
 
-///------code for Sponsor------///
-package com.tekdays
 
-class Sponsor {
-	.......
-	static hasMany[sponsorships:Sponsorship]
-	static constraints = {
-		name blank :false
-		website blank: false, url: true
-		description nullable:true maxSize: 50000
-		logo nullable: true , maxSize: 1000000
-		sponsorship nullable : true
-	}
-}
-///------code for TekEvent------///
-package com.tekdays
-
-class TekEvent {
-	.......
-	static hasMany[sponsorships:Sponsorship]
-	static hasMany = [volunteers:TekUser,
-					  responsdents:String,
-					  sponsorships:Sponsorship]
-	static constraints = {
-		name()
-		city()
-		description maxSize: 5000
-		organizer()
-		venue()
-		startDate()
-		endDate()
-		volunteers nullable: true
-		sponsorships nullable: true
-	}
-	..........
-}
-
-///------code for TekEvents  BootStrap update------///
-
-def s1 = new Sponsor(name:'Contegix',
-					 website:'http://www.contegix.com',
-					 description:'Beyond Managed Hosting for your Enterprise').save()
-def s2 = new Sponsor(event:g1,
-					 sponosors:s1,
-					 contributionType:'Other'
-					 description:'Will be paying for the Moscone').save()
-def sp1 = new Sponsorship(event:g1,
-						  sponsors:s,
-						  contributionType:'Other',
-						  description:'Cool T-Shirts').save()
-def sp2 = new Sponsorship(event:g1,
-						  sponsors:s2,
-						  contributionType:'Venue',
-						  description:'Will be paying for the Moscone').save()
-
-
-
-About Constraints and Validation
-=====================================================
-Constraints are used in generating scaffolded views for a domain class as well as for hints
-in generating the database schema.  But the real power of constraints is the part they play in
-validation.  When we call:
-	save()
-	-or-
-	validate
-On one of our domain class instances, Grails will try to alidate the instance
-against any constraints we have assigned.  If any of the constrains are not
-met, the save or validate call will fail, and appropiate eerror information will be stored
-in the instance's erros
-
-Grails built in constraints
+^^^^ About TekDaysController....
 =======================================================
-	*	blank(true/false): Allows an empty strin value
-	*	nullable(true/false):	Allows null values
-	*	max: Specifies the maximum value
-	*	min: Specifies the minimum value
-	*	vsize:	Takes Groovy range to determine bounds
-	*	maxSize:	Specifies the maximum size of a String of Collecdtion.
-	*	minSize:	specifies the minimum size of aString or Collection.
-	*	inList:	Only allows values contained in the supplied list
-	*	matches:	Requires value to match a regular expression.
-	*	unique(true/false):	Enforces uniqueness in the database.
-	*	url(true/false):Only accepts a valid email address.
-	*	creditCard(true/false):	Only accepts a valid credit card number.
-	*	validator:	Takes a closurefor custom validation.  The first parameter is the 
-		value, and the second(optional) paramter is the instance being validated
+	*	@Transactional:
+		-	annotation that causes all controller actions to be included in a transaction
+	*	Controllers are the entry point for grails applications(and most web apps that involve backend machinary)
+	*	The work done by a controller is don in an "action.
+	*	Actions:
+		- methods
+		- closure properties
+		- controller actions are accessed via URLs in the pattern:
+			* /appname/controllerBaseName/action
+			* /TekDays/TekDays/volunteer
+		- The first letter of the controller base name is always lower case
+	*	There exists 4 options for to properly exit a controller action:
+		- call render(view,map) //takes a view and a map of view data 
+		- call redirect(url) //issues an HTTP redirect to another URL
+		- respond() //used in generated actions
+		- by default grails will try to render a view with the same name as the action
+	*	params.max = Math.min(max ?: 10,100):
+			-	grails uses this value to 'protect' us from pulling too much info from
+			-	using the results range of Math.min(max ?: 10,100) this line below will still only return at most
+				100 items in the view:
+				*	http://localhost:8080/TekDays/tekEvent/index?max=10000
+
+	*	respond is the last line called:
+		-	respond uses the grails built-in support for content
+			negotiation to determine the format in which to send back our data.
+		-	In this case, the data we're returning is being supplied by a call to TekEvent.list
+			and is being reutrned to our view as HTML
+		-	The list is being passed the paramsMap, form which it will pull any parameters
+			that it can use.
+		-	respond takes two parameters :    respond(TekEvent.list(params),model:[tekEventInstanceCount:TekEvent.count()])
+			*	model
+			*	view
+				-	TekEvnet.count() is the pagenation 
+
+
+
+About  controller.respond()
+==============================================
+*	It's a closure
+*	Attempts to return the most appropiate type for the requested 
+	content type(specified by either the Accept header or file extension).
+*	Parameters:
+	-	object => The object to render
+	-	arguments => A map of arguments
+*	Supported arguments:
+	-	view => The view to use in case of HTML rendering
+	-	model => The model to use in case of HTML rendering
+Examples:
+-------------------------------------------------------------
+//pick the best content type to respond with:
+	respond Book.get(1)
+		-or-
+	respond(Book.get(1))
+//pick the best content type to respond with from teh given formats
+respond Book.get(1), [formats:['xml','json']]
+	-or-
+respond(Book.get(1),[formats:['xml','json']])
+
+
+Important
+==============================================
+It is important to note that this feature is not limited to the generated  actions and views.
+We will be able to create custom actions and views, and if
+we follow the conventions, it will just work!!!
+
+
+
+The Show Action
+=========================================
+def show(TekEvent tekEventInstance){
+	respond tekEventIntance
+}
+
+/***
+The show action takes a TekEvent instance as a parameter.  When an action takes
+a domain class instance as a parameter, Grails looks for an id in the request, and then
+looks up the instance with that id.  In the show action, respond returns this instance,
+and the action then renders the show view.
+***/
+
+The Create Action
+=========================================
+def create(){
+	respond new TekEvent(params)
+}
+
+/***
+Here, respond returns a newly-created TekEvent instance, assigning any values in
+the params property to the corresponding properieties of the instance. (We'll why this is done
+shortly)  The action ends by rendering the create view
+***/
+
+
+
+The Show Action
+=====================================================
