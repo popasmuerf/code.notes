@@ -123,7 +123,7 @@ class TekEventController{
 		-	respond takes two parameters :    respond(TekEvent.list(params),model:[tekEventInstanceCount:TekEvent.count()])
 			*	model
 			*	view
-				-	TekEvnet.count() is the pagenation 
+				-	TekEvent.count() is the pagenation 
 
 
 
@@ -138,6 +138,14 @@ About  controller.respond()
 *	Supported arguments:
 	-	view => The view to use in case of HTML rendering
 	-	model => The model to use in case of HTML rendering
+*	The respond method uses Content Negotiation to respond with the most appropiate
+*	Description:
+		-	The respond method uses Content Negotiation to respond with the most appropiate
+			content type.  See the documentation on REST support for more information:
+				*	http://docs.grails.org/2.3.x/guide/single.html#contentNegotiation
+				*	http://docs.grails.org/2.3.x/guide/single.html#REST
+
+	
 Examples:
 -------------------------------------------------------------
 //pick the best content type to respond with:
@@ -185,5 +193,107 @@ shortly)  The action ends by rendering the create view
 
 
 
-The Show Action
-=====================================================
+The Save Action
+=========================================
+@Transactional
+def save(TekEvent tekEventInstance){
+	if(tekEventInstance == null){
+		notFound()
+		return
+	}
+	if(tekEventInstance.hasErrors()){
+		respond tekEventInstance.errors, view:'create'
+		return
+	}
+	tekEventInstance.save flush:true
+	request.withFormat{
+		form{
+			flash.message = message(coe: 'default.created.message',args:[message(code: 'tekEventInstance.label',default:'TekEvent'),tekEventInstance.id])
+			redirect tekEventInstance
+		}
+		'*' {respond tekEventInstance,[status:CREATED]}
+	}
+}
+
+/***
+Here, just as the show action, the save action takes a TekEvent instance as a parameter.
+The use of 
+	@Transactional
+on this action omits the readOnly element which we saw set to true at the beginning ofthe class; by default it is false.)  The save action is called
+from the view and begins by checking to see whether there was an instance with the provided id.  If there isn't, it calls notFound
+***/
+
+
+
+The Edit Action
+=========================================
+def edit(TekEvent tekEventInstance){
+	respond new TekEvent(params)
+}
+
+/***
+	The edit() action doesnt do any editing itself:  that's left up to the
+	update() action.  Instead, edit loads up the necessary data and passes it to the edit
+	view.  Excep for the name(which determines the view rendered), the edit action is identical to the 
+	show action.
+***/
+
+
+
+
+The Update Action
+=========================================
+@Transactional
+def update(TekEvent tekEventInstance){
+	if(tekEventInstance == null){
+		notFound()
+		return
+	}
+	if(tekEventInstance.hasErrors()){
+		respond tekEventInstance.errors, view:'edit'
+		return
+	}
+	tekEventInstance.save flush:true
+	request.withFormat{
+		form{
+			flash.message = message(code: 'default.created.message',args:[message(code: 'tekEventInstance.label',default:'TekEvent'),tekEventInstance.id])
+			redirect tekEventInstance
+		}
+		'*' {respond tekEventInstance,[status:OK]}
+	}
+}
+
+/***
+	Like earlier actions, update tries to retrieve the TekEvent instance passed to it as an argument.
+	If the instance hasErrors, we use respond to direct back to the edit view
+	and display them.  The update action finishes in the same way as does the save
+	action, finishes in the same way as does the save action, differing only in teh "success"
+	message that is stored in flash(an "updated" message rather than a "created" message.)
+	and in the HTTP status returned after a successful save (200 OK)
+***/
+
+
+The delete Action
+=========================================
+@Transactional
+def delete(TekEvent tekEventInstance){
+	if(tekEventInstance == null){
+		notFound()
+		return
+	}
+	tekEventInstance.delete flush:true
+	request.withFormat{
+		form{
+			flash.message = message(code: 'default.deleted.message',args:[message(code: 'tekEventInstance.label',default:'TekEvent'),tekEventInstance.id])
+			redirect action:"index", method:"GET"
+		}
+		'*' {render status: NO_CONTENT}
+	}
+}
+
+/***
+	The delete action starts outmuch liek the save and update actions---attempting to 
+	returieve a TekEvent instance and calling notFound if it can't find one.  If an instance is
+	found, we delete it and then redirect to the index action with a "success" message
+	(or return this status NO_CONTENT).  There is no delete view, for obvious reasons.
+***/

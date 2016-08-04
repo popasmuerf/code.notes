@@ -1,0 +1,142 @@
+https://docs.gradle.org/current/dsl/org.gradle.api.Task.html
+
+Projects and Plugins
+================================================
+Every Gradle build goes through three distinct lifecycle phases:
+
+	*	Initialization phase:
+		-	In this phase, Gradle indentifies all the 
+		 	build.gradle files it needs to process.  For a single project build,
+		 	only one build file is identified.  For multi-project builds, Gradle tries 
+		 	to locate all possible build files associated with these projects.  Once Gradle identifies
+		 	the projects participating in the build, it will create an instance of:
+
+		 	org.gradle.api.Project
+
+		corresponding to each projet
+
+	*	Configuration phase:
+		-	In this phase, the build scripts for all identified projects
+			are executed.  It is important to remember that
+			that no actual task execution happens during this phase.  
+			Instead, Gradle constructs a DAG of tasks objects per project.
+			Gradle also executes the configuration sections of all the tasks,
+			including disabled tasks.
+	*	Execution phase:
+		-	In this section, Gradle identifies the tasks that need to be ececuted and runs them in the right
+			order.
+
+
+
+A better understanding of the build life-cycle
+=================================================
+
+Two tasks
+-------------------------------------------------- 
+	*	noActionTask
+	*	withActionTask
+
+
+
+//************* code *************//
+
+	task noActionTask{
+		description = "A task with no actions"
+		println "I am in the configuration block of $name"
+	}
+
+	task withActionTask{
+		println "I am in the configuration block of $name"
+		dolast{
+			println "performing an action in $name"
+		}
+	}
+
+
+During the configuration phase, Gradle executtes the code specified directly in
+the task's closure.  Once the configuration phase is complete, Gradle executes the
+actions inside :
+
+	doFirst
+	doLast
+
+in the execution phase.  For example, running a command to list all
+tasks would execute intialization and
+configuration phases to produce the following output:
+
+\chapter4> gradle -q -b build-phases.gradle tasks
+
+
+Summary
+========================================================
+In this chapter, you learned about project and tasks, the two buildin blocks
+of Gradle builds.  You learned that a task can contain one or more actions that are 
+defined inside :
+	doFirst
+		-and-
+	doLast
+
+We are now aware  of the techniques 
+
+	ifOnly(action){}
+		-and-
+	task.enabled = true
+
+used for the purpose of exectuing or skipping tasks.
+We also reviewed the three build phases of a Gradle build
+
+
+
+
+//*******************Code*******************//
+defaultTasks taskD, taskE
+taskA{
+	doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+}
+taskB{
+	doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+}
+taskC{
+doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+}
+taskD{
+	onlyIf(action){
+		//....
+	}
+	doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+}
+taskF{
+	doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+	if("a" == "b"){
+		taskE.enabled = false
+	}
+}
+
+
+taskA.dependsOn(taskB)
+taskB.dependsOn(taskC)
