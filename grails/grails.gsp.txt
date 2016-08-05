@@ -1,0 +1,153 @@
+Grails Views with Groovy Server Pages
+===========================================
+Grails uses Groovy Server Pages (GSP) for its view layer.
+If you've ever worked with JavaServer Pages, well, you have 
+my sympathy, but GSP will seem familiar--only easier to work with.
+Grails also uses 
+SiteMesh, the page decoration framework from OpenSymphony, to assist
+in the page layout.  Site Mesh will merge each of our .gsp files into a file called
+
+	*	main.gsp  //located in TekDays/grails-app/views/layouts
+
+
+
+Note: What is Symphony sitemesh
+=================================================================
+SiteMesh is a lightweight and flexible java web application framework that ppalies the Gang of Four
+decorator pattern to allow a clean separation of content form presentation.
+
+http://wiki.sitemesh.org/wiki/display/sitemesh/Home
+
+
+
+Exploring main.gsp
+=================
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if  IE 7]> <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if  IE 8]> <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if  IE 9]> <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if  (gt IE 9) | !(IE) ]> <html lang="en" class="no-j"> <![endif]-->
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatable" content="IE=edge,chrome=1">
+		<title><g:layoutTitle default="Grails"/></title>
+					<meta name="viewport" content="with=device-width, intial-scale=1.0">
+					<link rel="shortcut icon" href="${resource(dir: 'images',file: 'apple-touch-icon.png')}">
+					<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images',file: 'apple-touch-icon-retina.png')}">
+					<link rel="stylesheet" href="${resource(dir: 'css',file: 'main.css')}" type="text/css" >
+					<link rel="stylesheet" href="${resource(dir: 'css',file: 'mobile.css')}" type="text/css">
+				<g:layoutHead/>
+		<r:layoutResources/>
+	</head>
+	<body>
+		<div id="grailsLogo" role="banner">
+			<a href="http://grails.org">
+				<img src="${resource(dir:'images',file:'grails_logo.png')}" alt="Grails"/>
+			</a>
+			<g:layoutBody/>
+		</div>
+		<div class="footer" role="contentinfor">
+		</div>
+		<div id="spinner" class="spinner" style="display:none;">
+			<g:message code="spinner.alt" default="Loading&hellip;"/>
+		</div>
+		<g:javascript library="application"/>
+		<r:layoutResources/>
+	</body>
+</html>
+
+^^^descripition of what is going on in main.gsp
+================================================================
+*	main.gsp starts out with some conditional comments for various versions of IE
+*	<g:layOutTitle>
+	-	will subsitute the <title> from the view that is being merged.
+*	The <meta> tage includes a bunch of stylesheets and favicon to be used aby all views
+*	<body> includes
+	-	app logo
+	-	<g:layoutBody>
+		*	merges in the <body> contents of the target view
+*	<div> #1
+	-	css footer
+*	<div> #1
+	-	css footer	
+*	<div> #2
+	-	spinner image
+*	<r:layoutResources>
+	-	tells grails to include any resources that the target view has required using
+		the tag:
+			*	<r:require
+
+
+The List View
+=============================================================
+path: TekDays/grails-app/views/tekEvent/index.gsp
+
+
+<li>
+	<a class="home"href="${createLink(uri:'/')}">
+		<g:message code="default.home.label"/>
+	</a>
+</li>
+<li>
+	<a class="create"action="create">
+		<g:message code="default.new.label" args="entityName"/>
+	</a>
+	</g:link>
+</li>
+	* no params/arguments:
+		-will be prompted for a domain class name
+	* with params:
+		-the obvious
+
+The above ^^^^ gsp/html markup analysis
+=============================================================
+This code creates the button bar just below the grails logo
+We can see two ways that Grails provides for creating links:
+
+	The way grails provides links
+	------------------------------
+	*	createLink(uri:"path")
+		-	takes a relative path and creates a URL, which is
+			assigned to the href attribute of an anchor("<a>") tag
+	*	<g/:link>
+		-	creates an ahnchor tag using the values of the attributes(if provided,else
+			the current controller is assumed):
+				*	controller
+				*	action
+				*	id
+
+	The following markup is not included in the above example..but
+	it is important to note...
+	--------------------------------------------------------------
+
+	<g:if test="$<flash.message>">
+		<div class="message" role="status">${flash.message}</div>
+	</g:if>
+
+	^^^This code doesn't show up in our figure above, but it is important to take
+	note of.  Recall that during our discussion of controllers, we often had code that
+	would store text in the message element of the flash object.  This is where that text
+	will show up.  The <g:if> tag checks for the existence of flash.message and, if found, displays
+	it :
+
+The delete Action
+=========================================
+@Transactional
+def delete(TekEvent tekEventInstance){
+	if(tekEventInstance == null){
+		notFound()
+		return
+	}
+	tekEventInstance.delete flush:true
+	request.withFormat{
+		form{
+			flash.message = message(code: 'default.deleted.message',args:[message(code: 'tekEventInstance.label',default:'TekEvent'),tekEventInstance.id])
+			redirect action:"index", method:"GET"
+		}
+		'*' {render status: NO_CONTENT}
+	}
+}
+
