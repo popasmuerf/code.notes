@@ -1,0 +1,18 @@
+http://alvinalexander.com/FunctionPoints/node7.shtml
+
+
+
+The benefits of Function Point Analysis
+==============================================
+*	The ability to accurately estimate:
+		-	project cost
+		-	project duration
+		-	project staffing size 
+
+*	An understanding of other important metrics, such as:
+		-	Project defect rate
+		-	Cost per FP
+		-	The productivity benefits of using new or different tools
+
+
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="main"/>
+		<title>Welcome to Grails</title>
+	</head>
+	<body>
+		Hello World
+	</body>
+</html>
+
+
+
+
+
+
+
+class Person{
+	String firstName
+	String lastName
+	int age
+}
+
+
+
+class HelloController{
+	def index(){
+		Person person = new Person(firstName:'John',lastName:'Doe',age:55){
+		[person:person]  //maps parameters passed to your view
+		}
+	}
+}
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="main"/>
+		<title>Render Domane</title>
+	</head>
+	<body>
+		LastName: <g:fieldValue bean="${person}" field="lastName"/><br/>
+		FirstName:<g:fieldValue bean="${person}" field="firstName"/><br/>
+		Age:<g:fieldValue bean=${person}" field="age"/><br/>
+	
+	</body>
+</html>
+
+//-------------------------OR---------------------------------------//
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="main"/>
+		<title>Render Domane</title>
+	</head>
+	<body>
+		LastName: ${Person.lastName}/><br/>
+		FirstName:${Person.firstName}/><br/>
+		Age:${Person.age}/><br/>
+	
+	</body>
+</html>

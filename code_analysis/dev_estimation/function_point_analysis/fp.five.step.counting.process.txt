@@ -1,0 +1,89 @@
+http://alvinalexander.com/FunctionPoints/node10.shtml
+
+
+
+The benefits of Function Point Analysis
+==============================================
+*	The ability to accurately estimate:
+		-	project cost
+		-	project duration
+		-	project staffing size 
+
+*	An understanding of other important metrics, such as:
+		-	Project defect rate
+		-	Cost per FP
+		-	The productivity benefits of using new or different tools
+
+
+
+A simple five step counting process
+=========================================
+A high-level review of a five step process of counting FPs:
+
+*	Determine the type of count
+*	Identify the scope and boundary of the count
+*	Determine the unadjusted FP count
+*	Determine the Value Adjustment Factor
+*	Calculate the Adjusted FP count
+
+
+
+Five standard "functions"
+==========================================
+In counting FPs there are five standard "functions" that you will count.
+the first two of these are called "Data Functions", and last three
+are called Transactions Functions.  the names of these functions are
+listd below:
+
+1. Data Functions
+	*	Interal logical files
+	*	External interface files
+2. Transactional Functions
+	*	External Inputs
+	*	External Inputs
+	*	Exteranl Inquiries
+
+
+Using the terminology above...when a person that counts FPs looks at a software
+system, they see something like the following:
+
+EIs									
+EOs	----------------------> Application being counted  ------->Feeds(EOs,EQs)
+EQs								(ILFs)                 |
+									|				   |------>Reports(EOs,EQs)
+									|				   |------>Other Outputs(EOs,EQs)
+									|
+									|
+									|
+									|
+Data Feeds from other apps(EI)----->|	
+
+
+
+
+http://alvinalexander.com/FunctionPoints/node11.shtml
+
+Details on the five Data and Transactional functions....
+=========================================================
+This section provides more detailed information and definitions on the five Data
+and Transactional Functions.  Before we start getting into the meat of the situation...
+there are some terms that you need to understand.
+
+Important terms and definitons used in describing the five functions
+---------------------------------------------------------------------
+	*User identifiable:
+		-This term refers to defined requirements for processes and/or groups of data that
+		 are agreed upon and understood y, both the users and ostware developers.
+	*Control information:
+		-This data that infulences and elementary proces of the application being counted.
+		 It specifies what, when, or how data is to be processed
+	*Elementary process:
+		-An elementary process is the smallest unit of activity that is meaningful to the user
+		 An elementary process must be self-contained and leave the business of the
+		 application being counted in a consistent state.
+	*Data Element Type, or DET
+		-A data element type is unique, user recognizable, non-repeated field.  This defintion
+		 applies to both analyses of data functions and transactional functions.
+	*Record Element Type, or RET
+		-A record element type is a user recognizeable subgroup of data data elements within
+		 an Internal Logical file or External Interfact File
