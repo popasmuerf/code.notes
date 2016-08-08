@@ -1,0 +1,112 @@
+http://alvinalexander.com/FunctionPoints/node12.shtml
+
+
+
+Data Functions - Internal Logical files(ILF)
+==============================================
+ILF stands for "Internal Logical File".  ILFs represent data that is stored and 
+maintained within the boundary of the application you are counting.  When counting ILFs
+we are basically counting the data funcitons that your applications is being build to maintain
+
+The more precise IFPUG definition of an ILF is:
+--------------------------------------------------
+An ILF is a user-identfiable group of logically related data or control information
+maintained within the boundary of the application.  The primary intent of ILF
+is to hold data mainteaned through one or more elementary processes of the
+application being counted.
+
+Furthermore, for data or control inforamtion to be countd an an ILF, both of the folloing 
+IFPUG counting rules must also apply:
+
+*	The group of dfata or control information is locial and user identifiable:
+
+*	The group of data is maintained through an elementary process within the application
+	boundary being conted:
+
+
+
+
+Examples of ILFs
+=========================================
+Samples of things that *can* be ILFS include:
+
+*	Tables in a realational database
+*	Flat files
+*	Application control inforation, perhaps things like user preferences
+	that are stored by the appliction
+*	LDAP data stores
+*	Pretty much any presistent data that is user/customer identifiable
+
+
+
+Five standard "functions"
+==========================================
+In counting FPs there are five standard "functions" that you will count.
+the first two of these are called "Data Functions", and last three
+are called Transactions Functions.  the names of these functions are
+listd below:
+
+1. Data Functions
+	*	Interal logical files
+	*	External interface files
+2. Transactional Functions
+	*	External Inputs
+	*	External Inputs
+	*	Exteranl Inquiries
+
+
+
+About counting FPs involving ILFs
+===========================================
+When dealing with ILFs we need to determine
+the level of complexity :
+	*	L(low)
+	*	A(average)
+	*	H(High)
+
+
+
+
+Using the terminology above...when a person that counts FPs looks at a software
+system, they see something like the following:
+
+EIs									
+EOs	----------------------> Application being counted  ------->Feeds(EOs,EQs)
+EQs								(ILFs)                 |
+									|				   |------>Reports(EOs,EQs)
+									|				   |------>Other Outputs(EOs,EQs)
+									|
+									|
+									|
+									|
+Data Feeds from other apps(EI)----->|	
+
+
+
+
+http://alvinalexander.com/FunctionPoints/node11.shtml
+
+Details on the five Data and Transactional functions....
+=========================================================
+This section provides more detailed information and definitions on the five Data
+and Transactional Functions.  Before we start getting into the meat of the situation...
+there are some terms that you need to understand.
+
+Important terms and definitons used in describing the five functions
+---------------------------------------------------------------------
+	*User identifiable:
+		-This term refers to defined requirements for processes and/or groups of data that
+		 are agreed upon and understood y, both the users and ostware developers.
+	*Control information:
+		-This data that infulences and elementary proces of the application being counted.
+		 It specifies what, when, or how data is to be processed
+	*Elementary process:
+		-An elementary process is the smallest unit of activity that is meaningful to the user
+		 An elementary process must be self-contained and leave the business of the
+		 application being counted in a consistent state.
+	*Data Element Type, or DET
+		-A data element type is unique, user recognizable, non-repeated field.  This defintion
+		 applies to both analyses of data functions and transactional functions.
+	*Record Element Type, or RET
+		-A record element type is a user recognizeable subgroup of data data elements within
+		 an Internal Logical file or External Interfact File
