@@ -1,0 +1,328 @@
+https://docs.gradle.org/current/dsl/org.gradle.api.Task.html
+
+Gradle and building Java Projects
+================================================
+Gradle comes with several out-of-the-box plugins that simplify Java development.
+This section reviews the java plugin used for building JAR artifacts, followed by
+the "war" plugin for developing web applications.  You will also learn about the Javadoc
+plugin that can be used to generate API documentation.
+
+
+
+Using the Java Plugin
+================================================
+The Java plugin allows you to compile Java code, run unit tests,
+and assemble a JAR artifact. To see the plugin in action,
+start by creating a new Java project called hello-gradle on 
+your machine.  Create a build.gradle file and add the following
+code to apply the Java plugin:
+
+
+/******** Example Java build  *********/
+apply plugin:'java'
+
+task noActionTask{
+	description = "A task with no actions"
+	println "Iam in the configuration block of $name"
+}
+task withAction{
+	println "I am in the configuration block of $name"
+	doLast{
+		println "performing an action in $name"
+	}
+}
+
+
+
+> gradle -b jbuild.build tasks
+
+^^^^So what happend here ?
+----------------------------------------------------------------
+The tasks such as assemble and jar under the Build tasks
+group are used for building and packaging.  Instead of running
+these tasks individually, you tupically run the build task,
+which compiles, tests, and assembles the code by triggering the
+assemble and check tasks.   The javadoc task under Documentation tasks
+is used to generate the Javadoc API documentation.  the tasks under the 
+Verification tasks group run unit tests.
+
+
+Gradle Recommended Directory Structure for Java
+================================================================
+	*	src/main/java
+		-	Java source that needs to go to production
+	*	src/main/resources
+		-	Resources such as configuration files(XML) and property files
+			that need to go to production
+	*	src/test/java:
+		-	Java test source code
+	*	src/test/resources
+		-	Resources used during the testing phase
+
+
+
+Note:  Gradle and Maven
+----------------------------------------------------
+Experienced Maven users wouldnotic that Java plugin's directory
+conventions match Maven's recommend Java project structure.  It is important
+remember that these conventions are just recommendatons and Gradle makes it
+easy to change them according to your project's needs.
+
+
+
+Writing code for our new Java project
+================================================================
+
+/******** Example Java build  *********/
+apply plugin:'java'
+
+task noActionTask{
+	description = "A task with no actions"
+	println "Iam in the configuration block of $name"
+}
+task withAction{
+	println "I am in the configuration block of $name"
+	doLast{
+		println "performing an action in $name"
+	}
+}
+
+
+
+
+>  mkdir -p src/main/java
+>  vim src/main/java/HelloGradle.java
+
+
+public class HelloGradle{
+	public static void main(String[] args){
+		System.out.println("Hello Gradle!!!");
+	}
+}
+
+
+> gradle build  //remember...that "build" was listed as one of our available tasks when we ran 
+				// > gradle tasks
+				// we have just tested and assembled the project
+
+BUILD SUCCESSFUL
+
+Total time: 2.446 secs
+
+This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.9/userguide/gradle_daemon.html
+C02G4075DRJN:hello-gradle mbrown$ gradle build
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:jar
+:assemble
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+:test UP-TO-DATE
+:check UP-TO-DATE
+:build
+
+
+> tree build
+build
+├── libs
+│   └── hello-gradle.jar
+└── tmp
+    └── jar
+        └── MANIFEST.MF
+
+3 directories, 2 files
+
+Jar Task
+================================================
+The Jar task provided by the Java plugin is responsible for
+assembling the JAR archive.  the Jar task provides anumber of properties
+that allow you to configure the generted artifact.  Once such property is
+archiveName.  By default, the generated JAR file name will be the
+name of the project.  In this case, the project naem is
+hello-gradle and hence the build/libs older contains a
+hello-gradle.jar
+
+Changing default Jar task settings
+-----------------------------------------
+
+	*	Changing the name of the jar file:
+		
+		jar {
+			archiveName = 'introducing-gradle.jar'
+		}
+		
+	*	The Jar task also automatically adds a namifest file to the JAR
+		file it creates.  The manifest fileytpically contains information about the fiels
+		packaged in a JAR file.  To add new entries to the manifest file, you can use the Jar
+		task's manifest property:
+
+		jar{
+			manifest{
+				attributes(
+					'Main-Class':'HelloGradle',
+					'Implementation-Title' : project.name,
+					'Developer' : 'Mike Brown'
+				)
+			}
+		}
+	
+Note:  About re-builds and jars...
+---------------------------------------------
+For the build to produce an updated JAR with manifest entries, you
+might have to delete the existing  *.jar from teh libs directory and 
+re-run  the build command	
+
+
+
+
+Generating Javadoc code
+=============================================================================
+Javadoc is a great tool for documenting and understanding Java code.  The Java
+plugin comes with the javadoc task, which can be used to automatically generate
+Javadocs.  Before running the command, you should update the HelloGradle.java
+clas by replacing its content:
+
+/*************  Edit HelloGradle for javadoc *************/
+
+/**
+	Class demonstrating Gradle Porjects
+	@author M.Breezy
+*/
+
+public class HelloGradle{
+/**
+	Displays Hello Gradle!! to console
+	@param args command line arguments
+*/
+	public static void main(String[] args){
+		System.out.println("Hello Gradle!!!");
+	}
+}
+
+
+
+/*************  (local) code for including other build scripts in your main build script *************/
+
+	apply from: 'resuable-build.gradle'
+
+
+/*************  (remote) code for including other build scripts in your main build script *************/
+
+	apply plugin: 'http://remote_server.com/plugin_path/plugin_name'
+
+
+
+Example code for using binary plugins:
+=============================================================================
+	apply from: 'resuable-build.gradle'
+
+
+
+
+
+
+
+//************* code *************//
+
+	task noActionTask{
+		description = "A task with no actions"
+		println "I am in the configuration block of $name"
+	}
+
+	task withActionTask{
+		println "I am in the configuration block of $name"
+		dolast{
+			println "performing an action in $name"
+		}
+	}
+
+
+During the configuration phase, Gradle executtes the code specified directly in
+the task's closure.  Once the configuration phase is complete, Gradle executes the
+actions inside :
+
+	doFirst
+	doLast
+
+in the execution phase.  For example, running a command to list all
+tasks would execute intialization and
+configuration phases to produce the following output:
+
+\chapter4> gradle -q -b build-phases.gradle tasks
+
+
+Summary
+========================================================
+In this chapter, you learned about project and tasks, the two buildin blocks
+of Gradle builds.  You learned that a task can contain one or more actions that are 
+defined inside :
+	doFirst
+		-and-
+	doLast
+
+We are now aware  of the techniques 
+
+	ifOnly(action){}
+		-and-
+	task.enabled = true
+
+used for the purpose of exectuing or skipping tasks.
+We also reviewed the three build phases of a Gradle build
+
+
+
+
+//*******************Code*******************//
+defaultTasks taskD, taskE
+taskA{
+	doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+}
+taskB{
+	doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+}
+taskC{
+doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+}
+taskD{
+	onlyIf(action){
+		//....
+	}
+	doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+}
+taskF{
+	doFirst(action){
+		//....
+	}
+	doLast(action){
+		//....
+	}
+	if("a" == "b"){
+		taskE.enabled = false
+	}
+}
+
+
+taskA.dependsOn(taskB)
+taskB.dependsOn(taskC)
