@@ -335,4 +335,39 @@ C02G4075DRJN:webapp mbrown$ gradle jettyRun
 
 
 
+War Task
+================================================
+The War task in the War plugin is responsible for assembling the WAR archive.
+by default, it performs the following actions:
 
+	*	Copies compile Java code to the folder:
+		-	WEB-INF/classes
+	*	Copies the content of src/main/webapp into the root of the WAR file
+	*	Copes dependencies in the runtime configuration to the folder:
+		-	WEB-INF/lib folder
+
+The War task provides serveral properties and method that can be used to costomize the
+the generated artifact.  The following code showcases soem of these
+configuration options:
+
+	war{
+		archiveName 'new-archive.ware'
+		webXml file ('src/config/web.xml')
+		from 'src/media/images'
+	}
+
+^^^^The above configuration
+------------------------------------------------
+This configuration renames the generated artifact to the name
+"new-archive.war" It then confnigures the War task to use the web.xml
+file located in the "src/config: folder.  Finally, the 
+task is configured to add the contents in the directory 
+"src/media/images" folder to the root of the WAR file.
+
+If you want the War task to override the default behavior and look
+for contents elsewhere, say.... src/WebContent, you need to
+change the war plugin's webAppDirName property:
+
+
+apply plugin: 'war'
+apply plugin: 'jetty'
