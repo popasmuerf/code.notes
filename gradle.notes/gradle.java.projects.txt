@@ -202,127 +202,137 @@ public class HelloGradle{
 }
 
 
-
-/*************  (local) code for including other build scripts in your main build script *************/
-
-	apply from: 'resuable-build.gradle'
+> gradle javadoc
 
 
-/*************  (remote) code for including other build scripts in your main build script *************/
-
-	apply plugin: 'http://remote_server.com/plugin_path/plugin_name'
+^^^Now you should have an index.html file 
 
 
-
-Example code for using binary plugins:
+Configuring the Default Layout
 =============================================================================
-	apply from: 'resuable-build.gradle'
+Gradle provides the notion of "SourceSets", which represent a logical collection
+of source files.  By default, the Java plugin provides the "main" and "test"
+SourceSets.  However, when dealing legacy projects, you might need Gradle
+to look for Java soruces and other resource files in different locations.
+we can use the closure:
+
+	sourceSets{} 
+
+to change the default layout.  The code indicates that
+the Java sources will be under source/java folder and testing under
+folder source/test in the example below...
 
 
 
-
-
-
-
-//************* code *************//
-
-	task noActionTask{
-		description = "A task with no actions"
-		println "I am in the configuration block of $name"
-	}
-
-	task withActionTask{
-		println "I am in the configuration block of $name"
-		dolast{
-			println "performing an action in $name"
+		jar{
+			manifest{
+				attributes(
+					'Main-Class':'HelloGradle',
+					'Implementation-Title' : project.name,
+					'Developer' : 'Mike Brown'
+				)
+			}
 		}
-	}
+		sourceSets{
+			main{
+				java{
+					srcDir 'source/java'
+				}
+			}
+			test{
+				java{
+					srcDirs = ['source/test','source/integration']
+				}
+			}
+		}
 
+The srcDirs element can take a single directory or a set of directories...
 
-During the configuration phase, Gradle executtes the code specified directly in
-the task's closure.  Once the configuration phase is complete, Gradle executes the
-actions inside :
+Note:  Setting the location of src and class files are two seperate things...
+==============================================================================
+We can change the location of the source folders with the
+sourceSets{} closure...but if you do so...you will notice that
+the class files still end up in the build directory....what if 
+we want our compiled artifacts to end up somewhere else ?
+We can change the location fo teh generated classes using the 
+config element:
 
-	doFirst
-	doLast
-
-in the execution phase.  For example, running a command to list all
-tasks would execute intialization and
-configuration phases to produce the following output:
-
-\chapter4> gradle -q -b build-phases.gradle tasks
-
-
-Summary
-========================================================
-In this chapter, you learned about project and tasks, the two buildin blocks
-of Gradle builds.  You learned that a task can contain one or more actions that are 
-defined inside :
-	doFirst
-		-and-
-	doLast
-
-We are now aware  of the techniques 
-
-	ifOnly(action){}
-		-and-
-	task.enabled = true
-
-used for the purpose of exectuing or skipping tasks.
-We also reviewed the three build phases of a Gradle build
+	output.classesDir
 
 
 
 
-//*******************Code*******************//
-defaultTasks taskD, taskE
-taskA{
-	doFirst(action){
-		//....
-	}
-	doLast(action){
-		//....
-	}
-}
-taskB{
-	doFirst(action){
-		//....
-	}
-	doLast(action){
-		//....
-	}
-}
-taskC{
-doFirst(action){
-		//....
-	}
-	doLast(action){
-		//....
-	}
-}
-taskD{
-	onlyIf(action){
-		//....
-	}
-	doFirst(action){
-		//....
-	}
-	doLast(action){
-		//....
-	}
-}
-taskF{
-	doFirst(action){
-		//....
-	}
-	doLast(action){
-		//....
-	}
-	if("a" == "b"){
-		taskE.enabled = false
-	}
-}
+Creating Web Projects
+==============================================================================
+Gradle provides a "war" plugin that extends the Java plugin and supports
+web application development and building WAR files. To see this plugin in action,
+crate a folder named:
+
+	web-gradle
+
+Create build.gradle file inside the new folder and apply the web plugin as shown:
+
+	apply plugin: 'war'
+
+This plugin provides the same directory conventions for storing Java classes
+as the Java plugin.  Additionally, the War plugin expects all the static 
+assets such as 
+	*	HTML
+	*	CSS
+	*	JS
+	*	Images
+	*	Dynamic assests such as JSP files that reside in
+		/src/main/webapp 
+
+Let's crate the webapp folder under src/main/ and then create
+an index.html file...
 
 
-taskA.dependsOn(taskB)
-taskB.dependsOn(taskC)
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hellow World</title>
+	</head>
+	<body>
+		<h1>Hello Gradle!!</h1>
+	</body>
+</html>
+
+
+C02G4075DRJN:webapp mbrown$ tree build
+build
+├── libs
+│   └── webapp.war
+└── tmp
+    └── war
+        └── MANIFEST.MF
+
+3 directories, 2 files
+C02G4075DRJN:webapp mbrown$ 
+
+
+
+Gradle also provides a plugin for jetty
+---------------------------------------------
+apply plugin: 'jetty'
+
+^^^ we can run the Jetty server by running the command:
+
+	*	> gradle jettyRun
+
+	BUILD SUCCESSFUL
+
+Total time: 2.904 secs
+
+This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.9/userguide/gradle_daemon.html
+C02G4075DRJN:webapp mbrown$ gradle jettyRun
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+> Building 75% > :jettyRun > Running at http://localhost:8080/webapp
+
+
+
+
