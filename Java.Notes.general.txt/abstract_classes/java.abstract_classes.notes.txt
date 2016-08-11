@@ -1,0 +1,32 @@
+https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html
+
+Abstract Classes Compared to interfaces:
+==================================================
+Abstract classes are similar to interfaces.  You cannot
+instansiate them, and they may conatin a mix of methods
+declared with or without an implementation.  However with
+abstract classes, you can declare fields that are not
+static and final, and define  public, protected, and private
+concrete methods.  With interfaces, all fields are automatically 
+public, static, and final, and all methods that you declare
+are public.  In addition, you may only extend one class...
+as with interfaces...you may implement as many as you like...
+
+
+Which should you use, abstract classes or interfaces ?
+======================================================
+	*	Consider using abstract classes
+		if any of these statements apply
+		to your situation:
+		-	You wish to share code among
+			several closely related classes
+		-	You want to declare non-static or
+			non-final fields, or require
+			access modifiers other than public
+		-	You want to declare non-static or non-final
+			fields.  This enables you to define methods
+			that can access and modify the state of the
+			object to which they belong
+
+
+
