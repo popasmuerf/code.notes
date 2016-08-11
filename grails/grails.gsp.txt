@@ -153,18 +153,6 @@ def delete(TekEvent tekEventInstance){
 
 
 
-Displaying a list of tekEvents...
-====================================================
-<g:sortableColumn property="name" title="${message(code:'tekEvent.name.label',default:'Name')}"/>
-<g:sortableColumn property="city" title="${message(code:'tekEvent.name.label',default:'City')}"/>
-<g:sortableColumn property="description" title="${message(code:'tekEvent.name.label',default:'City')}"/>
-<th><g:message code="tekEvdnt.organizer.label" default="Organizer"/></th>
-<g:sortableColumn property="venue" title="${message(code:'tekEvent.venue.lable', default: 'Venue')}"/>
-<g:sortableColumn property="startDate" title="${message(code:'tekEvent.venue.lable', default: 'Start Date')}"/>
-
-
-
-
 So...Really...what's the deal with all the <g:message> tags ?
 ================================================================
 In the generated views, Grails uses the tag:
@@ -185,11 +173,21 @@ The use of <g:message> here ensures that if somebody were to
 be using our app with a differenct , our user interface woul be presented
 in the correct language.
 
-
+Organizing our list via Columns
+====================================================
+<g:sortableColumn property="name" title="${message(code:'tekEvent.name.label',default:'Name')}"/>
+<g:sortableColumn property="city" title="${message(code:'tekEvent.name.label',default:'City')}"/>
+<g:sortableColumn property="description" title="${message(code:'tekEvent.name.label',default:'City')}"/>
+<th><g:message code="tekEvdnt.organizer.label" default="Organizer"/></th>
+<g:sortableColumn property="venue" title="${message(code:'tekEvent.venue.lable', default: 'Venue')}"/>
+<g:sortableColumn property="startDate" title="${message(code:'tekEvent.venue.lable', default: 'Start Date')}"/>
 
 So...Really...what's the deal with all the <g:sortableColumn> tags ?
 ================================================================
-This tag 
+This tag is what Grails uses to provide sorting on our list view.
+Note that, by default, this works only with regular properties,
+not objct references or collections.  That is why we see
+a <th>  tag used for the organizer property.
 
 	<g:message>
 

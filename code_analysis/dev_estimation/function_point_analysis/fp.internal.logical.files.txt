@@ -64,6 +64,12 @@ the level of complexity :
 	*	A(average)
 	*	H(High)
 
+We do this by building a table of DETs(Data Element Types) and RETs(Record Element Types )
+http://www.softwaremetrics.com/Articles/ret.htm
+
+
+
+
 
 
 

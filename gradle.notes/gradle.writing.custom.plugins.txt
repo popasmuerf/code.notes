@@ -35,11 +35,12 @@ Creating a Java Plugin
 You'll begin your Hello Gradle Plugin development by creating
 a buildSrc folder inside the helo-gradle folder:
 
-Code
+Code  : Java Custom Plugin
 -------------------------------------------------
 > cd hello-gradle
 hello-gradle> mkdir -p buildSrc/src/main/java
-
+hello-gradle> sublime buildSrc/src/main/java/GreetAsk.java
+hello-gradle> sublime buildSrc/src/main/java/GreetAsk.java
 #The current directory tree should look like this for
 #hello-gradle
 
@@ -50,25 +51,12 @@ hello-gradle> mkdir -p buildSrc/src/main/java
 import org.gradle.api.DefaultTask ;
 import org.gradle.api.tasks.TaskAction ;
 
-public class GreetAsk extends DefaultTask{
+public class GreetTask extends DefaultTask{
 	@TaskAction
 	public void greetAction(){
 		System.out.println("Hello Gradle Plugin") ;
 	}
 }
-//--------------Custom Task Code : GreatTask.java-----------------//
-
-import org.gradle.api.DefaultTask ;
-import org.gradle.api.tasks.TaskAction ;
-
-public class GreetAsk extends DefaultTask{
-	@TaskAction
-	public void greetAction(){
-		System.out.println("Hello Gradle Plugin") ;
-	}
-}
-
-
 
 
 //--------------Custom Plugin Code : HelloPlugin-----------------//
@@ -77,6 +65,29 @@ import org.gradle.api.Plugin ;
 import org.gradle.api.Project ;
 
 public class HelloPlugin extends DefaultTask{
+	@Overide
+	public void apply(Project project){
+		project.getTasks().create("greet",GreetTask.class);
+	}
+}
+
+Code  : Groovy Custom Plugin
+-------------------------------------------------
+> cd hello-gradle
+hello-gradle> mkdir -p buildSrc/src/main/groovy
+hello-gradle> sublime buildSrc/src/main/groovy/HelloPlugin2.groovy
+hello-gradle> sublime buildSrc/src/main/groovy/GreetAsk.java
+#The current directory tree should look like this for
+#hello-gradle
+
+#create a new task that sends "Hello Gradle Plugin" to standard out
+
+//--------------Custom Task Code-----------------//
+
+import org.gradle.api.DefaultTask ;
+import org.gradle.api.tasks.TaskAction ;
+
+public class GreetTask extends DefaultTask{
 	@TaskAction
 	public void greetAction(){
 		System.out.println("Hello Gradle Plugin") ;
@@ -84,342 +95,16 @@ public class HelloPlugin extends DefaultTask{
 }
 
 
+//--------------Custom Plugin Code : HelloPlugin-----------------//
 
+import org.gradle.api.Plugin ;
+import org.gradle.api.Project ;
 
-> gradle -b jbuild.build tasks
-
-^^^^So what happend here ?
-----------------------------------------------------------------
-The tasks such as assemble and jar under the Build tasks
-group are used for building and packaging.  Instead of running
-these tasks individually, you tupically run the build task,
-which compiles, tests, and assembles the code by triggering the
-assemble and check tasks.   The javadoc task under Documentation tasks
-is used to generate the Javadoc API documentation.  the tasks under the 
-Verification tasks group run unit tests.
-
-
-Gradle Recommended Directory Structure for Java
-================================================================
-	*	src/main/java
-		-	Java source that needs to go to production
-	*	src/main/resources
-		-	Resources such as configuration files(XML) and property files
-			that need to go to production
-	*	src/test/java:
-		-	Java test source code
-	*	src/test/resources
-		-	Resources used during the testing phase
-
-
-
-Note:  Gradle and Maven
-----------------------------------------------------
-Experienced Maven users wouldnotic that Java plugin's directory
-conventions match Maven's recommend Java project structure.  It is important
-remember that these conventions are just recommendatons and Gradle makes it
-easy to change them according to your project's needs.
-
-
-
-Writing code for our new Java project
-================================================================
-
-/******** Example Java build  *********/
-apply plugin:'java'
-
-task noActionTask{
-	description = "A task with no actions"
-	println "Iam in the configuration block of $name"
-}
-task withAction{
-	println "I am in the configuration block of $name"
-	doLast{
-		println "performing an action in $name"
+public class HelloPlugin extends DefaultTask{
+	@Overide
+	public void apply(Project project){
+		project.getTasks().create("greet",GreetTask.class);
 	}
 }
 
 
-
-
->  mkdir -p src/main/java
->  vim src/main/java/HelloGradle.java
-
-
-public class HelloGradle{
-	public static void main(String[] args){
-		System.out.println("Hello Gradle!!!");
-	}
-}
-
-
-> gradle build  //remember...that "build" was listed as one of our available tasks when we ran 
-				// > gradle tasks
-				// we have just tested and assembled the project
-
-BUILD SUCCESSFUL
-
-Total time: 2.446 secs
-
-This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.9/userguide/gradle_daemon.html
-C02G4075DRJN:hello-gradle mbrown$ gradle build
-:compileJava UP-TO-DATE
-:processResources UP-TO-DATE
-:classes UP-TO-DATE
-:jar
-:assemble
-:compileTestJava UP-TO-DATE
-:processTestResources UP-TO-DATE
-:testClasses UP-TO-DATE
-:test UP-TO-DATE
-:check UP-TO-DATE
-:build
-
-
-> tree build
-build
-├── libs
-│   └── hello-gradle.jar
-└── tmp
-    └── jar
-        └── MANIFEST.MF
-
-3 directories, 2 files
-
-Jar Task
-================================================
-The Jar task provided by the Java plugin is responsible for
-assembling the JAR archive.  the Jar task provides anumber of properties
-that allow you to configure the generted artifact.  Once such property is
-archiveName.  By default, the generated JAR file name will be the
-name of the project.  In this case, the project naem is
-hello-gradle and hence the build/libs older contains a
-hello-gradle.jar
-
-Changing default Jar task settings
------------------------------------------
-
-	*	Changing the name of the jar file:
-		
-		jar {
-			archiveName = 'introducing-gradle.jar'
-		}
-		
-	*	The Jar task also automatically adds a namifest file to the JAR
-		file it creates.  The manifest fileytpically contains information about the fiels
-		packaged in a JAR file.  To add new entries to the manifest file, you can use the Jar
-		task's manifest property:
-
-		jar{
-			manifest{
-				attributes(
-					'Main-Class':'HelloGradle',
-					'Implementation-Title' : project.name,
-					'Developer' : 'Mike Brown'
-				)
-			}
-		}
-	
-Note:  About re-builds and jars...
----------------------------------------------
-For the build to produce an updated JAR with manifest entries, you
-might have to delete the existing  *.jar from teh libs directory and 
-re-run  the build command	
-
-
-
-
-Generating Javadoc code
-=============================================================================
-Javadoc is a great tool for documenting and understanding Java code.  The Java
-plugin comes with the javadoc task, which can be used to automatically generate
-Javadocs.  Before running the command, you should update the HelloGradle.java
-clas by replacing its content:
-
-/*************  Edit HelloGradle for javadoc *************/
-
-/**
-	Class demonstrating Gradle Porjects
-	@author M.Breezy
-*/
-
-public class HelloGradle{
-/**
-	Displays Hello Gradle!! to console
-	@param args command line arguments
-*/
-	public static void main(String[] args){
-		System.out.println("Hello Gradle!!!");
-	}
-}
-
-
-> gradle javadoc
-
-
-^^^Now you should have an index.html file 
-
-
-Configuring the Default Layout
-=============================================================================
-Gradle provides the notion of "SourceSets", which represent a logical collection
-of source files.  By default, the Java plugin provides the "main" and "test"
-SourceSets.  However, when dealing legacy projects, you might need Gradle
-to look for Java soruces and other resource files in different locations.
-we can use the closure:
-
-	sourceSets{} 
-
-to change the default layout.  The code indicates that
-the Java sources will be under source/java folder and testing under
-folder source/test in the example below...
-
-
-
-		jar{
-			manifest{
-				attributes(
-					'Main-Class':'HelloGradle',
-					'Implementation-Title' : project.name,
-					'Developer' : 'Mike Brown'
-				)
-			}
-		}
-		sourceSets{
-			main{
-				java{
-					srcDir 'source/java'
-				}
-			}
-			test{
-				java{
-					srcDirs = ['source/test','source/integration']
-				}
-			}
-		}
-
-The srcDirs element can take a single directory or a set of directories...
-
-Note:  Setting the location of src and class files are two seperate things...
-==============================================================================
-We can change the location of the source folders with the
-sourceSets{} closure...but if you do so...you will notice that
-the class files still end up in the build directory....what if 
-we want our compiled artifacts to end up somewhere else ?
-We can change the location fo teh generated classes using the 
-config element:
-
-	output.classesDir
-
-
-
-
-Creating Web Projects
-==============================================================================
-Gradle provides a "war" plugin that extends the Java plugin and supports
-web application development and building WAR files. To see this plugin in action,
-crate a folder named:
-
-	web-gradle
-
-Create build.gradle file inside the new folder and apply the web plugin as shown:
-
-	apply plugin: 'war'
-
-This plugin provides the same directory conventions for storing Java classes
-as the Java plugin.  Additionally, the War plugin expects all the static 
-assets such as 
-	*	HTML
-	*	CSS
-	*	JS
-	*	Images
-	*	Dynamic assests such as JSP files that reside in
-		/src/main/webapp 
-
-Let's crate the webapp folder under src/main/ and then create
-an index.html file...
-
-
-<!-- index.html -->
-
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Hellow World</title>
-	</head>
-	<body>
-		<h1>Hello Gradle!!</h1>
-	</body>
-</html>
-
-
-C02G4075DRJN:webapp mbrown$ tree build
-build
-├── libs
-│   └── webapp.war
-└── tmp
-    └── war
-        └── MANIFEST.MF
-
-3 directories, 2 files
-C02G4075DRJN:webapp mbrown$ 
-
-
-
-Gradle also provides a plugin for jetty
----------------------------------------------
-apply plugin: 'jetty'
-
-^^^ we can run the Jetty server by running the command:
-
-	*	> gradle jettyRun
-
-	BUILD SUCCESSFUL
-
-Total time: 2.904 secs
-
-This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.9/userguide/gradle_daemon.html
-C02G4075DRJN:webapp mbrown$ gradle jettyRun
-:compileJava UP-TO-DATE
-:processResources UP-TO-DATE
-:classes UP-TO-DATE
-> Building 75% > :jettyRun > Running at http://localhost:8080/webapp
-
-
-
-War Task
-================================================
-The War task in the War plugin is responsible for assembling the WAR archive.
-by default, it performs the following actions:
-
-	*	Copies compile Java code to the folder:
-		-	WEB-INF/classes
-	*	Copies the content of src/main/webapp into the root of the WAR file
-	*	Copes dependencies in the runtime configuration to the folder:
-		-	WEB-INF/lib folder
-
-The War task provides serveral properties and method that can be used to costomize the
-the generated artifact.  The following code showcases soem of these
-configuration options:
-
-	war{
-		archiveName 'new-archive.ware'
-		webXml file ('src/config/web.xml')
-		from 'src/media/images'
-	}
-
-^^^^The above configuration
-------------------------------------------------
-This configuration renames the generated artifact to the name
-"new-archive.war" It then confnigures the War task to use the web.xml
-file located in the "src/config: folder.  Finally, the 
-task is configured to add the contents in the directory 
-"src/media/images" folder to the root of the WAR file.
-
-If you want the War task to override the default behavior and look
-for contents elsewhere, say.... src/WebContent, you need to
-change the war plugin's webAppDirName property:
-
-
-apply plugin: 'war'
-apply plugin: 'jetty'
