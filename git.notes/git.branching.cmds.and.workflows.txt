@@ -1,0 +1,68 @@
+
+
+
+Quick git branch commands summary
+==============================================
+
+git branch -v
+===============================
+> git branch -v 
+  iss53   93b412c fix javascript issue
+* master  7a98805 Merge branch 'iss53'
+  testing 782fd34 add scott to the author list in the readmes
+  -----------------------------
+    git branch -v output
+  -----------------------------
+    - list last commit on each branch
+    
+    
+  git branch merged or non-merged
+===============================
+> git branch merged  
+    iss53
+*   master
+  -----------------------------
+    git branch merged
+  -----------------------------
+    - list of branches that you have and have
+      not merged into your current branch
+      
+    
+
+Git branching - Branching Workflows
+============================================
+due to Gits simple three-way merge, merging from one branch
+into another multiple times over a long period is
+generally easy to do.  This means you can have
+several branches that are always open and that you use for 
+different stages of your developent cycle;  you can merge regualary
+from some of them into others.
+
+Many Git developers have a workflow that embraces this approache, such as having only
+code that is entirely stable in their "master" branch -- possibly only code that has been 
+or will be released.  They have another parallel branch named "develop" or "next"
+that may or may not be necessarily always stable, but whenever it gets to a stable
+state, it can be merged into master.  It's used  to pull in top bdranches
+(short-lived branches like our earlier iss53 branch) when they're ready , to
+make sure they pass all the tests and don't introduce bugs.
+
+
+Be sure to understand that you don't have to follow this workflow exactly....
+or you may come up with your own....
+Many organizations have something called an "proposed updates branches"
+that consists of that may nor be ready to be merged into the "next" or "master"
+branches
+
+The reality of the situation...
+===============================================
+In reality, we're talking about pointers moving up the line
+of commits your' making.  The stable branches
+are father down the line in your commit history, and the bleeding-edge 
+branches are father up the history
+
+
+master                         develop               topic
+|                                 |                    |
+|                                 |                    |
+|----->C1<-----C2<------<---C3<---|<----------C4<------|
+
