@@ -1,0 +1,176 @@
+https://docs.gradle.org/current/dsl/org.gradle.api.Task.html
+
+Gradle makes it very easy to build custom plugins....
+================================================
+Gradle makes it very easy to build cutom binary plugins.
+You simply need to create a class that implements the 
+interface:
+
+	*	org.gradle.api.Plugin<T>
+
+The code for this class can reside in one of the following three
+locations:
+
+	*	Build script
+		-	The plugin source code can be directly embedded
+			into the build script.  This approach limits the 
+			reuse value of the plugin as the plugin is not visible outside
+			the build script
+	*	buildSrc project:
+		-	Plugin code that resides under the buildSrc
+			project is atuomatically compiled and is made available
+			in the build script's classpath.  This plugin is also not
+			visible outside the build and hence doesn't provide
+			reuse outside the project
+	*	Stand-alone project
+		-	The plugin code can be bundled as a JAR file that can
+			then be inclued in the build script's  classpath.  This 
+			approach provides the highest reuse value but also requires
+			sperate project and build infrastructure
+
+
+
+Creating a Java Plugin
+================================================
+You'll begin your Hello Gradle Plugin development by creating
+a buildSrc folder inside the helo-gradle folder:
+
+Code  : Java Custom Plugin
+-------------------------------------------------
+> cd hello-gradle
+hello-gradle> mkdir -p buildSrc/src/main/java
+hello-gradle> sublime buildSrc/src/main/java/GreetAsk.java
+hello-gradle> sublime buildSrc/src/main/java/GreetAsk.java
+#The current directory tree should look like this for
+#hello-gradle
+
+#create a new task that sends "Hello Gradle Plugin" to standard out
+
+//--------------Custom Task Code-----------------//
+
+import org.gradle.api.DefaultTask ;
+import org.gradle.api.tasks.TaskAction ;
+
+public class GreetTask extends DefaultTask{
+	@TaskAction
+	public void greetAction(){
+		System.out.println("Hello Gradle Plugin") ;
+	}
+}
+
+
+//--------------Custom Plugin Code : HelloPlugin-----------------//
+
+import org.gradle.api.Plugin ;
+import org.gradle.api.Project ;
+
+public class HelloPlugin extends DefaultTask{
+	@Overide
+	public void apply(Project project){
+		project.getTasks().create("greet",GreetTask.class);
+	}
+}
+
+Code  : Groovy Custom Plugin
+-------------------------------------------------
+> cd hello-gradle
+hello-gradle> mkdir -p buildSrc/src/main/groovy
+hello-gradle> sublime buildSrc/src/main/groovy/HelloPlugin2.groovy
+hello-gradle> sublime buildSrc/src/main/groovy/GreetAsk.java
+#The current directory tree should look like this for
+#hello-gradle
+
+#create a new task that sends "Hello Gradle Plugin" to standard out
+
+//--------------Custom Task Code-----------------//
+
+import org.gradle.api.DefaultTask ;
+import org.gradle.api.tasks.TaskAction ;
+
+public class GreetTask extends DefaultTask{
+	@TaskAction
+	public void greetAction(){
+		System.out.println("Hello Gradle Plugin") ;
+	}
+}
+
+
+//--------------Custom Plugin Code : HelloPlugin-----------------//
+
+import org.gradle.api.Plugin ;
+import org.gradle.api.Project ;
+
+public class HelloPlugin extends DefaultTask{
+	@Overide
+	public void apply(Project project){
+		project.getTasks().create("greet",GreetTask.class);
+	}
+}
+
+
+
+
+
+Summary
+========================================================
+
+*   The steps required to write a custom plugin in Grails...
+================================================================
+    1.  create buildSrc directories and files(Java Plugin):
+    -----------------------------------------
+    > mkdir -p buildSrc/src/main/java
+    > touch  buildSrc/src/main/java/Task.java
+    > touch  buildSrc/src/main/java/PluginJ.java
+    > vim    buildSrc/src/main/java/Task.java  
+    /*** code ***/
+    import org.gradle.api.DefaultTask ;
+    import org.gradle.api.TaskAction ;
+    public class TaskClass extends Default Task{
+        public void TaskMethod_0{
+            System.out.println("executing task-0") ;
+        }
+        public void TaskMethod_1{
+            System.out.println("executing task-1") ;
+        }
+        public void TaskMethod_2{
+             System.out.println("executing task-2") ;
+        }
+    }
+     > vim  buildSrc/src/main/java/PluginJ.java
+    /*** code ***/
+    import org.gradle.api.Plugin ;
+    import org.gradle.api.Project ;
+    import java.util.Map ;
+    import javas.util.HashMap ;
+
+    public class HelloPlugin extends DefaultTask{
+	    @Overide
+	    public void apply(Project project){
+		    project.getTasks().create("task-0",TaskMethod_0.class);
+		    project.getTasks().create("task-1",TaskMethod_1.class);
+		    project.getTasks().create("task-2",TaskMethod_.class);
+	    }
+    } 
+     
+     
+     
+     
+*   The steps required to write a custom plugin (Groovy)...
+================================================================
+    1.  create buildSrc directories and files(Java Plugin):
+    -----------------------------------------
+    > mkdir -p buildSrc/src/main/groovy
+    > vim  buildSrc/src/main/java/PluginClass.java
+    
+     /*** code ***/
+     import org.gradle.api.Plugin ;
+     import org.;gradle.api.Project ;
+     
+     class PluginG implements Plugin<Project>{
+         public void apply(Project project){
+		    project.task("task-0");
+		    project.task("task-1");
+		    project.task("task-2");
+	    }
+     }
+
