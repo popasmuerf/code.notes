@@ -108,3 +108,69 @@ public class HelloPlugin extends DefaultTask{
 }
 
 
+
+
+
+Summary
+========================================================
+
+*   The steps required to write a custom plugin in Grails...
+================================================================
+    1.  create buildSrc directories and files(Java Plugin):
+    -----------------------------------------
+    > mkdir -p buildSrc/src/main/java
+    > touch  buildSrc/src/main/java/Task.java
+    > touch  buildSrc/src/main/java/PluginJ.java
+    > vim    buildSrc/src/main/java/Task.java  
+    /*** code ***/
+    import org.gradle.api.DefaultTask ;
+    import org.gradle.api.TaskAction ;
+    public class TaskClass extends Default Task{
+        public void TaskMethod_0{
+            System.out.println("executing task-0") ;
+        }
+        public void TaskMethod_1{
+            System.out.println("executing task-1") ;
+        }
+        public void TaskMethod_2{
+             System.out.println("executing task-2") ;
+        }
+    }
+     > vim  buildSrc/src/main/java/PluginJ.java
+    /*** code ***/
+    import org.gradle.api.Plugin ;
+    import org.gradle.api.Project ;
+    import java.util.Map ;
+    import javas.util.HashMap ;
+
+    public class HelloPlugin extends DefaultTask{
+	    @Overide
+	    public void apply(Project project){
+		    project.getTasks().create("task-0",TaskMethod_0.class);
+		    project.getTasks().create("task-1",TaskMethod_1.class);
+		    project.getTasks().create("task-2",TaskMethod_.class);
+	    }
+    } 
+     
+     
+     
+     
+*   The steps required to write a custom plugin (Groovy)...
+================================================================
+    1.  create buildSrc directories and files(Java Plugin):
+    -----------------------------------------
+    > mkdir -p buildSrc/src/main/groovy
+    > vim  buildSrc/src/main/java/PluginClass.java
+    
+     /*** code ***/
+     import org.gradle.api.Plugin ;
+     import org.;gradle.api.Project ;
+     
+     class PluginG implements Plugin<Project>{
+         public void apply(Project project){
+		    project.task("task-0");
+		    project.task("task-1");
+		    project.task("task-2");
+	    }
+     }
+
