@@ -83,8 +83,73 @@ What is Spark Streaming
     HDFS----------|---------> Spark Streaming-------->|---->Databases
     Kinesis-------|                                   |---->Dashboards
     Twitter-------|                                   
+    Facebook(?)---|
+    Google+(?)----|
+    
+
+
+How does Spark Streaming work ?
+=============================================
+    *   Chop up data streams into batches of a few secs
+    *   Spark treats each batch of data as an RDD(I guess we have to set up a schema ourselfves
+        for s
+    *   Processed results are pused out into batches
     
     
+    data streams ---> spark recievers --->batched into RDD----->resultant RDD
+    ----------->Convert RDDs to DataFrames provided a schema ?
+    
+    
+Spark Streaming Programming Model
+==============================================
+    *   Discretized Stream(DStream)
+        -   Represents a stream of data
+        -   Implemented as a sequence of RDDs
+        -   So DStreams are a sequence of RDDs...(as in Seq[RDD]) ?
+    *   DStreams API very similar to RDD API
+        -   Functional APIs in Scala, Java
+        -   Create input DStreams from different sources
+        -   Apply parallel operations
+    
+    
+    /**** Example --- Get hashtags from Twitter ****/
+    
+    val sparkContext = new SparkContext(contextInfo)    //1
+    val streamContext = new StreamingContext(sparkContext,Seconds(1)) //2
+    val tweets = TwitterUtils.createStream(streamContext, None) //3
+    val hashTags = tweets.flatMap(status => getTags(status)) //4
+    hashTags.saveAsHadoopFiles("hdfds://...")
+    hashTags.foreachRDD(hasTagRDD => {....})
+    
+    /*****Example End*******************************/
+    
+    ^^^^^What's going on....
+    Twitter Streaming API --->  batch@t,batch@t+1,batch@t+2,batch@t+3 //3
+    
+    tweets DStream  RDD, RDD1, RDD2, RDD3  //3
+    
+    transformed DStream ---> transformation via flatmap of data in one
+                             DStream to create another DStream     //4
+                             
+    tweets DStream ----->flatmap------> hashTags DStream(#cat, #dog...etc)/4
         
  
+ 
+Languages 
+====================================================
+
+Scala API
+-----------------------------------------------------
+val tweets = TwitterUtils.createStream(scc,auth)
+val hasTags = tweets.flatMap(status -> getTags(status))
+hasTags.saveAsHadoopFiles("hdfs://....")
+ 
+ 
+ 
+Java API
+----------------------------------------------------
+JavaDStream<Status> tweets = streamContext.TwitterStream() ;
+JavaDstream<String> hasTags = tweets.flatMap(new Function<....>{});
+hasTags.saveAsHadoopFiles
+
  
