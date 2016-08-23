@@ -1,12 +1,149 @@
 https://docs.gradle.org/current/dsl/org.gradle.api.Task.html
 
-Gradle makes it very easy to build custom plugins....
+Plugin Backgrond....
 ================================================
-Gradle makes it very easy to build cutom binary plugins.
-You simply need to create a class that implements the 
-interface:
+Software projects typically have version numbers that are
+expressed using three numbers seperated by periods
 
-	*	org.gradle.api.Plugin<T>
+	*	<major-version>.<minor-version>.<patch/incremental-version>
+
+As thie naming convention suggests, the major versions are generally
+incremented for major feature changes that are usually not backward
+compatible.
+
+Minor versions are incremented when implementing minor features or major bug fixes
+
+Patch/incremental versions are incrememted for minor bugs, text changes, etc.
+
+This onvention follows the "Semantic Versioning 2.0.0" guidlines
+described at:
+
+    *   http://semver.org/
+
+
+Build numbers
+=================================================
+During development, it is possible for development
+teams to create multiple builds of the same source code and deploy
+them for testing or sharing with other developers.
+
+Some software teams follow the convention of appending this 
+build number to the version:
+
+    *   <major-verions>.<minor-version>.<patch/incremental-version>.<build-number>
+
+    *   Examples:
+        -   1.0.0.56
+        -   3.3.9.25BLR48
+        -   6.1.0-20151123154556
+        
+        
+Where do we get build numbers from ?
+============================================
+Build numbers can be obtained froma  variety of sources--commit numbers
+from source code check-ins or build timestampes or continous integeration(CI)
+server-genereated numbers, and so o.  In this section, you will create
+a Gradle plugin that generates random build numbers
+
+       
+Plugin Configuration
+==============================================
+To keep things manageable for the book, the build number plugin generates
+two types of values:
+
+    *   numeric : timestamp
+    *   alphanumeric: ????
+    
+    
+    /***code*****/
+    
+    apply plugin: 'build-number-plugin'
+    buildNumber{
+        numberType = 'alphanumeric'
+        alphaNumLength = 5
+    }
+
+
+^^^This plugin provides a buildNumber configuration blaock that allows the plugin
+user to set the build number type--alphanumeric or timestampe.  The user
+can use the alphaNumLenth property to dictate the number of chartacters in the
+generated alopha numer string.
+
+Note:
+=====================
+There are already extant 3rd party Gradle plugins available for generating
+build numbers from tother sources such as Git/SVN and provde more bells ans whistles.
+
+
+Plugin Development
+=====================================================================
+*   This is will be a stand alone plugin project.
+*   project layout:
+    > mkdir -p  build_number_plugin/src/main/groovy/com/appress/gradle
+    > mkdir -p  build_number_plugin/src/resources/META-INF/grale-plugins
+    build-number-plugin
+    |
+    |
+    |------build.gradle
+    |------src
+           |------main
+                  |------groovy
+                  |      |------com
+                  |             |------appress
+                  |                    |------gradle
+                  |
+                  |------resources
+                         |--------META-INF
+                                  |-------gradle-plugins
+                        
+*   our build.gradle file          
+      
+      
+   /***code***/
+   
+   apply plugin:'groovy'
+   group = 'com.apress.gradle'
+   version = '1.0.0'
+   
+   dependencies{
+        compile gradleApi()
+   }                       
+   uploadArchives{
+        repositories{
+            flatDir{dirs "../repo"}
+        }
+   }    
+                  
+
+
+^^^ Since this is a groovy project, you must geing the build.gradle
+file by applying the Groovy plugin.  Gradle artifacts are identified using
+three coordinates:
+
+    *   The group indicating the organization resp[onsible for the project
+    *   The name of the artifact
+    *   The version of the artificat
+    
+In the build.gradle file , you use: 
+
+    group='com.apress.gradle'
+    version='1.0.0'
+    
+We haven't specified a name for the artifact..so gradle uses the name
+of the project directory as the artifact name
+
+
+The dependencies block includes a compile directive that provides
+the external libraries and rameworks the plugin project requires for 
+compilation and testing purposes.  In this case we use gradleApi() to
+pull in Gradle API used by custom plugin and task classes.
+
+Finally, you use the uploadArchives method to upload or publish the generated
+plugin to a repository.  The flatDir method is configured to publish the
+packaged plugin to arepo folder that exists at the ame level as 
+the project ont he file system.
+
+
 
 The code for this class can reside in one of the following three
 locations:

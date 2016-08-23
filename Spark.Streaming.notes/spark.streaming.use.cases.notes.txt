@@ -1,0 +1,90 @@
+https://stanford.edu/~rezab/sparkclass/slides/td_streaming.pdf
+
+
+
+
+Bit Streaming Data Processing:
+============================================
+    *   Fraud detection in bank transactions
+    *   Anomoalies in sensor data
+    *   Cat videos in tweets
+    
+    
+    
+How to Process Big Streaming Data:
+============================================
+Raw Data Streams --------->Distributed Processing System(in this case Spark)
+                           |
+                           |
+                           |--------->Processed Data
+                           
+    *   Scales to hundreds of nodes
+    *   Achieves low latency
+    *   Efficiently recover from failures
+    *   Integreates with batch and interactive processing.
+    
+    
+    
+The dumb shit people have been doing ?
+============================================
+
+    *   building two stacks...one for batch, and the other for streaming
+        when both have been processing the same data
+    *   Existing frameworks cannot do both
+            -   Either, stream processing of 100s of MB/s with low latency
+            -   Or, batch processing TBs of data with high latency
+            
+    *   Extrememly painful to maintain two code bases for batch and streaming
+            -   Different programming models
+            -   Doubles implementation effort
+            -   Doubles operational effort
+            
+           
+           
+Fault-tolerant stream Processing
+===========================================
+    *   Traditional processing model
+        -   Pipeline of nodes
+        -   Each node maintains mutable state
+        -   Each input record updates the state
+            and new records are sent out
+        -   Mutable state is lost if node fails
+        -   Making stateful stream processing fault
+            tolerant is challenging!!!!
+            
+            
+    input records(node1)---------
+                                | ---------->node3--------->
+    input records(node2)---------
+    
+    
+    
+    
+ Existing Streaming systems
+ ===========================================
+    *   Storm
+        -   Replays record if not processed by a node
+        -   Processes each record at least once
+        -   May update mutable state twice !
+        -   Mutable state can be lost due to failure!
+    *   Trident
+        -   Processes each record exactly once
+        -   Per-state transaction to external database is slow
+        
+        
+What is Spark Streaming
+=============================================
+    *   Receive data streams from input sources, process
+        them in a cluster, push out to databases dashboards
+    *   Scalable, fault taolerant, second-scale latencies
+    
+    Kafka---------|
+    flume---------|                                   |---->HDFS
+    HDFS----------|---------> Spark Streaming-------->|---->Databases
+    Kinesis-------|                                   |---->Dashboards
+    Twitter-------|                                   
+    
+    
+        
+ 
+ 
