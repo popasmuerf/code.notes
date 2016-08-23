@@ -1,7 +1,26 @@
-https://stanford.edu/~rezab/sparkclass/slides/td_streaming.pdf
+http://spark.apache.org/docs/latest/streaming-programming-guide.html
 
 
-
+After a context is defined...
+============================================
+1.  Define the input soruces by creatin input DStreams
+2.  Define the streaming computations by applying transformation
+    and output operations to DStreams
+3.  Start recieving data and processing it using streamingContext.start()
+4.  Wait for the processing to be stopped(manually or due to any error)
+    using streamContext.awaitTermination()
+5.  The processing can be manually stopeed using streamingContext.stop()
+Points to remember
+============================================
+1.  Once a context has been started, no new streaming computations can be set up
+    or added.
+2.  Once a context has been stopped, it cannot be restarted
+3.  Only one StreamingContext can be active in a JVM at the same time
+4.  stop() ib Streaming Context also stops the SparkContext.
+    to stop the StreamingContext only, use the optional parameter of stop()
+    called stopSparkContext to falasle
+5.  A sparkcontenxt can be re-used to create multiple StreamingContexts, as long as the previous
+    StreamingContext is stoped
 
 Bit Streaming Data Processing:
 ============================================
