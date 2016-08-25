@@ -1,0 +1,88 @@
+http://docs.grails.org/latest/guide/plugins.html#creatingAndInstallingPlugins
+
+
+
+Plugins
+=============================================
+Grails is first and foremost a web application
+framework, but it is also a platform.  By
+exposing a number of extension points
+that let you extend anything from the command 
+line interface to the runtime configuration
+engine, Grails can be customised
+to suit almost any needs.  To hook into this
+platform, all you need to do is create a plugin.
+
+Extending the platform may sound complicated, but plugins
+can range from trivially siple to incredibly powerful.
+If you know how to build a Grails application, you'll know
+how to creat a plugin for sharing a data model or some
+static resources
+
+
+Creating Plugins
+===============================================
+It's easy in Grails.  Just run this at the cli:
+
+> grails create-plugin [plugin name]
+
+
+What is a messaging system ?
+================================================
+A messaging System is responsible for transferring data from one
+application to another, so the applications can focus on data,
+but not worry about how to share it.  Distributed messaging
+is base on the concept of reliable messaging quiering.  Messages
+are queued asynchrounously between client applications
+and messaging systems.
+
+
+
+
+Point to Point messaging System
+=========================================
+    *   Messages are persisted in a queue
+    *   One or more consumers can consume messages in the Q
+    *   A particular message may be consumeby a maximum of one consumer
+    *   All consumed messages disapear
+    *   typical example of a Pt-to-Pt  messaging system:
+            -   Order Processing System
+            
+            Sender------->Message-Q-------->Reciever
+            
+            
+            
+Publish-subscribe Messaging System
+=========================================
+    *   Messages are persisted in a queue
+    *   One or more consumers can consume messages in the Q
+    *   Any consumer may subscribe to any particular topic
+        and then proceed to consume all the messages in that topic
+    *   Messages are produced by publishers
+    *   Messagers are consumbed by subscribers
+    *   typical example of a Pt-to-Pt  messaging system:
+            -   Order Processing System
+                                    ------->Reciever
+                                    |
+            Sender------->Message-Q-------->Reciever
+                                    |
+                                    ------->Reciever
+
+What is Kafka
+=========================================
+    *   Reliablility
+    *   Scalability
+    *   Durability
+    *   Performance
+    
+    
+Use Cases:
+=========================================
+    *   Metrics
+    *   Log Aggregations Solution
+    *   Stream Processing
+    
+    
+    
+
+
