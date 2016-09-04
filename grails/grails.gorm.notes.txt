@@ -371,6 +371,7 @@ instances.
 
 
 belongsTo
+http://docs.grails.org/3.1.1/ref/Domain%20Classes/belongsTo.html
 =====================================================
 Defines a "belongs to" relationship whre teh class specified by 
 belongsTo assumes ownership of the relationship.  This has the effect
