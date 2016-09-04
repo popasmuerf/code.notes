@@ -1,0 +1,92 @@
+https://grailsinaction.com/2013/05/28/simplest-imagefile-grails-crud-using-a-data-base-as-a-storage/
+
+
+
+
+
+GRAILS Simplest Image/File Grils CRUD Using DataBase as a Storage
+==========================================================================
+
+My target in this post is to create the simplest image/Photo CRUD froma a
+Database.  I will be using the most basic configurations and contrains, as my target is to focus
+on the critical ports of the code to make such functionality work.
+
+
+
+
+
+Domain Class Declaration
+=========================================================================
+import java.util.Date
+
+class DBPhoto{
+    String name
+    String type
+    byte[] payload
+    Date lastUpdated
+    Date dateCreated
+    Date uploadDate = new Date()
+    static contraints = {
+        payload(nullable:false,maxSize:1073741824)//max of 4GB
+        type(blank:true,nullable:true)
+        name(blank:true,nullable:true
+    }
+}
+
+
+
+
+^^^^We will store the image/file in a DB using the BLOB dta type(Binary Large Object)
+which is a binary large object that can hold a variable amount of data, bside that,
+we will be storing the file extension/type.  When we run the applicaton these data
+types are mapped to the database as shon below:
+
+----------------------------------------------------------------------------
+Field           Type           Null     Key     Default     Extra           |
+-----------------------------------------------------------------------------
+id          |   bigint(26)  |   NO  |   PRI |   NULL    |   Auto_increment  |
+version     |   bigint(26)  |   NO  |       |   NULL    |                   |
+file_payload|   tinyblob    |   NO  |       |   NULL    |                   |
+file_type   |   varchar(255)|   NO  |       |   NULL    |                   |
+-----------------------------------------------------------------------------
+
+
+
+Also note that there are two columns created automatically for each domain class mapped table, which are the id and the version columns. id incremented automatically in the DB as we create a new raw (add a new image) and which is used to identify the entries inside the DB. Version column is a number that is increased each time a record in a raw is updated (an image entry parameters are updated or changed in the DB).
+
+
+Controllers Classes Setup
+=================================================================================
+
+$ grails
+grails>  generate-controller DBPhoto
+
+
+The HTTP methods we are going to allow
+------------------------------------------------------------------------
+static allowedMethods = [save:"POST",update:"POST",delete:"DELETE"]
+
+
+class DBPhotoController{
+    .................
+    static allowedMethods = [save:"POST",update:"POST",delete:"DELETE"]
+    //****create and save functions*****//
+    
+    def create(){
+        respond new DBPhoto(params)
+    } 
+    def save(DBPhoto DBPhotoInstance){
+        if(DBPhotoInstance == null){
+            notFound()
+            return
+        }
+    }
+    def uploadedFile  = request.getFile('payload')
+    DBPhotoInstance.payload = uploadedFile.getBytes()
+    DBPhotoInstance.name = uploadedFile.originalFileName
+    DBPhotoInstance.type = uploadedFile.contentType
+    DBPhotoInstance.save flush:true
+    redirect(action:"index")
+}
+
+
