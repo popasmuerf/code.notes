@@ -1,0 +1,45 @@
+Controllers
+====================================================================
+
+method: respond()
+====================================================================
+Attempts to return the most appropiate type for the requested content
+type (specififed by either the Accept header or file extension)
+
+
+Description
+===================================================
+The respond method uses Content Negotiation to respond with
+the most apporpiate content type.  See the documentation
+on REST support :
+http://docs.grails.org/3.1.1/guide/single.html#REST
+
+Parameters:
+----------------------------------------------------
+    *   object - the object to render
+    *   arguments - A map of arguments:
+        -   Supported objects:
+                +   view - A map of agruments
+                +   model - The model to use in case of HTML rendering
+
+
+Examples
+===================================================
+
+class thisController{
+    //pick the best content-type to respond with
+    def method_1(){
+        respond(Book.get(1))
+    }
+    //pick the best content type to respond with from the 
+    //given formats
+    def method_2(){
+        respond(Book.get(1),[formats:['xml','json']])
+    }
+    def 
+    
+}
+
+
+
+
