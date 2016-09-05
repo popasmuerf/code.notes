@@ -36,7 +36,9 @@ class thisController{
     def method_2(){
         respond(Book.get(1),[formats:['xml','json']])
     }
-    def 
+    def show(){
+        respond(Book)
+    }
     
 }
 
