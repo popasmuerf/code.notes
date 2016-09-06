@@ -1,4 +1,4 @@
-Controllers
+Controllers : render vs respond
 ====================================================================
 
 
@@ -17,6 +17,16 @@ Warning:  this method does not always support multiple parameters.
 For example, if you specifify both collection and model, the
 model paramter will be ignored
 http://docs.grails.org/2.3.4/ref/Controllers/render.html
+
+Render explicity defines the format you wish to return your data in:
+
+(Examples from documentation):
+
+render Book.list(params) as JSON
+render Book.get(params.id) as XML
+
+//render with status code
+render(status:503,text:'Failed to update book ${b.id}')
 
 Parameters:
 ----------------------------------------------------
@@ -104,12 +114,26 @@ method: respond()
 Attempts to return the most appropiate type for the requested content
 type (specififed by either the Accept header or file extension)
 
+The view to be rendered below according to this HTTP Request Header:
+--------------------------------------------------------------------
+Accept: text/html, application/xhtml+xml, application/xml;q=0.9 */*;q=0.8, application/json
+
+
 Description
 --------------------------------------------------------------------
 The respond method uses Content Negotiation to respond with
 the most apporpiate content type.  See the documentation
 on REST support :
 http://docs.grails.org/3.1.1/guide/single.html#REST
+
+Also.....this way the consumer of your site can choose how they wish to be
+returned data.  This may not be the best option if you want to force
+a specific return type.  
+
+For example: You are building a REST api and only want to return json or xml,
+if the user asks for test.html then they may be returned your data in a format
+that ou do not wisht to support.  Otherwise respond can be an easy way to supppport
+multiple return formats witout programming them separately:
 
 Parameters:
 ----------------------------------------------------
