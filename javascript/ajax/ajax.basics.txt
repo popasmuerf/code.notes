@@ -1,0 +1,180 @@
+<html>
+<body>
+   <script language="javascript" type="text/javascript">
+   <!-- 
+   //Browser Support Code
+   function ajaxFunction(){
+      var ajaxRequest;  // The variable that makes Ajax possible!
+      try{
+         // Opera 8.0+, Firefox, Safari 
+         var name = navigator.appName
+         var engine = navigator.product; 
+         ajaxRequest = new XMLHttpRequest();
+         alert("Your browser: " + name + "engine :" + engine + " supports Ajax" );
+      }catch (e){
+
+         // Internet Explorer Browsers
+         try{
+            ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+         }catch (e) {
+            try{
+               ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+            }catch (e){
+
+               // Something went wrong
+               alert("Your browser broke!");
+               return false;
+            }
+         }
+      }
+   }
+   /**
+        The XMLHttpRequest Object is Configured
+        -----------------------------------------------
+        In this step, we will write a function that will
+        be triggered by the client event and a callback
+        function processRequest() will be registered
+    **/
+    /**
+        Making Asynchronous Request to the WebServer
+        ------------------------------------------------
+        Source code is available in the above piece of code.
+        Code written in bold typeface is responsible to make a request
+        to the webserver.  This is being done using the 
+        XMLHttpRequest object ajaxRequest
+    **/
+   function validateUserId(){
+    ajaxFunction();
+    //Here processRequest() is the callback function.
+    ajaxRequest.onreadystatechange = processRequest;
+    if(!target) target = document.getElementById("userid");
+    var url = "validate?id=" + escape(target.value) ;
+    ajaxRequest.open("GET", url, true) ;
+    ajaxRequest.send(null) ;
+   }
+   //-->
+   </script>
+   
+   
+   
+
+<!--
+   http://www.tutorialspoint.com/ajax/ajax_in_action.htm
+   http://www.tutorialspoint.com/ajax/ajax_in_action.htm
+   
+   In the above code, we try three stimes to make our
+   XMLHttpRequest object.  Our first attempt:
+   
+   
+    =   ajaxRequest = new XMLHttpRequest() ;
+    
+   It is for Opera 8.0+ , FireFox, and Safarie browsers...If it fails, we try two more
+   times to make the correct object for an Internet Explorer browser(the older ones...)
+   
+   If none of the above work...then we can use a very outdated broswer that doesn't support
+   XMLHttpRequest, which alos means it doesn't support Ajax.
+   
+   Most likely though ,our variable ajaxRequest will nwo be set to whatever XMLHttp Request
+   standard the browser uses and we can start sending data to the server.  The step-wise
+   AJAX worlf flow is explained in the next chapter.....
+   
+   
+   
+   ======Steps of Ajax operation=============
+    Steps in Ajax operation
+    ----------------------------
+    *   A client event occurs
+    *   An XMLHttpRequest object is configured
+    *   The XML HttpRequest object makes an asynchronous request to the WebServer
+    *   The Webserver returns the resut contian XML document
+    *   The XMLHttpRequest object calls the callback() function and process the result
+    *   the HTML DOM is updated
+   
+   A client event occurs 
+   ----------------------------
+   *    A JavaScript funciton is called s the result of an event
+   *    Example: validateUserId() JavaScript funciton is mapped as an 
+        event handler to an onkeyup event on input form
+        set to "userid"
+   *    <input type="text" size="20" id="userid" name="id" onkeyup="validateUserId();">
+   
+   
+   WebServer Returns the REsult Containing XML Document
+   -----------------------------------------------------
+   You can implement your server-side script in any language, however
+   its logic shold be as follows:
+   *    Cet a "Request" from the client
+   *    Parse the input from the client
+   *    Do required processing
+   *    Send the output to the client as a "Response"
+   
+   ****************** Servlet code (Java) **********************
+   
+public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    String targetId =  request.getParameter("id") ;
+    if((targetId! = null) && !accounts.containsKey(targetId.trim())){
+        response.setContentType("text/xml") ;
+        response.setHeader("Cache-Control","no-cache") ;
+        response.getWriter().write("true") ;
+    }else{
+        response.setContentType("text/xml") ;
+        response.setHeader("Cache-Control","no-cache") ;
+        response.getWriter().write("false") ;
+    }   
+}
+   
+   Callback Function processRequest() is called
+   ------------------------------------------------------------
+   The XMLHttpRequest object was configured to call the processRequest()
+   function when there is a state change to the readyState of the
+   XMLHttpRequest object.  Now this function will recieve the result form 
+   the server and will the required processing.
+   
+   function processRequest(){
+    if(req.readyState == 4){
+        if(req.status == 200){
+            var message = .... ;
+        }
+    }
+   }
+   
+   The HTML DOM is Updated
+   ----------------------------------------------------------------
+   This is the final step and in this step, your HTML page will be updated
+   Your HTML page will be updated.  It happens in the following way:
+   
+    +   JavaScript gets a reference to any element in a page using DOM API
+    +   The recommended way to gain a reference to an element is to call.
+    
+    ****************** Updating the DOM in ES **********************
+    document.getElementById("userIdMessage"),
+    // where "userIdMessage" is the ID attribute
+    // of an element appearing in the HTML document
+    
+    ******************Modifying the elemnents via DOM******************
+     <script type="text/javascript">
+        function setMessageUsingDOM(message){
+            var userMessageElement = document.getElementById("userIdMessage");
+            var messageText ;
+            if(message == "false"){
+                userMessageElement.style.color = "red";
+                messageText = "Invalid User Id" ;
+            }else{
+                userMessageElement.style.color = "blue";
+                messageText = "Valid User Id";
+            }
+            var messageBody = document.createTextNode(messageText) ;
+            //if the messageBody element has been created simple
+            //replace it otherwise append the new element
+            if(userMessageElement.childNodes[0]{
+                userMessageElement.replaceChild(messageBody, userMessageElement.childNodes[0]) ;
+            }else{
+                userMessageElement.appendChild(messageBody);
+            }
+        }
+     </script>
+     <body>
+     <div id="userIdMessage"><div>
+</body>
+   
+-->

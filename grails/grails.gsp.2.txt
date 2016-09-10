@@ -1,0 +1,329 @@
+
+http://grails.asia/grails-tutorial-for-beginners-basic-groovy-server-pages-gsp/
+
+Grails Views with Groovy Server Pages
+===========================================
+Grails uses Groovy Server Pages (GSP) for its view layer.
+If you've ever worked with JavaServer Pages, well, you have 
+my sympathy, but GSP will seem familiar--only easier to work with.
+Grails also uses 
+SiteMesh, the page decoration framework from OpenSymphony, to assist
+in the page layout.  Site Mesh will merge each of our .gsp files into a file called
+
+	*	main.gsp  //located in TekDays/grails-app/views/layouts
+
+Dispalying Domain Contents
+================================================================
+Example of the a domain class.   Domains are pretty much in 
+Grails in either Groovy or Java Beans:
+
+/*************Bean**************/
+
+class Person{
+    String firstName
+    String lastName
+    int age
+}
+
+/***********A controller that initializes the Bean***************/
+
+class HelloController{
+    def index(){
+        Person person = new Person(firstName:'John',lastName:'Doe',age:55)
+        [person:person]
+    }
+}
+
+
+<!DOCTYPE html>
+    <head>
+        <meta name="layout" content="main"/>
+        <title>Render Domain</title>
+    </head>
+    <body>
+        Last Name: <g:fieldValue bean="${person}" field="firstName"/></br>
+        First Name:<g:fieldValue bean="${person}" field="lastName"/></br>
+        Age:       <g:fieldValue bean="${person}" field="age"/></br>
+    </body>
+</html>
+
+
+Loop and Display a List
+===================================
+A simple GSP page for rendering numbers form 1 to 10
+
+/*************Bean**************/
+
+class Person{
+    String firstName
+    String lastName
+    int age
+}
+
+/***********A controller that initializes the Bean***************/
+
+class HelloController{
+    def index(){
+        def list = []
+        list << new Person (firstName:'John',lastName:'Doe',age:55)
+        list << new Person (firstName:'Jane',lastName:'Doe',age:55)
+        list << new Person (firstName:'Louie',lastName:'Dane',age:55)
+        [list:list]
+    }
+}
+
+
+<!DOCTYPE html>
+    <head>
+        <meta name="layout" content="main"/>
+        <title>Render Domain</title>
+    </head>
+    <body>
+       <tr>
+        <td>Name</td>
+        <td>Age</td>
+       </tr>
+        <g:each in="${list}" var="person">
+            <tr>
+                <td>${person.lastName},${person.firstName}</td>
+                <td>${person.age}</td>
+            </tr>
+        </g:each>
+    </body>
+</html>
+
+
+
+Form
+===================================
+Writing a form to submit a Person's information.
+Fromt eh controller, you can send a person object
+that contains it's default values of values retrieved from 
+a database.  Here is a simple example:
+
+
+/*************Bean**************/
+
+class Person{
+    String firstName
+    String lastName
+    int age
+}
+
+/***********A controller that initializes the Bean***************/
+
+class HelloController{
+    def index(){
+       def displayForm(){
+            //just provide value for age, firstname, and lastname
+            Person = person new Person(age:55)
+            [person:person]
+       }
+    }
+}
+
+
+<!DOCTYPE html>
+    <head>
+        <meta name="layout" content="main"/>
+        <title>Render Domain</title>
+    </head>
+    <body>
+      <g:form action="save">
+         <label for="lastName">Last Name</label>
+        <g:textField name="lastName" value="${person.lastName}"/>
+        <br/>
+        <label for="firstName">First Name</label>
+        <g:textField name="firstName" value="${person.firstName}"/>
+        <br/>
+        <label for="age">Age</label>
+        <g:textField name="age" value="${person.age}"/>
+        <br/>
+        <g:submitButton name="create" value="Save" />
+      </g:form>
+    </body>
+</html>
+
+
+
+Note: What is Symphony sitemesh
+=================================================================
+SiteMesh is a lightweight and flexible java web application framework that ppalies the Gang of Four
+decorator pattern to allow a clean separation of content form presentation.
+
+http://wiki.sitemesh.org/wiki/display/sitemesh/Home
+
+
+
+Exploring main.gsp
+=================
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if  IE 7]> <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if  IE 8]> <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if  IE 9]> <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if  (gt IE 9) | !(IE) ]> <html lang="en" class="no-j"> <![endif]-->
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatable" content="IE=edge,chrome=1">
+		<title><g:layoutTitle default="Grails"/></title>
+					<meta name="viewport" content="with=device-width, intial-scale=1.0">
+					<link rel="shortcut icon" href="${resource(dir: 'images',file: 'apple-touch-icon.png')}">
+					<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images',file: 'apple-touch-icon-retina.png')}">
+					<link rel="stylesheet" href="${resource(dir: 'css',file: 'main.css')}" type="text/css" >
+					<link rel="stylesheet" href="${resource(dir: 'css',file: 'mobile.css')}" type="text/css">
+				<g:layoutHead/>
+		<r:layoutResources/>
+	</head>
+	<body>
+		<div id="grailsLogo" role="banner">
+			<a href="http://grails.org">
+				<img src="${resource(dir:'images',file:'grails_logo.png')}" alt="Grails"/>
+			</a>
+			<g:layoutBody/>
+		</div>
+		<div class="footer" role="contentinfor">
+		</div>
+		<div id="spinner" class="spinner" style="display:none;">
+			<g:message code="spinner.alt" default="Loading&hellip;"/>
+		</div>
+		<g:javascript library="application"/>
+		<r:layoutResources/>
+	</body>
+</html>
+
+^^^descripition of what is going on in main.gsp
+================================================================
+*	main.gsp starts out with some conditional comments for various versions of IE
+*	<g:layOutTitle>
+	-	will subsitute the <title> from the view that is being merged.
+*	The <meta> tage includes a bunch of stylesheets and favicon to be used aby all views
+*	<body> includes
+	-	app logo
+	-	<g:layoutBody>
+		*	merges in the <body> contents of the target view
+*	<div> #1
+	-	css footer
+*	<div> #1
+	-	css footer	
+*	<div> #2
+	-	spinner image
+*	<r:layoutResources>
+	-	tells grails to include any resources that the target view has required using
+		the tag:
+			*	<r:require
+
+
+The List View
+=============================================================
+path: TekDays/grails-app/views/tekEvent/index.gsp
+
+
+<li>
+	<a class="home"href="${createLink(uri:'/')}">
+		<g:message code="default.home.label"/>
+	</a>
+</li>
+<li>
+	<a class="create"action="create">
+		<g:message code="default.new.label" args="entityName"/>
+	</a>
+	</g:link>
+</li>
+	* no params/arguments:
+		-will be prompted for a domain class name
+	* with params:
+		-the obvious
+
+The above ^^^^ gsp/html markup analysis
+=============================================================
+This code creates the button bar just below the grails logo
+We can see two ways that Grails provides for creating links:
+
+	The way grails provides links
+	------------------------------
+	*	createLink(uri:"path")
+		-	takes a relative path and creates a URL, which is
+			assigned to the href attribute of an anchor("<a>") tag
+	*	<g/:link>
+		-	creates an ahnchor tag using the values of the attributes(if provided,else
+			the current controller is assumed):
+				*	controller
+				*	action
+				*	id
+
+	The following markup is not included in the above example..but
+	it is important to note...
+	--------------------------------------------------------------
+
+	<g:if test="$<flash.message>">
+		<div class="message" role="status">${flash.message}</div>
+	</g:if>
+
+	^^^This code doesn't show up in our figure above, but it is important to take
+	note of.  Recall that during our discussion of controllers, we often had code that
+	would store text in the message element of the flash object.  This is where that text
+	will show up.  The <g:if> tag checks for the existence of flash.message and, if found, displays
+	it :
+
+The delete Action
+=========================================
+@Transactional
+def delete(TekEvent tekEventInstance){
+	if(tekEventInstance == null){
+		notFound()
+		return
+	}
+	tekEventInstance.delete flush:true
+	request.withFormat{
+		form{
+			flash.message = message(code: 'default.deleted.message',args:[message(code: 'tekEventInstance.label',default:'TekEvent'),tekEventInstance.id])
+			redirect action:"index", method:"GET"
+		}
+		'*' {render status: NO_CONTENT}
+	}
+}
+
+
+
+So...Really...what's the deal with all the <g:message> tags ?
+================================================================
+In the generated views, Grails uses the tag:
+
+	<g:message>
+
+to read text for lables, buttons, and other elements form message bundles,
+which are contained in: 
+
+	*	grails-app/i18n
+
+under our TekDays application directory.  Internationalization
+is build into Grails; message bundles for other languages  are also stored 
+within grails-app/i18n directory, and contain text for various messages
+that will need to show the user in our app.
+
+The use of <g:message> here ensures that if somebody were to 
+be using our app with a differenct , our user interface woul be presented
+in the correct language.
+
+Organizing our list via Columns
+====================================================
+<g:sortableColumn property="name" title="${message(code:'tekEvent.name.label',default:'Name')}"/>
+<g:sortableColumn property="city" title="${message(code:'tekEvent.name.label',default:'City')}"/>
+<g:sortableColumn property="description" title="${message(code:'tekEvent.name.label',default:'City')}"/>
+<th><g:message code="tekEvdnt.organizer.label" default="Organizer"/></th>
+<g:sortableColumn property="venue" title="${message(code:'tekEvent.venue.lable', default: 'Venue')}"/>
+<g:sortableColumn property="startDate" title="${message(code:'tekEvent.venue.lable', default: 'Start Date')}"/>
+
+So...Really...what's the deal with all the <g:sortableColumn> tags ?
+================================================================
+This tag is what Grails uses to provide sorting on our list view.
+Note that, by default, this works only with regular properties,
+not objct references or collections.  That is why we see
+a <th>  tag used for the organizer property.
+
+	<g:message>
+
+

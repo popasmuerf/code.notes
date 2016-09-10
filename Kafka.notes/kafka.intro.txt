@@ -1,0 +1,82 @@
+Intro for Kafka
+=============================================
+Apache Kafka was originated at LinkedIn and later
+became an open sourced Apache project in 2011, then
+First-class Apache project in 2012.  Kafka is writeen
+in Scala and Java.  Apache Kafka is publish-subscribe
+based fault tolerant messaging system.  It is fast, 
+scalable and distributed by design.
+
+
+What is is Kafka
+===============================================
+Kafka is designed for distyrubted high throuhput systems.
+Kafka tends to work very well as a replacement for
+a more traditional message broker.  In comparison
+to other messaging system, Kafka has
+better throughput, built-in partitioning,
+replication and inheren fault tolerance, which
+makes it a good fit for large-scale
+message processing applications
+
+
+
+What is a messaging system ?
+================================================
+A messaging System is responsible for transferring data from one
+application to another, so the applications can focus on data,
+but not worry about how to share it.  Distributed messaging
+is base on the concept of reliable messaging quiering.  Messages
+are queued asynchrounously between client applications
+and messaging systems.
+
+
+
+
+Point to Point messaging System
+=========================================
+    *   Messages are persisted in a queue
+    *   One or more consumers can consume messages in the Q
+    *   A particular message may be consumeby a maximum of one consumer
+    *   All consumed messages disapear
+    *   typical example of a Pt-to-Pt  messaging system:
+            -   Order Processing System
+            
+            Sender------->Message-Q-------->Reciever
+            
+            
+            
+Publish-subscribe Messaging System
+=========================================
+    *   Messages are persisted in a queue
+    *   One or more consumers can consume messages in the Q
+    *   Any consumer may subscribe to any particular topic
+        and then proceed to consume all the messages in that topic
+    *   Messages are produced by publishers
+    *   Messagers are consumbed by subscribers
+    *   typical example of a Pt-to-Pt  messaging system:
+            -   Order Processing System
+                                    ------->Reciever
+                                    |
+            Sender------->Message-Q-------->Reciever
+                                    |
+                                    ------->Reciever
+
+What is Kafka
+=========================================
+    *   Reliablility
+    *   Scalability
+    *   Durability
+    *   Performance
+    
+    
+Use Cases:
+=========================================
+    *   Metrics
+    *   Log Aggregations Solution
+    *   Stream Processing
+    
+    
+    
+
+

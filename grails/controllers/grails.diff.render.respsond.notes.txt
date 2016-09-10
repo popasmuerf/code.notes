@@ -1,0 +1,169 @@
+Controllers : render vs respond
+====================================================================
+
+
+
+method: render()
+====================================================================
+To render different forms of responses from simple text responses,
+to view and templates.
+
+
+Description
+--------------------------------------------------------------------
+A multi-purpose method for rendering responses to the client which is best
+illustrated with a few examples!!
+Warning:  this method does not always support multiple parameters.
+For example, if you specifify both collection and model, the
+model paramter will be ignored
+http://docs.grails.org/2.3.4/ref/Controllers/render.html
+
+Render explicity defines the format you wish to return your data in:
+
+(Examples from documentation):
+
+render Book.list(params) as JSON
+render Book.get(params.id) as XML
+
+//render with status code
+render(status:503,text:'Failed to update book ${b.id}')
+
+Parameters:
+----------------------------------------------------
+    *   text(optional) - text to render
+    *   builder(optional) - the builder to use when rendering markup
+    *   view(optional)  - the view to delegate the rendering to
+    *   template(optional) - the template to render.  Atemplate is usally an
+                             HTML snippet and the file starts with an
+                             underscore("_").  This isused in mostly in 
+                             AJAX requests.
+    *   layout(optional)   - the layout to use for the response
+    *   var(optional)      - The name of the variable to be passed into the
+                             template, defaults to the Groovy default
+                             argument(it) if not specified
+    *   bean (optional) - The bean to use in rendering
+    *   model (optional) - The model to use in rendering
+    *   collection (optional) - For rendering a template against each item in a collection
+    *   contentType (optional) - The contentType of the response
+    *   encoding (optional) - The encoding of the response
+    *   converter (as single non-named first parameter) - A Converter that should be rendered as Response
+    *   plugin (optional) - The plugin to look for the template in
+    *   status (optional) - The HTTP status code to use
+    *   file (optional) - The byte, java.io.File, or inputStream you wish to send with the response
+    *   fileName (optional) - For specifying an attachment file name while rendering a file.
+Examples
+--------------------------------------------------------------------
+class thisController{
+        // renders text to response
+    render "some text"
+    // renders text for a specified content-type/encoding
+    render(text: "<xml>some xml</xml>", contentType: "text/xml", encoding: "UTF-8")
+
+    // render a template to the response for the specified model
+    def theShining = new Book(title: 'The Shining', author: 'Stephen King')
+    render(template: "book", model: [book: theShining])
+
+    // render each item in the collection using the specified template
+    render(template: "book", collection: [b1, b2, b3])
+
+    // render a template to the response for the specified bean
+    def theShining = new Book(title: 'The Shining', author: 'Stephen King')
+    render(template: "book", bean: theShining)
+
+    // render the view with the specified model
+    def theShining = new Book(title: 'The Shining', author: 'Stephen King')
+    render(view: "viewName", model: [book: theShining])
+
+    // render the view with the controller as the model
+    render(view: "viewName")
+
+    // render some markup to the response
+    render {
+        div(id: "myDiv", "some text inside the div")
+    }
+
+    // render some XML markup to the response
+    render(contentType: "text/xml") {
+        books {
+             for (b in books) {
+                 book(title: b.title, author: b.author)
+             }
+        }
+    }
+
+    // render a JSON ( http://www.json.org ) response with the builder attribute:
+    render(contentType: "application/json") {
+        book(title: b.title, author: b.author)
+    }
+
+    // render with status code
+    render(status: 503, text: 'Failed to update book ${b.id}')
+
+    // Automatic marshalling of XML and JSON
+    import grails.converters.*
+    …
+    render Book.list(params) as JSON
+    render Book.get(params.id) as XML
+
+    // render a file
+    render(file: new File(absolutePath), fileName: "book.pdf")
+}
+
+method: respond()
+====================================================================
+Attempts to return the most appropiate type for the requested content
+type (specififed by either the Accept header or file extension)
+
+The view to be rendered below according to this HTTP Request Header:
+--------------------------------------------------------------------
+Accept: text/html, application/xhtml+xml, application/xml;q=0.9 */*;q=0.8, application/json
+
+
+Description
+--------------------------------------------------------------------
+The respond method uses Content Negotiation to respond with
+the most apporpiate content type.  See the documentation
+on REST support :
+http://docs.grails.org/3.1.1/guide/single.html#REST
+
+Also.....this way the consumer of your site can choose how they wish to be
+returned data.  This may not be the best option if you want to force
+a specific return type.  
+
+For example: You are building a REST api and only want to return json or xml,
+if the user asks for test.html then they may be returned your data in a format
+that ou do not wisht to support.  Otherwise respond can be an easy way to supppport
+multiple return formats witout programming them separately:
+
+Parameters:
+----------------------------------------------------
+    *   object - the object to render
+    *   arguments - A map of arguments:
+        -   Supported objects:
+                +   view - A map of agruments
+                +   model - The model to use in case of HTML rendering
+
+Examples
+--------------------------------------------------------------------
+
+class thisController{
+    //pick the best content-type to respond with
+    def method_1(){
+        respond(Book.get(1))
+    }
+    //pick the best content type to respond with from the 
+    //given formats
+    def method_2(){
+        respond(Book.get(1),[formats:['xml','json']]) // return
+    }
+    def create(){
+        respond(new SomeObject(params))
+    }
+    def show(){
+        respond(Book) // return html rendenering
+    }
+}
+
+
+
+

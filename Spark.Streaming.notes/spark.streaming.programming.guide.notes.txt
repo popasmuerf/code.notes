@@ -1,0 +1,184 @@
+http://spark.apache.org/docs/latest/streaming-programming-guide.html
+
+
+After a context is defined...
+============================================
+1.  Define the input soruces by creatin input DStreams
+2.  Define the streaming computations by applying transformation
+    and output operations to DStreams
+3.  Start recieving data and processing it using streamingContext.start()
+4.  Wait for the processing to be stopped(manually or due to any error)
+    using streamContext.awaitTermination()
+5.  The processing can be manually stopeed using streamingContext.stop()
+Points to remember
+============================================
+1.  Once a context has been started, no new streaming computations can be set up
+    or added.
+2.  Once a context has been stopped, it cannot be restarted
+3.  Only one StreamingContext can be active in a JVM at the same time
+4.  stop() ib Streaming Context also stops the SparkContext.
+    to stop the StreamingContext only, use the optional parameter of stop()
+    called stopSparkContext to falasle
+5.  A sparkcontenxt can be re-used to create multiple StreamingContexts, as long as the previous
+    StreamingContext is stoped
+
+Bit Streaming Data Processing:
+============================================
+    *   Fraud detection in bank transactions
+    *   Anomoalies in sensor data
+    *   Cat videos in tweets
+    
+    
+    
+How to Process Big Streaming Data:
+============================================
+Raw Data Streams --------->Distributed Processing System(in this case Spark)
+                           |
+                           |
+                           |--------->Processed Data
+                           
+    *   Scales to hundreds of nodes
+    *   Achieves low latency
+    *   Efficiently recover from failures
+    *   Integreates with batch and interactive processing.
+    
+    
+    
+The dumb shit people have been doing ?
+============================================
+
+    *   building two stacks...one for batch, and the other for streaming
+        when both have been processing the same data
+    *   Existing frameworks cannot do both
+            -   Either, stream processing of 100s of MB/s with low latency
+            -   Or, batch processing TBs of data with high latency
+            
+    *   Extrememly painful to maintain two code bases for batch and streaming
+            -   Different programming models
+            -   Doubles implementation effort
+            -   Doubles operational effort
+            
+           
+           
+Fault-tolerant stream Processing
+===========================================
+    *   Traditional processing model
+        -   Pipeline of nodes
+        -   Each node maintains mutable state
+        -   Each input record updates the state
+            and new records are sent out
+        -   Mutable state is lost if node fails
+        -   Making stateful stream processing fault
+            tolerant is challenging!!!!
+            
+            
+    input records(node1)---------
+                                | ---------->node3--------->
+    input records(node2)---------
+    
+    
+    
+    
+ Existing Streaming systems
+ ===========================================
+    *   Storm
+        -   Replays record if not processed by a node
+        -   Processes each record at least once
+        -   May update mutable state twice !
+        -   Mutable state can be lost due to failure!
+    *   Trident
+        -   Processes each record exactly once
+        -   Per-state transaction to external database is slow
+        
+        
+What is Spark Streaming
+=============================================
+    *   Receive data streams from input sources, process
+        them in a cluster, push out to databases dashboards
+    *   Scalable, fault taolerant, second-scale latencies
+    
+    Kafka---------|
+    flume---------|                                   |---->HDFS
+    HDFS----------|---------> Spark Streaming-------->|---->Databases
+    Kinesis-------|                                   |---->Dashboards
+    Twitter-------|
+    ZeroMQ--------|                                   
+    Facebook(?)---|
+    Google+(?)----|
+    Custom data---|
+    sources
+    
+
+
+How does Spark Streaming work ?
+=============================================
+    *   Chop up data streams into batches of a few secs
+    *   Spark treats each batch of data as an RDD(I guess we have to set up a schema ourselfves
+        for s
+    *   Processed results are pused out into batches
+    
+    
+    data streams ---> spark recievers --->batched into RDD----->resultant RDD
+    ----------->Convert RDDs to DataFrames provided a schema ?
+    
+    
+Spark Streaming Programming Model
+==============================================
+    *   Discretized Stream(DStream)
+        -   Represents a stream of data
+        -   Implemented as a sequence of RDDs
+        -   So DStreams are a sequence of RDDs...(as in Seq[RDD]) ?
+    *   DStreams API very similar to RDD API
+        -   Functional APIs in Scala, Java
+        -   Create input DStreams from different sources
+        -   Apply parallel operations
+    
+    
+    /**** Example --- Get hashtags from Twitter ****/
+    
+    val sparkContext = new SparkContext(contextInfo)    //1
+    val streamContext = new StreamingContext(sparkContext,Seconds(1)) //2
+    val tweets = TwitterUtils.createStream(streamContext, None) //3
+    val hashTags = tweets.flatMap(status => getTags(status)) //4
+    hashTags.saveAsHadoopFiles("hdfds://...")
+    hashTags.foreachRDD(hasTagRDD => {....})
+    
+    /*****Example End*******************************/
+    
+    ^^^^^What's going on....
+    Twitter Streaming API --->  batch@t,batch@t+1,batch@t+2,batch@t+3 //3
+    
+    tweets DStream  RDD, RDD1, RDD2, RDD3  //3
+    
+    transformed DStream ---> transformation via flatmap of data in one
+                             DStream to create another DStream     //4
+                             
+    tweets DStream ----->flatmap------> hashTags DStream(#cat, #dog...etc)/4
+        
+ 
+ 
+Languages 
+====================================================
+
+Scala API
+-----------------------------------------------------
+val tweets = TwitterUtils.createStream(scc,auth)
+val hasTags = tweets.flatMap(status -> getTags(status))
+hasTags.saveAsHadoopFiles("hdfs://....")
+ 
+ 
+ 
+Java API
+----------------------------------------------------
+JavaDStream<Status> tweets = streamContext.TwitterStream() ;
+JavaDstream<String> hasTags = tweets.flatMap(new Function<....>{});
+hasTags.saveAsHadoopFiles();
+
+ 
+ 
+ 
+Window-based Transformations
+=======================================================
+val tweets = TwitterUtils.createStream(streamContext,auth)
+val hashTags = tweets.flatMap(status => getTags(status))
+val tagCounts = hashTags.window(Minutes(1), Seconds(5))).countByValue()

@@ -1,0 +1,203 @@
+http://docs.grails.org/latest/guide/plugins.html#creatingAndInstallingPlugins
+http://www.ibm.com/developerworks/java/library/j-grails09159/index.html
+http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=mastering+grails
+
+Plugins
+=============================================
+Grails is first and foremost a web application
+framework, but it is also a platform.  By
+exposing a number of extension points
+that let you extend anything from the command 
+line interface to the runtime configuration
+engine, Grails can be customised
+to suit almost any needs.  To hook into this
+platform, all you need to do is create a plugin.
+
+Extending the platform may sound complicated, but plugins
+can range from trivially siple to incredibly powerful.
+If you know how to build a Grails application, you'll know
+how to creat a plugin for sharing a data model or some
+static resources
+
+
+Creating Plugins
+===============================================
+It's easy in Grails.  Just run this at the cli:
+
+> grails create-plugin [plugin name]
+
+
+In grails 3.* you should consider whether the plugin you create rquires a web
+enviroment or whether the plugin can be used with other profiles.  If your
+plugin does not require a web enviroment then use the "plugin" profile
+instead of the "web-plugin" profile:
+
+
+Just a plugin profile
+---------------------------------------------------
+> grails create-plugin [plugin name]
+
+
+A web plugin profile
+---------------------------------------------------
+>grails create-plugin [plugin name] --profile=plugin
+
+
+Note: plugins and naming convention
+==========================================
+If there is more than one capital letter in th plugin
+name...then it wont work.  
+
+
+
+
+
+Structure of a grails plugin 
+================================================
+The structure of the Grails plugin is very nearly
+the same as a Grails application project's
+except that in the directory:
+
+    src/main/groovy
+    
+under the plugin package structure you will 
+find a plugin descriptor class
+
+/***********Example**********/
+
+    class ExampleGrailsPlugin{
+        //.......
+    }
+
+
+
+Note:  Implementation of Grails plugins...must be
+in the form of a class!!!
+==================================================
+All plugins must be implemented as a class withing
+the directory path:
+
+    /src/main/groovy/MyPluginGrailsPlugin.groovy
+    
+else grails will not recognize the plugin as being an actual
+plugin.  The plugin class defines metadata about the
+plugin, and optionally various
+hooks into plugin extension points.
+
+
+
+
+Example of a plugin via the Quatrz Graisl plugin:
+=====================================================
+class QuartzGrailsPlugin{
+    def grailsVersion = "1.1 > *"
+    def author = "Sergey Nebolsin"
+    def authorEmail = "nebolsin@gmail.com"
+    def title = "Quartz Plugin"
+    def description = '''\
+          def description = '''\
+            The Quartz plugin allows your Grails application to schedule jobs\
+            to be executed using a specified interval or cron expression. The\
+            underlying system uses the Quartz Enterprise Job Scheduler configured\
+            via Spring, but is made simpler by the coding by convention paradigm.\  
+    '''
+}
+
+
+Installling local plugins?
+================================================
+command on cli:
+    > grails install
+    
+This will install the pluin into your local Maven cache.  Then
+to use the plugin within an appliation declare a dependency
+on the plugin in your build.gradle file......
+
+/****In my build.gradle file...******/
+
+compile "org.grails.plugins:quartz:0.1"
+ 
+Note: not to be confused with gradle plugins...
+==================================================
+/*****build.gradle*******/
+plugin: "myGradlePlugin"
+grails {
+    plugins {
+        compile project(':myplugin')
+    }
+}
+
+
+
+
+Note: Plugin differences between Grails 2.* and Grails 3.*
+============================================================
+In grails 2.* plugins were packaged as ZIP files, however in
+grails 3.* plugins are simple JAR files that can be added to the
+classpath of the IDE
+
+
+
+
+Point to Point messaging System
+=========================================
+    *   Messages are persisted in a queue
+    *   One or more consumers can consume messages in the Q
+    *   A particular message may be consumeby a maximum of one consumer
+    *   All consumed messages disapear
+    *   typical example of a Pt-to-Pt  messaging system:
+            -   Order Processing System
+            
+            Sender------->Message-Q-------->Reciever
+            
+            
+            
+Publish-subscribe Messaging System
+=========================================
+    *   Messages are persisted in a queue
+    *   One or more consumers can consume messages in the Q
+    *   Any consumer may subscribe to any particular topic
+        and then proceed to consume all the messages in that topic
+    *   Messages are produced by publishers
+    *   Messagers are consumbed by subscribers
+    *   typical example of a Pt-to-Pt  messaging system:
+            -   Order Processing System
+                                    ------->Reciever
+                                    |
+            Sender------->Message-Q-------->Reciever
+                                    |
+                                    ------->Reciever
+
+What is Kafka
+=========================================
+    *   Reliablility
+    *   Scalability
+    *   Durability
+    *   Performance
+    
+    
+Use Cases:
+=========================================
+    *   Metrics
+    *   Log Aggregations Solution
+    *   Stream Processing
+    
+    
+Warning scalac: -target:jvm1.5 is deprecated: use target for Java 1.6 or above
+
+
+
+
+
+
+All of you(most of you) are missing the point w/r
+to the ire the guys in this group hold for this very unatractive
+woman making such demands.   Dating ultimately is about economics in a sense.
+..and what is economics but the "science" of why you can't have what you
+want when you want it?   If this was Paula Patton(post baby weight gain), Nia Long,
+most of us would be like : "Ok...fair enough".....however she is up in this piece
+making demands looking like a Ro-Beast from Voltron.....this is no different than
+when I lolz at fat, relatively unattractive dudes of little note publicly proclaiming
+that they be "pulling 'em" and demand nothing less than a women whom meets the general criteria
+of "video hoe" physically....nevermind the fact they see no problem with looking like
+a two-legged gastropod in this equation. 

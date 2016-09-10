@@ -367,3 +367,70 @@ and its collectio of Sponsor instances, as well as between a Sponsor and its col
 of Sponsor instances, as well as betwen a Sponsor and its collection of TekEvent
 instances.
 
+
+
+
+belongsTo
+http://docs.grails.org/3.1.1/ref/Domain%20Classes/belongsTo.html
+=====================================================
+Defines a "belongs to" relationship whre teh class specified by 
+belongsTo assumes ownership of the relationship.  This has the effect
+of controllign how saves and dletes cascade.  The exact
+behavior dpends on the type of relationship:
+
+    *   Many-to-one/one-to-one: saves and deletes cascade from the owner
+        to the dependent(the class with the belongsTo).
+    *   One-to-Many : saves always cascade from the one side to the many side,
+        but if the many side has belongsTo, then deletes also cascade in that direction
+    *   Many-to-Many: only saves cascade from the "owner" to the "dependant", not deletes
+    
+    
+Exmaples of belongsTo
+------------------------------------------------------
+class Book{
+    String title
+    static belongsTo = [author:Author]
+}
+
+/**  In this example the Book class specifies that it belongs to the 
+Author class, hence when an Author instance is deleted so are all its
+associated Book instances
+**/
+
+Description of belongsTo
+-------------------------------------------------------
+The belongsTo property abstracts the nature of the cascading
+behaviour in Hibernate.  If you want one class to belong to another
+but not have a back reference, then you can specify a
+class of a list of classes as the value:
+
+class Book{
+    static belongsTo = Author 
+        -or-
+    static belongsTo = [Author,Library]
+}
+
+Back references, otherwise known as properties lingking back to the owner,
+can be added in one of two ways:
+
+
+class Book{
+    Author author
+    static belongsTo = Author
+}
+
+    -or-
+    
+class Book{
+    static belongsTo = [author:Author]
+}
+
+
+In these examples, both techniques create an Author property
+named author.  Also, the Map property can specify multiple properties and
+types if the class belongs to more than one owner.
+
+The belongsTo property is simple andmeans you don't have to worry about 
+the Hibernate cascading stratigies, but if you need more contorl over cascading you
+can use the ORM DSL.  This allows fine grained contorl of cascading updates
+and deletes.
