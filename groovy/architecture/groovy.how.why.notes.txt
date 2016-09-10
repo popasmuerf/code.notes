@@ -20,3 +20,88 @@ Copiled Groovy bytecodes|
 Groovy script source    |       ------------------------------------
 			|------>Groovy command (compiles & executes|
 ------------------------	------------------------------------ 
+
+
+Guiding principle:
+=============================================================
+Java is greate for tools, libs, and infrastructure.  Groovy
+is great for everythign else.
+
+
+
+Use cases:
+=============================================================
+Spring Framework:
+-------------------------------------------------------------
+One of the most succesful open source project in teh Java industry
+today.  It's the Swiss Army chainsaw of projects; it's pervavisve
+throughout the Java world and has tools for proactically every
+purpose.
+
+The Spring project is well aware of Groovy and build in special capabilities
+for working with it.  Spring bean files can contain inline scripted
+Groovybeans.  Spring also allows for deployment of Groovy source code
+rathern than compiled  versions as so-called refereshable beans.
+
+
+
+Simplifed database access
+----------------------------
+Nearly all Java developes work with databases.  Groovy has a special
+set of classes to make database integreation easy.
+
+
+Building and acessing web services
+--------------------------------------
+SOAP and REST.
+
+
+Web application enhancements
+------------------------------------
+Groovy includes a "groovlet" class, which acts as a Groovy-based
+servlet.  It recieves HTTP requests and returns HTTP reponses, and it includes
+pre-built objects for requests, resposes, and more.  One of the most 
+successful instance Groovy and Java integeration and arguably the killer app for Groovy, is the Grails frame work.
+
+
+
+Differences between Java and Groovy
+===========================================================
+	*	Semicolons are optional
+	*	Parentheses are optional(often)
+	*	Parentheses are often optional until they are not:
+		-	Simple method calls normally omit them, but
+			if there's any uncertainty, add them.
+			Groovy is all about simp0licity and 
+			readibility.
+
+Accessing Google Chart Tools
+===========================================================
+One of the APIs that Google makes available is a RESTful web
+service known as the Chart API, or more formally, Google Chart Tools Image API.  The chart tools provide a rich API for JavaScript users,
+but the inputs are ultimately URLs with query parameters.  A developer sends a request to the base URL:
+
+	https://chart.apis.google.com/chart
+and appends query paqramters to specify the type of chart, its size,
+the data, an dany labels.  Because  that API also nees a "Hello, World"
+example, here's the URL for a three dimensional pie chart:
+
+
+	https://chart.apis.google.com/chart?cht=p3&chs=250x100&chd=t:60,40&ch1=Hello|World
+
+
+params
+-------------------------------------------------------------
+	*	cht
+		-	3D pie chart
+	*	chs
+		-	as a 250 x 100 pixel
+	*	chd
+		-	60 , 40 simple text format
+	*	chl
+		-	Hello, and then world
+	
+https://developers.google.com/chart/interactive/docs/quick_start
+
+
+	
