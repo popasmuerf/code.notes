@@ -100,8 +100,52 @@ params
 		-	60 , 40 simple text format
 	*	chl
 		-	Hello, and then world
-	
+
 https://developers.google.com/chart/interactive/docs/quick_start
+ge
+
+Goal : Write a Groovy script to buld the above string...
+===========================================================
+String qstr = 'https://chart.apis.google.com/chart'
+String params = [cht:'p3',chs:'250x100',chd:'t:60,40', chl:'Hello|World']
+
+A note about Groovy collections:
+=======================================================
+Keys are assumed to be Strings...
+
+
+params.collect {k,v -> "$k=$v"}
+
+
+
+What exactly is a closure ?
+=======================================================
+A closure is a block of code, delimited by curly braces,
+which can be treated as an object.  The arrow notation is used to specify dummy args.  In the closure appled to the map in the current example, the two dummy arguments are k and v, which represent the
+key and value of each entry.  The expression on the right side
+of the arrow says to subsitue each eky and value into a GString separaterd by an equals sign.  This collect method takes each entry in the map  and converts it into a string with the key assigned to 
+the value, and produces a list of results.
+
+
+
+
+You know what's awesome?  Groovy Strings have a  toURL() method
+================================================================
+The helpful methods of known as the Groovy JDK and will be discussed
+later....as for now...
+
+The String class in Groovy has a method called toURL().
+It converts an object of type java.lang.String  to 
+java.net.URL
+
+
+To send an HTTP GET request to a URL and retrieve the results,
+convert the string to a URL, and then retrieve the data on a 
+web page via the code:
+
+String strUrl = "http...."
+java.net.UrL url = strUrl.toURL
+def responseStr url.text
 
 
 	
