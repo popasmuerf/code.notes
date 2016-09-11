@@ -130,7 +130,9 @@ Within the scope of a GSP there are a number of
 pre-defined variables, including:
 ================================================
 
-
+	*	application - The javax.servletContext instance
+	*	applicationContext - The Spring application context
+	*	flash	- The flash object
 
 
 

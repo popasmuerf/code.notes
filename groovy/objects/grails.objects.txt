@@ -1,0 +1,120 @@
+http://docs.grails.org/latest/ref/Controllers/flash.html
+
+flash
+===========================================================
+http://docs.grails.org/latest/ref/Controllers/flash.html
+A temporary storage map that stores objects within the 
+session for the next request and the next request only,
+automatically clearing out the objects held there
+after the next request completes.
+
+Description
+---------------------------------------------------------------
+The flash object is a Map(a hash) which you can use to store
+key value pairs.  The values are transparently stored inside
+the session and then cleared at the end of the next request.
+
+This pattern lets you use HTTP redirects (which is useful for
+redirect after post) and return values that can be retrived from
+the flash object
+
+Example
+-------------------------------------------------------------
+class BookController{
+	def index(){
+		flash.message = "Welcome!"
+		redirect(action: 'home')
+	}
+	def home(){
+		render(flash.message)		
+	}
+}
+
+
+params
+===========================================================
+http://docs.grails.org/latest/ref/Controllers/params.html
+
+A mutable multi-dimensional map(hash) of request (CGI) parameters
+
+Description
+---------------------------------------------------------------
+The standard Servlet API provides access to parameters with
+the object:
+
+	HttpServletRequest
+
+Although it provides the same cpability through the request object,
+it goes a bit further by providing a mutable map of user provided
+parameters called :
+
+	params[:]
+
+The params object can be indexed into using the array operator
+or de-reference operator, so given the URL:
+
+	http://localhost.com/action?foo=bar
+
+We may access this value in code via :
+
+	println param.foo
+	def var = param.foo
+	
+The params object can also be used to bind request parameters
+onto the properties ofa domain class
+using the constructor of the property:
+
+	properties
+
+def book = new Book(params)
+book = Book.get(1)
+book.properties = params
+
+Example
+-------------------------------------------------------------
+class BookController{
+	def index(){
+		flash.message = "Welcome!"
+		redirect(action: 'home')
+	}
+	def home(){
+		render(flash.message)		
+	}
+}
+
+GSPs live in teh grails-app/views directory and are typically rendered
+by convention or via the method:
+
+	render(view:"index")
+
+		-or-
+	render([view:"index"])
+
+
+A GSP is typically a mix of mark-up and GSP tags which aid in view 
+rendering.
+
+request
+===========================================================
+http://docs.grails.org/latest/ref/Controllers/request.html
+
+The request object is an instance of the Servlet API's
+HttpServletRequest interface.
+
+Description
+---------------------------------------------------------------
+The standard Servlet API provides access to parameters with
+the object:
+
+	HttpServletRequest
+
+Example
+----------------------------------------------------------------
+class BookController{
+	def list(){
+		log.info("User agent": + request.getHeader("User-Agent")
+		render(view: actionName)
+	}
+}
+
+
