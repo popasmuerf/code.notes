@@ -1,33 +1,38 @@
-http://docs.grails.org/latest/ref/Controllers/flash.html
+http://docs.grails.org/latest/guide/single.html#dataBinding
 
-flash
+ Data Binding
 ===========================================================
-http://docs.grails.org/latest/ref/Controllers/flash.html
-A temporary storage map that stores objects within the 
-session for the next request and the next request only,
-automatically clearing out the objects held there
-after the next request completes.
+Data binding is the act of "binding" incoming request
+parameters onto the properties of an object or
+an entire graph of objects.  Data binding should 
+deal with all necessary type conversion since request
+parameters, which are typically delivered by a form
+submission, are always strings whilst the properties
+of a Groovy or object may well not be.
+
+
+
+Map Based Binding
+===========================================================
+The data binder is capable of converting and assigning values
+in a Map to properties of an object.  The binder will associate
+entries in the Map to properties of the object using
+the keys in the Map that have values which correspond to
+property names on teh object.  The following code
+demonstrates the basics.
+
+
 
 Description
 ---------------------------------------------------------------
-The flash object is a Map(a hash) which you can use to store
-key value pairs.  The values are transparently stored inside
-the session and then cleared at the end of the next request.
-
-This pattern lets you use HTTP redirects (which is useful for
-redirect after post) and return values that can be retrived from
-the flash object
+.....
 
 Example
 -------------------------------------------------------------
-class BookController{
-	def index(){
-		flash.message = "Welcome!"
-		redirect(action: 'home')
-	}
-	def home(){
-		render(flash.message)		
-	}
+class Person{
+	String firstName
+	String lastName
+	Integer age
 }
 
 
