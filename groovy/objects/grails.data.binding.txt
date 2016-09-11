@@ -36,127 +36,44 @@ class Person{
 }
 
 
-params
-===========================================================
-http://docs.grails.org/latest/ref/Controllers/params.html
+def bindingMap = [firstName:'Peter',lastName:'Gabriel',age:63]
+assert person.firstName == 'Peter'
+assert person.lastName == 'Gabriel'
+assert person.age == 63
 
-A mutable multi-dimensional map(hash) of request (CGI) parameters
+Person person = Person.get(someId)
 
-Description
----------------------------------------------------------------
-The standard Servlet API provides access to parameters with
-the object:
 
-	HttpServletRequest
+Maps of Maps
+=============================================================
+The binder can populate a full graph of objects using 
 
-Although it provides the same cpability through the request object,
-it goes a bit further by providing a mutable map of user provided
-parameters called :
-
-	params[:]
-
-The params object can be indexed into using the array operator
-or de-reference operator, so given the URL:
-
-	http://localhost.com/action?foo=bar
-
-We may access this value in code via :
-
-	println param.foo
-	def var = param.foo
-	
-The params object can also be used to bind request parameters
-onto the properties ofa domain class
-using the constructor of the property:
-
-	properties
-
-def book = new Book(params)
-book = Book.get(1)
-book.properties = params
-
-Example
+Example:
 -------------------------------------------------------------
-class BookController{
-	def index(){
-		flash.message = "Welcome!"
-		redirect(action: 'home')
-	}
-	def home(){
-		render(flash.message)		
-	}
+class Person{
+	String firstName
+	String lastName
+	Integer age
+	Address homeAddress
+}
+class Address{
+	String street
+	String county
+	String country
 }
 
-GSPs live in teh grails-app/views directory and are typically rendered
-by convention or via the method:
 
-	render(view:"index")
-
-		-or-
-	render([view:"index"])
+def bindingMap = [firstName:'Peter',lastName:'Gabriel',age:63,homeAddress: [county: 'Surrey', country: 'England']]
+def person = new Person(bindingMap)
 
 
-A GSP is typically a mix of mark-up and GSP tags which aid in view 
-rendering.
 
-request
-===========================================================
-http://docs.grails.org/latest/ref/Servlet%20API/request.html
-
-The request object is an instance of the Servlet API's
-HttpServletRequest interface.
-
-Description
----------------------------------------------------------------
-The standard Servlet API provides access to parameters with
-the object:
-
-HttpServletRequest class is useful for,
-amongst other things, obtaining request header5s,
-storing request scoped attributes and establishing
-information about the client.  Refer to the Servlet
-API's javadocs for further information.
-
-Grails enhances the HttpServletRequest instance by adding
-the following new properties and methods:
-
-	*	XML - instance of XMLSlurper's GPathResult class that allows
-		parsing of an incoming XML rquest(useful for REST)
-
-	*	JSON - An instance of Grails' JSONObject class that allows parsing
-		of an incoming JSON request(useful for JSON based REST)
-
-	*	forwardURI - Useful for obtaining the current request URI 
-		
-
-Example
-----------------------------------------------------------------
-/*
-	The XML JSON properties are useful for XML APIs and can be
-	used to parse incomeing XML or JSON packages.  For example
-	given a request body of:
-*/
-
-<!-- XML file -->
-<book>
-	<title> The Stand </title>
-	<author> Robert Miller </author>
-	<cbn> 2341556780  </cbn>
-</book>
+Summary:  a Groovy Bean has a properties  map
+----------------------------------------------------
+Apparently I can generate a new instance of a Bean
+by passing it a map of the Beans established fields
 
 
-/* Code in controller */
 
-def title = request.XML?.title
-def author = request.XML?.author
-def cb = request.XML?.cbn
-render("The title is $title)
 
-/* We can get Request attributes which are normally
-   accessable from the method getAttribute() can also
-   be indexed into using the array index operator or
-   de-refernce operator
-*/
-def user = request.user
-def author = request.author
-
+========

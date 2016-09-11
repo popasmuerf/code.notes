@@ -129,10 +129,28 @@ GSP also supports JSP-style server-side comments
 Within the scope of a GSP there are a number of
 pre-defined variables, including:
 ================================================
-
+http://www.larp.com/legioxx/pugio.html
 	*	application - The javax.servletContext instance
 	*	applicationContext - The Spring application context
 	*	flash	- The flash object
+	*	grailsApplication - The GrailsApplication instance
+	*	out - The response writer for writing to the output stream
+	*	params - The params object for retrieving request parameters
+	*	request - The HttpServletRequest instance
+	*	response - The HttpServletResponse instance
+	*	webRequest - The GrailsWebRequest instance
+
+
+Logic and Iteration
+================================================
+
+<html>
+	<body>
+		<%[1,2,3,4].each{num ->
+		<p><%="Hello ${num}!!!"%></p>
+		<%}%>
+	</body>
+</html>
 
 
 
