@@ -64,6 +64,76 @@ ${book.author}
 ${book.cbn}
 
 
+
+
+GSP basics
+=========================================================
+In the next view sections we'll go thryough the basics of 
+GSP and what is available to us.
+
+
+GSP supports the JSP usage <% %> scriptlet blocks to embed Groovy code
+(this is discouraged...)
+===============================================================
+
+<html>
+	<body>
+		<% out << "Hello GSP!" %>
+	</body>
+</html>
+
+  <!---------or---------->	
+
+<html>
+	<body>
+		<%="Hello GSP!" %>
+	</body>
+</html>
+
+ <!---------or---------->
+
+<html>
+	<body>
+		<%-- This is my comment --%>
+		<%="Hello GSP!" %>
+	</body>
+</html>
+
+
+Note: Embedding data recieved from the user
+==========================================
+Embedding data recieved from user input has the risk of
+making your application vulnerable to a XSS 
+attack.
+
+
+Variables and Scopes
+=======================================================
+Within the <% %> brackets you can declare variables:
+
+<html>
+	<body>
+		<%---This is my comment---%>
+ 		<% now = Date() %>
+		<%=now%> 
+	</body>
+</html>
+
+
+
+GSP also supports JSP-style server-side comments
+(which are not rendered in the HTML response)
+
+
+
+Within the scope of a GSP there are a number of
+pre-defined variables, including:
+================================================
+
+
+
+
+
 ^^^^So what is going on here ?
 ------------------------------------------------------------
 In this show() action....the controller is passing the 
