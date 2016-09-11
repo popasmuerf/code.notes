@@ -1,4 +1,5 @@
 http://docs.grails.org/latest/guide/theWebLayer.html#gsp
+http://docs.grails.org/latest/guide/theWebLayer.html#gsp
 
 Groovy Server Pages
 ===========================================================
@@ -331,5 +332,17 @@ Search and Filtering
 </g:grep>
 
 
+Links and Resources
+==============================================================
+GSP also fatures tags to help you manage linking to controllers and actions.
+The link tag lets you specify controller and action name pairing and it will automatically work out the link based on the URL Mappings, even if you change them! For example:
 
+
+<g:link action="show" id="1"> Book 1 </g:link>
+<g:link action="show" id="${currentBook.id}">${currentBook.name}<g/:link>
+<g:link controller="book" action="list">Book List</g:link>
+<g:link url="[action: 'list', controller: 'book']">Book List</g:link>
+
+<g:link params="[sort: 'title', order: 'asc', author: currentBook.author]"
+        action="list">Book List</g:link>
 
