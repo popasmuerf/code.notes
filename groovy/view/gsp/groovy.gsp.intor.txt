@@ -143,16 +143,126 @@ http://www.larp.com/legioxx/pugio.html
 
 Logic and Iteration
 ================================================
+Using the JSP <% %> syntax you can embed loops
+and so on using this syntax:S
+
+
+<!-- iteration example -->
+<html>
+   <body>
+      <% [1,2,3,4].each { num -> %>
+         <p><%="Hello ${num}!" %></p>
+      <%}%>
+   </body>
+</html>
+
+
+<!-- branching example -->
+<html>
+   <body>
+      <% if(params.hello == 'true') %>
+      <%="Hello!" %>
+      <%else%>
+      <%=GoodBye%>
+   </body>
+</html>
+
+
+
+Page Directives
+================================================
+Sometimes we need to import "directives"...
+things like libs from some api....though it is rarely
+needed in Groovy as a lot of stuff is imported by
+default and do to Groovy's GSP
+
+
+<!-- import java's swing framework -->
+<html>
+   <body>
+      <%@ page import="java.swing.*" %>
+      <% ...............%>
+      <%................%>
+   </body>
+</html>
+
+
+<!-- specifying a page content type -->
+<html>
+   <body>
+      <%@ contentType="application/json*" %>
+      <% ...............%>
+      <%................%>
+   </body>
+</html>
+
+GSP --> ${expr}
+================================================
+Is equivalent to JSP's EL tag : <%= %>
+...but unlike JSP EL, we can have any groovy expression
+with the confines  of  ${...}
 
 <html>
 	<body>
-		<%[1,2,3,4].each{num ->
-		<p><%="Hello ${num}!!!"%></p>
-		<%}%>
+		Hello ${params.name}
 	</body>
 </html>
 
 
+
+<!-- branching example -->
+<html>
+   <body>
+      <% if(params.hello == 'true') %>
+      <%="Hello!" %>
+      <%else%>
+      <%=GoodBye%>
+      
+   </body>
+</html>
+
+GSP Tags
+=================================================
+Now that the less attractive JSP heritage has been set
+aside, let's look at what our GSPs can do.....
+
+
+All built-in GSP tags start with the prefix:
+
+	g:
+
+Unlike JSP, you don't specify any tag library imports
+If a tag starts with g: it is automatically assumed to be
+a GSP tag
+
+
+GSP tags can have bodies:
+==================================================
+<g:example>
+	Hello World
+</g:example>
+
+
+
+
+Expressions can be passed into GSP tag attributes, if an expression
+is not used it will be a  String
+---------------------------------------------------------------------------
+<g:example "${new Date()"}>
+	Hello World
+</g:example>
+
+Maps can also be passed into GSP tag attributes wich are often used
+for a named parameter style syntax
+-----------------------------------------------------------------------
+<g:example attr="${new Date()}" attr2="[one:1,two:2,three:3]"
+	Hello world
+</g:example>
+
+Note concerning attributes and single qoutes for Strings
+
+
+Expressions can be passed into GSP 
 
 ^^^^So what is going on here ?
 ------------------------------------------------------------
