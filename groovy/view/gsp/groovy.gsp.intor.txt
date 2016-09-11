@@ -259,170 +259,77 @@ for a named parameter style syntax
 	Hello world
 </g:example>
 
-Note concerning attributes and single qoutes for Strings
+
+Variables and Scopes
+========================================================
+Variables can be defined within a GSP using the tag:
+
+	set
+Example
+---------------------------------------------------------
+<g:set var="myHTML">
+	Some re-usable code on  ${new Date()}
+</g:set>
 
 
-Expressions can be passed into GSP 
+The assigned value can also be a bean from the applicationContext
+-----------------------------------------------------------------
+<g:set var="bookService" bean="bookService"/>
 
-^^^^So what is going on here ?
-------------------------------------------------------------
-In this show() action....the controller is passing the 
-the controller class params variable(its a map) to an implicit
-return method.....whatever code (likely some analog to main.groovy)
-that calls show() will take this map with the key book.
-From there...the map may be referenced within a a GSP
+GSP variables can also be placed in one of the following scopes:
+----------------------------------------------------------------
+	*	page - Scope to the current page
+	*	request - Scoped to the current request
+	*	flash - Placed within the flash scope
+			and thus available to the next request
+	*	session - Scoped for the user session
+	*	application - Application-wide scope
 
+Let's specify a scope for our lovely variable.....
+----------------------------------------------------------------
 
-Note:  Embedding data recived from a user is stupid.
---------------------------------------------------------------
+<g:set var="now" value="${new Date()}" scope="request">
 
--------------------------
-Copiled Groovy bytecodes|
-+ groovy-all jar        |
--------------------------   
-	|
-	|				-------------------------
-	|				Copiled Jsbs bytecodes	|
-	|						      	|
-	|				-------------------------
-	|					|
-	|					|
-=================================================================
-		Java Runtime Enviroment(JVM + Standard libs)	|
-								|
-=================================================================
-					|
-					|
--------------------------		|
-Groovy script source    |       ------------------------------------
-			|------>Groovy command (compiles & executes|
-------------------------	------------------------------------ 
-
-
-Guiding principle:
-=============================================================
-Java is greate for tools, libs, and infrastructure.  Groovy
-is great for everythign else.
+<g:set var="sessionId" value=session.getId() scope="session">
 
 
 
-Use cases:
-=============================================================
-Spring Framework:
--------------------------------------------------------------
-One of the most succesful open source project in teh Java industry
-today.  It's the Swiss Army chainsaw of projects; it's pervavisve
-throughout the Java world and has tools for proactically every
-purpose.
-
-The Spring project is well aware of Groovy and build in special capabilities
-for working with it.  Spring bean files can contain inline scripted
-Groovybeans.  Spring also allows for deployment of Groovy source code
-rathern than compiled  versions as so-called refereshable beans.
-
-
-
-Simplifed database access
-----------------------------
-Nearly all Java developes work with databases.  Groovy has a special
-set of classes to make database integreation easy.
-
-
-Building and acessing web services
---------------------------------------
-SOAP and REST.
-
-
-Web application enhancements
-------------------------------------
-Groovy includes a "groovlet" class, which acts as a Groovy-based
-servlet.  It recieves HTTP requests and returns HTTP reponses, and it includes
-pre-built objects for requests, resposes, and more.  One of the most 
-successful instance Groovy and Java integeration and arguably the killer app for Groovy, is the Grails frame work.
-
-
-
-Differences between Java and Groovy
-===========================================================
-	*	Semicolons are optional
-	*	Parentheses are optional(often)
-	*	Parentheses are often optional until they are not:
-		-	Simple method calls normally omit them, but
-			if there's any uncertainty, add them.
-			Groovy is all about simp0licity and 
-			readibility.
-
-Accessing Google Chart Tools
-===========================================================
-One of the APIs that Google makes available is a RESTful web
-service known as the Chart API, or more formally, Google Chart Tools Image API.  The chart tools provide a rich API for JavaScript users,
-but the inputs are ultimately URLs with query parameters.  A developer sends a request to the base URL:
-
-	https://chart.apis.google.com/chart
-and appends query paqramters to specify the type of chart, its size,
-the data, an dany labels.  Because  that API also nees a "Hello, World"
-example, here's the URL for a three dimensional pie chart:
-
-
-	https://chart.apis.google.com/chart?cht=p3&chs=250x100&chd=t:60,40&ch1=Hello|World
-
-
-params
--------------------------------------------------------------
-	*	cht
-		-	3D pie chart
-	*	chs
-		-	as a 250 x 100 pixel
-	*	chd
-		-	60 , 40 simple text format
-	*	chl
-		-	Hello, and then world
-
-https://developers.google.com/chart/interactive/docs/quick_start
-ge
-
-Goal : Write a Groovy script to buld the above string...
-===========================================================
-String qstr = 'https://chart.apis.google.com/chart'
-String params = [cht:'p3',chs:'250x100',chd:'t:60,40', chl:'Hello|World']
-
-A note about Groovy collections:
-=======================================================
-Keys are assumed to be Strings...
-
-
-params.collect {k,v -> "$k=$v"}
-
-
-
-What exactly is a closure ?
-=======================================================
-A closure is a block of code, delimited by curly braces,
-which can be treated as an object.  The arrow notation is used to specify dummy args.  In the closure appled to the map in the current example, the two dummy arguments are k and v, which represent the
-key and value of each entry.  The expression on the right side
-of the arrow says to subsitue each eky and value into a GString separaterd by an equals sign.  This collect method takes each entry in the map  and converts it into a string with the key assigned to 
-the value, and produces a list of results.
-
-
-
-
-You know what's awesome?  Groovy Strings have a  toURL() method
+GSP Logic and Iteration
 ================================================================
-The helpful methods of known as the Groovy JDK and will be discussed
-later....as for now...
+GSP supports logical and iterative tags out ofthe box.
 
-The String class in Groovy has a method called toURL().
-It converts an object of type java.lang.String  to 
-java.net.URL
+<g:if test="$session.role == 'admin'}">
+	<%--show admin functions --%>
+</g:if>
+<g:else>
+	<%--show basic functions --%>
+</g:else>
+
+<g:each in="${books}" expr="it.author == 'Stephen King'">
+	<p>Title: ${it.title}</p>
+</g:if>
+<g:else>
+	<%--show basic functions --%>
+</g:else>
 
 
-To send an HTTP GET request to a URL and retrieve the results,
-convert the string to a URL, and then retrieve the data on a 
-web page via the code:
-
-String strUrl = "http...."
-java.net.UrL url = strUrl.toURL
-def responseStr url.text
+<g: set var ="num" value="${0}"/>
+	<g: while test="${num < 5 }">
+		<p>Number ${number++}</p>
+	</g:while>
+</g:>
 
 
-	
+Search and Filtering
+=============================================================
+<g:findAll in="${books}" expr="it.author == 'Stephen King'">
+	<p>Title: ${it.title}</p>
+</g:findAll>
+
+<g:grep in="${books}" filter=~/.*?Groovy.*?/">
+	<p>Title: ${it}</p>
+</g:grep>
+
+
+
+
