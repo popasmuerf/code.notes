@@ -1,0 +1,219 @@
+http://docs.grails.org/2.3.11/guide/theWebLayer.html#GSPBasics
+
+
+
+Specifying the enviroment in which your app is running
+===================================================================
+> grails dev run-app
+> grails test run-app 
+> grails prod run-app 
+
+
+
+The Web Layer rundown
+
+====================================================================
+
+Controllers
+
+====================================================================
+Controllers handles requests and creates or prepares responses.
+A controller can generate the response directlly or delegate to a view.
+The default url maping configuration ensures that the first part of 
+your contrller name is mapped to a to a URI and each action defined within
+your controller maps to URIs within the controller name URI.
+
+cmd
+------------------------------------------------------------------------
+> grails create-controller
+    -or-
+> grails gernerate-controller
+
+Example
+------------------------------------------------------------------------
+> grails create-controller com.lab.book
+
+/**resultant code **/
+package com.demo
+
+class BookController {
+
+    def index() { }
+    def
+}
+
+Controller actions
+
+====================================================================
+A controller can have as many multiple public action methods;
+each one maps to a URI
+
+cmd
+------------------------------------------------------------------------
+> grails create-controller
+    -or-
+> grails gernerate-controller
+
+Example
+------------------------------------------------------------------------
+> grails create-controller com.lab.book
+
+/**resultant code **/
+package com.demo
+
+class BookController {
+
+    def index() { }
+    def list(){
+        //do controller logic
+        //create model
+        return model
+    }
+}
+
+
+Note: Leveraging Public Methods as Actions
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+In earlier versions of GRAILS actions were implemented with
+Closures.  This is still supported, but the preferred approach
+is to use methods.
+
+Levering methods instead of Closures properties has some
+advantages:
+
+    *   Efficient use of Memory
+    *   Allow use of stateless controllers(singleton scope)
+    *   Actions may be overrided in derivative classes
+    *   Methods can be intercepted with standard proxying methods...
+        which is possible with closures...but it isn't easy
+        
+
+Note: Leveraging Public Methods as Actions
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+In earlier versions of GRAILS actions were implemented with
+Closures.  This is still supported, but the preferred approach
+is to use methods.
+
+Levering methods instead of Closures properties has some
+advantages:
+
+    *   Efficient use of Memory
+    *   Allow use of stateless controllers(singleton scope)
+    *   Actions may be overrided in derivative classes
+    *   Methods can be intercepted with standard proxying methods...
+        which is possible with closures...but it isn't easy
+        
+Note: All contorllers in grails have a default action
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+A controller has the concept of a default URI that maps to the root
+URI of the controller, for example:
+
+    /book ---->  BookController
+    
+These are the rules:
+    *   if there is only one action, it's the default
+    *   if you have an action named index, it's the default
+    *   Alternatively, you can set it explicity within the 
+        controller using the inherited property:
+        
+        static defaultAction = "list"
+        
+
+Controllers and Scopes
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+The available scopes are:
+
+    *   serveletContext
+    *   flash
+    *   appContext
+    *   request
+    *   session
+    *   params
+    *   flash
+
+Accessing Scopes
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Scopes can be accessed using the variable names above in
+combination with Groovy's array index operator, even on
+classes provided by the servlet API such as HttpServletRequest
+
+
+/*********example code*********/
+
+class BookController{
+
+    def find(){
+        def findBy = params["findBy"]
+        def appContext = request["foo"]
+        def loggedUser = session["logged_user"]
+    }
+}
+/************---OR-----************/
+class BookController{
+
+    def find(){
+        def findBy = params["findBy"]
+        def appContext = request["foo"]
+        def loggedUser = session["logged_user"]
+    }
+}
+
+Using the Flash Scope
+----------------------------------------------------------------------
+    *   is often rferred to as a scope.  It's more accurate to rfere to it as a 
+    Map that exits in a speical scope.  Vaues stored in flash are avaible
+    for this reueat an one follwoin request, which allows us to store a message
+    before redireing and have that message be availeble to the redirecte view. 
+    
+    /****************Example Use of the flash scope in a controller*************/
+    
+    class BookController{
+
+    def findBookAuthor(){
+       def book = Book.findByAuthor("David Setlzer")
+       if
+       if(!book){
+            flash.messge = "....sorry...we could not find this author..."
+            redirect(action:error)
+       }
+    }
+}
+
+Scoped Controllers
+----------------------------------------------------------------------
+Supported controller scopes are: 
+    *   prototype(default) -- A new contorller is created for each request
+    *   session -- One controller is created for the scope of the user session
+    *   singleton   -- Only one instance of the controller ever exists(recommened for actions as methods)
+    
+/**Example of specifying scope of controller in your controller's code**/
+
+class BookController{
+    static scope = "session"
+    def findBookAuthor(){
+       def book = Book.findByAuthor("David Setlzer")
+       if
+       if(!book){
+            flash.messge = "....sorry...we could not find this author..."
+            redirect(action:error)
+       }
+    }
+}
+
+
+
+
+Setting the scope of controllers for the app globally
+----------------------------------------------------------------------
+There is a file in our app named:
+
+    *   Config.groovy
+    
+We can set the global scope config for all controlers via editing the 
+field within Config.groovy to:
+
+    grails.contorllers.defaultScope = "singleton"
+    
+
+
+
