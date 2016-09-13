@@ -2,12 +2,52 @@ http://docs.grails.org/2.3.11/guide/theWebLayer.html#GSPBasics
 
 
 
-Specifying the enviroment in which your app is running
+Models and Views
 ===================================================================
-> grails dev run-app
-> grails test run-app 
-> grails prod run-app 
+A model is a Map that the view uses when rendering.  The keys within
+that Map correspond to variable names accessble by the view.
+There are a couple of ways to return a model:
 
+
+/****Code Example of passing a model map directly
+
+    A model is a Map that the view uses when rendering.  The keys within
+    that Map correspond to variable names accessble
+    by the view.  There are a couple of ways to retrun a model....
+*****/
+
+
+class BookController{
+    def show(){
+        return ([books:Book.get(params.id)])
+    }
+    def list(){
+        return ([books:Book.list()])
+    }
+}
+
+
+/****A more advanced approach.....
+
+   A more advanced approach is to return an instance of the 
+   Spring ModelAndView class.....
+   
+*****/
+
+import org.springframework.web.servlet.ModelAndView
+
+class BookController{
+   def index(){
+    //get some books just for the index page, perhaps your favorites
+    def favoriteBooks = Books.list()
+    //forward to th elist view to show them
+    return new ModelAndView("/book/list",[bookList:favoriteBooks])
+   }
+}
+
+
+
+Note:  What we cannot use 
 
 
 The Web Layer rundown
