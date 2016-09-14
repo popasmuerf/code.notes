@@ -1,0 +1,38 @@
+http://docs.grails.org/2.3.11/guide/theWebLayer.html#GSPBasics
+
+
+
+Redirects and Chaining
+===================================================================
+Actions can redirect using the redirect controller method:
+
+
+/****Code Example of redirecting actions
+
+*****/
+
+
+class BookController{
+    def show(){
+        return ([books:Book.get(params.id)])
+    }
+    def list(){
+        return ([books:Book.list()])
+    }
+    def find(){
+        redirect(action:'list')
+    }
+}
+
+
+
+More examples of redirects
+====================================================================
+We can redirect to some relative context path:
+
+// A URI: for a resource relateive application context path
+
+
+
+
+
