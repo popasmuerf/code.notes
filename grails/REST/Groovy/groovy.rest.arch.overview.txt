@@ -236,3 +236,114 @@ void setUpSpec(){
 void cleanUpSpec(){
     server?.stop()
 }
+
+
+
+Lessions Learned so far...
+========================================================================
+1.  JAX-RS 2.0 is part of the Java EE specification and , like most of the 
+    recent specs, is annotation-based
+2.  It's very easy to build a huperlink-driven database using JAX-RS.
+3.  Hypermedia mechanisms do exist in JAX-RS, bu they're well hidden.
+
+
+
+Implementing JAX-RS with Groovy
+==========================================================================
+Groovy doesn't change JAX-RS in any fundamental way, through
+as usual it simplifies the implementation classes.
+
+Example
+--------------------------------------------------------------------------
+Groovy version of our POJO:
+
+@XMLRootElement
+@EqualsAndHashCode
+class Person{
+    Long id
+    String first
+    String last
+    String toString(){"$first $last"}
+}
+
+/*
+    @XMLRootElement controlls the serialization of our declaration.
+    Person is serialized as XML which is usually handled by java's XML data
+    binding API othewise known as JAXB
+*/
+
+
+
+Example
+--------------------------------------------------------------------------
+/* Groovy version of our DAO */
+
+
+@Singleton
+class jdbcPersonDAO implements PersonDAO{
+    static Sql sql = Sql.newInsance(url:'jdbc:h2:db',driver:'org.h2.Driver')
+    static{
+        sql.execute 'droptable if exists people...'
+    }
+}
+
+
+Example
+--------------------------------------------------------------------------
+/* A Groovy Implementation of the PersonResource Class...Its' the same code...
+sans the semi-colons */
+
+
+@Path('/people')
+public class PersonResource{
+    @Context
+    private UriInfo info;
+    private PersonDAO dao = JdbcPersonDAO.getInstance();
+    @GET
+    @Produces{MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML}
+    public List<Person> findByName(@PathParam("like") String like){
+        return dao.findByName(like)
+    }
+    @GET @PATH("{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response findById(@PathParam("id") Long id){
+        return Response.ok(dao.findById(id).build()
+    }
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response create(Person person){
+        dao.create(person)
+        UriBuilder builder = UriBuilder.fromUri(uriInfo.getRequestUri()).path("{id}")
+        return Response.created(builder.build(person.getId())).entity(person).build()
+    }
+    @PUT @PATH("{id}")
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Person update(Person person){
+        dao.update(person) 
+        return person
+    }
+    @DELETE @PATH("{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response remove(@PathParam("id") long id){
+        dao.delete(id)
+        return Response.noContent().build()
+    }
+}
+
+/*** Our application Class
+     ...it extends a JAX-RS class
+     called ResourceConfig, which has a 
+     constructor that takes the desired resources
+     and features as arguments.  The Jackson-Feature
+     used herre provides the mechanism
+ ***/
+public class MyApplication extends ResourceConfig{
+    public MyApplication(){
+        super(PersonResource.class, JacksonFeature.class);
+    }
+}
+
+
+

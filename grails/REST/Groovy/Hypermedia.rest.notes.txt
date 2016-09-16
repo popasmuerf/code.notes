@@ -1,0 +1,60 @@
+Hypermedia
+====================================================
+A series of resource URLs is not a RESTful web service.
+At best, it is a URL-driven database.  Yet applications like that, which claim
+to be RESTful services are all over the web.
+
+
+
+True REST applications
+====================================================
+A true RESt application understands that specific resource
+URLs may elvolve, despite attempts to keep them as stable as
+possilbe.  The idea therefore is to make requests
+taht discover the subsequent URLs to follow.  We're so accustomed
+to having a fixed API that this can be difficulte concept to adopt
+
+
+The idea therefore is to make requests that discover the subsequent URLs
+to follow.  Instead of knowing exactly what you're going to get back
+from any given request, you know how to make the first rquest and interrogate
+the result for whatever may come next.   This is similiar to the 
+way we browse the web...which is not a coincidence....
+
+
+A simple example:  Rotten Tomatoes
+=========================================================
+As a simple example, consider the API provided by the venerable
+Rotten Tomatoes....their API only respects GET requests,
+so technically it is not a RESTful service....
+Using the site's URL-base API to query for movies including the word 
+
+    "trek"
+    
+looks like this:
+
+    api.rottentomatoes.com/api/public/v1.0/movies.json?q=trek&apikey=3......
+    
+    
+out of the reuslting 151 movies....if I select "Star Trek Into Darkness", I get
+a JSON object that looks like the following :
+
+{
+    "id:    "777711190753"
+    "title: "Star Trek Into Darkness"
+    "year": 2013
+    "links":{
+        "self":     "http://api.rottentomatoes.com/.../777719878/self.json"
+        "cast":     "http://api.rottentomatoes.com/.../777719878/cast.json"
+        "clips":    "http://api.rottentomatoes.com/.../777719878/clips.json"
+        "reviews":  "http://api.rottentomatoes.com/.../777719878/reviews.json"
+        "similar": "http://api.rottentomatoes.com/.../777719878/similar.json"
+    }    
+}
+
+
+The movie object (a resource using a JSON representation) includes an entry called
+"links", which itself is a map of keys and values.  The keys in the links objects all
+point to additional resources, such as a ful cast listing or reviews.
+The Rotten Tomatoes service adds links to the individual resources rather than
+appending them to the respose headers
