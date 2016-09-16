@@ -1,0 +1,238 @@
+The REST architeture
+=====================================================================================
+
+The term Prepresentatioanl State Transfer (REST) comes from tthe 2000 PhD thesis
+by Roy Fielding , person with one of the all-time greate resumes.
+In this thesis, Fielding defines the REST architecture in terms of addressable
+resources in their interactions.  When restricted to HTTP requests made over the web
+(not a requirement of the architecture, but its most common use today),
+RESTful web services are based on the following principles:
+
+
+    *   Addressable resource
+        -   Items are accessible to clients through URIs
+    *   Uniform interface
+        -   Resources are access and modified using the standard
+            HTTP protocol verbs:
+                +   GET
+                +   PUT
+                +   POST
+                +   DELETE
+   *    Content negotiation
+        -   The client can request different representations of resources,
+            usually by specifying the desired MIME type in the Accept header of
+            a request
+   *    Stateless services
+        -   Interactions with resources are done through self-contained
+            requests
+   
+REST is highly scalable
+===================================================================================
+For the same reason why the web in general is highly scalable:
+
+    *   safeness:
+        -   Does not modify the state of the server
+    *   Idempotentence
+        -   Can be repeated without causing any additional effects
+        
+GET requests are indepotent and safe.
+PUT and DELETE are not indepontent but not safe.
+POST is neither indepotent nor safe  
+
+
+
+The Java approach: JAX-RS
+===================================================================
+The Java EE specification includes the Java API for RESTful 
+services.  Let's write a CRUD app using a simple POJO:
+
+
+/*** POJO implementation of our DAO interface
+      as a JAX-RS 2.0 resource in Groovy ***/
+
+class Person{
+    Long id
+    String first
+    String last
+    String toString(){
+    return "$first $last"
+    }
+}
+
+/*****The DAO inerface with the CRUD methods for person*******/
+import java.util.List;
+
+public interface PersonDAO{
+    List<Person>findAll() ;
+    Person findById(Long id);
+    List<Person> findByLastName(String name);
+    Person create(Person p);
+    Person update(Person p) ;
+    boolean delete(long id) ;
+}
+
+/****Implementation of DAO using Groovy's
+     groovy.sql.Sql
+     The executeInsert method returns th ecollection of generated
+     values, and in this cast, the new IDis found as the first element
+     of the first row.
+*/
+
+Person create(Person p){
+    String txt = 'insert into people(id,first,last) values(?,?,?)'
+    def keys = sql.executeInsert txt, [null,p.first,p.last]
+    p.id = keys[0][0]
+    return p
+}
+
+//***** 
+
+
+
+J
+
+
+
+*****/
+
+
+class BookController{
+    def show(){
+        return ([books:Book.get(params.id)])
+    }
+    def list(){
+        return ([books:Book.list()])
+    }
+    def redir(){
+        redirect(action:'list')
+    }
+}
+
+
+JAX-RS resource and tests
+===================================================================
+Moving now to the RESTful part of the application, there are several features
+of the JAX-RS API involved in the implemenation.  Here I'll use a 
+PersonResource class to implement the CRUD methods
+
+
+
+The most common REST item resources...
+--------------------------------------------------------------------
+    *   return a list of something
+    *   return a single instance of something
+    
+Here we are going to write a JAX-RS resource class that does both for
+purposes of brevity
+
+JAX-RS Annotations 
+----------------------------------------------------------------------
+    @GET
+        - Produces HTTP status 200 for a successful request
+    @POST
+        - Produces HTTP status 201 for a successful request
+    @Produces
+        - Identifies to the client the MIME tye of the response
+          like for instance....JSON or XML
+        - Accepts an aray of MediaType instances, which are used
+          for content negotiation based on the accept header in the 
+          incomming request      
+          
+    @GET
+    public List<Person>findAll(){
+        return dao.findAll(); 
+    }
+    @GET
+    public Person findByLastName(String name){
+        return dao.findByLastName(name) ;
+    }
+    @Post
+    @Consumes{MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML} 
+    @Produces{MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML}
+    public Response create(Person person){
+        dao.create(person)
+        UriBuilder builder = UriBuilder.fromUri(uriInfo.getRequestUri()).path("{id}");
+        return Response.created(builder.build(person.getId())).entity(person).build();
+    
+    } 
+ 
+ 
+ 
+The Codez  in totality....
+---------------------------------------------------------------------------  
+
+@Path("/people")
+public class PersonResource{
+    @Context
+    private UriInfo info;
+    private PersonDAO dao = JdbcPersonDAO.getInstance();
+    @GET
+    @Produces{MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML}
+    public List<Person> findByName(@PathParam("like") String like){
+        return dao.findByName(like);
+    }
+    @GET @PATH("{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response findById(@PathParam("id") Long id){
+        return Response.ok(dao.findById(id).build() ;
+    }
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response create(Person person){
+        dao.create(person);
+        UriBuilder builder = UriBuilder.fromUri(uriInfo.getRequestUri()).path("{id}");
+        return Response.created(builder.build(person.getId())).entity(person).build();
+    }
+    @PUT @PATH("{id}")
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Person update(Person person){
+        dao.update(person) ;
+        return person ;
+    }
+    @DELETE @PATH("{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response remove(@PathParam("id") long id){
+        dao.delete(id) ;
+        return Response.noContent().build() ;
+    }
+}
+
+/*** Our application Class
+     ...it extends a JAX-RS class
+     called ResourceConfig, which has a 
+     constructor that takes the desired resources
+     and features as arguments.  The Jackson-Feature
+     used herre provides the mechanism
+ ***/
+public class MyApplication extends ResourceConfig{
+    public MyApplication(){
+        super(PersonResource.class, JacksonFeature.class);
+    }
+}
+
+
+  
+Testing our application so far.....using Spock....
+-----------------------------------------------------------------------
+To verify that everything is workking properly....let's present a test class
+using Spock.   Testing RESTful API requires a server where the application can
+be deployed.  The Jersey implimentation inclues a server called Grizzly
+The Spock test methods:
+
+    setUpSpec()
+    shutDownSpec()
+    
+are executed once each before and after individual tests, respectively.
+They therefore become the appropiate places to start and stop the server, as show:
+
+@Shared static HttpServer server
+void setUpSpec(){
+    server = GrizzlyHttpServerFactory.createrHttpServer(
+        'http://localhost:1234'.toURI(), new MyApplication()
+}
+
+void cleanUpSpec(){
+    server?.stop()
+}

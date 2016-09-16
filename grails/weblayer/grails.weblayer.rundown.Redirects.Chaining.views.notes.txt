@@ -19,7 +19,7 @@ class BookController{
     def list(){
         return ([books:Book.list()])
     }
-    def find(){
+    def redir(){
         redirect(action:'list')
     }
 }
@@ -33,6 +33,48 @@ We can redirect to some relative context path:
 // A URI: for a resource relateive application context path
 
 
+class BookController{
+    def show(){
+        return ([books:Book.get(params.id)])
+    }
+    def list(){
+        return ([books:Book.list()])
+    }
+    def redir(){
+        redirect("/login.html")
+    }
+}
+
+// A URI: for a resource outside of the app....
 
 
+class BookController{
+    def show(){
+        return ([books:Book.get(params.id)])
+    }
+    def list(){
+        return ([books:Book.list()])
+    }
+    def redir_grails(){
+        redirect(uri:"http://grails.org")
+    }
+      def redir_bsd(){
+        redirect(uri:"http://freebsd.org")
+    }
+    
+}
 
+
+Passing parameters to our action/uri redirects
+=================================================================
+
+redirect(action: "next_action", params: params)
+
+
+Passing URL/URI fragments...
+==================================================================
+redirect(controller:"test", action:"show", fragment:"profile")
+
+/*
+    ^^^^ results in response of http://yourapp/test/show#profile
+*/
