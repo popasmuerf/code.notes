@@ -1,10 +1,38 @@
-http://docs.grails.org/2.3.11/guide/theWebLayer.html#GSPBasics
-http://docs.grails.org/2.3.11/guide/theWebLayer.html#redirectsAndChaining
+http://grails3-plugins.github.io/fields/snapshot/ref/Tags/table.html
 
 
-Redirects and Chaining
+f:table
 ===================================================================
-Actions can redirect using the redirect controller method:
+f:table renders some or all properties of a collection of beans
+in a table.  If there is no  _display template
+in scope the tag will simply render the property values.
+
+
+
+Examples
+---------------------------------------------------------------------
+<f:table collection="personList"/>
+<f:table collection="personList" properties=['firstName','lastName']"/>
+<f:table collection="catsAndDogsList" domainClass="org.zoo.Animal"/>
+
+
+
+
+g:message
+http://docs.grails.org/latest/ref/Tags/message.html
+====================================================================
+g:message resolves a miessge from teh given code or error.  Normally used
+in conjunction with eachError
+
+
+Examples
+---------------------------------------------------------------------
+<g:eachError bean="${book}">
+    <li><g:message error="${it}"</li>
+</g:eachError>
+
+
+
 
 
 /****Code Example of redirecting actions

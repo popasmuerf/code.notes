@@ -1,0 +1,184 @@
+Grails Service Classes
+=========================================================
+
+From the TekDays project...The Task feature list
+========================================================
+According to my feature list on the TekDays project, I need to 
+be able to:
+    *   add tasks
+    *   remove tasks
+    *   assign tasks
+    *   have a default set of tasks
+
+We have the same four scaffolded views for the Task domain that we
+do for the TekEvent.  They were created when we ran the 
+generate-all script.  So, we'll focus on providing a default
+set of tasks for a new event.
+
+The task list feature will enable users to keep track of the many
+things that need to be done to put on a successful technical 
+conference.  Taks will be assigned to volunteers,
+but the list will be available to the whole team.  It is important to
+keep an eye on those details, or they'll fall through the cracks.  According
+to our customer, most of the users will not have experience organizing
+an event of this magnitude.  The idea behind the dafault tasks, then
+is to give them some ideas and a starting point.
+
+
+Our customer has provided us with a set of default tasks.  Rather than listing
+them here, we'll proactice the DRY princidple.  We will lis the default tasks
+in the code that we write to create them.  Now we need to figure out
+where to put that code.
+
+
+Grails Service Classes
+===================================================================
+We're going to write a method that will create several Task instances and add
+them to the tasks property of a newly created TekEvent.  We will define this method
+in a :
+
+    "service class"
+    
+A Grails service class is a Plain Old Groovy Object(POGO) located in directory:
+
+    grails-app/services
+
+A grails service class is a Plain old Groovy Object (POGO).  By following 
+these conventions, the plain POGO will be endowed with magical powers
+
+Service classes are an excellent way to keep extra code out of our controllers.
+When we have application logic that doesn't fit well in any domain class -- for
+example, logic that involves multiple domain classes....will be centralized...
+this is what is known as a "seperation of concerns".  Leaner controllers are easier
+to maintain.
+
+
+Creating a service class
+=======================================================================
+cmd:
+> grails create-service com.tekdays.Task
+
+result:
+
+        package com.tekdays
+        import grails.transaction.Transactional
+        @Transactional
+        class TaskService {
+            def serviceMethod() {
+            }
+        }
+
+
+
+
+Examples
+---------------------------------------------------------------------
+<f:table collection="personList"/>
+<f:table collection="personList" properties=['firstName','lastName']"/>
+<f:table collection="catsAndDogsList" domainClass="org.zoo.Animal"/>
+
+
+
+
+g:message
+http://docs.grails.org/latest/ref/Tags/message.html
+====================================================================
+g:message resolves a miessge from teh given code or error.  Normally used
+in conjunction with eachError
+
+
+Examples
+---------------------------------------------------------------------
+<g:eachError bean="${book}">
+    <li><g:message error="${it}"</li>
+</g:eachError>
+
+
+
+
+
+/****Code Example of redirecting actions
+
+*****/
+
+
+class BookController{
+    def show(){
+        return ([books:Book.get(params.id)])
+    }
+    def list(){
+        return ([books:Book.list()])
+    }
+    def redir(){
+        redirect(action:'list')
+    }
+}
+
+
+//Another example 
+
+class OverviewController{
+    def index {}
+    def login {...}
+    def find(){
+        if(!session.user){
+            redirect(action:'login')
+            return
+        }
+        .....
+    }
+
+}
+
+
+More examples of redirects
+====================================================================
+We can redirect to some relative context path:
+
+// A URI: for a resource relateive application context path
+
+
+class BookController{
+    def show(){
+        return ([books:Book.get(params.id)])
+    }
+    def list(){
+        return ([books:Book.list()])
+    }
+    def redir(){
+        redirect("/login.html")
+    }
+}
+
+// A URI: for a resource outside of the app....
+
+
+class BookController{
+    def show(){
+        return ([books:Book.get(params.id)])
+    }
+    def list(){
+        return ([books:Book.list()])
+    }
+    def redir_grails(){
+        redirect(uri:"http://grails.org")
+    }
+    def redir_bsd(){
+        redirect(uri:"http://freebsd.org")
+    } 
+}
+
+
+Passing parameters to our action/uri redirects
+=================================================================
+
+redirect(action: "next_action", params: params)
+
+
+Passing URL/URI fragments...
+==================================================================
+redirect(controller:"test", action:"show", fragment:"profile")
+
+/*
+    ^^^^ results in response of http://yourapp/test/show#profile
+*/
