@@ -142,6 +142,37 @@ way GRAILS is based on.....All of this is Spring and JEE specfication compliant.
 #WORD
 
 
+More examples....of service injections...When I mentioned before that we can inject
+services ANYWHERE....I meant ANYWHERE....even in other services...we can chain
+service dependencies....within other services...
+==============================================================================================
+package com.demo
+
+class PersonService{
+    Person person = new Person(String lastName, String firstName){
+        Person p = new Person()
+        p.lastName = lastName
+        p.firstName = firstName
+        p.save()
+        return p
+    }
+}
+
+
+class EmployeeService{
+    def personService //employees are people...after all...and we get to re-used code...
+    Employee createEmployee(String lastName, String firstName){
+        if(Student.count() == 0){
+            studentService.createStudent("Doe","John)
+            studentService.createStudent("Smith", "Jame")
+        }
+    }
+}
+
+
+
+We can also inject Servcies within BootStrap.groovy
+===============================================================
 
 
 
