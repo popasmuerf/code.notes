@@ -1,0 +1,147 @@
+http://grails.asia/grails-tutorial-for-beginners-grails-service-layer/
+
+
+Introduction to Grails Service Layer
+=========================================================================
+Seperation of Concerns
+----------------------
+
+Consider this analogy:  Imagine a company where employees
+are assigned tasks of different nature there
+is an employee named John Doe with the following responsibilities:
+
+    *   Handle accounting and releasing of check payments
+    *   Take calls from customers for product support
+    *   Handle administrative tasks such as a booking
+        flights plus accomodation of executives
+    *   Manage the schedule of the CEO
+    
+    
+As you might have guessed, John's work is too complicated because he
+needs to multi-task on very different tasks, and must context switch
+for each task.  His herrors could cost a lot of money in the 
+long run.
+
+Likewise in software engineering it is not a good idea to write a cloass
+that has different nature of responsibilities or behaviors.  The genearl
+consensus of experst is that a single class or source file should only 
+be invloved in one one nature of task(This is actually the Tao of Unix...each
+component should should be self-contained....have low, next to no dependence
+on anything but input, and do one thing and one thing well)
+
+Adding needless complexity to a class, or module.....will only introduce bugs and
+problems later in the application and it will be a pain to maintain(if it 
+
+
+This is called the "seperation of concerns".
+
+Conscider the following
+------------------------
+Inside a controller we can do the following:
+--------------------------------------------
+    *   Handle routing logic
+    *   Invoke GORM operations to manipulate data in the database
+    *   Render text and show it to the user
+
+We can do just about anything in a controller...but we really shouldn't.
+
+This is what we should be doing in a controller
+-----------------------------------------------
+    *   Recieve Requests from users
+    *   Invoke the most appropiate business logic
+    *   Invoke the view to display results
+    
+View logic should be taken care of inside Groovy Server pages(GSP)
+files....for biz logic, they should be implemented inside the
+service layer.  Grails has a default support and handling for 
+the service layer.
+
+
+Don't repeate yourself (DRY) Principle
+===============================================================
+We can reuse logic contained in a service layer object any and every
+where in our app....because it is in a centralized place...as opposed
+to being incapsulated individually in other specialized classes...
+theoretcially we could use a have commonly used code in a specialized
+class...and use it all over the place...but that would be very POOR design.
+
+Create a service class
+================================================================
+>grails create-service 
+
+package com.demo
+
+class TestService{
+    def serviceMethod(){
+    }
+}
+
+
+Now, let's add as many funciton as needed that pertains to business logc and GORM operations.
+=============================================================================================
+
+package com.demo
+
+class StudentService{
+
+    Student createStudent(String lastName, String firstName){
+        Student student = new Student(lastName, firstName)
+        student.save()
+        return student
+    }
+    private String genRefNumber(){
+        import java.util.Random
+        Random random = new Random()
+        int numBound = 100000000
+        int alphaBound = 0
+        def extRefNumLst = []
+        def alphalst = ["a","b","c","d","e","f","g","h","j","k"]
+        alphaBound = random.nextInt(10)
+        int refAlphaBound = random.nextInt(alphalst.size)
+        int refNum = random.nextInt(numBound )
+        String refAlpha = alphalst[refAlphaBound]
+        while(extRefNumLst.contains(refNum)){
+            refNum = random.nextInt(numBound)
+        }
+        return refNum.toString()
+    }
+}
+
+
+
+Injecting a Service
+=============================================================================================
+The service is automatically injected inside a controller by just defining
+a variable with the proper name.
+
+
+package comd.demo
+
+class DemoController{
+    def studentService  //we inject services in GRAILS merely by declaring them
+                        //inside our controller
+                        
+    displayForm(){....}
+    def handleFormSubmit(){
+        def student = studentSevice.createStudent(params.lastName,params.firstName)
+        return [student:student]  //return this model map to be used in our gsp view...
+    }
+}
+
+
+Note  about the grails global object: params...
+=======================================================================================
+The variables used in our gsp/jsp forms in Grails may be accessed
+anywhere in our app via the "params" object
+
+
+
+Because of seperation of concerns....we can inject this Service in any other
+Controller we like.....This is a feature of the Spring framework...which by the 
+way GRAILS is based on.....All of this is Spring and JEE specfication compliant.
+#WORD
+
+
+
+
+
