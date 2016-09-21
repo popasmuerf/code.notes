@@ -1,0 +1,51 @@
+URL vs. URIs
+==================================================
+
+
+Uniform REsource Identifier(URI) is a compact sqequence of characters
+that identiffies an abstract orphysial resource.
+
+
+
+A URI can be further classified as a locator, a name, or both.  The
+term "Uniform Resource Locator"(URL) referes to the subset of URIs
+of URIs that, in addition to identifying a resource, provide a mens of locating the
+resources by descrbing its primary access mechanism(e.g. its network location)
+
+
+
+From wikipedia:
+
+"One can classify URIs as locators(URLs),or as names(URNs), or as both.
+A  URN functions like a person's name, while a Uniform Resource Locator
+represents a persons address.
+
+
+A URI is a URL when  we include things like access mechnisms like "http://" or "ftp://"
+
+*   ftp://ftp.is.co.za/rfc/rfc1809.txt    ---> also a RRL because of the protocol
+*   http://www.ietf.org/rfc/rfc2396 --->  also a UrL because of the protocol
+*   files.hp.com ---> this is a URI only as http://files.hp.com might provide something 
+                      totally differint than ftp://files.hp.com
+
+
+Summary:
+
+    1.  URIs are identififes, and that can mean name, location, or both
+    2.  All URNs and URLs are URIs, but the opposite is not true
+    3.  All URIs are not URNs and URls
+    4.  The part that makes something a URL is the compbination of the name
+        and an access method, such as:
+            *   https://
+            *   mailto://
+            *   ftp://
+            
+    5. If you are discussing something that's both a full URL and a URI
+        (which all URLs are), it'sbest to call it a "URL" because it's most
+        specific
+            
+Corresponding RFC
+=============================
+http://www.ietf.org/rfc/rfc2396.txt   
+
+

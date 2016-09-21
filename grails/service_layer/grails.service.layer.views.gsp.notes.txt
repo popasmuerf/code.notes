@@ -68,117 +68,117 @@ result:
             }
         }
 
+We start with a stubbed-out method called serviceMethod, which by
+default will be executed in a transaction.  This is because, by
+default, any method declared in a service class in Grails
+will be exectued within a transaction.
+
+
+We don't have to do anything to enable transactions; everything is handled behind
+the scenes by Spring and Hibernate.  If you've ever had to handle
+transaction handling in a web application, we'll give
+you a moment to get yoru jaw off the floor.
 
 
 
-Examples
----------------------------------------------------------------------
-<f:table collection="personList"/>
-<f:table collection="personList" properties=['firstName','lastName']"/>
-<f:table collection="catsAndDogsList" domainClass="org.zoo.Animal"/>
+Let's add a method to our new TaskService called :
+
+    addDefaultTasks(tekEvent)
+    
+Open tekDays grails-app/services/com/tekdays/TaskService.groovy and
+add the following code...:
 
 
+/******** TaskService.groovy iteration #1  START ********/
 
-
-g:message
-http://docs.grails.org/latest/ref/Tags/message.html
-====================================================================
-g:message resolves a miessge from teh given code or error.  Normally used
-in conjunction with eachError
-
-
-Examples
----------------------------------------------------------------------
-<g:eachError bean="${book}">
-    <li><g:message error="${it}"</li>
-</g:eachError>
-
-
-
-
-
-/****Code Example of redirecting actions
-
-*****/
-
-
-class BookController{
-    def show(){
-        return ([books:Book.get(params.id)])
+def addDefaultTasks(tekEvent){
+    if(tekEvent.tasks?.size() > 0){
+        return //we only want to add tasks to a new event
     }
-    def list(){
-        return ([books:Book.list()])
-    }
-    def redir(){
-        redirect(action:'list')
-    }
+    tekEvent.addToTasks(new Task(title:'Identify potential venues'))
+    tekEvent.addToTasks(new Task(title:'Compile potential sponsor list'))
+    tekEvent.addToTasks(new Task(title:'Design promotional materials'))
+    tekEvent.addToTasks(new Task(title:'Compile potential advertising avenues'))
+    tekEvent.addToTasks(new Task(title:'Locate swag provider'))
+    tekEvent.save()
 }
+/******** TaskService.groovy iteration #1  STOP ********/
+
+Putting TaskService into use.....
+========================================================================
+That's it for our service calss, but now we need to use it.  The logical
+place to do that would be in the our action:
 
 
-//Another example 
+    TekEventController.save()
+    
+...this way, we can be sure the the default tasks will be 
+added to every TekEvent that is successfully saved.
+Let's open up our TekEventController 
 
-class OverviewController{
-    def index {}
-    def login {...}
-    def find(){
-        if(!session.user){
-            redirect(action:'login')
+/****************Edited Code Start*****************/
+/**
+    All we have to do is declare a property named after
+    the service with the first letter being lower case
+    and GRAILS will inject an instance of that class
+    into our controller at runtime... in other works,
+    we do not need to worry about ensuring that it exists before
+    we call it.  It's all managed for us by Grails,
+    courtesy of "convention over configuration."
+    
+    Now, in the save action, we'll add the call to addDefaultTasks
+    
+*/
+package com.tekdays
+import static org.springframework.http.HttpStatus.*
+import grails.transaction.Transactional
+@Transactional(readOnly = true)
+class TekEventControler{
+    def taskService 
+    static allowedMethods = [save:"POST",update:"PUT",delete:"DELETE"]
+    def index(Integer max){
+        params.max = Math.min(max?:10,100)
+        respond(TekEvent.list(params),model:[tekEventInstanceCount:TekEvent.count()])
+    }
+    def save(TekEvent tekEventInstance){
+        if(tekEventInstance == null){
+            notFound()
             return
         }
-        .....
+        if(tekEventInstance.hasError()){
+            respond(tekEventInstance.errors, view:'create')
+            return
+        }
+        tekEventInstance.save(flush:true)
+        tekService.addDefaultTasks(tekEventInstance)
+        request.withFormat{
+            form{
+                flash.message = message(code:'default.created.message',
+                                        args:[message(code:'tekEventInstance.label',
+                                             default:'TekEvent'), tekEventInstance.id])
+                redirect tekEventInstance
+            }
+            '*' {respond tekEventInstance,[status:CREATED]}
+        }
     }
 
 }
+/****************Edited Code Stop*****************/
 
 
-More examples of redirects
+
+
+Now that we have rapped that up...let's make our edits for 
+the show.gsp for our tasks if they 
 ====================================================================
-We can redirect to some relative context path:
-
-// A URI: for a resource relateive application context path
-
-
-class BookController{
-    def show(){
-        return ([books:Book.get(params.id)])
-    }
-    def list(){
-        return ([books:Book.list()])
-    }
-    def redir(){
-        redirect("/login.html")
-    }
-}
-
-// A URI: for a resource outside of the app....
-
-
-class BookController{
-    def show(){
-        return ([books:Book.get(params.id)])
-    }
-    def list(){
-        return ([books:Book.list()])
-    }
-    def redir_grails(){
-        redirect(uri:"http://grails.org")
-    }
-    def redir_bsd(){
-        redirect(uri:"http://freebsd.org")
-    } 
-}
-
-
-Passing parameters to our action/uri redirects
-=================================================================
-
-redirect(action: "next_action", params: params)
-
-
-Passing URL/URI fragments...
-==================================================================
-redirect(controller:"test", action:"show", fragment:"profile")
-
-/*
-    ^^^^ results in response of http://yourapp/test/show#profile
-*/
+<g:if test="${tekEventInstance?.tasks}"
+    <li class="fieldContain">
+    <span id="tasks-label" class="property-label">
+        <g:message code="tekEvent.tasks.label" default="Tasks"/>
+    </span>
+    <g:each in="${tekEventInstance.tasks}" var="t">
+        <span class="property-value" aria-labelledby="tasks-label">
+        <g:link controller="task" action="show" id="${t.id}">${t.title}
+        </g:link></span>
+     </li>
+    </g:if>

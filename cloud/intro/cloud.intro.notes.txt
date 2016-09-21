@@ -1,0 +1,29 @@
+Identify preliinary set of canddiate applications
+=================================================================
+    *   Indentify preliminsary set ofcandidate applications(db, web app, etc)
+    *   Identify the type of cloud model(vender, hybrid, on prem)
+    *   Partner with the vendor
+    *   Think Integration
+    *   Don't forget security concerns
+    
+    
+Database, e-mail and business application (ERP, CRM & Insdustry specific apps(
+are  usually the leading candidates businesses evaluate to move to the cloud first.
+Some apps will be easier to move to the cloud while others will not
+
+
+Applications that are crtical to th overall operations do not
+make good initial candidates for cloud migraiton.  Even the best laid plans can cen dup going
+out the window once things get rolling.
+
+    *   Is cloud for prototyping or production ?
+    *   What is the leading candidate application that can be
+        seamlessly moved ?
+        
+    *   How many users will this application impact ?
+    *   Is this a common application that would beenfit form migrating
+        (example - email) or a specfici functionality
+        that will result in cost savings (example -HR Functionality)
+        
+        
+    
