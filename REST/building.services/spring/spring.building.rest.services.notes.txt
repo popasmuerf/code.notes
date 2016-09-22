@@ -1,0 +1,65 @@
+Building REST Services with Spring
+http://spring.io/guides/tutorials/bookmarks/
+===================================================
+
+
+REST is the de-factor standard for building web services on 
+the web because they're easy to build and easy to consume.
+
+
+
+there'se a much larger discussion to be had about how REST fits
+in the world of microservices, but - for this turorial- le'ts
+just look at building RESTful services
+
+
+
+Rest in practes offers the nothion that the web
+is an existence of proof that a massively scalable
+distriburted system that works really well, and
+we can take ideas fo=rom that to build integrated systems more easily.
+
+
+
+What benefits ?
+===================================================
+Principally all that comes for free with HTTP as a 
+platform itself.  Application security (encryption and authentication_
+are known quantities today for whch there are known solutions.  
+Caching is built into the the protocol (HTTP), Service routing, throught
+DNS, is a resilient and well-known syste already ubiquitously support.
+
+
+REST is not a Standard
+====================================================
+So..."REST" services vary wildly in quality.
+
+    *   Level-0
+        -   The Swamp of POX; at this level, were' just using HTTP transport.
+            You could call SOAP a Level-0 technology.  It uses
+            HTTP, but as a transport.  It's worth mentioning that
+            you could also use SOAP on top of something like JMS with no
+            HTTP at all.  SOAP, thus is a not RESTful.  It's only just HTTP-aware
+    *   Level-1
+        -   Resources - at this level, a service might use HTTP URIs to distinguish
+            between nouns, or intities, in the system.  For example, you might route requests to:
+                
+                /customers
+                /users
+            etc.  XML-RPC is an example of a Level-1 Technlogy: it uses HTTP, and it can use
+            URIs to distinguish endpoints.  Utlimately, though, XML-RPC is not RESTful as it
+            isusing HTTP as a transport for something else(remote procedure calls)
+    *   Level-2
+        -   HTTP Verbs; this is the level you want to be at.  If you do everything
+            wonrg with Spring MVC, you'll probably still end up here.  At this level, 
+            services take advantage of native HTTP qualities like headers, status codes,
+            distinct URIs, and more.  this is whre we'll start our yourney.
+         
+    *   Level-3
+        -   Hypermedia Controls-  This final level is where we'll strive to be.  Hypermedia,
+            as practiced using HATEOAS(Hyper-media as the Engine of Application State") design
+            pattern.  Hypermedia promotes service longevity by decoupling the consumer of a
+            service from intimate knowledge of that servie's surfae area toplogy.  It describes
+            REST service.  The service can answer questions about what to call, and when.  We'll
+            look at this in depth later.
+
