@@ -21,4 +21,16 @@ are the paths followed by a servlet.
 
 Servlet Method init():
 ==============================================================
-    
+    *   init() may be called only once per servlet initialization
+    *   Servlets are normaly spawned when a user first invokes
+        a URL corresponding to the servlet, but yuc an also
+        specify that the servlet be loaded when the sever is 
+        first started.
+    *   Servlets are singletons.  Multiple client requests
+        take the form of threads that communicate with the
+        Servlet instance
+    *   Code example :
+
+        public void init() throws ServletException{
+                //initialization code
+        }
