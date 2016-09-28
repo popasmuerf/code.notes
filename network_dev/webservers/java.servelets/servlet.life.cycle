@@ -1,0 +1,24 @@
+https://www.tutorialspoint.com/servlets/servlets-life-cycle.htm
+
+
+
+
+A servlet life cycle can be defined as a the entire process from its
+creation  till it's destruction.   The following
+are the paths followed by a servlet.
+
+        *       The servelt is initialized by calling the method:
+                        -       init()
+        *       The sevelt calls the method for processing
+                client requests0:
+                -       service()
+        *       The servlet is terminated by calling the method:
+                -       destroy()
+
+        *       After destroy() is called the servlet is
+                garbage collected by the jvm   
+
+
+Servlet Method init():
+==============================================================
+    
