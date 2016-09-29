@@ -1,4 +1,34 @@
-https://www.tutorialspoint.com/servlets/servlets-life-cycle.htm
+https://www.tutorialspoint.com/servlets/servlets-first-example.htm
+
+web.xml
+===========================================
+All JEE compliant containers, frameworks, etc...
+have you configure a web.xml file(or is intially auto-configured
+...the point is...it's part of the spec.)
+
+web.xml is used for web app resource mapping.
+For instance...we declar our app servlets and their
+URL mappings in web.xml.
+
+
+Example of web.xml mapping for the following code below:
+=====================================================
+<servlet>
+        <servlet-name>HelloWorld</servlet-name>
+        <servlet-class>HelloWorld<servlet-class>
+</servlet>
+
+<servlet-mapping>
+        <servlet-name>
+        HelloWorld        
+        </servlet-name>
+        <url-pattern>
+        /HelloWorld
+        <url-pattern>
+<servlet-mapping>
+
+
+
 
 
 
