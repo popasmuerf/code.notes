@@ -1,0 +1,145 @@
+https://grails.org/wiki/Builders
+
+Builders 
+
+Hibernate Criteria Builder
+=============================================================
+The Hibernate Criteria Builder allows you to create quieries that ap to
+the Hibernate Criteria API.  There are equivalent builder  builder nodes
+for most criterion within the Hiberante Expression class.  For more info
+see the Builders Reference
+
+
+The builder can be used standalone by passing a persistent class instance:
+
+    new grails.orm.HibernateCriteriaBuilder(User.class, sessionFactory).list{
+        eq("firstName","Fred")
+    }
+    
+    
+       /**or an instance can be retrieved via the createCriteria method of Grails
+        domaon class instances**/
+        
+   def c = Account.createCriteria()
+   def results = c {
+        like("holderFirstName","Fred%")
+        and {
+            between("balance", 500,1000)
+            eq("branch", "London")
+        }
+        maxResults(10)
+        order("holderLastName","desc")
+   }
+   
+   
+   
+   
+org.hibernate
+==============================================================
+ Criteria is a simplified API for retrieving entities by composing Criterion
+objects.  This is very convenient approach for functionality like
+"search" screens where there is a variablenumber of conditions to be placed
+upon the result set.
+
+
+
+The Session is a factory for Criteria.  Criterion instances are usually obtained
+via the factory methods on Restrictions. eg.
+
+/***********Examples************/
+List cats = session.create(Cat.class).add(Resitrictions.like("name","Iz%"))
+    .add(Restriction.gt("weight", new Float(minWeight)))
+    .addOrder(Order.asc("age"))
+    .list()
+
+
+
+
+Hibernate Criteria builders in Grails
+=======================================================================
+Dynamic finders work fine, but they may only take you 
+so far.  For one thing, they are limited to top-level properties
+of the class--youcannot use dynamic finders to search relationships
+
+Criter Builders(they are a hibernate technology)
+
+All Grails domain classes have a static method:
+------------------------------------------------
+    createCriteria()
+    
+that returns an instance of :
+-------------------------------------------------
+    HibernateCriteriaBuilder
+    
+This builder has a list method that takes a closure.  Inside this
+closure, we can define the criteria for our search.  An example
+is provided below:
+
+def g3Events =  TekEvent.createCriteria().list{
+    and{
+            gt('startDate',new Date())
+            or{
+                ilike('description','%groovy%')
+                ilike('description','%grails%')
+                ilike('description','%griffon%')
+            }        
+   }    
+}
+
+^^^This code produces a list of the technical events that you
+would be likely to find us attending.  More specificially, the
+g3Events list would contain any TekEvent that contained the words:
+
+    *   Groovy
+    *   Grails
+    *   Griffon
+
+Whom's start date starts later than the current date.
+The "and" and "or" blocks are self explanitory...and obviously
+may be nested for deep queries.
+
+
+Another nice feature of Criteria Builders is that relationshp properties
+can easily be searched.  This is also done with nested
+criteria blocks.  Let's see how this looks:
+
+def contegixEvents = TekEvent.createCriteria().list{
+    sponsorships{
+        sponsor{
+            eq('name', 'Contegix')
+        }
+    }
+}
+
+
+^^^ This code  assignes a list of  TekEvents that have related sponsors
+that in turn all have a name spelled exactly as "Contegix"
+
+
+
+def volunteerEvents = {
+    if(request.getSession(false) && session.user){
+        def user = session.user
+        def tekEvents = TekEvent.createCriteria().list{
+            volunteers{
+                eq('id',session.user?.id)
+            }
+        }
+        if(events){
+            out<<"<div style='margin-left:25px;
+            margin-top:25px;
+            width:85%'>"
+            out<< "<h3>Events you volunteered for:</h3>"
+            out<<"url"
+            events.each{
+                out<<"<li><a href='"
+                out<<"$createLink(controller:'tekEvent',action:'show',id:it.id)}'>"
+              }
+              out<<"</ul>"
+              out<<"</div>"  
+            }
+        }
+    }
+}
+
+
