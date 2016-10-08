@@ -32,14 +32,35 @@ The builder can be used standalone by passing a persistent class instance:
    }
    
    
+
+
+Apache Lucene
+===============================================================
+is a free and open-source information 100% in pure Java
+by Doug Cutting.  It is supported by the Apache Software Foundation
+and is released under the Apache Software License.
+
+Lucene has been ported to other programming languages including
+Object Pascal, Per, C#, C++, Python, Ruby and PHP
+ 
+ 
+Lucene formaerly included a number of sub-projecst such as
+Lucene.NET, Mahout, Tika, and Nutch...all of which incidentally
+are their own indepenent projects now.
    
-   
-org.hibernate
+Compass
 ==============================================================
- Criteria is a simplified API for retrieving entities by composing Criterion
-objects.  This is very convenient approach for functionality like
-"search" screens where there is a variablenumber of conditions to be placed
-upon the result set.
+Compass provides a simple API for working with Lucene.  I fyou 
+know how to use an ORM, then you feell right at home with Compass
+with siple operations for save, and delete & query.
+
+Lucene
+-----------------------------------------------------------------
+Building on top of Lucene, Compass simplifies commons usage patterns
+of Lucene such as google-style search, index updates as well as more avance
+concepts such as chacning and index sharding(sub indexes).  Compass also uses
+built in optimizations.
+
 
 
 
