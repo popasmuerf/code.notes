@@ -35,6 +35,7 @@ The builder can be used standalone by passing a persistent class instance:
 
 
 Apache Lucene
+https://en.wikipedia.org/wiki/Lucene
 ===============================================================
 is a free and open-source information 100% in pure Java
 by Doug Cutting.  It is supported by the Apache Software Foundation
@@ -47,6 +48,38 @@ Object Pascal, Per, C#, C++, Python, Ruby and PHP
 Lucene formaerly included a number of sub-projecst such as
 Lucene.NET, Mahout, Tika, and Nutch...all of which incidentally
 are their own indepenent projects now.
+
+
+Features and common use
+-------------------------------------------------------------------------
+While sutiable for any application that requeirs full text indexing
+an searching capability, Lucene has
+been widely recognize for its utility in the implmentat of Interent search engines
+and local single-site searching.
+
+Lucene has also been use to implement recommendation systems.  for example, Lucene's
+'MoreLikeThis' class can generate recommendations for similar documents
+
+At the core of Lucene's logical architecute is the ida of a document
+containg fields of text.  This felxibility allows
+Lucene's API to be independent of the file format.
+
+
+Lucene base projects
+----------------------------------------------------------------------------------
+*   Apache Nutch -- provides web clrawling and HTML parsing
+*   Apache Solr -- an enterprise search server
+*   Elasticsearch -- and enterprise sarch server
+*   Compass -- the predecssor of ElasticSearc
+*   DocFetcher -- a multiplatform destop search application
+*   Lucene.NET -- a port of Lucene written in C# and targete at .NET Framework users.
+
+
+
+
+
+
+
    
 Compass
 ==============================================================
@@ -171,4 +204,15 @@ which is kinda like the same code in:
 
     <g:organizerEvents>
     
+
+
+
+Single: Yes
+Location: Germantown MD
+Occupation: Software Engineering
+Hobbies: Evil
+Sign: Cancer
+
+
+
    
