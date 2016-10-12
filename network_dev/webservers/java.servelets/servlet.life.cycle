@@ -1,0 +1,125 @@
+https://www.tutorialspoint.com/servlets/servlets-life-cycle.htm
+
+
+
+
+A servlet life cycle can be defined as a the entire process from its
+creation  till it's destruction.   The following
+are the paths followed by a servlet.
+
+        *       The servelt is initialized by calling the method:
+                        -       init()
+        *       The sevelt calls the method for processing
+                client requests0:
+                -       service()
+        *       The servlet is terminated by calling the method:
+                -       destroy()
+
+        *       After destroy() is called the servlet is
+                garbage collected by the jvm   
+
+
+Servlet Method init():
+==============================================================
+    *   init() may be called only once per servlet initialization
+    *   Servlets are normaly spawned when a user first invokes
+        a URL corresponding to the servlet, but yuc an also
+        specify that the servlet be loaded when the sever is 
+        first started.
+    *   Servlets are singletons.  Multiple client requests
+        take the form of threads that communicate with the
+        Servlet instance
+    *   Code example :
+
+        public void init() throws ServletException{
+                //initialization code
+        }
+
+
+Servlet Method service():
+==============================================================
+    *   service() is the main method to perform the actual task.
+        The servlet container(i.e. web server) calls the service()
+        method to handle requsts coming from the client and write
+        the formatted response back to the client
+    *   service() invokes the following when called:
+                -       doPost()
+                -       doGet()
+                -       doPut()
+                -       doDelete()
+        as appropiate when called by the container.
+    *   It is not recommended that you override service()
+        in lieue of overriding the doPost(),doGet(),doPut(), doDelete()
+        methods called via service()
+    *   Code example :
+
+        public void service(ServletRequest request, ServletResponse response) throws ServletException,IOException{
+              //do stuff  
+        }
+
+doGet():
+==============================================================
+    *   doGet() is invoked by service() to handle 
+        normal HTTP requests for URLs or from HTML
+        that have no method specifed(GET should be the default HTTP mehtod)
+    *   Code example :
+
+        public void doGet(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException,IOException{
+              //do stuff  
+        }
+
+doPost():
+==============================================================
+    *   doGet() is invoked by service() to handle 
+        normal HTTP requests for URLs or from HTML
+        that specifically indicate a POST request
+        (GET should be the default HTTP mehtod)
+    *   Code example :
+
+        public void doPost(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException,IOException{
+              //do stuff  
+        }
+
+destroy()
+==============================================================
+The destroy() method is called only once at the end of the life cycle of
+a servlet  This method allows for a specified module dedicated to 
+accounting such as:
+        *       closing DB connections
+        *       halting/killing threads
+        *       finalizing and writing cookie lists/hit counts
+        *       other duties related to resource reclimation
+
+         public void destroy(){
+              //do stuff  
+        }
+
+
+
+Example Servlet code
+===============================================================
+import java.io.*;
+import javax.servlet.* ;
+import javax.servlet.http.*;
+
+//Extend HttpServlet class
+
+public class HelloWorld extends HttpServlet{
+        private String message = null ;
+        public void init(){
+                message = "Hello World";
+        }
+        public void doGet(HttpServletRequest request,
+                          HttpServletResponse response)
+                          throws IOException{
+                response.setContent("text/html");
+                PrintWriter out = response.getWriter();
+                out.println("<h1>" + message + "</h1>");
+        }
+        public void destroy(){
+                //close out stuff
+        }
+}
+
