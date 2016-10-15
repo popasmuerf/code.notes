@@ -1,0 +1,37 @@
+https://rominirani.com/gradle-tutorial-part-1-installation-setup-2ea77729fc8c#.3tuowjr01
+
+
+
+
+//https://rominirani.com/gradle-tutorial-part-2-java-projects-5aaf99368018#.9f3kheusr
+/**
+    java plugin
+    --------------
+        -compilation
+        -testing
+        -bundling (a JAR in most cases)
+        
+        1. api depends on common
+        2. app depends on api and common
+        
+    We can have one build file at the root of the project
+    or we can have a build file in each sub root for each corresponding
+    root directory...    
+    We can have a seperate build file for each sub project
+    -----------------------------------------------------------
+    /javaprojects
+        |- /api
+             |- build.gradle
+             |- (Java Sources and files)
+        |- /common
+             |- build.gradle
+             |- (Java Sources and files)
+        |- /app
+             |- build.gradle
+             |- (Java Sources and files)
+        |- settings.gradle
+        |- build.gradle
+        
+        
+*/
+

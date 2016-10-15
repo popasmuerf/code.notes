@@ -1,0 +1,3 @@
+CURL
+http://www.codingpedia.org/ama/how-to-test-a-rest-api-from-command-line-with-curl/
+=================================================
