@@ -48,11 +48,8 @@ This project contains the application code
 and it depends on api and common projects
 respectively
 
-Including Multiple Projects in a Build
+Including Multiple Projects in a Build(edit settings.gradle)
 ====================================================
-apply plugin: "java"
-archivesBaseName = "qoute"
-verson = "1.4.1"
 include ":api",":common",":app"
 
 Common Configuration
@@ -228,4 +225,35 @@ project(':app'){
                 compile 'org.apache.logging.log4j:log4j-core:2.6.2'
         }
 }
+
+
+
+Running granular tasks and builds 
+============================================
+Examples of running the hello task individually
+for each project
+-------------------------------------------------
+> gradle -q api:hello
+> gradle -q common:hello
+> gradle api:build
+> gradle common:hello
+
+
+
+Running tasks specific to a build as opposed
+to global settings for all subprojects
+==============================================
+project(':api'){....}
+project(':common'){....}
+project(':app'){....}
+
+Configuring sub-project interdependency
+==============================================
+project(':app'){
+        dependencies{
+                compile project(':common')
+                compile project(':api')
+        }
+}
+
 
