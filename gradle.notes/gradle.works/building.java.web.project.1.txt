@@ -1,19 +1,55 @@
 https://docs.gradle.org/current/userguide/multi_project_builds.html
-https://rominirani.com/gradle-tutorial-part-3-multiple-java-projects-5b1c4d1fbd8d#.12wkwzh1l
+https://rominirani.com/gradle-tutorial-part-4-java-web-applications-9f4225cc02e5#.hocjrgs1g
 
 
-Gradle Tutorial:Part3:Multiple Java Project
+Gradle Tutorial : Part 4 : Java Web Applications
 ==================================================
-In this part of the tutorial, we shall look at a common
-scenario where you will have multiple Java
-projects that could be dependent on 
-each other.  For e.g. You could have a library proj3ct where you write some
-utility lasses and another java project that
-depends on it.
+In this part of the tutorial, we shall look at building 
+Java Web Applications via Gradle.  As is teh pattern, we shall have multi-projectd scenario wher we will have one
+Java project that has some utility class  and 
+which is built separately.  And then we have a 
+Java Web Project that is dependent on this project
+and has JSP/Servlets and so on.
+
+In the process of which...we ahsll look at 2 additional plugins that Gradle provides, which will make our
+task easier.  The plugins are:
+
+1.      War plugin:  this plugin allows us to compile
+        and assemble a WAR(Web appliation Archive) file
+        from our Java Web Application.
+
+2.      Jetty Plugin:  This plugin allows us to run our web
+        application inside of a a Jetty container.  Very
+        useful to test out the project quickly
+
+Project Scenario
+==============================================================
+for this episode, we shall look at 2 projects that are
+arranged under a common directory.  Our root directoryh is going to be called "mywebapp" and inside
+of that we shall have 2 folders that will contain individual
+projects as shown below:
+
+mywebapp
+|-utils
+|-web
 
 
+1. Utils:  This project contains some utility code and 
+   hence it will not depend on any of the other projects.
+   The java code in this project depends on an
+   external java Date Time Library: Joda Time.  
+   So we will need to hae that dependency defined
+   for this project.
+2  web: This is the java Web application project, that just
+   has simple servlet and jsp files, along with the web.xml
+   file.  This project depends  on teh utils project
+   since it uses the utility java class from there.
+   Along with that dependency, it also has dependency on the
+   servlet Jar file that is needed to complile Java
+   HTTP servlet code 
 
-Multiple project scednario
+
+Multiple Gradle files
 ==================================================
 Our directory will be called javaprojects and insided of
 that we have 3 folders that willhouse the indivicual projects as shown
