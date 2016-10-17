@@ -1,0 +1,114 @@
+https://rominirani.com/gradle-tutorial-part-1-installation-setup-2ea77729fc8c#.3tuowjr01
+
+Java plugins
+==================================================
+Let us start with the most important of all for java
+developers: The Java plugin....
+
+
+Java plugin default capabilities
+====================================================
+        *       compilation
+        *       testing
+        *       bundling
+
+Syntax for all gradle plugins
+======================================================
+        *       apply plugin: <plugin-name>
+
+Declaring the java gradle plugins
+========================================================
+        *       apply plugin: "java"
+
+
+Apply the java gradle plugin and then 
+run the following command to view default tasks
+provided via the java gradle plugin
+===========================================================
+Build tasks
+-----------
+assemble - Assembles the outputs of this project.
+build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+buildNeeded - Assembles and tests this project and all projects it depends on.
+classes - Assembles main classes.
+clean - Deletes the build directory.
+jar - Assembles a jar archive containing the main classes.
+testClasses - Assembles test classes.
+
+
+
+Ok...so there are more than a few tasks provided by the 
+java plugin.....here are two that are fairly intuitive
+========================================================
+        *       clean
+                -       will delete a build directory
+                        such that all your classes will
+                        be removed for a fresh compile
+
+        *       assemble
+                -       will create an archive (JAR) file
+                        from your Java project and will run
+                        all other tasks that require 
+                        compile, test and so on.
+
+
+Structure for you java code and java test classes
+========================================================
+src/main/java                   Production Java source
+src/main/resources              Production resources
+src/test/java                   Test Java sources
+src/test/resources              Test resources
+
+
+
+We can set the name and the version numbers of our 
+assembled 
+archives via declaring the following in the
+the build.gradle file
+=============================================
+apply plugin: "java"
+archivesBaseName = "qoute"
+version = '1.0-FINAL'
+
+
+
+
+
+
+ 
+
+
+
+//https://rominirani.com/gradle-tutorial-part-2-java-projects-5aaf99368018#.9f3kheusr
+/**
+    java plugin
+    --------------
+        -compilation
+        -testing
+        -bundling (a JAR in most cases)
+        
+        1. api depends on common
+        2. app depends on api and common
+        
+    We can have one build file at the root of the project
+    or we can have a build file in each sub root for each corresponding
+    root directory...    
+    We can have a seperate build file for each sub project
+    -----------------------------------------------------------
+    /javaprojects
+        |- /api
+             |- build.gradle
+             |- (Java Sources and files)
+        |- /common
+             |- build.gradle
+             |- (Java Sources and files)
+        |- /app
+             |- build.gradle
+             |- (Java Sources and files)
+        |- settings.gradle
+        |- build.gradle
+        
+        
+*/
+

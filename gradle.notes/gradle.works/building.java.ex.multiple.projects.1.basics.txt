@@ -1,0 +1,182 @@
+https://rominirani.com/gradle-tutorial-part-1-installation-setup-2ea77729fc8c#.3tuowjr01
+
+https://rominirani.com/gradle-tutorial-part-3-multiple-java-projects-5b1c4d1fbd8d#.12wkwzh1l
+
+
+Gradle Tutorial:Part3:Multiple Java Project
+==================================================
+In this part of the tutorial, we shall look at a common
+scenario where you will have multiple Java
+projects that could be dependent on 
+each other.  For e.g. You could have a library proj3ct where you write some
+utility lasses and another java project that
+depends on it.
+
+
+
+Multiple project scednario
+==================================================
+Our directory will be called javaprojects and insided of
+that we have 3 folders that willhouse the indivicual projects as shown
+below:
+
+javaprojects
+|- api
+|- common
+|- app
+
+Common
+---------------------------------------------
+This project contains some utility code and hence
+it will not depend on any of the orther projects.
+Do not that this does not mean that common
+does not have dependencies on exteranl libraries
+for compilation.  So that concept that we saw in 
+the earlier chapter still remains.  It may depdn on
+3rd party JARS.
+
+
+Api
+-----------------------------------------------
+This project contains the application codea and
+it depends on api and common
+projects respectively
+
+App
+-----------------------------------------------
+This project contains the application code
+and it depends on api and common projects
+respectively
+
+Including Multiple Projects in a Build
+====================================================
+apply plugin: "java"
+archivesBaseName = "qoute"
+verson = "1.4.1"
+include ":api",":common",":app"
+
+Common Configuration
+======================================================
+You are familiar with the build.gradle file, which is what
+the Gradle command looks for in terms of what
+it has to do.
+
+Below is a a recommended and fairly intuitive structures
+for the build.gradle file as shown below:
+======================================================
+allprojects{
+        //global project build instructions
+}
+subprojects{
+        //individual project build instructions
+}
+
+
+Including multiple projects in a build
+======================================================
+
+Declaring the java gradle plugins
+========================================================
+        *       apply plugin: "java"
+
+
+Apply the java gradle plugin and then 
+run the following command to view default tasks
+provided via the java gradle plugin
+===========================================================
+Build tasks
+-----------
+assemble - Assembles the outputs of this project.
+build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+buildNeeded - Assembles and tests this project and all projects it depends on.
+classes - Assembles main classes.
+clean - Deletes the build directory.
+jar - Assembles a jar archive containing the main classes.
+testClasses - Assembles test classes.
+
+
+
+Ok...so there are more than a few tasks provided by the 
+java plugin.....here are two that are fairly intuitive
+========================================================
+        *       clean
+                -       will delete a build directory
+                        such that all your classes will
+                        be removed for a fresh compile
+
+        *       assemble
+                -       will create an archive (JAR) file
+                        from your Java project and will run
+                        all other tasks that require 
+                        compile, test and so on.
+
+
+Structure for you java code and java test classes
+========================================================
+src/main/java                   Production Java source
+src/main/resources              Production resources
+src/test/java                   Test Java sources
+src/test/resources              Test resources
+
+
+
+We can set the name and the version numbers of our 
+assembled 
+archives via declaring the following in the
+the build.gradle file
+=============================================
+apply plugin: "java"
+archivesBaseName = "qoute"
+
+
+The beginning of Dependencies
+=============================================
+We have to tackle this soonr  or later
+
+
+
+
+version = '1.0-FINAL'
+
+
+
+
+
+
+ 
+
+
+
+//https://rominirani.com/gradle-tutorial-part-2-java-projects-5aaf99368018#.9f3kheusr
+/**
+    java plugin
+    --------------
+        -compilation
+        -testing
+        -bundling (a JAR in most cases)
+        
+        1. api depends on common
+        2. app depends on api and common
+        
+    We can have one build file at the root of the project
+    or we can have a build file in each sub root for each corresponding
+    root directory...    
+    We can have a seperate build file for each sub project
+    -----------------------------------------------------------
+    /javaprojects
+        |- /api
+             |- build.gradle
+             |- (Java Sources and files)
+        |- /common
+             |- build.gradle
+             |- (Java Sources and files)
+        |- /app
+             |- build.gradle
+             |- (Java Sources and files)
+        |- settings.gradle
+        |- build.gradle
+        
+        
+*/
+
