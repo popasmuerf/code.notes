@@ -180,3 +180,52 @@ version = '1.0-FINAL'
         
 */
 
+
+
+
+Example of centralized gradle build config (gradle.build)
+in root of project folder
+=============================================================
+apply plugin: "java"
+archivesBaseName = "qoute"
+version = '1.0-FINAL'
+repositories {
+  mavenCentral()
+}
+
+
+
+allprojects {
+        task hello << { task -> println "I'm $task.project.name" }
+}
+
+subprojects {
+  apply plugin: "java"
+  repositories {
+      mavenCentral()
+  }
+        dependencies {
+                testCompile group: 'junit', name: 'junit', version: '4.+'
+        }
+}
+
+
+project(':common'){
+    dependencies {
+        compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
+    }    
+}
+project(':api'){
+     dependencies {
+        compile project(':common')
+        compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
+        compile 'org.apache.logging.log4j:log4j-core:2.6.2'
+    }    
+}
+project(':app'){
+        dependencies{
+                compile project(':common'), project(':api')
+                compile 'org.apache.logging.log4j:log4j-core:2.6.2'
+        }
+}
+
