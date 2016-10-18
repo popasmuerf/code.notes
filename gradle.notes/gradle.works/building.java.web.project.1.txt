@@ -94,10 +94,25 @@ dependencies {
 Configuration of build.gradle(web)
 =====================================================
 apply plugin: "war"
+apply plugin: "jetty"
 dependencies {
         compile project(":utils")
         compile "javax.servlet:servlet-api:2.5"
 }
+
+httpPort = 8080
+stopPort = 9080
+stopKey = "stopKey"
+
+
+^^^^ Notice the additonal entries that we have added in
+bold.  We have simply applied the Jetty plugin and 
+also provided one of the standard properties (httpPort)
+available to configure the jetty Web Server when it is
+launched i.e. the HTTP port.  We have specified 8080 as
+the value.  Additionally, we have provided the stopPort
+and stopKey properties so that we can stop the Jetty
+server from teh command line/terminal. 
 
 
 ---------------------------------------------
@@ -171,10 +186,56 @@ jar - Assembles a jar archive containing the main classes.
 testClasses - Assembles test classes.
 war - Generates a war archive with all the compiled classes, the web-app content and the libraries.
 
+Build Setup tasks
+-----------------
+init - Initializes a new Gradle build. [incubating]
+wrapper - Generates Gradle wrapper files. [incubating]
 
-Including multiple projects in a build
+Documentation tasks
+-------------------
+javadoc - Generates Javadoc API documentation for the main source code.
+
+Help tasks
+----------
+buildEnvironment - Displays all buildscript dependencies declared in root project 'webapp'.
+components - Displays the components produced by root project 'webapp'. [incubating]
+dependencies - Displays all dependencies declared in root project 'webapp'.
+dependencyInsight - Displays the insight into a specific dependency in root project 'webapp'.
+help - Displays a help message.
+model - Displays the configuration model of root project 'webapp'. [incubating]
+projects - Displays the sub-projects of root project 'webapp'.
+properties - Displays the properties of root project 'webapp'.
+tasks - Displays the tasks runnable from root project 'webapp' (some of the displayed tasks may belong to subprojects).
+
+Verification tasks
+------------------
+check - Runs all checks.
+test - Runs the unit tests.
+
+Web application tasks
+---------------------
+jettyRun - Uses your files as and where they are and deploys them to Jetty.
+jettyRunWar - Assembles the webapp into a war and deploys it to Jetty.
+jettyStop - Stops Jetty.
+
+Other tasks
+-----------
+hello
+
+Now that we have performed basic app assembly...
+Let's assemble and run our app war
 ======================================================
+> gradle jettyRunWar
 
+
+navigate to url localhost:8080/web
+
+This is what we should see...
+
+Directory: /web/
+
+META-INF/ 	4096 bytes 	Oct 18, 2016 1:26:57 AM
+WEB-INF/ 	4096 bytes 	Oct 18, 2016 1:26:57 AM
 
 
 
@@ -239,5 +300,13 @@ BUILD SUCCESSFUL
 
 Total time: 5.836 secs
 
+
+Note about the jetty plugin and gradle
+=============================================
+The Jetty plugin that is being used is deprecated
+and is planned for removal in Gradle 4.0.
+It's replacement Gretty is available at 
+https://githum.com/akhikhl/gretty.  For now,
+we will go ahead with the Jetty plugin
 
 
