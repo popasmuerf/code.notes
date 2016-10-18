@@ -51,24 +51,70 @@ mywebapp
 
 Multiple Gradle files
 ==================================================
-Our directory will be called javaprojects and insided of
-that we have 3 folders that willhouse the indivicual projects as shown
-below:
+As we had seen in the last episode, it is better
+to create multiple build.gradle files, so that we can customize and maintain the build specific requirments
+for each project in a much more maintainable
+fashion
 
-javaprojects
-|- api
-|- common
-|- app
+In essence, what we are ending up with  is a structure that looks like the following:
 
-Common
+/mywebapp
+|- /utils
+     |- build.gradle
+     |- (Java Sources and files)
+|- /web
+     |- build.gradle
+     |- (Java Sources , JSPs and files)
+|- settings.gradle
+|- build.gradle
+
+
+Configuration of settings.gradle
+======================================================
+include ":utils" , ":web"
+
+
+Configuration of build.gradle (global)
+======================================================
+subprojects{
+        apply plugin:"java"
+        repositories{
+                mavenCentral()
+        }
+}
+
+
+Configuration of build.gradle(utils)
+=====================================================
+apply plugin: "java"
+dependencies {
+ compile "joda-time:joda-time:2.9.4"
+}
+
+Configuration of build.gradle(web)
+=====================================================
+apply plugin: "war"
+dependencies {
+        compile project(":utils")
+        compile "javax.servlet:servlet-api:2.5"
+}
+
+
 ---------------------------------------------
-This project contains some utility code and hence
-it will not depend on any of the orther projects.
-Do not that this does not mean that common
-does not have dependencies on exteranl libraries
-for compilation.  So that concept that we saw in 
-the earlier chapter still remains.  It may depdn on
-3rd party JARS.
+ 
+The WAR  plugin
+=============================================
+Here we are applying the war plugin.  As per 
+the documentation: "The War plugin extends the Java
+plugin to add support for assembling web application
+WAR files.  It disables the default JAR archive
+generation of the Java plugin and adds
+a default WAR archive task"
+
+The plugin also adds the war and assemble tasks to
+the tasks available for the project:
+
+classes <---------war<-----------assemble
 
 
 Api
@@ -102,6 +148,28 @@ allprojects{
 subprojects{
         //individual project build instructions
 }
+
+
+
+New avaible tasks under our Build tasks
+=============================================
+Now that we added the war plugin for one of our
+sub projects....we should get this list after running the 
+following commmand:
+
+> gradle tasks
+
+Build tasks
+-----------
+assemble - Assembles the outputs of this project.
+build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+buildNeeded - Assembles and tests this project and all projects it depends on.
+classes - Assembles main classes.
+clean - Deletes the build directory.
+jar - Assembles a jar archive containing the main classes.
+testClasses - Assembles test classes.
+war - Generates a war archive with all the compiled classes, the web-app content and the libraries.
 
 
 Including multiple projects in a build
