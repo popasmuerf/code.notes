@@ -175,159 +175,6 @@ war - Generates a war archive with all the compiled classes, the web-app content
 Including multiple projects in a build
 ======================================================
 
-Declaring the java gradle plugins
-========================================================
-        *       apply plugin: "java"
-
-
-Apply the java gradle plugin and then 
-run the following command to view default tasks
-provided via the java gradle plugin
-===========================================================
-Build tasks
------------
-assemble - Assembles the outputs of this project.
-build - Assembles and tests this project.
-buildDependents - Assembles and tests this project and all projects that depend on it.
-buildNeeded - Assembles and tests this project and all projects it depends on.
-classes - Assembles main classes.
-clean - Deletes the build directory.
-jar - Assembles a jar archive containing the main classes.
-testClasses - Assembles test classes.
-
-
-
-Ok...so there are more than a few tasks provided by the 
-java plugin.....here are two that are fairly intuitive
-========================================================
-        *       clean
-                -       will delete a build directory
-                        such that all your classes will
-                        be removed for a fresh compile
-
-        *       assemble
-                -       will create an archive (JAR) file
-                        from your Java project and will run
-                        all other tasks that require 
-                        compile, test and so on.
-
-
-Structure for you java code and java test classes
-========================================================
-src/main/java                   Production Java source
-src/main/resources              Production resources
-src/test/java                   Test Java sources
-src/test/resources              Test resources
-
-
-
-We can set the name and the version numbers of our 
-assembled 
-archives via declaring the following in the
-the build.gradle file
-=============================================
-apply plugin: "java"
-archivesBaseName = "qoute"
-
-
-The beginning of Dependencies
-=============================================
-We have to tackle this soonr  or later
-
-
-
-
-version = '1.0-FINAL'
-
-
-
-
-
-
- 
-
-
-
-//https://rominirani.com/gradle-tutorial-part-2-java-projects-5aaf99368018#.9f3kheusr
-/**
-    java plugin
-    --------------
-        -compilation
-        -testing
-        -bundling (a JAR in most cases)
-        
-        1. api depends on common
-        2. app depends on api and common
-        
-    We can have one build file at the root of the project
-    or we can have a build file in each sub root for each corresponding
-    root directory...    
-    We can have a seperate build file for each sub project
-    -----------------------------------------------------------
-    /javaprojects
-        |- /api
-             |- build.gradle
-             |- (Java Sources and files)
-        |- /common
-             |- build.gradle
-             |- (Java Sources and files)
-        |- /app
-             |- build.gradle
-             |- (Java Sources and files)
-        |- settings.gradle
-        |- build.gradle
-        
-        
-*/
-
-
-
-
-Example of centralized gradle build config (gradle.build)
-in root of project folder
-=============================================================
-apply plugin: "java"
-archivesBaseName = "qoute"
-version = '1.0-FINAL'
-repositories {
-  mavenCentral()
-}
-
-
-
-allprojects {
-        task hello << { task -> println "I'm $task.project.name" }
-}
-
-subprojects {
-  apply plugin: "java"
-  repositories {
-      mavenCentral()
-  }
-        dependencies {
-                testCompile group: 'junit', name: 'junit', version: '4.+'
-        }
-}
-
-
-project(':common'){
-    dependencies {
-        compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
-    }    
-}
-project(':api'){
-     dependencies {
-        compile project(':common')
-        compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
-        compile 'org.apache.logging.log4j:log4j-core:2.6.2'
-    }    
-}
-project(':app'){
-        dependencies{
-                compile project(':common'), project(':api')
-                compile 'org.apache.logging.log4j:log4j-core:2.6.2'
-        }
-}
 
 
 
@@ -360,88 +207,37 @@ project(':app'){
 }
 
 
-Should sub-projects use a centralized build.gradle file
-or their own build.gradle files...or both ?
+Building the WAR file
 ====================================================
-The question that you should be asking at this point...
-is whether it is thje right approach to crate a single
-large build.gradle file in teh root folder that
-will:
-        *       Apply common code within the subproject's
-                closure
-        *       Contain individual project(':project_name') 
-                closures for tasks specific to that
-                project, its own dependencies, etc.
+Since we have made the web project depend on the utils,
+we can build the entire Web Application, by going to the
+web folder in the terminal and firing the following 
+command:
 
-We have an example of one such build.gradle file in teh prevous example...but it is generally not good practice
-to rely on one centralized build.gradle file.  Best practice
-dictates that all sub projects possess their own build files
-(setting files also ?) at their directory roots.  This makes
-things more concise and maintainable....
-This is what our directory structure would look for the 
-complete project should we modularize our project build files:
+> gradle assemble
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:jar
+:assemble
+:utils:compileJava UP-TO-DATE
+:utils:processResources UP-TO-DATE
+:utils:classes UP-TO-DATE
+:utils:jar
+:utils:assemble
+:web:compileJava UP-TO-DATE
+:web:processResources UP-TO-DATE
+:web:classes UP-TO-DATE
+:web:war
+Download https://repo1.maven.org/maven2/javax/servlet/servlet-api/2.5/servlet-api-2.5.pom
+Download https://repo1.maven.org/maven2/joda-time/joda-time/2.9.4/joda-time-2.9.4.pom
+Download https://repo1.maven.org/maven2/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar
+Download https://repo1.maven.org/maven2/joda-time/joda-time/2.9.4/joda-time-2.9.4.jar
+:web:assemble
 
-/javaprojects
-|- /api
-     |- build.gradle
-     |- (Java Sources and files)
-|- /common
-     |- build.gradle
-     |- (Java Sources and files)
-|- /app
-     |- build.gradle
-     |- (Java Sources and files)
-|- settings.gradle
-|- build.gradle
+BUILD SUCCESSFUL
 
-
-^^^    Notice how at the root, we will continue to have the 
-settings.gradle file in one place....as a global build.gradle file.  Gradle still requires a bit of global
-meta-data to do it's job....which makes complete sense.
-We can now expect our global build file to be much less
-cluttered and concise as it will only contain the base build
-info that we need for the entire project....whereas all
-the build details particular/unique to individual sub projects is declared in their coressponding build files.
-
-
-For example....in this context...this is all we need 
-in our globalo build file....
-----------------------------------------------------------
-
-subprojects {
-apply plugin: "java"
- 
-  repositories {
-    mavenCentral()
-  }
-dependencies {
-     testCompile "junit:junit:4+"
-  }
-}
-
-
-...and all the stuff that we need to build our sub-projects
-is contained below
-------------------------------------------------------------
-
-
-//build.gradle for app project
-dependencies {
-      compile project(':common'), project(':api')
-      compile 'org.apache.logging.log4j:log4j-core:2.6.2'
-}
-//build.gradle for api project
-dependencies {
-      compile project(':common')
-      compile 'org.apache.commons:commons-lang3:3.4'
-      compile 'org.apache.logging.log4j:log4j-core:2.6.2'
-   }
-//build.gradle for common project
-dependencies {
-    compile 'org.apache.commons:commons-lang3:3.4'
-  }
-
-
+Total time: 5.836 secs
 
 
 
