@@ -55,4 +55,63 @@ a developer that executes a specific
 functionality in the code to be tested
 and asserts a certain behavior or state
 
+The percentage of code which is tested by 
+unit tests is typically called test coverge.
+
+A unit test targets a small of code, e.g.,
+a method or a class.  External dependencies
+shoudl be removed from the unit tests, e.g,
+by replacing the dependency with a test implementation
+or a (mock) object created by a test framework.
+
+Unit tests are not suitable for testing
+complex user interface or component interaction.  For
+this, you should develop integration tests.
+
+1.4     Integration tests
+--------------------------------------
+An integration test aims to test the 
+behavior of a component or the integration
+between a set of components.  The term 
+"functional test" is sometimes used as
+synonym for integration test  Integration
+tests check that the whole system 
+works as intended, therefor they are reducing
+the need for intensive manual tests
+
+
+
+1.5     Performance tests
+-----------------------------------------
+Peformance tests are used to benchmark 
+software componentns repeatedly.  Their
+purpose is to ensure that the code under
+test runs fast enough even if it's 
+under high load.
+
+
+
+1.6     Behavior vs. state testing
+-----------------------------------------
+A test is a behavior test(also called interaction test)
+if it checks if certain methods were called with the
+correct input paramters .  A behavior test does
+not validate teh result of a method call.
+
+State testing is about validating the result.
+Behavior testing is about testing the
+behavior of the application under test
+
+If you are testing algorithms or system functionality
+you will be focusing on system statye as opposed
+to interactions.
+
+
+1.7     What should be tested ?
+------------------------------------------
+        *       Ignore general/trival code
+        *       Focus on code that thru experience
+                where the most bugs manifest
+
+
 
