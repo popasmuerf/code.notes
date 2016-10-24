@@ -114,4 +114,49 @@ to interactions.
                 where the most bugs manifest
 
 
+The JUnit FrameWork
+===============================================
+JUnite in version 4.x is a test framework
+which uses annotations to identify methods
+that specify a test.  The main
+websites for JUnit are the
+JUnit homepage:
 
+        http://junit.org
+
+and GitHub project
+
+        https://github.com/junit-team/junit
+
+
+
+How to define a test in JUnit?
+==============================================
+A JUnit test is a method contained in a
+class which is only used for testing.  This is called
+a "Test class".  to write a JUnit 4 test you
+annotate a  method with the annotation:
+
+        @org.junit.Test
+
+This method executes the code under test.
+
+assert()
+================================================
+This method executes the code under test.
+You use an assert() method, provided by
+JUnit or another assert framework, to 
+check an expected result versus the
+actualresult.  These method calls code under
+test.  You should provide meaningful messages
+in asert statements.  That makes it
+easier for the user to identify and fix the
+problems.  This is especially true if
+someone looks at the 
+problem, who did not write the
+code under test ofr the test code.
+
+
+
+Example JUnit test
+================================================
