@@ -1,0 +1,58 @@
+The purpose of software tests
+========================================
+A software test is a piece of software
+which executes another piee of software.
+It validates if that code resutls in
+the expected state(state testing) or
+executes the expected sequence of
+events (behavior testing)
+
+
+
+Why are software tests helpful?
+=================================
+Software unit tests help the developer to'
+verify that the logic of a piece of the 
+program is correct.
+
+Running tests automatically helps to identify
+software regressions introduced by changes in the source code.  Having  high test coverage of your code
+allows you to continue developing features whithout 
+having to pedorm lots of manual tests.
+
+
+Testing frameworks for Java
+====================================
+There are several testing frameworks
+available for Java.  The most popular
+ones are JUnit and TestNG
+
+
+
+Testing terminology
+======================================
+1.1     Code or application under test
+--------------------------------------
+The code which is tested is typically called the 
+"code under test".  I fyou are testing an
+application, this is called the "application test"
+
+1.2     Test fixture
+--------------------------------------
+A test fixture is a fixed state in code which
+is tested used as input for a test.  Another
+way to describe this is a test precondition
+
+For example, a test fixture might be a 
+fixed string, which is used as input for a method.
+The test would validate if the method
+behaves correctly with this input
+
+1.3     Unit tests and unit testing
+--------------------------------------
+A unit test is a piece of code written by
+a developer that executes a specific
+functionality in the code to be tested
+and asserts a certain behavior or state
+
+
