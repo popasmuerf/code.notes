@@ -160,3 +160,131 @@ code under test ofr the test code.
 
 Example JUnit test
 ================================================
+The following coe shows a JUnit test.  This 
+test assumes that the MyClass class exists
+and has muyltiply(int,init) method.
+
+//===============Test code==============//
+
+import static
+org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+pulic class MyTests{
+        @Test
+        public void TestIfReturnZero(){
+                MyClass tester = new MyClass();
+                assertEquals("10 * 0 = 0",0,tester.mult(10,0));
+                assertEquals("0 * 10 = 0",0,tester.mult(0,10));
+                assertEquals("0 * 10 = 0",0,tester.mult(0,0));
+        }
+}
+
+JUnit nameing conventions
+========================================
+There are several potential naming conventions
+for JUnit tests.  A widely-used
+solution is to add the suffix "-test"
+to the names of the test classes and create them
+in a ndew package "test"
+
+
+As a general rule, a test name should explain what the
+test does.  If that is done correctly, reading
+the actual implementation can be avoided.
+
+One possible convention is to use th eword "should"
+in the test method name.  For example, "ordersShouldBeCreated"
+or "menuShouldGetActive".  This gives a hint
+what should happen if the test method is executed.
+
+
+Maven's JUnit naming convention
+===================================================
+If you are using the Maven build system(Gradle follows Mavens build
+conventions as much as possible) we should prefere teh 
+"Test" suffix over "Tests".  The Maven build
+systems(via it's surfire plugin)_ automatically
+includes such classes in its test scope
+
+JUnit test suits
+==========================================================
+If you have sveral test classes, you can
+compbine them into a test suite.  Running
+a test suite executes all test classes
+in that suite in the specified order.  A test suite
+can also contain other test suites.
+
+The following example code demonstrates the usage of a
+test suite.  It contains two test
+classes(MyClassTest and MySecondClassTest).  If you want
+to add another test class, you can add it to the statement:
+
+        @Suite.SuiteClasses
+
+
+//===============Code===================//
+package com.brown.junit.first;
+import org.junit.runner.RunWith ;
+import org.junit.runners.Suite ;
+import org.junit.runners.Suite.SuiteClasses ;
+
+
+@RunWith(Suite.class)
+@SuiteClasses({
+                MyClassTest.class,
+                MySecondClassTest.class
+              })
+
+public class AllTests{
+
+}
+
+
+Running tests from the command line
+===================================================
+You can also run your JUnit tests outside
+your IDE  via standard Java code.  Build systems
+like Apache Maven or Gradle in
+combination with a Continuous Integration
+Server (like Jenkins) can be used to execute
+tests automatically on a regular basis.
+
+
+Teh org.junit.runner.JUnitCore class provides
+teh runClasses() method.  This method allows you
+to run one or several tests classes.  As a return
+parameter you recieve an object of th type
+
+        org.junit.runner.Result
+
+This object can bue used to retrive information about
+the tests.
+
+
+//==============Code==========================//
+
+package md.mdb.junit.first ;
+
+import org.junit.runner.JUnitCore ;
+import org.junit.runner.Result ;
+import org.junit.runner.notification.Failure ;
+
+public class MyTestRunner{
+        public static void main(String[] args){
+                Result result = JUnitCore.runClasses(MyClassTest.class);
+                for(Failure failure: result.getFailures()){
+                        System.out.println(failure.toString());
+                }
+        }
+}
+
+
+
+^^^^This class can be executed like any other Java
+program on the command line.  You only need to 
+add the JUnite library JAR file to the classpath
+
+
+
+
