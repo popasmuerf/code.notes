@@ -53,6 +53,89 @@ expensive memory structures
 **/
 
 
+@BeforeClass public static method()
+/**
+This method is executed once, before the
+start of all tests.  It is  used
+peform time intensive activities , for
+example, to connect to a database.
+All methods tageged with with this annotation
+must be defined as static to work with JUnit
+
+
+@AfterClass public static void method()
+/**
+This method is executed once, after all
+tests have been finished.  It is used
+to peform clean-up activites,
+for example, to disconnect from a 
+database.  Methods annotated with 
+this annotation need to be defined as
+static to work with JUnite
+**/
+
+@Ignore 
+-or-
+@Ignore("Why disabled")
+/**
+Ignores the test method.  This is
+useful when the underlying code has
+been changed and the test case has
+not yet been adapted.  Or if the execution
+time of this test is too long
+to be included. It is best practice
+to provide the optional description,
+why the test is disabled.
+
+
+
+
+Assert statements
+==========================================
+JUnit provides static methods to test for certain conditions
+via the class:
+
+        Assert
+
+These assert statements typically start with "assert".
+they allow you to specify the error message, the expected
+and the actual result.  An assertion
+method cmpares the actual result.  An assertion
+method compares the actual value returned by
+a test tothe expected aue.  It throws
+an exception:
+
+        AssertionException
+
+If the comparison fails.
+
+
+Methods to assert test reuslts
+=======================================
+
+fail(message)
+
+assertTrue([message] boolean condition)
+
+assertFalse([message] boolean condition)
+
+assertEquals([message] expected, actual tolerance)
+
+assertNull([message,] object)
+
+assertNotNull([message,] object)
+
+assertSame([message,] expected, actual)
+
+assertNotSame([message,] expected, actual)
+
+
+
+
+
+
+
+
 Summary of basics
 =========================================
 
