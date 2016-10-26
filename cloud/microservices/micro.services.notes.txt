@@ -1,0 +1,42 @@
+What is a Microservice Archtiecture?
+==========================================================
+Microservice architecture (MSA) is an approach to building software
+systems that decomposes business domain models into smaller,
+conssisten, boudned-contexts implemented by services.  These services
+are isolated and autonomous yet communicate to procide some piece
+of business functionallity.   Microservices are typically implemented
+and operated by small teams with enough autonomy that each
+team and services can change its internal implementation
+details
+
+
+Independence breads agility.....kind of....
+
+
+
+
+Microservices allow you to scope the boundaries of a service effectively
+========================================================================4
+    *   Understand what the service is doing without being tanbled
+        into other concerns in a larger application
+    *   Quickly build the service locally
+    *   Pick the right technology for the problem(lots of writes? lots of
+        queries? low latency? bursty?)
+    *   Test the service
+    *   Build/deploy/release at a cadense necessary for the buisiness,
+        which ay be independent of other services
+    *   Advantages of autonomous teams and services....
+        
+        
+Things you wont' miss once you  have adopted microservices
+======================================================================
+    *   Incessant Jira tickets
+    *   Unnecessary meetings
+    *   Shared libraries
+    *   Enterprise-wide canonical models
+    
+    
+Challenges
+==========================================================================
+    *   Network reliability
+    *   Network latency.....

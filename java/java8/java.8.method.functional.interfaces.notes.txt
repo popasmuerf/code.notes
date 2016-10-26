@@ -1,4 +1,132 @@
 https://www.tutorialspoint.com/java8/java8_lambda_expressions.htm
+https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executor.html
+
+Before we start  -A1...
+==========================================================
+java.util.concurrent
+    |
+    |
+    |----Executor
+    
+All known Subinterfaces:
+    ExecutorService
+    ScheduledExecutorService
+    
+All known Implementing Classes:
+    AbstractExecutorService
+    ForkJoinPool
+    ScheduledThreadPoolExecutor
+    ThreadPoolExecutor
+ 
+    
+public interface Executor
+-----------------------------
+An object that executes submitted Runnable tasks.
+This interface provides a way of decoupling task
+submission from the mechanics of how each
+task will be run, including details
+on thread use, scheduling, etc.  An Executor
+is normally used instead of explicitly creating
+threads.  for example, rath than invokingL
+
+    Thread(new RunnableTask())).start()
+    
+    
+    
+for each of a set of tasks, you might othewise use:
+
+
+    Executor executor = anExeccutor'
+    executor.execute(new Runnable Task1())
+    executor.execute(new Runnable Task2())
+    executor.execute(new Runnable Task3())    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+public interface Callable<V>
+
+^^^^^A task that returns a result and may throw an exception.
+Implementors define a single method with no arguments called:
+
+    call()
+    
+The Callable interface is similar to:
+
+    Runnable, in that both are designed for classes whose instances
+    are potentially executed by another thread.  A Runnable class instance
+    however  does not return a result and cannot throw a checked exception.
+    
+The Executors class contains utility methods to convert from other
+common forms to Callable classes
+
+
+Before we start  A...
+==========================================================
+java.util.concurrent
+    |
+    |
+    |----Callable
+    
+    
+public interface Callable<V>
+
+
+java.util.concurrent.Callable has been introduced in JDK 5.  Callable
+is a thread that returns the result.  There is
+a method call() in Callable interface that must be overriden for 
+computation tasks.
+
+ExecutorService provides:
+    *   invokeAll()
+    *   submit()
+    *   
+
+Groovy closures are really just an implementaion of the functional
+Callable inte4rface, implementing the "call" method.
+
+
+def closure = {
+    "called"
+    
+    assert closure instanceof java.util.concurrent.Callable
+    assert closure() == "called"
+}
+
+
+
+
+Before we start  B...
+==========================================================
+In java, functional interfaces are just interfaces that describe
+one and only one method.  functional interfaces are the basis
+for lambdas in Java.
+
+Groovy closures are really just an implementaion of the functional
+Callable inte4rface, implementing the "call" method.
+
+
+def closure = {
+    "called"
+    
+    assert closure instanceof java.util.concurrent.Callable
+    assert closure() == "called"
+}
+
+
 
 Java 8 Lambda expressions are characterized by the following syntax --
 ===========================================================================
@@ -182,6 +310,15 @@ Advantage of predefined java.util.function.Predicate  -- Wherever an object
 needs to be evaluated and a boolean value needs to be returned(or a boolean-valued Predicate exists -- in mathematical terms) the Predicate functonal interface can be used.  The user need
 not define his/her own predicate-type functional interface.
 
+Where -
+    *   boolean test(T,t)  is the abstract method which will define the signature
+        of the lambda express/method reference which cn be assigned to a target 
+        of type Predicate
+    *   T is the type of intput to the predicate
+    *   boolean test(T t) returns true if the input argument matches the predicate
+        (the test condition), othewise returns false
+    *   there are 3 default methods and 1 static method in Predicate which
+        I will explian in below sections of this tutorial
 
 
 Source: java.util.function.Predicate 
@@ -194,53 +331,17 @@ public interface Predicate<T>{
     //rest of code goes here....
 }
 
-//--------------Method Reference Example--------------------------------------
-import java.util.List;
-import java.util.ArrayList;
+//--------------Test code for Predicate Interface--------------------------------------
+import java.util.ArrayList ;
+import java.util.Arrays ;
+import java.util.List ;
+import java.util.function.Predicate ;
 
-public class Java8Tester{
-    public static void main(String[] args){
-        List names = new ArrayList() ;
-        names.add("Mahesh");
-        names.add("Suresh");
-        names.add("Ramesh");
-        names.add("Naresh");
-        names.add("Kalpesh");
-	    names.forEach(System.out::println);
+public class PredicateFunctionExample{
+    public static voic main(String[] args){
+        Predicate positive = i -> i > 0 ;
+        List integerList = Arrays.asList(new Integer(1), new Integer(2), new 
     }
 }
 
-
-
-//https://rominirani.com/gradle-tutorial-part-2-java-projects-5aaf99368018#.9f3kheusr
-/**
-    java plugin
-    --------------
-        -compilation
-        -testing
-        -bundling (a JAR in most cases)
-        
-        1. api depends on common
-        2. app depends on api and common
-        
-    We can have one build file at the root of the project
-    or we can have a build file in each sub root for each corresponding
-    root directory...    
-    We can have a seperate build file for each sub project
-    -----------------------------------------------------------
-    /javaprojects
-        |- /api
-             |- build.gradle
-             |- (Java Sources and files)
-        |- /common
-             |- build.gradle
-             |- (Java Sources and files)
-        |- /app
-             |- build.gradle
-             |- (Java Sources and files)
-        |- settings.gradle
-        |- build.gradle
-        
-        
-*/
 
