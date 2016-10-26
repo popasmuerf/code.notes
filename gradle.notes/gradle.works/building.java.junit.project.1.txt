@@ -1,0 +1,435 @@
+https://docs.gradle.org/current/userguide/multi_project_builds.html
+https://rominirani.com/gradle-tutorial-part-4-java-web-applications-9f4225cc02e5#.hocjrgs1g
+https://www.mkyong.com/unittest/gradle-and-junit-example/
+https://code.google.com/archive/p/hamcrest/wikis/Tutorial.wiki
+https://code.google.com/archive/p/hamcrest/wikis/Tutorial.wiki
+https://code.google.com/archive/p/hamcrest/wikis/Tutorial.wiki
+What is Hamcrest ?
+=========================================================
+Hamcrest is a framework for writing matcher objects
+allowing 'match' rules to be defined declaritive.
+There are a number of situations where matchers are invaluable
+such as UI validation, or data filtering
+, but it is in the area of writing flexible tests
+that matchers are most commonly used.  Hamcrest
+is most often used for unit testing.
+
+
+When writing tests it is sometimes difficult to get 
+the balance right between overspecifying the test
+(and thus making it brittle to changes), and not specifying
+enoiugh(making the test valuable since it continues to 
+pass even when the thing being tested is broken).  Having
+a tool that allows pick out precisely the aspect under
+test and describe the values it should have, to a 
+contrlled level precision, helps grealty in writing
+tests that are "just right".
+
+Before we Get started....what is hamcrest ?
+============================================================
+https://code.google.com/archive/p/hamcrest/wikis/Tutorial.wiki
+What is Hamcrest ?
+=========================================================
+Hamcrest is a framework for writing matcher objects
+allowing 'match' rules to be defined declaritive.
+There are a number of situations where matchers are invaluable
+such as UI validation, or data filtering
+, but it is in the area of writing flexible tests
+that matchers are most commonly used.  Hamcrest
+is most often used for unit testing.
+
+
+When writing tests it is sometimes difficult to get 
+the balance right between overspecifying the test
+(and thus making it brittle to changes), and not specifying
+enoiugh(making the test valuable since it continues to 
+pass even when the thing being tested is broken).  Having
+a tool that allows pick out precisely the aspect under
+test and describe the values it should have, to a 
+contrlled level precision, helps grealty in writing
+tests that are "just right"
+.
+
+Using Hamcreast(JUnit 4.11 and later)
+===================================================
+There is nothing exta that needs to be done in order
+to use a specific artifact of Hamcrest in the past,
+there were two JUnit Maven artifacts:
+        
+        junit:junit
+        -and-
+        junit:junit-dep
+
+where the latter version did not include a bundled copy
+of:
+
+        org.hamcrest:hamcrest-core 
+
+and instead declared a transitive dependency on Hamcrest.
+In order to be more Maven-like, starting in 
+version 4.11 there is only the junit:junit artifact
+which uses a transitive dependency on 
+
+        hamcrest-core
+
+
+Using Hamcreast(JUnit 4.10 and earlier)
+===================================================
+Instead of using junit:junit as your test dependency, you should use junit:junit-dep along with specifying a particular Hamcrest library dependency beforehand. For example:
+
+dependencies {
+  testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
+  testCompile group: 'junit', name: 'junit-dep', version: '4.10'
+  testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.+'
+}
+
+
+Gradle and JUnit example
+=====================================================
+In Gradle, you can declare the JUnit dependency like this:
+
+build.gradle
+------------------------------------------------------------
+apply plugin: 'java'
+dependencies{
+        testCompile 'junit:junit:4.12'
+}
+
+
+
+By default, JUnit comes with a bundled copy ob hamcrest-core
+---------------------------------------------------------------
+> gradle dependencies --configuration testCompile
+
+
+Gradle + JUnit + Hamcrest
+===========================================================
+Normally we need the useful hamcrest-library
+library, so better the JUnit bundled ocpy
+of hamcrest-core and include the original 
+hamcrest-core library:
+
+//===============code===================//
+apply plugin: 'java'
+dependencies {
+	testCompile('junit:junit:4.12'){
+		exclude group: 'org.hamcrest'
+	}
+	testCompile 'org.hamcrest:hamcrest-library:1.3'
+}
+
+
+Gradle Tutorial : Part 4 : Java Web Applications
+==================================================
+In this part of the tutorial, we shall look at building 
+Java Web Applications via Gradle.  As is teh pattern, we shall have multi-projectd scenario wher we will have one
+Java project that has some utility class  and 
+which is built separately.  And then we have a 
+Java Web Project that is dependent on this project
+and has JSP/Servlets and so on.
+
+In the process of which...we ahsll look at 2 additional plugins that Gradle provides, which will make our
+task easier.  The plugins are:
+
+1.      War plugin:  this plugin allows us to compile
+        and assemble a WAR(Web appliation Archive) file
+        from our Java Web Application.
+
+2.      Jetty Plugin:  This plugin allows us to run our web
+        application inside of a a Jetty container.  Very
+        useful to test out the project quickly
+
+Project Scenario
+==============================================================
+for this episode, we shall look at 2 projects that are
+arranged under a common directory.  Our root directoryh is going to be called "mywebapp" and inside
+of that we shall have 2 folders that will contain individual
+projects as shown below:
+
+mywebapp
+|-utils
+|-web
+
+
+1. Utils:  This project contains some utility code and 
+   hence it will not depend on any of the other projects.
+   The java code in this project depends on an
+   external java Date Time Library: Joda Time.  
+   So we will need to hae that dependency defined
+   for this project.
+2  web: This is the java Web application project, that just
+   has simple servlet and jsp files, along with the web.xml
+   file.  This project depends  on teh utils project
+   since it uses the utility java class from there.
+   Along with that dependency, it also has dependency on the
+   servlet Jar file that is needed to complile Java
+   HTTP servlet code 
+
+
+Multiple Gradle files
+==================================================
+As we had seen in the last episode, it is better
+to create multiple build.gradle files, so that we can customize and maintain the build specific requirments
+for each project in a much more maintainable
+fashion
+
+In essence, what we are ending up with  is a structure that looks like the following:
+
+/mywebapp
+|- /utils
+     |- build.gradle
+     |- (Java Sources and files)
+|- /web
+     |- build.gradle
+     |- (Java Sources , JSPs and files)
+|- settings.gradle
+|- build.gradle
+
+
+Configuration of settings.gradle
+======================================================
+include ":utils" , ":web"
+
+
+Configuration of build.gradle (global)
+======================================================
+subprojects{
+        apply plugin:"java"
+        repositories{
+                mavenCentral()
+        }
+}
+
+
+How do I run basic tests in gradle ?
+===========================================
+> gradle test
+
+
+Configuration of build.gradle(utils)
+=====================================================
+apply plugin: "java"
+dependencies {
+ compile "joda-time:joda-time:2.9.4"
+}
+
+Configuration of build.gradle(web)
+=====================================================
+apply plugin: "war"
+apply plugin: "jetty"
+dependencies {
+        compile project(":utils")
+        compile "javax.servlet:servlet-api:2.5"
+}
+
+httpPort = 8080
+stopPort = 9080
+stopKey = "stopKey"
+
+
+^^^^ Notice the additonal entries that we have added in
+bold.  We have simply applied the Jetty plugin and 
+also provided one of the standard properties (httpPort)
+available to configure the jetty Web Server when it is
+launched i.e. the HTTP port.  We have specified 8080 as
+the value.  Additionally, we have provided the stopPort
+and stopKey properties so that we can stop the Jetty
+server from teh command line/terminal. 
+
+
+---------------------------------------------
+ 
+The WAR  plugin
+=============================================
+Here we are applying the war plugin.  As per 
+the documentation: "The War plugin extends the Java
+plugin to add support for assembling web application
+WAR files.  It disables the default JAR archive
+generation of the Java plugin and adds
+a default WAR archive task"
+
+The plugin also adds the war and assemble tasks to
+the tasks available for the project:
+
+classes <---------war<-----------assemble
+
+
+Api
+-----------------------------------------------
+This project contains the application codea and
+it depends on api and common
+projects respectively
+
+App
+-----------------------------------------------
+This project contains the application code
+and it depends on api and common projects
+respectively
+
+Including Multiple Projects in a Build(edit settings.gradle)
+====================================================
+include ":api",":common",":app"
+
+Common Configuration
+======================================================
+You are familiar with the build.gradle file, which is what
+the Gradle command looks for in terms of what
+it has to do.
+
+Below is a a recommended and fairly intuitive structures
+for the build.gradle file as shown below:
+======================================================
+allprojects{
+        //global project build instructions
+}
+subprojects{
+        //individual project build instructions
+}
+
+
+
+New avaible tasks under our Build tasks
+=============================================
+Now that we added the war plugin for one of our
+sub projects....we should get this list after running the 
+following commmand:
+
+> gradle tasks
+
+Build tasks
+-----------
+assemble - Assembles the outputs of this project.
+build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+buildNeeded - Assembles and tests this project and all projects it depends on.
+classes - Assembles main classes.
+clean - Deletes the build directory.
+jar - Assembles a jar archive containing the main classes.
+testClasses - Assembles test classes.
+war - Generates a war archive with all the compiled classes, the web-app content and the libraries.
+
+Build Setup tasks
+-----------------
+init - Initializes a new Gradle build. [incubating]
+wrapper - Generates Gradle wrapper files. [incubating]
+
+Documentation tasks
+-------------------
+javadoc - Generates Javadoc API documentation for the main source code.
+
+Help tasks
+----------
+buildEnvironment - Displays all buildscript dependencies declared in root project 'webapp'.
+components - Displays the components produced by root project 'webapp'. [incubating]
+dependencies - Displays all dependencies declared in root project 'webapp'.
+dependencyInsight - Displays the insight into a specific dependency in root project 'webapp'.
+help - Displays a help message.
+model - Displays the configuration model of root project 'webapp'. [incubating]
+projects - Displays the sub-projects of root project 'webapp'.
+properties - Displays the properties of root project 'webapp'.
+tasks - Displays the tasks runnable from root project 'webapp' (some of the displayed tasks may belong to subprojects).
+
+Verification tasks
+------------------
+check - Runs all checks.
+test - Runs the unit tests.
+
+Web application tasks
+---------------------
+jettyRun - Uses your files as and where they are and deploys them to Jetty.
+jettyRunWar - Assembles the webapp into a war and deploys it to Jetty.
+jettyStop - Stops Jetty.
+
+Other tasks
+-----------
+hello
+
+Now that we have performed basic app assembly...
+Let's assemble and run our app war
+======================================================
+> gradle jettyRunWar
+
+
+navigate to url localhost:8080/web
+
+This is what we should see...
+
+Directory: /web/
+
+META-INF/ 	4096 bytes 	Oct 18, 2016 1:26:57 AM
+WEB-INF/ 	4096 bytes 	Oct 18, 2016 1:26:57 AM
+
+
+
+Running granular tasks and builds 
+============================================
+Examples of running the hello task individually
+for each project
+-------------------------------------------------
+> gradle -q api:hello
+> gradle -q common:hello
+> gradle api:build
+> gradle common:hello
+
+
+
+Running tasks specific to a build as opposed
+to global settings for all subprojects
+==============================================
+project(':api'){....}
+project(':common'){....}
+project(':app'){....}
+
+Configuring sub-project interdependency
+==============================================
+project(':app'){
+        dependencies{
+                compile project(':common')
+                compile project(':api')
+        }
+}
+
+
+Building the WAR file
+====================================================
+Since we have made the web project depend on the utils,
+we can build the entire Web Application, by going to the
+web folder in the terminal and firing the following 
+command:
+
+> gradle assemble
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:jar
+:assemble
+:utils:compileJava UP-TO-DATE
+:utils:processResources UP-TO-DATE
+:utils:classes UP-TO-DATE
+:utils:jar
+:utils:assemble
+:web:compileJava UP-TO-DATE
+:web:processResources UP-TO-DATE
+:web:classes UP-TO-DATE
+:web:war
+Download https://repo1.maven.org/maven2/javax/servlet/servlet-api/2.5/servlet-api-2.5.pom
+Download https://repo1.maven.org/maven2/joda-time/joda-time/2.9.4/joda-time-2.9.4.pom
+Download https://repo1.maven.org/maven2/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar
+Download https://repo1.maven.org/maven2/joda-time/joda-time/2.9.4/joda-time-2.9.4.jar
+:web:assemble
+
+BUILD SUCCESSFUL
+
+Total time: 5.836 secs
+
+
+Note about the jetty plugin and gradle
+=============================================
+The Jetty plugin that is being used is deprecated
+and is planned for removal in Gradle 4.0.
+It's replacement Gretty is available at 
+https://githum.com/akhikhl/gretty.  For now,
+we will go ahead with the Jetty plugin
+
+

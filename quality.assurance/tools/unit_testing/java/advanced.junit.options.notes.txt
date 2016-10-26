@@ -1,0 +1,79 @@
+Advanced JUnit options
+==============================
+
+
+Parameterized test
+==============================
+JUnit allows you to use parameters
+in a test class.  This class can
+contain one test method and this method
+is executed with the different parameters
+provided.
+
+
+You mark mark a test class as a parameterized
+test with the annotation:
+
+        @RunWith(Parameterized.class)
+
+Such a test class must contain a static
+method annotated with the annotation:
+
+        @Parameters
+
+
+That method generates and returns a collection
+of arrays.  Each item in this collection is used
+as parameter for the test method.
+
+You can use the @Parameter annotation on
+public fields to get the test values
+injected in the test
+
+The following code shows an example for a 
+parameterized test.  It tests the 
+multiply() method of the MyClass class
+which is inlcuded as inner class for the 
+purpose of this example.
+
+
+package testing;
+
+import org.junit.Test;
+import org.junit.runner.RunWith ;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Paramterized.Parameters;
+import java.util.Arrays ;
+import java.util.Collection ;
+import static org.junit.Assert.assertEquals;
+import static org.junit.runners.Parameterized.*;
+
+@RunWith(ParameterizedTestFields){=
+public class ParameterizedTestFields{
+        @Parameter 
+        public int m1;
+        @Parameter (value = 1)
+        public int m2;
+        @Parameters
+        public static Collection<Object[]> data(){
+                Object[][] data = new Object[][]
+                { { 1 , 2 }, { 5, 3 }, { 121, 4 } };
+                return Arrays.asList(data);
+        }
+
+        @Test
+        public void testMultiplyException(){
+                MyClass = new MyClass();
+                assertEquals("Result", m1 * m2, tester.multiply(m1,m2));
+        }
+        
+}
+
+
+
+
+
+
+
+
+
