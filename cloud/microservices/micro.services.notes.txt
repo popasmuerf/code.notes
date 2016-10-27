@@ -82,7 +82,52 @@ Distributed Systems Management
         
 Technology Solutions
 =================================================================================
+Througout the rest of the book, we'll introduce you to soe
+popular technology components and how they help solve some of the problems
+of developing and selivering software usin a microservice archtechture.
+Keep in mind....microservices is not just a tech problem....getting
+the right org structure and teams in place to facilitate microservices is 
+paramount.  Switching from SOAP to RESt doesn't make a micorsercie architechture.
 
+
+The first step to building microservices is to get somethign working locally on
+your machine.
+
+
+Our tools
+=================================================================================
+    *   Spring Boot
+    *   Drop Wizard
+    *   WildFly Swarm
+    *   Vagrant
+    *   Virutal Box
+    *   Container Development Kit
+    *   Kubernetes/OpenShift CLI
+    *   Docker CLI(optional)
+    
+    
+    
+Spring Book for Microservices
+===============================================================================
+*   Favoring autoatic, conventional configuration by defualt
+*   Curating sets of popular starter dependencies for easier consumption
+*   Simplifying application packaging
+*   Baking in application insight(metrics and enviroment info)
+
+
+Spring Boot Starter Dependencies
+===============================================================================
+*   JPA persistence
+*   NoSQL databases like MongoDB, Cassandra, and Couchbase
+*   Redis Caching
+*   Tomcat/Jetty/Udertow servlet engine
+*   JTA transactions
+
+
+Adding a submodule to your application brings in the curated
+set of transitive dependencies and versions that are known to work
+together saving developers from having to sort out 
+dependencies themselves
         
         
     
