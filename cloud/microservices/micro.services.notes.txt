@@ -40,3 +40,67 @@ Challenges
 ==========================================================================
     *   Network reliability
     *   Network latency.....
+    
+    
+    
+We should described contexts within a visual context map
+==========================================================================
+Through each iteration we remove ambiguity and come up
+with bounded contexts that are in turn sub-components of 
+of the overall extant Contex....
+
+
+Context ----------------> Bounded Context
+    |
+    |
+    |-------------------> Bounded Context
+    |
+    |
+    |-------------------> Bounded Context
+    
+    
+Distributed Systems Management
+===============================================================================
+    *   How do we start and stop a fleet of services ?
+    *   How do we aggregate logs/metrics/SLAs across microservices
+    *   How do we discover services in an elastic enviroment where
+        they can be comming, going, moving etc ?
+    *   How do we do load balancing?
+    *   How do we learn about the health of our cluster or indvidual
+        services ?
+    *   How do we do fine-grained API routing ?
+    *   How do we secure our services ?
+    *   How do we throttle or disconnect parts of a cluster if it starts to
+        crash or act unexpectedly ?
+    *   How do we deply multiple version of a service and route to them
+        appropiately ?
+    *   How do we make confguration changes across a large 
+        fleet of services ?
+    *   How do ew make chages to our application code and configuration
+        in safe, auditable, repeatable manner ?
+        
+        
+Technology Solutions
+=================================================================================
+
+        
+        
+    
+    
+    
+
+
+
+
+
+    
+301-535 3453  RJ
+
+301-968-3434  Rachel Vista Science
+
+617 848 1107  Chris Cyber Cutters
+
+703-206-4146  Erica Wallace
+
+535-3453  Robert SE solutions
+
