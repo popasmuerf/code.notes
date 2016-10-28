@@ -129,8 +129,43 @@ set of transitive dependencies and versions that are known to work
 together saving developers from having to sort out 
 dependencies themselves
         
+Production Ready
+===============================================================================    
+Spring ships witha  module called actuator which enables the view of
+things like:
+    *   metrics
+    *   thread dumps
+    *   enviromental variables
+    *   gadbage collection stats
+    *   BeanFactory(bean config)
+    *   Protocal support:
+        -   HTTP
+        -   JMX
+        -   SSH
         
+        
+Getting Ready
+===========================================================================
+We are going to use Spring Boot command-line to bootstrap
+our first Spring  Boot application(Spring uses Spring Initializr under the covers)
+You are free to explore the different ways to do this
+if your not comfortable with CLI machinations(lolz...but we are...)
+
+
+> spring --version
+Spring CLI v1.4.1.RELEASE
+
+>spring init --build maven --groupId com.redhate.examples\
+--version 1.0 --java-version 1.8 --dependencies web \
+--name hola-springboot hola-springboot
+
+    -or-(?)
     
+>spring init --build gradle --groupId com.redhate.examples\
+--version 1.0 --java-version 1.8 --dependencies web \
+--name hola-springboot hola-springboot
+
+
     
     
 
