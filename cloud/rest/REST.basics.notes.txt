@@ -1,0 +1,78 @@
+
+
+
+client
+    |
+    |
+    |
+    |
+    |
+    |
+GET/index.html HTTP/1.1
+Host:www.example.com    
+User-Agent: Mozilla/5.0 -----------request-------->Web Server
+Accept:text/html                                     |
+Accept-Language:en-US,en:q=0.5                       |
+Accept-Encoding:gzip,deflate                         |
+Connection:keep-alive                                |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                    HTTP/1.1 200 OK
+                                    Accept-Ranges:bytes
+                                    Cache-Control:max-age=604800
+                                    Content-Type:text/html
+                                    Date:Wed,03 Dec 2014 15:05:59 GMT
+                                    Content-Length: 1270
+                                    <html>
+                                        <head>
+                                        </head>
+                                        <body>
+                                            Hello World!!!!
+                                        </body>
+                                    </html>
+                                                   |
+                                                   |
+                                                   |
+   client<--------------response-------------------|
+                                          
+                                                 
+                                                 
+Sequence of events
+===============================================================
+*   client submits a GET request for url http://www.example.com/index.html 
+*   Browser establishes a connection with http://www.example.com
+*   GET request contains modifiers and client information:
+
+    GET /index.html  HTTP/1.1
+    Host: www.example.com
+    User-Agent: Mozilla/5.0
+    Accept: text/htmlAccept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Connection: Keep-alive
+ 
+*   Server responds with:
+
+    HTTP/1/1 200 OK
+    Accept-Ranges:bytes
+    Cache-Control:max-age=604800
+    Content-type:text/html
+         HTTP/1.1 200 OK
+    Accept-Ranges:bytes
+    Cache-Control:max-age=604800
+    Content-Type:text/html
+    Date:Wed,03 Dec 2014 15:05:59 GMT
+    Content-Length: 1270
+    <html>
+        <head>
+        </head>
+        <body>
+              Hello World!!!!
+        </body>
+    </html>   
+    

@@ -155,25 +155,154 @@ if your not comfortable with CLI machinations(lolz...but we are...)
 > spring --version
 Spring CLI v1.4.1.RELEASE
 
->spring init --build maven --groupId com.redhate.examples\
+spring init --build maven --groupId com.redhat.examples \
 --version 1.0 --java-version 1.8 --dependencies web \
 --name hola-springboot hola-springboot
 
     -or-(?)
     
->spring init --build gradle --groupId com.redhate.examples\
+>spring init --build gradle --groupId com.redhat.examples \
 --version 1.0 --java-version 1.8 --dependencies web \
 --name hola-springboot hola-springboot
 
-
     
     
+Breakdown of the above...
+------------------------------------------------------------------------------------
+--build
+    the build-managemtn tool we want to use.  Maven or gradle
+    are the two valid optons at this time
+--groupId
+    the groupId to use in our maven coordinates for
+    our pom.xml; unfortunatly this does not properly
+    extend to the Java package names that get
+    created.  these need to be modified
+    by hand.
+--version
+    the version of our application' will be used in later iterations,
+    so set to 1.0
+--java-version
+    Allows us to specify the build compiler version of the JDK
+--dependencies
+    This is an interesting parameter; we can specify fully baked sets
+    of dependencies for doing common types of development.  For
+    example, web will set up Spring MVC and embed an internal
+    servlet engine(Tom cat by default; Jetty and Undertow as options)
+    Other convenient dependency bundles/starters include
+    jpa, security , and cassandra   
+        
+
+Running your project
+==============================================================
+> mvn spring-boot:run
+> gradle spring-boot:run (?)
 
 
 
 
+Exposing endpoints and modifying them....
+==================================================
+> cd /home/mikeyb/src/spring/boot/hola-springboot/src/main/java/com/example
+> vim HolaRestController.java
 
+/**
+    @RestController
+        -   Tells Spring this is an HTTP controller capable of exposing
+            HTPP endpoints (GET,PUT,POST,DELETE,etc)
+            
+    @RequestMapping
+        -   Map specific parts of the HTTP URI path to classes, methods,
+            and parameters in teh Java code
+*/
+@RestController
+@RequestMapping("/api")
+public class HolaRestController{
+    @RequestMapping(method = RequestMethod.GET, value = "/hola", produces = "text/plain")
+    String hostname = null ;
+    try{
+        hostname = InetAddress.getLocalHost().getHostAddress();
+    }catch(UnknownHostException e){
+        hostname = "unknown";
+    }
+    return "Hola Spring Boot de " + hostname ;
+}
+
+
+Externalize Configuration
+=======================================================
+Spring Book makes it easy to use external property
+cources like properties files, command-line arguments,
+the OS enviroment, or
+Java System properites.  We can even bind
+entire  "classes" of properties to objects in
+our Spring context.  For example if we wished
+to to bind all helloapp.* properties
+to our HolaRestController, We can add the 
+annotation:
+
+    @ConfigurationProperites(prefix="helloapp")
     
+...and Spring Boot will atumatically try to 
+bind helloapp.foo and helloapp.bar and hello.bar
+to Java Bean  properties in teh HolrestController class.
+
+
+
+Let's define a new property
+==============================================================
+> cd /home/mikeyb/src/spring/boot/hola-springboot/src/main/resources
+> vim application.properties
+
+helloapp.saying=Guten Tag aus
+
+
+> cd /home/mikeyb/src/spring/boot/hola-springboot/src/main/java/com/example
+> vim HolaRestController.java
+
+/**
+    @RestController
+        -   Tells Spring this is an HTTP controller capable of exposing
+            HTPP endpoints (GET,PUT,POST,DELETE,etc)
+            
+    @RequestMapping
+        -   Map specific parts of the HTTP URI path to classes, methods,
+            and parameters in teh Java code
+*/
+@RestController
+@RequestMapping("/api")
+@ConfigurationProperties(prefix="helloapp")
+public class HolaRestController{
+    private String saying ;
+    @RequestMapping(method = RequestMethod.GET, value = "/hola", produces = "text/plain")
+    public String hola() throws UnknownHostException{
+        String hostname = null ;
+        String hostname = null ;
+        try{
+            hostname = InetAddress.getLocalHost().getHostAddress();
+        }catch(UnknownHostException e){
+            hostname = "unknown";
+        }
+        return "Hola Spring Boot de " + hostname ;
+    }
+    public String getSaying(){
+        return saying;
+    }
+    public void setSaying(String saying){
+        this.saying = saying;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 301-535 3453  RJ
 
 301-968-3434  Rachel Vista Science

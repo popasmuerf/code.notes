@@ -1,0 +1,262 @@
+
+
+
+client
+    |
+    |
+    |
+    |
+    |
+    |
+GET/index.html HTTP/1.1
+Host:www.example.com    
+User-Agent: Mozilla/5.0 -----------request-------->Web Server
+Accept:text/html                                     |
+Accept-Language:en-US,en:q=0.5                       |
+Accept-Encoding:gzip,deflate                         |
+Connection:keep-alive                                |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                    HTTP/1.1 200 OK
+                                    Accept-Ranges:bytes
+                                    Cache-Control:max-age=604800
+                                    Content-Type:text/html
+                                    Date:Wed,03 Dec 2014 15:05:59 GMT
+                                    Content-Length: 1270
+                                    <html>
+                                        <head>
+                                        </head>
+                                        <body>
+                                            Hello World!!!!
+                                        </body>
+                                    </html>
+                                                   |
+                                                   |
+                                                   |
+   client<--------------response-------------------|
+                                          
+                                                 
+                                                 
+Sequence of events
+===============================================================
+*   client submits a GET request for url http://www.example.com/index.html 
+*   Browser establishes a connection with http://www.example.com
+*   GET request contains modifiers and client information:
+
+    GET /index.html  HTTP/1.1
+    Host: www.example.com
+    User-Agent: Mozilla/5.0
+    Accept: text/htmlAccept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Connection: Keep-alive
+ 
+*   Server responds with:
+
+    HTTP/1/1 200 OK
+    Accept-Ranges:bytes
+    Cache-Control:max-age=604800
+    Content-type:text/html
+         HTTP/1.1 200 OK
+    Accept-Ranges:bytes
+    Cache-Control:max-age=604800
+    Content-Type:text/html
+    Date:Wed,03 Dec 2014 15:05:59 GMT
+    Content-Length: 1270
+    <html>
+        <head>
+        </head>
+        <body>
+              Hello World!!!!
+        </body>
+    </html>   
+    
+    
+    
+Understanding the HTTP request methods
+======================================================================
+*   GET
+    -   This method is used for retrieve resources from
+        the server by using a given URI
+*   HEAD
+    -   This method is the same as GET request, but it
+        only transfers the status line  and header section
+        without the response body
+*   POST
+    -   Posting data to server
+*   PUT
+    -   Modifies/updates resources pointed at by the URI
+*   DELETE
+    -   deletes the resource pointed at by the URI
+*   TRACE
+    -   echos the contents of the recieved request.  Used for debugging   
+*   OPTIONS
+    -   returns server supported HTTP methods
+*   CONNECT
+    -   establishes connections to target server over HTTP...debugging ?0
+*   PATCH
+    -   used for applying partial modifications to a resource
+        idnetified by the URI
+        
+        
+        
+Representing content types using HTTP header fields
+=========================================================================
+
+Request
+-----------------------------------------------------
+*   Accept
+    -   Informs the server what it expects from the
+        server's response
+        
+*   Example:
+          Accept: text/htmlAccept-Language: en-US,en;q=0.5
+    
+    
+Responses
+------------------------------------------------------
+*   Content-Type Header
+    -   Describes the content type(s)
+        that are available to the client.
+*   Example:
+        Content-Type: text/html
+        
+        
+Cotent Types
+=========================================================
+*   text
+    -   plain text indicates that the content is plain
+        text and no speicall software is required to
+        read the contents.  The subtype represents more
+        specific details about the content, which can
+        be used by the client for special processing, if any. 
+        Content-Type:text/html indidicates that the body
+        contents is html, and the client can use this
+        hint to kick off an appropiate rendering engine
+        while displaying the response
+*   multipart
+    -   composed of multiple data types
+*   message
+    -   type that encapsulates more messages.  It allows
+        messages to contain other messges or pointers to
+        other messages.  For instance:
+            Content-Type/partial
+        allows for large messages to be broken up into smaller messages
+        The entire message is assembled by the client
+*   image
+    -   Content-Type: image/png indicates that the body
+        content is a *.png image
+*   audio
+    -   This type indicates the audio data.  For instance,
+        Content-Type: audio/mpeg indicates that the body
+        content is MP3 or other MPEG audio.
+*   video
+    -   This type indicates the video data.  For instance,
+        Content-Type: video/mp4 indicates that the body conten
+        is MP4 video.
+*   application
+    -   this type represents the application data or
+        binary data.  For instance, Content-Type:application/json; charset=utf-8
+        designates the content to be in the JS object Notation(JSON) format,
+        encoded with UTF-8 character encoding.
+        
+        
+For complete list of extant subtypes...
+===========================================================
+http://www.iana.org/assignments/media-types/media-types.xhtml
+
+
+
+HTTP status codes
+========================================================================
+For every HTTP request , the server returns a status code
+indicating the processing status of the request.
+
+
+1xx  informational
+-------------------------------------------------------
+    *   100 Continue
+        -   This code indicates that the server
+            has received the request header and the client can
+            now send the body content.  The client makes
+            a request(with the Expect: 100-continue header) to
+            check whether it can start with a partial request.
+            The server can then respond either with 100 Continue (OK)
+            or 417 Expectation Failed (No) along with an appropriate
+            reason.
+    *   101 Switching Protocols
+        -   This code indidcates that the server is OK for a protocol
+            switch request from the client
+            
+    *   102 Processing
+        -   This code is an informational status code used for long running processing to
+            prevent the client from timing out.  This tells the client to wait
+            for the future response, which will have the actual response body
+            
+
+2xx  Success:
+-------------------------------------------------------
+    *   200 OK
+        -   This code indicates that the client request is successful
+            and the response content is returned to the client as
+            appropiate
+    *   201 Created
+        -   This code indicates that the request is successful and a new 
+            resource is created
+            
+    *   204 No Content:
+        -   This code indicates that the request is processed successfully, but there's no return
+            value for this request.  Typical situations involve deleted resources
+            
+3xx  Redirection:
+-------------------------------------------------------
+    *   304 Not Modified
+        -   This code indicates that the resource has not been modified since it 
+            was last accessed. This code is returned only when allowed by
+            the client via setting the request headers as:
+                If-Modified-Since
+                    -or-
+                If-None-Match
+            The client can take appropriate action on the basis of this
+            status code
+   
+4xx  Client Error:
+-------------------------------------------------------
+    *   400 Bad Request
+        -   Server failed to process request  because of the malformed
+            syntax in the request.  The client can try again after correcting
+            the request
+    *   401 Unauthorized
+        -   This code indicates that aunthentication is required
+            for the resource.  The client is always free to try again
+    *   403 Forbidden
+        -   This code indicates that the server is refusing
+            to respond to the request even if the request is
+            valid.  The reason will be listed in the body content
+            if the request is not a HEAD method
+    *   404 Not Found
+        -   This code indicates that the requested resource
+            cannot be found   
+    *   405 Method not Allowed
+        -   This code indicates that the method extant within a request
+            is being refused by the server
+    *   408 Request TimeOut
+        -   This code indicates that the client failed to respond
+            within the alloted time frame set by the server
+    *   409 Conflict
+        -   This code indicates that the request connot be completed
+            because it conflitcs with some rules established on resources,
+            such as validation failure
+            
+            
+5xx  Server Error:
+-------------------------------------------------------  
+*   500 Internal Server Error
+        -   This code indicates a generic error message, and it tells
+            that it tells that an unexpected error occured on the
+            server and the request cannot be fulfilled.                   
