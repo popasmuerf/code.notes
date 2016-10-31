@@ -69,10 +69,30 @@ was calling:
 1       Unsafe.class
 ************************************** 
 2       MyApp.class
-**************************************       
+**************************************  
 
 
 
+This is looked-up class is then checked for its
+ClassLoader where a null reference is used
+to represent the bootstrap class loader
+on a Hotspot virtual machine(This is documented
+in Class#getClassLoader() where it says that
+:some implementations may use null to represent the
+bootstrap class loader").     
+
+This security check is poorly designed and shold
+be seen as a warning against the singleton anti-pattern.
+
+
+From the Unsafe class's source code, you can learn
+that the singleton instance is stored in a private static field 
+called the "theUnsafe"
+
+public Unsafe{
+        public Unsafe 
+
+}
 Quck Summary:
 ================================================
 
