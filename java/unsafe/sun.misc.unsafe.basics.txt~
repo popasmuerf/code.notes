@@ -24,4 +24,43 @@ rely on  sun.misc.Unsafe such for example:
         *       etc
 
 
+Getting hold of an instance of sun.misc.Unsafe
+===================================================
+The sun.misc.Unsafe  cclass is intended to be 
+oly used by core Java classes which is why its
+authors mad its only constructor private and only
+added an equally private singleton instance.  The public
+getter for this instance peforms a security check in order to avoid
+its public use:
+
+import sun.misc.Unsafe ;
+public static Unsafe getUnsafe(){
+        Class cc = sun.reflect.Reflection.getCallerClass(2);
+        if(cc.getClassLoader()!=null)throw new SecurityException("Unsafe"){
+                return theUnsafe;
+        }
+}
+
+
+
+This method first looks up the calling Class form the current
+thread's method stack.  Tis lookup is implemented by another
+internal class named:
+
+        sun.reflection.Reflection
+
+which is basically browsing down the given 
+number of call stack frames and then returns this method's
+defining class.
+
+While browsing down the the stack...the first
+found class(index 0) will 
+obviously be the Reflection class itself, and
+the second(index 1) class will be the Unsafe
+class such that index 2 will hold your application class that 
+was calling:
+
+        Unsafe#getUnsafe()
+
+        
 
