@@ -1,5 +1,6 @@
 Understanding sun.misc.Unsafe
 https://dzone.com/articles/understanding-sunmiscunsafe
+https://docs.oracle.com/javase/8/docs/api/
 =================================================
 The biggest competitor to the Java virutal machine
 might be Microsoft's CLR that hosts languages
@@ -90,11 +91,119 @@ that the singleton instance is stored in a private static field
 called the "theUnsafe"
 
 public Unsafe{
-        public Unsafe theUnsafe;
+        private static Unsafe theUnsafe;
 
 }
-Quck Summary:
+
+The above is true for HotSpot, unfortunately, other
+jvms sometimes use other names for this field.
+
+Android's dalvik(and possibly the AOTC?)  Unsafe class is
+for example storing its singleton instance in a field
+called :
+
+        THE_ONE
+
+Which makes it hard to provide a "compatible" way
+of recieving the instance.  However, since we already left the save
+territory of compatibility byu using the
+Unsafe class, we should not worry about this more
+than we should worry about using the class at all
+For getting hold of the singleton instance, you simply
+read the singleton field's value:
+
+Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+theUnsafe .setAccessible(true)
+Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+
+        -or-
+
+Constructor<Unsafe> unsafeConstructor = Unsafe.class.getDeclaredConstruct();
+unsafeConstructor.setAccessable(true);
+Unsafe unsafe = unsafeConstructor.newInstance();
+
+Side note Class Constructor<T>
 ================================================
+java.lang.Object
+        java.lang.reflect.AccessibleObject
+                java.lang.reflect.Executable
+                        java.lang.reflect.Constructor<T>
 
+Type Parameters:
+------------------------------
+T = the class in which the constructor is declared
+
+All Implemented Interfaces:
+------------------------------
+AnnotatedElement
+GenericDeclaration, Member
+
+
+
+public final class Constructor<T> extends Executable
+=====================================================
+Constructor providesinformation about, and acess to,
+a single constructor for a class.
+
+Constructor permits widening conversions to occur
+when matching the atual parameters to
+
+        newInstance()
+
+with the underlying constructor's formal parameters, but throws
+an IllegalArgumentException if a narrowing conversion would 
+occur.
+
+
+Create an Instance of a Class without calling a
+constructor:
+================================================
+The first time I made use of the Unsafe classwas 
+for creating an instane of a class without calling any of the class's constructors.  I needed to proxy an
+entire class which only had a rather noicy constructor, but
+I only wanted to delegate all method invocations to 
+a real instance whicfh I did however not
+know at the  time of construction.  Creating a subclass
+was easy and if the class had ben represneted by an interface, creating a proxy would have been a straightforward
+task.  With the expensive constructor, I was however
+stuck.
+
+By using the Unsafe class, I was hoever able to work my
+way around it.
+Conscider a class with an artificially expensive constructor:
+
+
+class ClassWithExpensiveConstructor{
+        private final int value;
+        private ClassWithExpensiveConstructor(){
+                value = doExpensiveLookup();
+        }
+        private int doExpensiveLookup(){
+                try{
+                        Thread.sleep(2000);
+                }catch(InterruptedException e){
+                        e.printStackTrace();
+                }
+                return 1;
+        }
+        public int getValue(){
+                return value ;
+        }
+
+}
         
+Using the Unsafe, we can create an instance
+of ClassWithExpensiveConstructor(or any of its subclasses)
+without having to invoke the above consturctor, simply
+by allocating an instance directory on the heap:
 
+
+@Test
+pubic void testObjectCreation() throws Exception{
+        ClassWithExpensiveContstructor instance = 
+        (ClassWithExpensiveConstructor)unsafe.allocateInstance(ClassWithExpensiveConstructor.class);
+assertEquals(0,instance.getValue());
+}
+
+Not that the final field reamined unitialized by teh constructor but
+is set with its type's default value.
