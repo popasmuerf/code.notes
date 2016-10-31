@@ -61,6 +61,20 @@ class such that index 2 will hold your application class that
 was calling:
 
         Unsafe#getUnsafe()
+--------------------------------------
+        Stack   
+**************************************
+0       sun.reflect.Reflection.class
+**************************************
+1       Unsafe.class
+************************************** 
+2       MyApp.class
+**************************************       
+
+
+
+Quck Summary:
+================================================
 
         
 
