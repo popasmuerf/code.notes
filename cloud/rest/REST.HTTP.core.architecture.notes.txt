@@ -446,5 +446,34 @@ Connection:keep-alive                                |
 
 What's going on here:
 ================================================
-1. A java client makes an HTT
+1.      A java client makes an HTTP request with the 
+        GET method type and IT as the identifier for
+        the department.
+
+2.      The client sets the representation type that
+        it can handle throught the Accept request
+        header field.  This request message is self-descriptive:
+        *       It uses standard method (the GET method in this
+                example) with known semantics for retrieving the
+                content.
+        *       The content type is set to well-known mediat type
+                (text/plain)
+        *       This request also declares the acceptable response
+                format
+
+3.      The web server receives and inerprets the GET request
+        to be a retriever action.  At this point, the web server
+        passes control to the underlying RESTful framework to handle
+        the request.  Note that RESTful frameworks do not
+        automatically retrieve resources, as thsat is not their job.
+        The job of a framework is to ease the implementation of the
+        REST constraints.  Business logic and storage
+        implementation is teh role of the domain-specific 
+        Java code.
+
+4.      The server-side program looks for the IT resource.
+        Finding the resource could mean looking for it in some
+        data store such as a database, a file system, or even a 
+        call to a different web service
+
 
