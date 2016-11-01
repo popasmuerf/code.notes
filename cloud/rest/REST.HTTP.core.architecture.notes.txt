@@ -477,3 +477,77 @@ What's going on here:
         call to a different web service
 
 
+5.      Once the program finds the IT department details, it
+        converts the binary data of the resource to the client's
+        requested representation.  In this example, we use the 
+        JSON representation for the resource
+
+
+6.      With the representation converted to JSON, the server
+        sends back an HTTP response with a numeric code
+        of 200 together with the JSON representation as the
+        payload.  Not that if there are any errors, the
+        HTTP server reports back the proper numeric code, but it is up
+        to correctly deal with the failure.  Similar to the
+        request message, the response is also self-descriptive 
+
+
+A returned payload from a GET request for this uri(json representations):
+==========================================================
+http://www.umde.edu/resources/departments
+
+[{"departmentId":10,"departmentName":"IT",
+ "manager":"John Chen"},
+ {"departmentId":20,"departmentName":"Marketing",
+ "manager":"Ameya J"},
+ {"departmentId":30,"departmentName":"HR",
+ "manager":"Pat Fay"}, 
+]
+
+
+
+
+POST
+======================================================
+Used to create resources.  
+
+Creating a department
+----------------------------------------
+http://umd.edu/resources/departments
+
+
+Client payload
+------------------------------------
+{"departmentName":"Sales","manager":"Tony Greig"} 
+
+
+
+client
+    |
+    |
+    |
+    |
+    |
+    |
+POST/resources/departments HTTP/1.1
+Host:www.umd.edu    
+User-Agent: Java/1.8.0_25 -----------request-------->Web Server
+Accept:application/json                              |
+{"departmentName":"Sales"                            |
+ "manager":"Tony Greig"}                             |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                    HTTP/1.1 201 CREATED
+                                    Accept-Ranges:bytes
+                                    Date:Wed,03 Dec 2014 15:05:59 GMT
+                                    Content-Length: 0
+                                                   |
+                                                   |
+                                                   |
+   client<--------------response-------------------|           
