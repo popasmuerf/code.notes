@@ -732,7 +732,7 @@ PUT method What's going on here
 
 2. The server recieves the requst and let's the REST framework
    handle it.  At this point, we let our code execute  The
-   proper commands to update the representations of the Sales
+   proper commands to delete the representations of the Sales
    department.   
 
 3. The server responds with a 204 "No Content" response code
