@@ -551,3 +551,122 @@ Accept:application/json                              |
                                                    |
                                                    |
    client<--------------response-------------------|           
+
+
+POST -- what's going on here ?
+=======================================================
+The POST method is used to create resources.  As we are
+creating a department, we use the HTTP POST method.
+Again, the URI to create a new department in our example is
+
+http://umde.edu/resources/departments
+
+The method type for the request is set by the client.
+Assume that the Sales data representation looks like the following:
+
+{"departmentName":"Sales","manager":"Tony Greig"}
+
+1.      A java client makes a request to --> http://umd.edu/resources/departments
+
+2.      The POST request carries the payload along with it in
+        the form of a JSON representation of the Sales department
+
+3.      The server recievers the request and lets the REST framework
+        to handle it; our coude within the framework executes the 
+        proper commands to store the representation  irrespective
+        of wich data persistence mechanism is used.
+
+4.      Once the new resource is stored, a response code of 
+        201(Created) which implies that the server has fufilled
+        the request by cdreating a new resource.  The newly
+        created resource is accessble by traversing the
+        URI given by a Location header field.  If
+        it is a failure, the server sends the appropriate error
+        code.
+
+
+HTTP PUT method
+===================================================================
+The PUT method is used to update resources.
+PUT requests together with the representation as it's payload...
+updates the resource.  
+
+Let's update the the manager for the Sales department from:
+
+{"departmentId":40,"departmentName":"Sales","manager":"Tony Creig"}
+
+        -to-  
+
+{"departmentId":40,"departmentName":"Sales","manager":"Ki Gee"}
+
+
+using URI:  http://umd.edu/resources/departments/Sales
+
+
+
+PUT
+======================================================
+Used to create resources.  
+
+Creating a department
+----------------------------------------
+http://umd.edu/resources/departments
+
+
+Client payload
+------------------------------------
+{"departmentId":40,"departmentName":"Sales","manager":"Tony Creig"}
+
+        -to-  
+
+{"departmentId":40,"departmentName":"Sales","manager":"Ki Gee"}
+
+client
+    |
+    |
+    |
+    |
+    |
+    |
+PUT/resources/departments HTTP/1.1
+Host:www.umd.edu    
+User-Agent: Java/1.8.0_25 -----------request-------->Web Server
+Accept:application/json                              |
+{"departmentName":"Sales"                            |
+ "manager":"Ki Gee"}                             |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                    HTTP/1.1 204 No Content
+                                    Accept-Ranges:bytes
+                                    Date:Wed,03 Dec 2014 15:05:59 GMT
+                                    Content-Length: 0
+                                                   |
+                                                   |
+                                                   |
+   client<--------------response-------------------|  
+
+
+PUT method What's going on here
+------------------------------------------------------
+1.  A java client makes a PUT request
+        http://umd.edu/resources/departments/Sales
+        -with a payload of-
+        {"departmentId":40,"departmentName":"Sales","manager":"Ki Gee"}
+
+2. The server recieves the requst and let's the REST framework
+   handle it.  At this point, we let our code execute  The
+   proper commands to update the representations of the Sales
+   department.   
+
+3. The server responds with a 204 "No Content" response code
+   indicates that the server has fufilled hte request but does not
+   return the entity body
+
+
+
