@@ -1,0 +1,257 @@
+
+
+
+client
+    |
+    |
+    |
+    |
+    |
+    |
+GET/index.html HTTP/1.1
+Host:www.example.com    
+User-Agent: Mozilla/5.0 -----------request-------->Web Server
+Accept:text/html                                     |
+Accept-Language:en-US,en:q=0.5                       |
+Accept-Encoding:gzip,deflate                         |
+Connection:keep-alive                                |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                    HTTP/1.1 200 OK
+                                    Accept-Ranges:bytes
+                                    Cache-Control:max-age=604800
+                                    Content-Type:text/html
+                                    Date:Wed,03 Dec 2014 15:05:59 GMT
+                                    Content-Length: 1270
+                                    <html>
+                                        <head>
+                                        </head>
+                                        <body>
+                                            Hello World!!!!
+                                        </body>
+                                    </html>
+                                                   |
+                                                   |
+                                                   |
+   client<--------------response-------------------|
+                                          
+                                                 
+                                                 
+Sequence of events
+===============================================================
+*   client submits a GET request for url http://www.example.com/index.html 
+*   Browser establishes a connection with http://www.example.com
+*   GET request contains modifiers and client information:
+
+    GET /index.html  HTTP/1.1
+    Host: www.example.com
+    User-Agent: Mozilla/5.0
+    Accept: text/htmlAccept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Connection: Keep-alive
+ 
+*   Server responds with:
+
+    HTTP/1/1 200 OK
+    Accept-Ranges:bytes
+    Cache-Control:max-age=604800
+    Content-type:text/html
+         HTTP/1.1 200 OK
+    Accept-Ranges:bytes
+    Cache-Control:max-age=604800
+    Content-Type:text/html
+    Date:Wed,03 Dec 2014 15:05:59 GMT
+    Content-Length: 1270
+    <html>
+        <head>
+        </head>
+        <body>
+              Hello World!!!!
+        </body>
+    </html>   
+    
+    
+    
+Understanding the HTTP request methods
+======================================================================
+*   GET
+    -   This method is used for retrieve resources from
+        the server by using a given URI
+*   HEAD
+    -   This method is the same as GET request, but it
+        only transfers the status line  and header section
+        without the response body
+*   POST
+    -   Posting data to server
+*   PUT
+    -   Modifies/updates resources pointed at by the URI
+*   DELETE
+    -   deletes the resource pointed at by the URI
+*   TRACE
+    -   echos the contents of the recieved request.  Used for debugging   
+*   OPTIONS
+    -   returns server supported HTTP methods
+*   CONNECT
+    -   establishes connections to target server over HTTP...debugging ?0
+*   PATCH
+    -   used for applying partial modifications to a resource
+        idnetified by the URI
+        
+        
+        
+Representing content types using HTTP header fields
+=========================================================================
+
+Request
+-----------------------------------------------------
+*   Accept
+    -   Informs the server what it expects from the
+        server's response
+        
+*   Example:
+          Accept: text/htmlAccept-Language: en-US,en;q=0.5
+    
+    
+Responses
+------------------------------------------------------
+*   Content-Type Header
+    -   Describes the content type(s)
+        that are available to the client.
+*   Example:
+        Content-Type: text/html
+        
+        
+Cotent Types
+=========================================================
+*   text
+    -   plain text indicates that the content is plain
+        text and no speicall software is required to
+        read the contents.  The subtype represents more
+        specific details about the content, which can
+        be used by the client for special processing, if any. 
+        Content-Type:text/html indidicates that the body
+        contents is html, and the client can use this
+        hint to kick off an appropiate rendering engine
+        while displaying the response
+*   multipart
+    -   composed of multiple data types
+*   message
+    -   type that encapsulates more messages.  It allows
+        messages to contain other messges or pointers to
+        other messages.  For instance:
+            Content-Type/partial
+        allows for large messages to be broken up into smaller messages
+        The entire message is assembled by the client
+*   image
+    -   Content-Type: image/png indicates that the body
+        content is a *.png image
+*   audio
+    -   This type indicates the audio data.  For instance,
+        Content-Type: audio/mpeg indicates that the body
+        content is MP3 or other MPEG audio.
+*   video
+    -   This type indicates the video data.  For instance,
+        Content-Type: video/mp4 indicates that the body conten
+        is MP4 video.
+*   application
+    -   this type represents the application data or
+        binary data.  For instance, Content-Type:application/json; charset=utf-8
+        designates the content to be in the JS object Notation(JSON) format,
+        encoded with UTF-8 character encoding.
+        
+        
+For complete list of extant subtypes...
+===========================================================
+http://www.iana.org/assignments/media-types/media-types.xhtml
+
+
+
+The core architectural elements of 
+a RESTful system
+==========================================================
+Having learned the basics of a RESTful system,
+you are now ready to meet the more exciting
+concepts of REST.
+
+A uniform interface is fundamental to the architecture
+of any RESTful system.  In plain words, this term referes to
+a generic interface to manage all interactions etween
+a client and a server in a unified way.  All resources (or business data)
+involved in the client-server interactions are dealt with
+by fixed set of operations.  The following are core elements
+that form a uniform interface for a RESTful system:
+
+        *       Resources and their identifiers
+        *       Representations of resources
+        *       Generic interaction semantics for the REST resources
+        *       Self-descriptive messages
+        *       Hypermedia as the engine of an application
+                state.
+
+
+Resources
+-------------------------------------------------------
+A RESTful resource is anything that is addressable over
+the Web.  By addressable, we mean resources that can be 
+acessed and transferred between clients and servers.
+Subsequently, a resource is a logical, temporal mapping to a 
+concept in the problem domain for which we are implementing
+a solution.
+
+Here are some examples of REST resources:
+
+        *       A news story
+        *       The temperature in NY at 4:00 pm EST
+        *       a tax return stored in the IRS database
+        *       A list of code revision history in a repository
+                such as SVN, Git or CVS 
+        *       A student in a classroom in a school
+        *       A search result for a particular item
+                in a Web index, such as Goolge
+
+Even though a resource's mapping is unique, different requests
+for resource can return the same underlying binary
+represenstation stored in server.  For example, let's say
+we have a resource within the context of a publishing system.
+
+then, a request for the latest revision  published and a request
+for revision number 12 will at some point in time return the
+same representation of the resource.  In this example,
+the last revision is Version 12. However, when the latest revision
+published is increased to Version 13, a request to the latest
+revision will retrun Version 13.  This implies that in a RESTful
+architecture, each resource can be accessed directly and indpendently,
+and sometimes, different requests may point to the same resource.
+
+
+HTTP and REST
+==========================================================
+As we are using HTTP to communiate, we can transfer a
+variety of data types between clients and servers
+as long as the data type used is supported by HTTP.
+For example:
+        *       test file from CNN
+        *       Flash movie from YouTube
+The data is streamed in both cases over TCP/IP
+and the browser knows how to interpret the binary streams
+beause of the Content-Type header present in the HTTP  response
+header.  Following this principle, in a RESTful system
+the represnetation of a resource in the response body
+depends on the desired Internet media type, which is specified
+within the request hader by the client.
+
+
+
+URI
+---------------------------------------------------
+
+
+
+
+
