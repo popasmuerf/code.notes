@@ -379,9 +379,3 @@ form:
 http://www.umd.edu/departments
 http://www/umd.edu/resoruces/dempartments/{name}
 
-Pro-tip
----------------------------------------------------
-This is just an example, and as such, we treat
-the department name as a unique iddentifier here.
-Note that in real life, you can use a 
-server-generated identifier value.
