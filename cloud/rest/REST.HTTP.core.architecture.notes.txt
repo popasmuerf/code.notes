@@ -399,3 +399,52 @@ http://www.umde.edu/resources/departments/IT
 {"departmentId":10,"departmentName":"IT",
  "manager":"John Chen"}
 
+Let's have a look at the request details.
+A request to retrieve details of the 
+IT department uses the GET method with
+the following URI
+
+http://www.umd.edu/resources/departments/IT
+
+
+
+client
+    |
+    |
+    |
+    |
+    |
+    |
+GET/index.html HTTP/1.1
+Host:www.umd.edu    
+User-Agent: Java/1.8.0_25 -----------request-------->Web Server
+Accept:application/json                              |
+Accept-Language:en-US,en:q=0.5                       |
+Accept-Encoding:gzip,deflate                         |
+Connection:keep-alive                                |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                    HTTP/1.1 200 OK
+                                    Accept-Ranges:bytes
+                                    Cache-Control:max-age=604800
+                                    Content-Type:application/json
+                                    Date:Wed,03 Dec 2014 15:05:59 GMT
+                                    Content-Length: 80
+                                    {"departmentId":10,"departmentName":"IT",
+                                     "manager":"John Chen"}
+                                                   |
+                                                   |
+                                                   |
+   client<--------------response-------------------|
+                                          
+
+What's going on here:
+================================================
+1. A java client makes an HTT
+
