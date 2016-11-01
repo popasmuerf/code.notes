@@ -668,5 +668,77 @@ PUT method What's going on here
    indicates that the server has fufilled hte request but does not
    return the entity body
 
+HTTP DELETE method
+======================================================
+The DELETE method is used to delete the resource.  In this
+example, we will delete a resource by making 
+use of the same URI that we used in the other three 
+cases.
+
+Assume tht we want to delete the Sales department from
+the data storage.  We send a DELETE request to
+our serice with the following URI:
+
+http://umd.edu/resources/departments
+
+Creating a department
+----------------------------------------
+http://umd.edu/resources/departments
+
+
+Client payload
+------------------------------------
+{"departmentId":40,"departmentName":"Sales","manager":"Tony Creig"}
+
+        -to-  
+
+{"departmentId":40,"departmentName":"Sales","manager":"Ki Gee"}
+
+client
+    |
+    |
+    |
+    |
+    |
+    |
+DELETE/resources/departments/Sales HTTP/1.1
+Host:www.umd.edu    
+User-Agent: Java/1.8.0_25 -----------request-------->Web Server
+Content-Type:application/json
+Accept:application/json                              |
+                            |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                                     |
+                                    HTTP/1.1 204 No Content
+                                    Accept-Ranges:bytes
+                                    Date:Wed,03 Dec 2014 15:05:59 GMT
+                                    Content-Length: 0
+                                                   |
+                                                   |
+                                                   |
+   client<--------------response-------------------|  
+
+
+PUT method What's going on here
+------------------------------------------------------
+1.  A java client makes a DELETE request targeting the following URI
+        http://umd.edu/resources/departments/Sales
+
+2. The server recieves the requst and let's the REST framework
+   handle it.  At this point, we let our code execute  The
+   proper commands to update the representations of the Sales
+   department.   
+
+3. The server responds with a 204 "No Content" response code
+   indicates that the server has fufilled hte request but does not
+   return the entity body
+
+
 
 
