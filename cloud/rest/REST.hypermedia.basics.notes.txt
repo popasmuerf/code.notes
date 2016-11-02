@@ -1,0 +1,83 @@
+Hypermedia as the Engine of Application State
+===================================================
+hypermedia as the Engine of Application State (HATEOAS)
+is an important principle of the REST appliation
+archtiecture.  The principle is that the model of 
+application changes from one state to another
+by traversing the hyperlings present in the
+current set of resoruce representations(the model)
+Let's learn this principle in detail.
+
+
+
+In a RESTful system, there is no fixed interface between
+the client and the server as you may see in conventional
+client-server communication model such as 
+Common Object Request Broker Architecture(CORBA) and
+Java Remote Method Invocation(Java RMI)....with REST,
+the client jst needs to know how to deal with the huypermedia
+liks perent in the response body; next, the call
+to retrive the appropiate resource 
+
+With REST, the client just needs to know how to deal with the
+hypermedia links present in the response body; next,
+the call to retrieve the appropriate resource
+representation is made by using these dynamic
+media links.  This concept makes the cline-server interaction
+very dynamic.
+
+
+
+Public HATEOAS pricnciple.  In this example, the
+http://www.umd.edu/resources/departments/IT 
+URI returns the follwoing response to the client:
+
+
+
+{
+        "departmentId":10,
+        "departmentName":"IT",
+        "manager":"John Chen",
+        "links":[
+                        {
+                                "rel":"employees",
+                                "href":"http://umd.edu/resources/departments/IT/employees"
+                        }
+                ]"
+}
+
+
+
+This is the current state of the system.  Now, to get
+the employees belonging to the department....the cllient
+traverses the hperlink present in teh response body,
+namely:
+
+
+http//umd.edu/resources/departments/IT/employees/
+
+
+returning the employee list:
+
+
+[{"employeeId":100,
+  "firstName":"Steven",
+  "lastName":"Steven",
+  "lastName":"King",
+  "links":[{"rel":"self",
+            "href":"http://umd.edu/resources/employees/100"}]
+ },
+ {"employeeId":101,
+  "firstName":"Neena",
+  "lastName":"Kochhar",
+  "links":[{"rel":"self",
+            "href":"http://umd.edu/resources/employees/101"}]
+
+}]
+
+
+In this example, the application sate changes from one state
+to another when the client traverses the hypermedia link.
+Hence, we refere to this implementation principle as
+Hyupermedia as the Engine of Application State
+
