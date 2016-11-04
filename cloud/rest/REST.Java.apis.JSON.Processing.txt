@@ -99,3 +99,62 @@ situations:
                 memory for processing the content.
         *       When the partial processing is needed and
                 the data model is not fully available yet
+
+
+Tip:  Referto teh complete list of teh
+object model APIs available in 
+JSR 353 at
+==========================================
+http://docs.oracle.com/javaee/7/api/javax/json/package-summary.html
+
+
+Using JSR 353 -- Java API for processing JSON
+======================================
+JSR 353  APIs maybe classified into two categories
+on the basis of the processing model followed by
+the APIs:
+
+
+
+
+Generating the object model from teh JSON representation
+===================================================================
+The example in this section illustrates the usage
+of the JSR353 object model APIs for building
+an object representation of the JSON data:
+
+
+Our data:
+--------------------------------------------
+
+[{"employeeId":100,"firstName":"John","lastName":"Chen","email":"john.chen@xxxx.com","hireDate":"2008-10-16"},{"employeeId":101,"firstName":"Ameya","lastName":"Job","email":"ameya.job@xxx.com","hireDate":"2013-03-06"},{"employeeId":102,"firstName":"Pat","lastName":"Fay","email":"pat.fey@xxx.com","hireDate":"2001-03-06"}]
+
+
+/** Build JSON using JSR-353 Jersey implementation
+*/
+
+//Import statements for the core classes
+
+import java.io.InputStream;
+import javax.json.JsonArray;
+import javax.json.JsonReade;
+
+//Get input stream for reading the specified resource
+
+InputStream inputStream = 
+getClass().getResourceAsStream("/emp-array.json");
+
+//Create JsonReader to read JSON data from a stream
+
+Reader reader = new InputStreamReader(inputStream, "UTF-8");
+JsonReader jsonReader = Json.createReader(reader);
+
+//Creates an object model in memory.
+JsonArray employeeArray =  jsonReader.readArray();
+
+        *       Object model API
+        *       Streaming model API
+
+
+
+G
