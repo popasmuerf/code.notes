@@ -1,0 +1,35 @@
+
+
+Java tools and frameworks for building RESTful web
+Services
+==================================================================
+        *       Java API for RESTful web services(JAX-RS)
+                -       Java API for creating RESTful web
+                        servcies following the REST
+                        architechtural pattern discussed 
+                        previously.  JAX-RS is part
+                        of the JEE specification.  Jersey
+                        Apache CXF, RESTEasy, and Restlet
+                        are all JAX-RS reference implementations
+                        Note: none of these are limited to theire
+                        base reference, such that they all
+                        have their own unique features.
+        *       There are Java APIs extant on the market
+                that are not based on JAX-RS
+                        -       RESTX is  a new API
+                                targeting server side
+                                REST development, while
+                                attempting to simplify
+                                REST API development.
+
+                        -       Spark(not apache Spark)
+                                focuses on server side
+                                development and ease of
+                                implementation like RESTX
+
+                        -       Play : Java and Scala based
+                                with inherent support
+                                for building RESTful
+                                web servers.
+        *       API Blueprint
+        *       WSDL 2.0

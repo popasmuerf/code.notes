@@ -1,0 +1,101 @@
+
+
+Java tools and frameworks JSON for processing 
+==================================================================
+        *       Using the JSR 353 -- Java API for processing
+                JSON
+
+        *       Using the Jackson API for processing JSON
+        *       Using the Gson API for processing JSON
+
+
+Understanding JSON basic syntax
+======================================================
+JSON at it's core is more or less an 
+unordered collection of name-value pairs.
+Names in an object of strings, and values
+may be of any of the valid JSON data types such as:
+
+        * number
+        * Boolean
+        * array
+        * object
+        * null
+
+JSON representation of a department object:
+===============================================
+{"departmentId":10,
+ "departmentName":"IT",
+ "manager":"John Chen"|
+}
+
+All the values of an array may be of a different type
+or all the same type:
+================================================
+
+{"departmentId":10,
+ "departmentName":"IT",
+ "employee":[{"firstName":"John","lastName":"Chen"},
+             {"firstName":"Ameya","lastName":"Job"},
+             {"firstName":"Pat","lastName":"Fay"}],
+ "location":["New York","New Delhi"]
+}
+
+
+Processing JSON data
+=======================================================
+If you use Java RESTful web service frameworks, such as
+JAX-RS, for building RESTful web APIs, the serialization
+and deserialization of the request and response messages
+will be taken care of by the framework.  Understanding the
+JSON structure and tolls for processing JSON will definitely
+hlep you when the default offering by the framework
+does not meet some requirement.
+
+
+Basic marshalling of RESTful web services application
+
+                    ------------                ----------  
+Request ----------> |JSON READER| ------------> |Java     |
+                    |    &      |               |REST API | 
+Response <----------|Writer     |<------------- |         |       
+                    -------------               -----------
+
+
+Object Model
+---------------------------------------------------------
+In this model, the entire JSON data is 
+read into memory in a tree format.  This tree can
+be traversed, analyzed, or modified with the
+appropriate APIs.  As this approach
+loads the entire content into the memory
+first and then starts parsing, it ends up consume
+more memory and CPU cycles.  However, this model
+gives more flexibiligy while manipuluating the content.
+
+
+Streaming model:
+-------------------------------------------------------------
+The term streaming is very generic in meaning and can be used
+in many aspects.  In our discussion, this term means that
+data can be read or written in blocks.  This model does not 
+read the entire JSON content into the memory to get
+started with parsing; rather, it reads one element at a time.
+For each token read, the parser generates appropiate events 
+indicating the type of token, such as the start or end of an 
+array, or the start or end of the object and attribute values
+A client can process the contents by listening for apporpiate
+events.  The most important point is that instead of letting
+the parser push the content to the client(push parser), the client can
+pull the information from the parser as it needs(pull parser).
+In this model, the client is allowed to skip or stop
+reading contents in the middle of the process if it has
+finished reading the desired elements.
+
+Conscider using streaming APIs in the following
+situations:
+        *       When the data is huge in size and it is not 
+                feasible to load the entire content into the
+                memory for processing the content.
+        *       When the partial processing is needed and
+                the data model is not fully available yet

@@ -1,0 +1,54 @@
+Description and discovery of
+RESTful web servcies
+==========================================
+As you many know, WSDL is used for
+describing the functionality offered 
+by a SOAP web service.  This is the
+widely accepted standard and is
+supported by many enterprises today.
+
+
+In contract, RESTful web services, there 
+is no such standard and you may find
+different metadata formats used by 
+various enterprises
+
+However, in general, you may see the 
+following goals in 
+common among all these metadata formats
+for RESTful APIs, although they differ
+in their syntax and semantics:
+
+        *       Entry points for the service
+        *       Resource paths for accessing each resource
+        *       HTTP methods allowed to access these
+                rescoures, such as:
+                        -       GET
+                        -       PUT
+                        -       DELETE
+                        -       POST
+
+        *       Additional parameters that need to be supplied
+                with these method, such as pagination parameters,
+                while reading large collection
+        *       Format types used for representing the request
+                and response body contents such as:
+                        -       JSON
+                        -       XML
+                        -       TEXT
+        *       Status codes and error messages returned
+                by APIs
+
+        *       Human readable documentation for REST APIs,
+                which includes the documentation of the 
+                request methods, input and output
+                parameters, response codes(success or error),
+                API security, and business logic
+
+Populare metadata formats used for describing REST APIs
+==================================================================
+        *       Web Application Description Language(WADL)
+        *       Swagger
+        *       RESTful API Modeling Language(RAML)
+        *       API Blueprint
+        *       WSDL 2.0
