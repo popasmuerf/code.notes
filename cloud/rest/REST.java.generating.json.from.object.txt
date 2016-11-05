@@ -1,0 +1,70 @@
+Generating the JSON representation from the object model
+==========================================================
+
+Steps
+------------------------------------
+1. Build object model
+
+The choice of the builder class depends on
+whether you want to generate a JSON
+object or a JSON array:
+
+        *       javax.json.JsonObjectBuilder
+                -----------------------------
+                This builder class is used for
+                generating the JSON object model
+                from scratch.  This class provides
+                methods to add the name-value pairs
+                to the object model and to 
+                return the final object
+
+        *       javax.json.JsonArrayBuilder
+                -----------------------------
+                This builder class is used for
+                generating an array of the JSON
+                objects from scratch.  This class
+                provides methods to add objects
+                or values to the array model and 
+                to return the final array.
+
+The builder class can be created either from the classes
+of:
+
+        javax.json.Json
+                -or-
+        javax.json.JsonBuilderFactgory
+
+You may select javax.json.JsonBuilderFactory if you
+want to overrided the default configurations for the
+generated objects or if you need to create multiple
+instances of the builder classes
+
+
+
+Example 
+======================================
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStream ;
+
+//Build JsonArray
+JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+//Get a list of Employee instances
+//Not interested in the implementation details
+//of this list in this example
+List<Employee>employees = getEmployeeList();
+//interate over the employee list and
+//create the JsonObject for each item
+for(Employee employee: employees){
+        jsonArrayBuilder.add(Json.createObjectBuilder().
+                             add("employeeId",
+                                 employee.getEmployeeId()).
+                             add("employeeId",
+                                 employee.getEmployeeId()). 
+}
+

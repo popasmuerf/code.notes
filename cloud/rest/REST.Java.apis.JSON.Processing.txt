@@ -218,3 +218,19 @@ public class Employee{
         }
 
 }
+
+
+Release system resources when appropiate
+=============================================================
+if(inputeStream != null{
+        inputStream.close();
+}
+if(jsonReader != null){
+        jsonReader.close();
+}
+
+
+
+Generating the JSON representationfrom the object model
+=========================================================
+
