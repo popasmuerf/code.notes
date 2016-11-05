@@ -64,7 +64,23 @@ for(Employee employee: employees){
         jsonArrayBuilder.add(Json.createObjectBuilder().
                              add("employeeId",
                                  employee.getEmployeeId()).
-                             add("employeeId",
-                                 employee.getEmployeeId()). 
+                             add("firstName",
+                                 employee.getFirstName()).
+                             add("lastName",
+                                 employee.getLastName()).
+                             add("email",
+                                 employee.getEmail()).
+                             add("hireDate",
+                                 employee.getHireDate())); 
 }
+//return the new json array
+JsonArray employeesArray = jsonArrayBuilder.build();
+//write the array to file
+OutputStream outputStream = new FileOutputStream("emp-array.json");
+JsonWeriter jsonWriter = Json.createWriter(outputStream);
+jsonWriter.writeArray(employeesArray) ;
+//Close the stream to clean up resources
+outputStream.close();
+outputStream.close();
+jsonWriter.close();
 
