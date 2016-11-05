@@ -137,7 +137,7 @@ Our data:
 
 import java.io.InputStream;
 import javax.json.JsonArray;
-import javax.json.JsonReade;
+import javax.json.JsonRead;
 
 //Get input stream for reading the specified resource
 
@@ -152,9 +152,69 @@ JsonReader jsonReader = Json.createReader(reader);
 //Creates an object model in memory.
 JsonArray employeeArray =  jsonReader.readArray();
 
-        *       Object model API
-        *       Streaming model API
+
+
+^^^ javax.json.Json instance is the factory class that
+we use for creating a JSON processing object.  We will use
+this JSOn class to create the javax.json.JsonReader instance.
+
+After createing a new javax.json.JsonReader instance,
+we need some JSON content to provide an 
+appropriate object model.  As the JSON data that we
+use in this example holds an array of employee objects,
+we call :
+
+        readArray()
+
+on  the JsonReader instance to retrieve :
+
+        javax.json.JsonArray
+
+The JsonArray instance contains an ordered sequence of zero
+or more objects read from the input source.
 
 
 
-G
+Note
+==================================================
+If the input is a JSON object, you can call readObject()
+on JsonReader to retrieve the JSON object that is presented in
+the input source.
+
+Now, let's see how to convert JsonArray elements into
+specific object types.  In this example, we will convert
+each JsonObject present in
+employeeArray into an Employee object:
+
+//All import statements are removed for brevity
+
+public class Employee{
+        private String firstName;
+        private String lastName;
+        private String email ;
+        private Integer employeeId;
+        private java.util.Date hireDate;
+
+        //Getter and setters in this code is left out
+        
+        //Iterate over employeeArray(JSonArray)
+        //and process each JSONObject
+        List<Employee>() employeeList = new
+        ArrayList<Employee>();
+        for(JsonValue jsonValue:employeeArray){
+                if(jsonVAlue.getValueType().equals(
+                jsonValue.ValueType.OBJECT)){
+                  JsonObject jsonObject =
+                  (JsonObject) jsonVAlue;
+                  Employee employee = new Employee();
+                  employee.setFirstName(jsonObject.getString("firstName"));
+                  employee.setLastName(jsonObject.getString("lastName")); 
+                  employee.setEmployeeId(jsonObject.getString("employeeId"));
+                  SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd");
+                  Date hireDate = dateFormat.parse(jsonObject.getString("hireDate");
+                  employee.setHireDate(hireDate);
+                  employeeList.add(employee);
+                }
+        }
+
+}
