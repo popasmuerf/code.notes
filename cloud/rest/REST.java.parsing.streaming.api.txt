@@ -1,4 +1,4 @@
-Generating the JSON representation from the object model
+Parsing JSON Streaming 
 ==========================================================
 
 Steps
@@ -201,7 +201,101 @@ scenarios:
 
 
 
-Using Streaming APIs to parse JSON data
+Pull Parsing versus Push Parsing
+https://docs.oracle.com/javase/tutorial/jaxp/stax/why.html
 =====================================================
 While the DOM model involves creating in-memory
 objects representing
+
+        * With pull parsing, the client controls the
+          application thread, and the client
+          can only accept invocations from the parser.
+          In constrast, push parsing features the 
+          parser controls the application thread, and
+          the client can ony accept invocations from
+          the parser.
+
+        * Pull parsing libraries can be much smaller
+          
+
+
+
+Example code for parsing incomming JSON payload
+via HTTP featuring employee data :
+==================================================
+        emp-array.json
+
+using package:
+
+        javax.json.stream.JsonParser
+
+which utilizing parsing model for sretameing
+
+
+Steps
+-----------------------------------------------------
+1. HTTP request for url -> emp-array.json
+   at url http://abc.com
+   utf-8  , application/json
+
+2. Create instance of java.json.stream.JsonParser 
+
+3. Create instance of ArrayList<Employee>
+
+4. Create instance of InputStream
+
+5. While there is data available, return the event
+   for the next parsting state.  The posistion
+   of the parser is after the '{' 
+        5.1 New instance of Employee
+        5.2 Initialize fields in Employee
+            per corresponding field from
+            the corresponding
+
+
+//==============Code===================//
+import javax.json.stream.JsonParser;
+
+InputStream inputStream = getClass().getResourceAsStream
+("/emp-array.json");
+JsonParser jsonParser = Json.createParser(inputStream);
+while(jsParser.hasNext()){
+        Event event = jsonParser.next() ;
+        if(event.equals(JsonParser.Event.START_OBJECT){
+                employee = new Employee();
+                employeeList.add(employee);
+        }else if(event.equals(JsonParser.Event.KEY_NAME)){
+                String keyName = 
+                jsonParser.getString();
+                switch(keyName){
+                        case "firstName":
+                        jsonParser.next();
+                        employee.setFirstName(
+                                jsonParser.getString());
+                        break;
+                        case "lastName":
+                        jsonParser.next();
+                        employee.setLastName(
+                                jsonParser.getString());
+                        break;
+                        case "employeeId":
+                        jsonParser.next();
+                        employee.setEmployeeId(
+                                jsonParser.getString());
+                        break;
+                        case "hireDate":
+                        jsonParser.next();
+                        SimpleDateFormat dateFormat =
+                        new SimpleDateFormat("yyyy-MM-dd");
+                        Date hireDate = dateFormat.Parse
+                        (jsonObject.getString("hireDate"));
+                        employee.setHireDate(hireDate);
+                        break;
+                }        
+        }
+}
+
+
+
+
+ 

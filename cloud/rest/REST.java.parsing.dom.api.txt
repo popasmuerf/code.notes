@@ -201,7 +201,19 @@ scenarios:
 
 
 
-Using Streaming APIs to parse JSON data
+Pull Parsing versus Push Parsing
+https://docs.oracle.com/javase/tutorial/jaxp/stax/why.html
 =====================================================
 While the DOM model involves creating in-memory
 objects representing
+
+        * With pull parsing, the client controls the
+          application thread, and the client
+          can only accept invocations from the parser.
+          In constrast, push parsing features the 
+          parser controls the application thread, and
+          the client can ony accept invocations from
+          the parser.
+
+        * Pull parsing libraries can be much smaller
+          

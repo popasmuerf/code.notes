@@ -1,0 +1,44 @@
+How Ubuntu will eventually end Apple's computing 
+divsion as we know it...
+=======================================================
+
+
+Linux in the late 90's and the early 00's
+------------------------------------------------
+* Things were still a bit rocky
+* Why?  More or less formats and applications
+  where still extremely partisan....a lot of people
+  blamed Java for not "delivering on it's promise"..
+  except for the fact that they keep leaving out
+  how java did infact deliver on this promise..on platforms
+  that were not lorded over by entities dedicated to 
+  killing this promise at the time(I am looking at you
+  Microsoft and to  a lesser extent Apple and even NetScape)
+* Things started to pick up tho....Linux had been steadily
+  taking over backend/enterprise enviroments where open
+  standards where a must.....a game Microsoft has(had) been
+  fighting against valiantly...and LOSING...in fact M$ 
+  has had it's ass handed to them so soundly that they have
+  totally made a complete 180 degree turn on this....Think 
+  about this...M$ did insanely STUPID and counter-productive
+  moves(that cost millions) like creating an analog to Java
+  and the JVM...both designed to be platform agnostic...that
+  effectively(until recently) was only viable in the M$
+  ecosystem as M$ made absolutely no effort worth mentioning
+  otherwise...and their ridiculously stupid decision...again
+  up until recently to refuse the use  ssh in lieue of
+
+
+
+
+I want a Unix....one that I can use on a daily basis
+for my daily work....oh...wait....OS-X
+----------------------------------------------------
+* If I am developing a web application using open web
+  technology....why should I spend 1000 plus dolloars
+  more on a technology that is 3 years behind ?
+
+*
+
+
+
