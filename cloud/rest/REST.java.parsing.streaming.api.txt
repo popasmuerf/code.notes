@@ -297,5 +297,52 @@ while(jsParser.hasNext()){
 
 
 
+^^^^What's going on here ?
+========================================
+Remember that JsonParser parses JSON by using the
+pull parsing programming model.  In this case, the client
+application code controls the progress of parsing. Which makes sense, as we are requesting a payload from some
+server and then upon reciept we submit to an input
+stream and then in turn submit that inputstream to
+our json parser(from the stream api) and then read
+out it's contents object by object.
 
+In response to the next() call from the client,
+the parser generates the following events on 
+the basis of the type of the next token encountered:
+
+        *       START_OBJECT
+        *       END_OBJECT
+        *       START_ARRAY
+        *       END_ARRAY
+        *       KEY_NAME
+        *       VALUE_STRING
+        *       VALUE_NUMBER
+        *       VALUE_TRUE
+        *       VALUE_FALSE
+        *       VALUE_NULL
+
+To better understand this, consider the following JSON array
+as the input to the parser:
+
+        [{"country":"IN"}]
+
+The parser generates the START_ARRAY event for the first call to next() and the START_ARRY event with the second
+call to the next() method, and so on
  
+
+START_ARRAY      KEY_NAME   VALUE_STRING  END_ARRAY
+   |             |                |          |
+   |             |                |          |
+   [    {       "country"   :    "IN"   }    ]              
+        |                               |
+        |                               |
+        START_OBJECT                  END_OBJECT
+
+
+
+Using streaming APIs to generate JSOn
+=========================================
+We can use javasx.json.stream.JsonGenerator to 
+write JSON data to an output source as a stream of
+tokens.
