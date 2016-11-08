@@ -1,0 +1,4 @@
+http://www.nvidia.com/docs/io/116711/sc11-cuda-c-basics.pdf
+Intro to CUDA C/C++
+==================================
+
