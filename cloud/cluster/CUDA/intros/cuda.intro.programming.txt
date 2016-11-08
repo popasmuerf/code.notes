@@ -2,3 +2,60 @@ http://www.nvidia.com/docs/io/116711/sc11-cuda-c-basics.pdf
 Intro to CUDA C/C++
 ==================================
 
+In this lession:
+------------------------------
+1. Start from "Hello World!"
+2. Write and execute c code on the GPU
+3. Manage GPU memory
+4. Manage communication and synchronization
+
+
+Concepts
+---------------------------------
+1. Heterogeneous Computing
+2. Blocks
+3. Threads
+4. Indexing
+5. Shared memory
+6. __syncthreads()
+7. Ansynchronous operation
+8. Handling errors
+9. Managing devices
+
+
+Heterogeneous Computing
+==========================================
+        *       Terminology:
+                -       Host:
+                        The CPU and its memory(host memory)
+                -       Device:
+                        The GPU and its memory(device memory)
+
+
+Simple Processing Flow
+===========================================
+1.Copy input data from CPU memory to GPU memory
+2.Load GPU code and execute it, caching data
+  on chip for performance
+3.Copy results from teh GPU memory to CPU memory
+
+
+
+Code
+==============================================
+/***************************************
+        Standard C running on host
+        NVIDIA compiler(nvcc) can be used
+        to compile programs withno
+        device code
+        
+        cli
+        ------------------------------------
+        > nvcc hello_world.cu
+*****************************************/
+int main(void){
+        printf("Hello World!\n");
+        return 0 ;
+}
+
+
