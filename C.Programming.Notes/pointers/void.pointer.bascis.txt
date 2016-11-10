@@ -1,5 +1,5 @@
 http://www.c4learn.com/c-programming/c-void-pointers/
-
+http://www.c4learn.com/c-programming/c-dereferencing-void-pointers/
 
 Void Pointers in C: Definition
 ==================================
@@ -29,6 +29,16 @@ void * pointer_name;
 
 Void Pointer Example:
 ==================================
+void *ptr ;
+int num ;
+ptr = &num ;
+
+Dereferncing
+=================================
+float *ptr ;
+int num ;
+ptr = &num ;
+
 void *ptr
 char cnum ;
 int inum ;
@@ -37,4 +47,10 @@ float fnum ;
 ptr = &cnum ;
 ptr = &inum ;
 ptr = &fnum ; 
+
+int integer_val = *((int*)ptr) ;
+char char_val = *((char*)ptr) ;
+float float_val = *((float*)ptr) ;
+
+
 
