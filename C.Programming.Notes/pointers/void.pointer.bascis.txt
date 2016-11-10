@@ -1,0 +1,40 @@
+http://www.c4learn.com/c-programming/c-void-pointers/
+
+
+Void Pointers in C: Definition
+==================================
+1. Suppose we have to declare integer pointer,
+character pointer and float pointer then
+we need to declare 3 pointer values
+
+2. Instead of declaring differnt types of pointer
+variable it is feasible to decalre a single pointer
+variable which can act as integer, character, pointer.
+
+
+Void Pointer Basics:
+=============================================
+1. In C General Purpose Pointer  is called a void pointer
+2. It does not have any data type associated with it
+3. It can store address of any type of avariable
+4. A void pointer is a C convention for a raw address
+5. The compiler has no idea what type of object a void pointer really points to.
+
+
+
+Delcaration of Void pointer
+==================================
+void * pointer_name; 
+
+
+Void Pointer Example:
+==================================
+void *ptr
+char cnum ;
+int inum ;
+float fnum ;
+
+ptr = &cnum ;
+ptr = &inum ;
+ptr = &fnum ; 
+

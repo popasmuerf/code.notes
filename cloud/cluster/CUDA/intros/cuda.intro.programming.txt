@@ -41,12 +41,12 @@ Simple Processing Flow
 
 
 
-Code
+Code no device code
 ==============================================
 /***************************************
         Standard C running on host
         NVIDIA compiler(nvcc) can be used
-        to compile programs withno
+        to compile programs with no
         device code
         
         cli
@@ -59,3 +59,157 @@ int main(void){
 }
 
 
+Code no device code
+==============================================
+/***************************************
+        Standard C running on host
+        NVIDIA compiler(nvcc) can be used
+        to compile programs with device code
+        device code
+
+        Two new elements
+        -----------------------------------------
+        *CUDA C/C++ keyword __global__ indicates a
+         function that:
+                -Runs on the device
+                -Is called from host code
+
+        *Triple angel brackets mark a call from host code
+         to device code: Also called "kernel launch"
+        *Here we return to the parameters(1,1) in a moment
+        *That's all that is required to execute a function
+         on the GPU!
+        What nvcc is doing here...
+        ------------------------------------------
+        *nvcc seperates source code into host and 
+         host and device components:
+                -Device functions(e.g. mykernel())
+                 prcessed by NVIDIA compiler
+                -Host functions(e.g. main()) processed
+                 by standard host compilers
+                 (e.g. gcc, cl.exe)
+        
+        cli
+        ------------------------------------
+        > nvcc hello_world.cu
+*****************************************/
+__global__ void mykernel(void){
+        //this function does nothing
+        //at the moment        
+}
+int main(void){
+        mykernel<<1,1,>>() ;
+        printf("Hello World!\n");
+        return 0 ;
+}
+
+
+
+
+
+Parallel Programming in CUDA C/C++
+===========================================
+/*
+******************************************
+        *As before __global__ is a CUDA C/C++
+        keyword meaing:
+        -----------------------------------
+        -add() will execute on the device
+        -add() will be called from the host
+
+        *Notice how we are using pointers here...
+        -----------------------------------
+        -add() is executed from the host but runs
+         on the device.
+        -We need to allocate memory on the GPU
+
+******************************************
+*/ 
+__global__ void add(int *a , int *b, int *c){
+        *c = *a + *b ;
+}
+
+int main(void){
+        mykernel<<1,1,>>() ;
+        printf("Hello World!\n");
+        return 0 ;
+}
+
+
+
+
+Memory management
+=============================================
+Host and device memory are seperate entities
+------------------------------------------------
+        *       Device pointers point to 
+                GPU memeory
+                -Maybe be passed to/from host code
+                -May not be dereferenced in host code
+        *       Host pointers point to CPU memory
+                -May be passed to/from device code
+                -May not be derefereced in device code
+
+        *       Summary
+                --------------------------------
+                -I can pass host and device pointers between
+                 respective devices, however they may only
+                 be dereferenced d
+                
+Simple CUDA API for handling device memory
+------------------------------------------------
+        *       cudaMalloc()
+        *       cudaFree()
+        *       cudaMemcpy()
+Are all CUDA equivilants to C's 
+        *       malloc()
+        *       free()
+        *       memcpy()
+
+Addition on the Device: add()
+==============================================
+
+
+
+Refactor of our code....addition on the Device
+===============================================
+__global__ void add(int *a , int *b, int *c){
+        *c = *a + *b ;
+}
+int main(void){
+        int a, b, c ;
+        a = 2 ;
+        b = 7 ;
+        int *d_a, *d_b, *d_c ;
+        int size = sizeof(int) ;
+        //**allocate space for device copies of a,b,c**//
+        cudaMalloc((void **)&d_a,size) ;
+        cudaMalloc((void **)&d_b,size) ;
+        cudaMalloc((void **)&d_c,size) ;
+        cudaMemcpy(d_a, &a, size, cudaMemcpyHostToDevice) ;
+        cudaMemcpy(d_b, &b, size, cudaMemcpyHostToDevice) ;
+        add<<1,1,>>(d_a,d_b,d_c) ;
+        a = 2 ;
+        b = 7 ;
+        //**Copy resutls back to our host from device **//
+        cudaMemcpy(&c,d_c,size,cudaMemcpyDeviceToHost) ;
+        //**Clean up...BITCHES!!!!**//
+        cudaFree(d_a);
+        cudaFree(d_b);
+        cudaFree(d_c) ;
+        return 0 ;
+}
+
+
+
+
+
+Moving to Parallel
+================================================
+
+
+
+
+About the type Void....
+http://www.c4learn.com/c-programming/c-void-pointers/
+=======================================================
