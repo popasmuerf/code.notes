@@ -1,3 +1,4 @@
+http://spark.apache.org/docs/latest/graphx-programming-guide.html#getting-started
 rates:
 =============
 hourly_rate = annual_rate/2080
@@ -86,5 +87,75 @@ class Graph[VD,ED]{
 }
 
 
+The classes Vertex[VD] and EdgeRDD[ED] extend
+and are optimized versions of:
 
+        RDD[(VertexID,VD)]
+        -and-
+        RDD[Edge[ED]]
+
+respectively.  Both 
+
+        RDD[(VertexID,VD)]
+        -and-
+        RDD[Edge[ED]
+
+provide additional functionality build around graph
+computation and leverage internal optimizations.
+We discussed the VertexRDD and EdgeRDD API in greater
+detail in the secdtion  on vertex and edge RDDs....
+but now for the moment as simply RDDs of the 
+form:
+        RDD[(VertexId,VD))]
+        RDD<(VertexId,VD))]
+
+        -and-
+        
+        RDD[Edge[ED]]
+        RDD<Edge<ED>>
+
+
+Example Code
+----------------------------
+val userGraph:Graph[(String,String),String]
+
+
+
+
+Example Property Graph
+=======================================
+Suppose we want to construct to property graph
+consisting of the various collaborators on
+the GraphX project.  The vertex property might
+contain the username and occupation.
+We could annotate edges with a string describing
+the relations between collaborators
+
+
+
+Vertex Table
+====================================
+id |      Property(V)              |
+------------------------------------
+3  |    (k,schilling, student)     |
+------------------------------------
+7  |    (c.ignatius, postdoc)      |
+------------------------------------
+5  |    (r.franklin, professor  )  |
+------------------------------------
+2  |    (r.lovejoy, professor  )   |
+====================================
+
+Edge Table
+====================================
+srcid | Dstid |   Property(V)              |
+------------------------------------
+3     |       | (k,schilling, student)     |
+------------------------------------
+7     |       | (c.ignatius, postdoc)      |
+------------------------------------
+5     |       | (r.franklin, professor  )  |
+------------------------------------
+2     |       | (r.lovejoy, professor  )   |
+====================================
 
