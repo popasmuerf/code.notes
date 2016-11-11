@@ -1,0 +1,90 @@
+rates:
+=============
+hourly_rate = annual_rate/2080
+-------------
+140,000 -> 67.31
+145,600 -> 70.00
+
+
+Graphx Programming guide
+======================================
+GraphX is a new component in Spark for
+graphs and graph-parallel computation.
+At a high level, GraphX extends the Spark RDD
+by introducing a new Graph abastraction:
+a directed multigraph and properties attached to
+each vertex and edge.  To support graph 
+computation, GraphX exposes a set of fundmental
+operators:
+
+        *       subgraph
+        *       joinVertices
+        *       aggregateMessages
+
+as well as an optimized variant of the Pregel
+API.  In addition, GraphX includes a growing
+collection graph algorithms and builders
+to simplify graph analytics tasks
+
+
+
+Getting Started
+===========================================
+import org.apache.spark._
+import org.apache.spark.graphx._
+import org.apache.spark.rdd.RDD
+
+
+The property graph
+================================================
+The property graph is a directed multigraph
+with user difined objects attachsharing the ed to each vertex
+and edge. A directed multigraph is a directed graph with potentially multiple parrallel edges.
+
+The apbility to support parallel edges simplfies modeling
+scenarios where there can be multiple
+relationships between vertices:
+      __                                       ___
+     |v1|  <-------relationship_1------------->|v2| 
+     |  |  <-------relationship_2------------->|  |
+     ----                                      ----
+ 
+
+
+Verticies
+==================================================
+*       Each vertex is keyed by unique 64-bit
+        long identifier
+*       GraphX optimizes the representation of vertex and
+        edge types when they are primitive data types
+        (e.g, int, double, etc...) reducting the in memory
+        footprint by storing them in specialized arrays
+*       Graphx does not impose any ordering constraints
+        on the vertex identifiers.
+*       Similaryl, edges have corresponding source
+        and destination vertex identifiers
+*       The property graph is parameterized over the
+        vertex(VD)
+           -and-
+        edge(ED)
+
+
+Graphx optimizes the representation of vertex and edge types
+when they are primitive data types(e.g.,int,double,etc...) reducing the in memory footprint by storing by 
+storing them in specialized arrays
+
+
+In some cases it may be desirable to have vertices with
+different property types in the same
+graph.  This can be accomplished through inheritance.
+For example, to model users and products
+as a bipartite graph we might do the following:
+
+class Graph[VD,ED]{
+        val vertices:vertexRDD[VD]
+        val edges:EdgeRDD[ED]
+}
+
+
+
+
