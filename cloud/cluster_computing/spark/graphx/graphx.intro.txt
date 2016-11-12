@@ -120,6 +120,27 @@ Example Code
 val userGraph:Graph[(String,String),String]
 
 
+There are numerous ways to onstruct a property
+graph from raw files, RDDs, and even
+synthetic generators.
+
+Likely the most general method is to use
+the Graph object.  For example the
+following code constructs a graph from a 
+collection of RDDs:
+
+val sc:SparkContext
+val users: RDD[(VertexId,(String,String))] =
+         sc.parallelize(Array((3L, ("rxin", "student")),   (7L, ("jgonzal", "postdoc")),(5L, ("franklin", "prof")), (2L, ("istoica", "prof"))))
+
+val relationshps:RDD[Edge[String]] = sc.parallelize(Array(Edge(3L, 7L, "collab"),Edge(5L, 3L, "advisor"),
+Edge(2L, 5L, "colleague"), Edge(5L, 7L, "pi")))
+
+//Define a default user in case there
+//are relationship with missing
+//user 
+val defaultUser = ("John Doe","Missing")
+val graph = Graph(users, relationships, defaultUser)
 
 
 Example Property Graph
@@ -148,9 +169,25 @@ id |      Property(V)              |
 
 Edge Table
 ====================================
-srcid | Dstid |   Property(V)              |
+srcid | Dstid |   Property(V)      |        |
 ------------------------------------
-3     |       | (k,schilling, student)     |
+3     |  7    | Collaborator       | 
+------------------------------------
+5     |  3    | Advisor            |
+------------------------------------
+2     |  5    | Colleague          |
+------------------------------------
+5     |  7    | PI                 |
+------------------------------------
+
+val userGraph: Graph
+
+
+
+
+
+
+     | (k,schilling, student)     |
 ------------------------------------
 7     |       | (c.ignatius, postdoc)      |
 ------------------------------------
