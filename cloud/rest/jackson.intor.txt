@@ -1,0 +1,47 @@
+Using Jackson API for processing JSON
+
+Jackson is a multipurpose data processing 
+Java library.  The primary capability
+of this tool is the support for processing JSON.
+It also has addtional modules for processing
+the dta encoded in other popular formats such
+as:
+
+        *       Apache Avro
+                -       Data serialization
+        *       Concise Brinary Object Rep.
+                -       binary JSON
+        *       Smile
+                -       binary JSON
+        *       XML
+        *       CSV
+        *       YAML
+
+Jackson's alternative methods for processing JSON:
+================================================
+        *Tree model APIs:
+                -This method provides APIs
+                 for building a tree representation
+                 of a JSON document
+        *Data binding API:
+                -This method provides APIs for converting
+                 a JSON document into and form Java objects
+        *Streaming API:
+                -This method provides streaming APIs
+                 for reading and writing JSON documents
+
+
+Grails quick notes on action responses
+==========================================
+1. redirect:
+        *Redirects user to some provided url
+2. render:
+        *renders view corresponding to the controller
+         method/action(or one you provide) with the view
+         making use of values within a Map passed to the
+         view
+3. respond:
+         *Looks at the requested content type in the request
+          HTTP header and determines what should be returned
+          Makes things easier sometimes? 
+               

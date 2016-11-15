@@ -189,7 +189,7 @@ time in the doucment, the implication being
 that yu need to know what procnscider XML/JSON in the following
 scenarios:
 -----------------------------------------------------
-        *       Devices thave have limited
+        *       Devices have have limited
                 resources(cell phones,
                 embedded devices, appliances,
                 etc)
