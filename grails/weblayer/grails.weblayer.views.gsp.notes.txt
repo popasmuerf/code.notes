@@ -1,13 +1,64 @@
 http://grails3-plugins.github.io/fields/snapshot/ref/Tags/table.html
 
 
+<g:message> tags
+==========================================
+In the generated views, Grails uses this gsp
+tak to read text fro lables, buttons, and other elements
+from message bundles, wich are contained in
+grails-app/i18n under our app directory.
+
+<g:message> ensures that if somebody were to 
+be using our app with a different locale,
+our user interface would be presented in the correct language
+<g:sortableColumn> tag is what Grails uses to provide
+sorting on our list views. Note that, by default, 
+this owrks only with regular properties, not object
+references or collections.  That is why we see the tag:
+
+        <th> 
+used for the organizer property.
+
+<g:each in="${tekEventInstanceList}" status="i"var="tekEventInstance">
+
+        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                <td><g:link action="show" id="${tekEventInstance.id}">
+                ${fieldValue(bean:tekEventInstance,
+                  field:"name")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"city")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"description")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"description")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"organizer")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"venue")}</g:link></td>
+              <td><g:formatDate
+                        date="${tekEventInstance.startDate}"
+                  /></td>
+        </tr>
+</g:each>
+
+
+g:paginate
+=======================================================
+renders pagination buttons to show up at the bottom
+of thelist view if we had enough events displayed
+to warrant it.  The tag uses the count htat
+we passed in from the controller's index action
+
 f:table
 ===================================================================
 f:table renders some or all properties of a collection of beans
 in a table.  If there is no  _display template
 in scope the tag will simply render the property values.
 
-
+<div class="pagination">
+        <g:paginate
+                total=${tekEventInstanceCount?:0"/>
+</div>
 
 Examples
 ---------------------------------------------------------------------

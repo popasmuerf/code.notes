@@ -38,10 +38,91 @@ Grails quick notes on action responses
 2. render:
         *renders view corresponding to the controller
          method/action(or one you provide) with the view
-         making use of values within a Map passed to the
+         making use of values within a Map(AKA "model" passed to the
+        * For example....index() makes use of:
+                -render()
+                -params //a map/model containing params
+                        //in the http request payload
+                        //and whatever has been
+                        //programatically added to it.
+                //********Code Example************//
+                params.max = Math.min(max?:10,100)
+                //********URL request example******//
+                http://tekdays.com/Tekdays/index?max=100
+                http://tekdays.com/Tekdays/index?fuck=me
+                http://tekdays.com/Tekdays/index?crack=cocain
          view
 3. respond:
          *Looks at the requested content type in the request
           HTTP header and determines what should be returned
           Makes things easier sometimes? 
+         *Accepts as parameters:
+                -view
+                -Model(params map)
                
+
+
+Another reason for secruity review of code
+==============================================
+http://localhost:8080/TekDays/tekEvent/delete/1
+
+^^^ could be mitigated via the following code:
+    static allowedMethods = null
+    if(session.admin == true){
+        allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    }else{
+        redirect("http://tekdays.com/TekDays/unauthorized")
+    }
+Note:  TekEvent.list()  takes params also....I am getting
+        the feelign all actions by default takes
+        params by default.
+
+
+Is this also possible ?
+---------------------------------------------------------
+http://localhost:8080/TekDays/tekEvent/save/?name=Jcon&venue=hotel.....
+
+
+
+<g:message> tags
+==========================================
+In the generated views, Grails uses this gsp
+tak to read text fro lables, buttons, and other elements
+from message bundles, wich are contained in
+grails-app/i18n under our app directory.
+
+<g:message> ensures that if somebody were to 
+be using our app with a different locale,
+our user interface would be presented in the correct language
+<g:sortableColumn> tag is what Grails uses to provide
+sorting on our list views. Note that, by default, 
+this owrks only with regular properties, not object
+references or collections.  That is why we see the tag:
+
+        <th> 
+used for the organizer property.
+
+<g:each in="${tekEventInstanceList}" status="i"var="tekEventInstance">
+
+        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                <td><g:link action="show" id="${tekEventInstance.id}">
+                ${fieldValue(bean:tekEventInstance,
+                  field:"name")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"city")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"description")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"description")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"organizer")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"venue")}</g:link></td>
+              <td><g:formatDate
+                        date="${tekEventInstance.startDate}"
+                  /></td>
+        </tr>
+</g:each>
+
+
+
