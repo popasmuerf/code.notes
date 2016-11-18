@@ -1,0 +1,91 @@
+Getting started with spring boot
+========================================
+Spring Boot lets us rapidly create rock solid applications
+As an example, look at the following surce code written in
+Groovy in app.groovy:
+
+@RestController
+class App{
+        @RequestMapping("/")
+        def home(){
+                "Hello,world!!!"
+        }
+}
+
+
+Beleive it or not...the above code is a complete,
+working web app.
+
+
+
+What's going on here ?
+================================
+The spring tool parsed app.groovy
+and spotted the @RestController
+annoatation.  This tipped it off
+to add Spring MVC to the classpath
+using Groovy's @Grab
+anootation (srping also does this if it spots
+@Controllerd or @EnableWebMvs).  It makes our
+app look like the following code:
+
+//@Grab("spring-boot-starter-web")
+//@Grab("groovy-templates")
+
+@RestController
+class App{
+        @RequestMapping("/")
+        def home(){
+                "Hello, world!!!"
+        }
+}
+
+
+
+@RestController
+-------------------------------
+Annotation asks Spring MVC
+to look for web routes.  This 
+annotation also indicates that
+every HTTP endpoint in this
+class will write its results
+directly into the HTTP response
+instead of using a view
+
+
+@RequestMapping
+-------------------------------
+annotation maps the home()
+method to the route : "/"
+The name of the method matters not
+at all
+
+
+
+Running the app
+===============================
+> spring run app.groovy
+
+Navigate to : localhost:8080
+
+Hello, world!
+
+
+
+Notes:
+=============================================
+The annotation:
+
+        @Grab
+
+is part of Groovy Grape, a tool that pulls
+down third-party libraries from Maven central
+
+The spring-boot-stater-web package is a
+Spring Boot package thatpulls in all
+the dependencies needed for Spring MVC app
+
+The groovy-templates package gives us the option
+to use Groovy's built-in template support
+which we aret't using in this examplebut is
+included nonetheless....

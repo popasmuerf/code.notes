@@ -1,0 +1,13 @@
+Getting started with spring boot
+========================================
+Spring Boot lets us rapidly create rock solid applications
+As an example, look at the following surce code written in
+Groovy in app.groovy:
+
+@RestController
+class App{
+        @RequestMapping("/")
+        def home(){
+                "Hello,world!!!"
+        }
+}
