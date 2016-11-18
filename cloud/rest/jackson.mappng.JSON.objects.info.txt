@@ -1,0 +1,244 @@
+//=============How does Jackson Map JSON objects values to a Java class ? ========
+Jackson' default mapping mechanism used byu
+Jackson is based on the bean nameing properites.
+The binding layer copies the matching properties
+from the source to the 
+destination.  This implies that
+all names present in a JSON object need to
+match with the Java class properties for the
+default mapping mechanism to work
+
+We can o verride the default mapping behavior
+by annotating a desired field(or by getters and
+setters) with annotation :
+
+         @JsonProperty
+
+which is used to override the default property
+name that is used during the serialization and 
+deserialization processes. 
+
+
+More info pertaining to JacksonAnnotations
+=============================================
+http://wiki.fasterxml.com/JacksonAnnotations
+
+
+Processing JSON with Jackson streaming APIs
+============================================
+Teh Jacson framework supports the streaming
+API for reading and writing JSON content. We would
+be using :
+
+        org.codehaus.jackson.JsonParser //reads JSON data
+                -and-
+        org.codehaus.jackson.core.JsonGenerator//writes JSON
+
+
+A table that lists important claassesin the
+streaming model API:
+==================================================
+*com.fasterxml.jackson.core.JsonParser
+------------------------------------
+class that is used for reading JSON
+content
+
+*com.fasterxml.jackson.core.JsonGenerator
+---------------------------------------------
+Use for writing JSON content
+
+
+
+*com.fasterxml.jackson.core.JsonFactory
+---------------------------------------------
+Main factory class for the Jackson package
+
+
+
+
+Mapping JSON onto a Java Bean using Jackson
+================================================
+/*
+
+        
+START_ARRAY      KEY_NAME   VALUE_STRING  END_ARRAY
+   |             |                |          |
+   |             |                |          |
+   [    {       "country"   :    "IN"   }    ]              
+        |                               |
+        |                               |
+        START_OBJECT                  END_OBJECT
+
+
+
+*/
+
+
+//--------------Mapping JSON to Java Objects
+
+InputStream inputStream = getClass().getResourceAsStream
+("/emp-array.json");
+JsonParser jsonParser = new JsonFactory().
+createParser(inputStream);
+ObjectMapper objectMapper = new ObjectMapper();
+while(!jsonParser.isClosed()){
+        JsonToken jsonToken = jsonParser.nextToken();
+        if(jsonToken == null){
+                break;
+        }
+        if(jsonToken.equals(JsonToken.START_OBJECT)){
+                employee = objectMapper.readvalue
+                (jsonParser,Employee.class);
+                employeeList.add(employee);
+        }
+        if(inputStream !=null){
+                inputStream.close();
+        }
+        if(jsonParsers !=null){
+                jsonParser.close();
+        }
+}
+
+//--------------Mapping JSON to Java Objects
+jsonGenerator.writeStartArray();
+List<Employee> employees = getEmployeesList();
+for(Employee employee: employees){
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeNumberField("employeeId",
+        employee.getEmployeeId());
+        jsonGenerator.writeNumberField("firstName",
+        employee.getFirstName());
+        jsonGenerator.writeNumberField("lastName",
+        employee.getLastName());
+        jsonGenerator.writeNumberField("lastName",
+        employee.getLastName());
+}
+jsonGenerator.writeEndArray();
+jsonGenerator.close();
+outputStream.close();
+
+
+More details pertaining to Jackson
+==================================
+https://github.com/FasterXML/Jackson
+http://wiki.fasterxml.com/JacksonFAQ
+
+        
+More on JSON parser Jackson framework
+==============================================
+http://fasterxml.github.io/jackson-core/javadoc/2.5/com/fasterxml/jackson/core/JsonToken.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+Grails quick notes on action responses
+==========================================
+1. redirect:
+        *Redirects user to some provided url
+2. render:
+        *renders view corresponding to the controller
+         method/action(or one you provide) with the view
+         making use of values within a Map(AKA "model" passed to the
+        * For example....index() makes use of:
+                -render()
+                -params //a map/model containing params
+                        //in the http request payload
+                        //and whatever has been
+                        //programatically added to it.
+                //********Code Example************//
+                params.max = Math.min(max?:10,100)
+                //********URL request example******//
+                http://tekdays.com/Tekdays/index?max=100
+                http://tekdays.com/Tekdays/index?fuck=me
+                http://tekdays.com/Tekdays/index?crack=cocain
+         view
+3. respond:
+         *Looks at the requested content type in the request
+          HTTP header and determines what should be returned
+          Makes things easier sometimes? 
+         *Accepts as parameters:
+                -view
+                -Model(params map)
+               
+
+
+Another reason for secruity review of code
+==============================================
+http://localhost:8080/TekDays/tekEvent/delete/1
+
+^^^ could be mitigated via the following code:
+    static allowedMethods = null
+    if(session.admin == true){
+        allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    }else{
+        redirect("http://tekdays.com/TekDays/unauthorized")
+    }
+Note:  TekEvent.list()  takes params also....I am getting
+        the feelign all actions by default takes
+        params by default.
+
+
+Is this also possible ?
+---------------------------------------------------------
+http://localhost:8080/TekDays/tekEvent/save/?name=Jcon&venue=hotel.....
+
+
+
+<g:message> tags
+==========================================
+In the generated views, Grails uses this gsp
+tak to read text fro lables, buttons, and other elements
+from message bundles, wich are contained in
+grails-app/i18n under our app directory.
+
+<g:message> ensures that if somebody were to 
+be using our app with a different locale,
+our user interface would be presented in the correct language
+<g:sortableColumn> tag is what Grails uses to provide
+sorting on our list views. Note that, by default, 
+this owrks only with regular properties, not object
+references or collections.  That is why we see the tag:
+
+        <th> 
+used for the organizer property.
+
+<g:each in="${tekEventInstanceList}" status="i"var="tekEventInstance">
+
+        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                <td><g:link action="show" id="${tekEventInstance.id}">
+                ${fieldValue(bean:tekEventInstance,
+                  field:"name")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"city")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"description")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"description")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"organizer")}</g:link></td>
+              <td>${fieldValue(bean:tekEventInstance,
+                  field:"venue")}</g:link></td>
+              <td><g:formatDate
+                        date="${tekEventInstance.startDate}"
+                  /></td>
+        </tr>
+</g:each>
+
+
+

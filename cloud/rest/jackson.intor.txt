@@ -31,6 +31,164 @@ Jackson's alternative methods for processing JSON:
                  for reading and writing JSON documents
 
 
+Using Jackson tree model APIs to query and update 
+data
+==============================================
+com.fasterxml.jackston.databaind.ObjectMapper
+------------------------------------------------
+Converts the JSOn data into a tree
+representation.  This calss has variety of
+APIs to build a tree from the JSON data.
+ObjectMapper class helps you deserialize the 
+JSON content as a tree(expressed using
+a set of JsonNode instances).
+         
+com.fasterxml.jackson.databind.JsonNode
+----------------------------------------------
+These are the node types that make up the 
+the tree...similar to DOM nodes in
+an XML DOM tree.  You can also navigate
+through JsonNode to identify specific elements
+present in the tree hierarchy.  The following
+example illustrates the use of
+Jackson tree model APIs.
+
+
+//================Code Generalized tree representation of JSON content===============================
+import com.fasterxml.jackston.databaind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode ;
+
+InputStream inputStream = getClass().getResourceAsStream("/emp-array.json");
+ObjectMapper objectMapper = new ObjectMapper() ;
+JsonNode rootNode = objectMapper.readTree(inputStream);
+if(rootNode.isArray()){
+        for(JsonNode objNode: rootNode){
+                JsonNode emailNode = objNode.path("email");
+                if(emailNode.textValue() == null){
+                        String generatedEmail=
+                        getSystemGeneratedEmail();
+                        ((ObjectNode)objNode).put("email",
+                        generatedEmail);
+                }
+        }
+}
+File jsonFile = new File("emp-modified-array.json");
+objectMapper.writeValue(jsonFile,rootNode);
+if(inputStream != null){
+        inputStream.close();
+}
+
+
+
+
+binding APIs
+=========================================================
+Jackson data binding is use to convert the JSON
+representation into and from Plain Old Java Object(POJO)
+by using property accessors or annotations.  With this
+API, you can either generate generic collection classes
+or more specific Java
+
+
+Simple Jackson data binding with generalized
+objects
+=========================================
+Sometimes we may need to deal with highly
+dynamic JSON content where you may not
+be able to map data to a specific
+Java object as the structure of the data
+changes dynamically.  In such
+a scenario, you can use the simple binding
+APIs offered by teh Jackson framework.  You
+will use Java:
+
+        maps
+        lists
+        strings
+        numbers
+        Booleans
+        nulls
+
+The following code snippet converts a 
+JSON string into a map object:
+========================================
+
+//=============converting JSON into a map object========
+
+import com.fasterxml.fasterxml.jackson.core.type.TypeReference;
+
+String jsonString ="
+"{\"firstName\":\"John\",\"lastName\":\"Chen\"}";
+ObjectMapper objectMapper = new ObjectMapper();
+Map<String,String> properties = objectMapper.readValue(jsonString,new TypeReference<Map<String,String>>() {});
+
+
+
+
+Full Jackson data binding with specialized objects
+===================================================
+If the JSON data format is well structured,
+we can direclty ap the conten to
+a concrete Java class.  A full data binding
+solution fits such a scenario.
+
+For example, we can create an Employee class
+for representing the employee data presented in
+the JSON format as long as the JSON content structure
+does not change.
+
+
+//emp.json file has following contents:
+//{"employeeId":100,"firstName":"John","lastName":"Chen"}
+ObjectMapper objectMapper = new ObjectMapper();
+Employee employee = objectMapper.readValue(new File("emp.json"),Employee.class) ;
+
+
+Creating a Java collection containing the 
+Employee objects from a JSON array
+of employees.  Here, we need to construct a
+Java collection type, indicating the type
+of elements in the collection.
+
+
+//=============converting JSON into a map object========
+
+import com.fasterxml.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+
+ObjectMapper objectMapper = new ObjectMapper();
+CollectionType collectionType = objectMapper.getTypeFactory().constructConllectionType(List.class,Employee.class)
+List<Employee> emp = objectMapper.readValue(new File
+("emp-array.json"),collectionType);
+
+
+//=============converting Java Object into JSON ========
+
+import com.fasterxml.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+
+ObjectMapper objectMapper = new ObjectMapper();
+CollectionType collectionType = objectMapper.getTypeFactory().constructConllectionType(List.class,Employee.class)
+List<Employee> emp = objectMapper.readValue(new File
+("emp-array.json"),collectionType);
+
+Employee employee = getEmployeeEntity();
+objectMapper.writeValue(new File("emp.json"),employee);
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
 Grails quick notes on action responses
 ==========================================
 1. redirect:
