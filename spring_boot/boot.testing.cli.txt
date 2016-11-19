@@ -1,0 +1,228 @@
+Testing with Spring Boot's CLI
+========================================
+the command :
+
+> spring test
+
+Will kick off Spring Boot sans 
+adding main() to run our app, as opposed to
+auto-configuring test runners based on the
+extant code we supply.  Let's first look at this
+example of a domain class and its related test case found
+inside Spring
+
+
+Boot's collection of test cases:
+------------------------------------------
+class Book{
+        String author
+        String title
+}
+
+
+class BookTests{
+        @Test
+        void testBooks(){
+                Book book = new Book(author:"Tom Clancy",
+                                title:"Thread Vector").
+                assertEquals("Tom Clancy",book.author)
+        }
+}
+
+
+
+Spring Boot's offical colleciton of automated tests
+================================================================
+https://github.com/spring-projects/spring-boot/blob/master/spring-boot-cli/test-samples/book_and_tests.groovy
+
+@RestController
+class App{
+        @RequestMapping("/")
+        def home(){
+                "Hello,world!!!"
+        }
+}
+
+
+Beleive it or not...the above code is a complete,
+working web app.
+
+
+
+What's going on here ?
+================================
+The spring tool parsed app.groovy
+and spotted the @RestController
+annoatation.  This tipped it off
+to add Spring MVC to the classpath
+using Groovy's @Grab
+anootation (srping also does this if it spots
+@Controllerd or @EnableWebMvs).  It makes our
+app look like the following code:
+
+//@Grab("spring-boot-starter-web")
+//@Grab("groovy-templates")
+
+@RestController
+class App{
+        @RequestMapping("/")
+        def home(){
+                "Hello, world!!!"
+        }
+}
+
+
+
+@RestController
+-------------------------------
+Annotation asks Spring MVC
+to look for web routes.  This 
+annotation also indicates that
+every HTTP endpoint in this
+class will write its results
+directly into the HTTP response
+instead of using a view
+
+
+@RequestMapping
+-------------------------------
+annotation maps the home()
+method to the route : "/"
+The name of the method matters not
+at all
+
+
+
+Running the app
+===============================
+> spring run app.groovy
+
+Navigate to : localhost:8080
+
+Hello, world!
+
+
+
+Notes:
+=============================================
+The annotation:
+
+        @Grab
+
+is part of Groovy Grape, a tool that pulls
+down third-party libraries from Maven central
+
+The spring-boot-stater-web package is a
+Spring Boot package thatpulls in all
+the dependencies needed for Spring MVC app
+
+The groovy-templates package gives us the option
+to use Groovy's built-in template support
+which we aret't using in this examplebut is
+included nonetheless....
+
+
+
+What Roo is doing behind the scenes
+====================================================================
+Roo uses Grape...which is Groovy's version of gradle
+------------------------------------------------
+It's true that @Grab actually requires a 
+group ID, and artifact ID, and a 
+version.  However, spring has a shortcut, we only need
+the artifact ID if the library is supported by Spring.
+
+Spring Project default POM 
+-----------------------------------------------------
+https://github.com/spring-projects/spring-boot/blob/v1.1.6.RELEASE/spring-boot-dependencies/pom.xml
+
+
+Spring inserts a few extra imports based on the 
+the default libraries
+-----------------------------------------------------
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.config.annotation.*
+import org.springframework.web.servlet.handler.*
+import org.springframework.ui.*
+import org.springframework.boot.cli.template.GroovyTemplate.template
+
+@RestController
+class App{
+        @RequestMapping("/")
+        def home(){
+                "Hello, world!"
+        }
+}
+
+With these imports, I don't need to know where to find
+where RestController or RequestMapping is located...
+I can worry about building my app, as opposed to low
+level details.
+
+
+@EnableAutoConfiguration
+------------------------------------------------
+This annotation singnals Spring Boot to start making 
+opinionated decisions on adding various components
+to our app.  For example, since Spring MVC was pulled
+in, many critical beans are created that include view
+resolvers, an embedded Tomcat servlet container, and
+a dispatcher servlet.  These and other
+components are created autmatically and added to 
+the applciation contect, powering up our app.
+
+This annotation to the class and creates the method:
+
+        public static void main()
+
+
+SpringApplication.run()
+----------------------------------------------------
+The SpringApplication.run() method is Spring
+Boot's API to start up our app and create an
+applciation context.  Wrapping it in static void main means
+that we can run this app anywhere there is a JVM
+installed.
+
+
+
+in order for us to run our app, as shown below:
+//@Grab("spring-boot-starter-web")
+//@Grab("groovy-templates")
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.config.annotation.*
+import org.springframework.web.servlet.handler.*
+import org.springframework.http.*
+import org.springframework.ui.*
+import org.springframework.boot.cli.template.GroovyTemplate.template
+
+//@EnableAutoConfiguration
+
+@RestController
+class App{
+        @RequestMapping("/")
+        def home(){
+                "Hello, world!"
+        }
+}
+
+/*
+static void main(String[] args){
+        SpringApplication.run(App.class,args)
+}
+*/
+*/
+
+
+
+
+
+Spring boot's CLI we have installed
+----------------------------------------------------
+
+
+
+
+
+
+
