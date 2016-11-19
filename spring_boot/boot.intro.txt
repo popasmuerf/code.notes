@@ -106,6 +106,86 @@ Spring Project default POM
 https://github.com/spring-projects/spring-boot/blob/v1.1.6.RELEASE/spring-boot-dependencies/pom.xml
 
 
+Spring inserts a few extra imports based on the 
+the default libraries
+-----------------------------------------------------
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.config.annotation.*
+import org.springframework.web.servlet.handler.*
+import org.springframework.ui.*
+import org.springframework.boot.cli.template.GroovyTemplate.template
+
+@RestController
+class App{
+        @RequestMapping("/")
+        def home(){
+                "Hello, world!"
+        }
+}
+
+With these imports, I don't need to know where to find
+where RestController or RequestMapping is located...
+I can worry about building my app, as opposed to low
+level details.
+
+
+@EnableAutoConfiguration
+------------------------------------------------
+This annotation singnals Spring Boot to start making 
+opinionated decisions on adding various components
+to our app.  For example, since Spring MVC was pulled
+in, many critical beans are created that include view
+resolvers, an embedded Tomcat servlet container, and
+a dispatcher servlet.  These and other
+components are created autmatically and added to 
+the applciation contect, powering up our app.
+
+This annotation to the class and creates the method:
+
+        public static void main()
+
+
+SpringApplication.run()
+----------------------------------------------------
+The SpringApplication.run() method is Spring
+Boot's API to start up our app and create an
+applciation context.  Wrapping it in static void main means
+that we can run this app anywhere there is a JVM
+installed.
+
+
+
+in order for us to run our app, as shown below:
+//@Grab("spring-boot-starter-web")
+//@Grab("groovy-templates")
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.config.annotation.*
+import org.springframework.web.servlet.handler.*
+import org.springframework.http.*
+import org.springframework.ui.*
+import org.springframework.boot.cli.template.GroovyTemplate.template
+
+//@EnableAutoConfiguration
+
+@RestController
+class App{
+        @RequestMapping("/")
+        def home(){
+                "Hello, world!"
+        }
+}
+
+/*
+static void main(String[] args){
+        SpringApplication.run(App.class,args)
+}
+*/
+*/
+
+
+
+
+
 Spring boot's CLI we have installed
 ----------------------------------------------------
 
