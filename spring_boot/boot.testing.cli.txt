@@ -31,7 +31,7 @@ class BookTests{
 
 
 
-Spring Boot's offical colleciton of automated tests
+Spring Boot's offical colleciton of automated tests(JUnit ?)
 ================================================================
 https://github.com/spring-projects/spring-boot/blob/master/spring-boot-cli/test-samples/book_and_tests.groovy
 
@@ -42,6 +42,12 @@ class App{
                 "Hello,world!!!"
         }
 }
+
+
+
+Spock is a popular testing framework in the Groovy Community
+=============================================================
+https://code.google.com/archive/p/spock/
 
 
 Beleive it or not...the above code is a complete,
@@ -214,10 +220,200 @@ static void main(String[] args){
 */
 
 
+Spring boot and Groovy Spock
+===================================================
+The following test code takes advantage of Groovy's ability
+to create a method name.  By wrapping the string with
+double qoutes, "lenth of Spock's and hsi friends' names"()
+becomes a legal method name.  This pays off during test
+failures by providing a comprehensible error
+message that is also directly tied
+to the code, as we'll see later.
+
+//-----------------Spock Sample Code----------------
+class HelloSpock extends Specification {
+	def "length of Spock's and his friends' names"() {
+		expect:
+		name.size() == length
+
+		where:
+		name     | length
+		"Spock"  | 5
+		"Kirk"   | 4
+		"Scotty" | 6
+	}
+}
+
+>spring test spock.groovy
 
 
 
-Spring boot's CLI we have installed
+
+Rob Winch's famous tweet:
+===================================
+@Controller
+class ThisWillActuallyRun{
+        @RequestMapping("/")
+        @ResponseBody
+        String home(){
+                "Hello World!"
+        }
+}
+
+^^^^Since the time of Rob's famous twet, the Spring Framework has come out with :
+
+        @RestController
+
+which is an annotation that is basically
+an amalgamation of :
+
+        @Controller
+        @ResponseBody
+
+The same code using @RestController
+-----------------------------------
+@RestController
+class ThisWillActuallyrun{
+        @RequestMapping("/")
+        String home(){
+                "Hello World!"
+        }
+}
+
+Simple Deployment
+================================
+This isn't just any JAR file, it's an executable
+JAR file with all the required dependencies embedded
+inside it.
+
+> spring jar app.jar app.groovy
+
+
+Let's look inside :
+
+> jar tvf  app.jar
+
+app.groovy        book_and_tests.groovy  Book.groovy
+app.jar           book_app.groovy        HelloSpock.groovy
+app.jar.original  book.groovy            HelloSpock.groovy~
+mikeyb@cern:~/src/web/boot/library$ jar tvf app.jar
+     0 Sun Nov 20 07:03:34 EST 2016 META-INF/
+   318 Sun Nov 20 07:03:34 EST 2016 META-INF/MANIFEST.MF
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/cli/
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/cli/archive/
+  3505 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/cli/archive/PackagedSpringApplicationLauncher.class
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/cli/app/
+  2700 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/cli/app/SpringApplicationLauncher.class
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/groovy/
+   545 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/groovy/DependencyManagementBom.class
+   465 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/groovy/EnableGroovyTemplates.class
+  2902 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/groovy/GroovyTemplate.class
+  1193 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/groovy/DelegateTestRunner.class
+   463 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/org/springframework/boot/groovy/EnableDeviceResolver.class
+  2594 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/App.class
+   252 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/classes/HelloSpock.groovy~
+     0 Sun Nov 20 07:03:34 EST 2016 BOOT-INF/lib/
+4550894 Fri Jun 03 18:50:40 EDT 2016 BOOT-INF/lib/groovy-2.4.7.jar
+  2290 Tue Nov 08 16:30:22 EST 2016 BOOT-INF/lib/spring-boot-starter-1.4.2.RELEASE.jar
+658888 Tue Nov 08 16:15:50 EST 2016 BOOT-INF/lib/spring-boot-1.4.2.RELEASE.jar
+1135493 Mon Nov 07 21:15:02 EST 2016 BOOT-INF/lib/spring-context-4.3.4.RELEASE.jar
+968499 Tue Nov 08 16:21:38 EST 2016 BOOT-INF/lib/spring-boot-autoconfigure-1.4.2.RELEASE.jar
+  2311 Tue Nov 08 16:30:22 EST 2016 BOOT-INF/lib/spring-boot-starter-logging-1.4.2.RELEASE.jar
+304075 Tue Mar 29 22:24:50 EDT 2016 BOOT-INF/lib/logback-classic-1.1.7.jar
+470782 Tue Mar 29 22:23:42 EDT 2016 BOOT-INF/lib/logback-core-1.1.7.jar
+ 41071 Mon Apr 04 20:36:42 EDT 2016 BOOT-INF/lib/slf4j-api-1.7.21.jar
+ 16431 Mon Apr 04 20:38:46 EDT 2016 BOOT-INF/lib/jcl-over-slf4j-1.7.21.jar
+  4597 Mon Apr 04 20:39:24 EDT 2016 BOOT-INF/lib/jul-to-slf4j-1.7.21.jar
+ 23646 Mon Apr 04 20:39:02 EDT 2016 BOOT-INF/lib/log4j-over-slf4j-1.7.21.jar
+1112602 Mon Nov 07 21:14:30 EST 2016 BOOT-INF/lib/spring-core-4.3.4.RELEASE.jar
+273599 Fri Feb 19 13:13:32 EST 2016 BOOT-INF/lib/snakeyaml-1.17.jar
+  2347 Tue Nov 08 16:30:36 EST 2016 BOOT-INF/lib/spring-boot-starter-web-1.4.2.RELEASE.jar
+  2295 Tue Nov 08 16:30:36 EST 2016 BOOT-INF/lib/spring-boot-starter-tomcat-1.4.2.RELEASE.jar
+2990538 Thu Oct 06 21:16:26 EDT 2016 BOOT-INF/lib/tomcat-embed-core-8.5.6.jar
+239734 Thu Oct 06 21:16:28 EDT 2016 BOOT-INF/lib/tomcat-embed-el-8.5.6.jar
+241565 Thu Oct 06 21:16:28 EDT 2016 BOOT-INF/lib/tomcat-embed-websocket-8.5.6.jar
+704465 Wed Feb 17 16:15:16 EST 2016 BOOT-INF/lib/hibernate-validator-5.2.4.Final.jar
+ 63777 Wed Apr 10 15:02:44 EDT 2013 BOOT-INF/lib/validation-api-1.1.0.Final.jar
+ 66802 Thu May 28 09:49:34 EDT 2015 BOOT-INF/lib/jboss-logging-3.3.0.Final.jar
+ 64982 Tue Sep 27 22:24:16 EDT 2016 BOOT-INF/lib/classmate-1.3.3.jar
+1234984 Fri Oct 14 03:51:36 EDT 2016 BOOT-INF/lib/jackson-databind-2.8.4.jar
+ 55785 Thu Oct 13 20:45:36 EDT 2016 BOOT-INF/lib/jackson-annotations-2.8.4.jar
+281079 Thu Oct 13 20:48:04 EDT 2016 BOOT-INF/lib/jackson-core-2.8.4.jar
+813854 Mon Nov 07 21:16:16 EST 2016 BOOT-INF/lib/spring-web-4.3.4.RELEASE.jar
+380082 Mon Nov 07 21:14:40 EST 2016 BOOT-INF/lib/spring-aop-4.3.4.RELEASE.jar
+761236 Mon Nov 07 21:14:36 EST 2016 BOOT-INF/lib/spring-beans-4.3.4.RELEASE.jar
+913505 Mon Nov 07 21:16:56 EST 2016 BOOT-INF/lib/spring-webmvc-4.3.4.RELEASE.jar
+263392 Mon Nov 07 21:14:50 EST 2016 BOOT-INF/lib/spring-expression-4.3.4.RELEASE.jar
+ 97862 Fri Jun 03 18:50:56 EDT 2016 BOOT-INF/lib/groovy-templates-2.4.7.jar
+215463 Fri Jun 03 18:50:56 EDT 2016 BOOT-INF/lib/groovy-xml-2.4.7.jar
+     0 Sun Nov 20 07:03:34 EST 2016 org/
+     0 Sun Nov 20 07:03:34 EST 2016 org/springframework/
+     0 Sun Nov 20 07:03:34 EST 2016 org/springframework/boot/
+     0 Sun Nov 20 07:03:34 EST 2016 org/springframework/boot/loader/
+  2468 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/LaunchedURLClassLoader$1.class
+  1454 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/PropertiesLauncher$ArchiveEntryFilter.class
+  1807 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/PropertiesLauncher$PrefixMatchingArchiveFilter.class
+  4599 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/Launcher.class
+  1165 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/ExecutableArchiveLauncher$1.class
+     0 Sun Nov 20 07:03:34 EST 2016 org/springframework/boot/loader/jar/
+  2002 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarFile$1.class
+  8856 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/jar/Handler.class
+  3350 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarEntry.class
+  1427 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarFile$3.class
+  2943 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/CentralDirectoryEndRecord.class
+   430 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/CentralDirectoryVisitor.class
+  1300 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarFile$JarFileType.class
+ 10924 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarFileEntries.class
+ 12697 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarFile.class
+  1540 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarFileEntries$1.class
+   672 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/jar/JarURLConnection$1.class
+  1199 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarFile$2.class
+   262 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarEntryFilter.class
+  4470 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/AsciiBytes.class
+  4602 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/jar/CentralDirectoryParser.class
+  2169 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/jar/Bytes.class
+  1629 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/jar/ZipInflaterInputStream.class
+  1967 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/JarFileEntries$EntryIterator.class
+   306 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/FileHeader.class
+  3655 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/jar/JarURLConnection$JarEntryName.class
+  9111 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/jar/JarURLConnection.class
+  5449 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/jar/CentralDirectoryFileHeader.class
+  1704 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/PropertiesLauncher$FilteredArchive$1.class
+     0 Sun Nov 20 07:03:34 EST 2016 org/springframework/boot/loader/data/
+  1531 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/data/ByteArrayRandomAccessData.class
+  3534 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/data/RandomAccessDataFile$DataInputStream.class
+  2051 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/data/RandomAccessDataFile$FilePool.class
+  1341 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/data/RandomAccessData$ResourceAccess.class
+  3390 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/data/RandomAccessDataFile.class
+   551 Tue Nov 08 16:11:14 EST 2016 org/springframework/boot/loader/data/RandomAccessData.class
+  4698 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/LaunchedURLClassLoader.class
+  2052 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/JarLauncher.class
+  1468 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/MainMethodRunner.class
+  2382 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/PropertiesLauncher$FilteredArchive.class
+  1382 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/PropertiesLauncher$1.class
+  3128 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/ExecutableArchiveLauncher.class
+  1669 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/WarLauncher.class
+     0 Sun Nov 20 07:03:34 EST 2016 org/springframework/boot/loader/archive/
+  1749 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/JarFileArchive$EntryIterator.class
+  3792 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/ExplodedArchive$FileEntryIterator.class
+  1068 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/ExplodedArchive$FileEntry.class
+  1097 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/JarFileArchive$JarFileEntry.class
+   302 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/Archive$Entry.class
+  7016 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/JarFileArchive.class
+  4974 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/ExplodedArchive.class
+   906 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/Archive.class
+  1438 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/ExplodedArchive$FileEntryIterator$EntryComparator.class
+   399 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/Archive$EntryFilter.class
+   273 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/archive/ExplodedArchive$1.class
+ 16257 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/PropertiesLauncher.class
+     0 Sun Nov 20 07:03:34 EST 2016 org/springframework/boot/loader/util/
+  4947 Tue Nov 08 16:11:16 EST 2016 org/springframework/boot/loader/util/SystemPropertyUtils.class
+
 ----------------------------------------------------
 
 
