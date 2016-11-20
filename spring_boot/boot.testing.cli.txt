@@ -286,12 +286,49 @@ This isn't just any JAR file, it's an executable
 JAR file with all the required dependencies embedded
 inside it.
 
+*       Compiled App.class based on app.groovy
+*       All required libraries are found in the lib/
+        folder
+*       Spring Boot adds a little extra code
+        designed to load and run the nested JAR files
+
+Tip:
+===================================
+Java doesn't provide any standardized way
+ot load nested JAR files.  Many have tried 
+to fill ths gap by creating "shaded" JARs
+by unpacking all the clasfiels and repacking 
+directly into the enclosing JAR file.  
+This makes it hard to spot lib files
+and potentially violates certain projet's licensing
+agreements.  Boot instead provides the means
+to bundle up third-party JARS
+inside an enclosing JAR file and properly oads them
+at runtime.
+For more info:
+---------------------------------------------------------
+http://docs.spring.io/spring-boot/docs/1.1.6.RELEASE/reference/htmlsingle/#executable-jar
+
+Build and deploy
+-------------------------------------------
 > spring jar app.jar app.groovy
 
-
 Let's look inside :
-
+-------------------------------
 > jar tvf  app.jar
+
+run the app
+----------------------------------
+> java -jar app.jar
+
+ .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.4.2.RELEASE)
+
 
 app.groovy        book_and_tests.groovy  Book.groovy
 app.jar           book_app.groovy        HelloSpock.groovy
@@ -419,6 +456,30 @@ mikeyb@cern:~/src/web/boot/library$ jar tvf app.jar
 
 
 
+Implications ?
+=========================================
+*       Quick deployment to wherever there is a JVM
+*       We can place the jar on a flash drive and
+        transport it anywhere...very useful for
+        air-gapped enviroments
+*       Eash upload via ssh
+*       Easy push out of app upt to PaaS providers
+        like CloudFoundry or Digital Ocean
+*       App can easily be staged for others to use
 
+Java 6 is EOL...however...
+=================================================
+Spring boot still suports it.  Spring Boot leverages
+many parts of Spring Framework4.0 using the annotation:
+
+        @Conditional
+
+Which requires a minimum of Java 6.
+
+
+No hard requirement for app containers
+===================================================
+Tomcat is embedded.  Non-web apps don't even require
+this.
 
 
