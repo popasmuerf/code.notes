@@ -63,6 +63,7 @@ templated engine we choose(Thymeleaf)
 
 Pro-Tip : templating and Boot
 =======================================================
+http://docs.spring.io/spring-boot/docs/1.1.6.RELEASE/reference/htmlsingle/#boot-features-spring-mvc-template-engines
 Boot is not restricted to using Thymeleaf for templating..
 it also supports the following templating engine
 w/r templating:
@@ -70,7 +71,9 @@ w/r templating:
         * Groovy
         * Thymeleaf
         * Velocity
-
+(JSPs should be avoided if possible, as there
+are several known limitations when using them in
+embedded servlet containers)
 By default templates are located here:
 ---------------------------------------
 src/main/resources/templates
