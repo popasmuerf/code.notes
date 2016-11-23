@@ -1,10 +1,24 @@
-Exposing Application Metrics and Information
+running applications outside of your build enviroment...
 ==================================================
-This is how we will monitor our application
-(whether our service be of the micro-kind or
-not..)
+Up to this point we've been thinking thorugh
+development and building our hello-world microservice from
+the prerspective of a developer's laptop
+using Gradle or Maven.  Time to redistribute this app.
 
-        *       how are things running ?
+Maven
+====================================================
+> mvn clean package
+> java -jar target/hola-springboot-1.0.jar
+
+Gradle
+====================================================
+> gradle clean
+> java -jar target/hola-springboot-1.0.jar
+
+        -or-
+> gradle clean
+> gradle assemble
+
 
 Let's freshen up our dependencies
 ==================================================
