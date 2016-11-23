@@ -1,9 +1,19 @@
-Externalizing Configurations in Spring Boot
+Exposing Application Metrics and Information
 ==================================================
-Spring Boot makes it easy to use external property
-soruces like properties files, command-line arguments,
-the OS enviroment, or Java System properties.
-We can bind entire "classes" of properties to ojbects in our Spring context.
+This is how we will monitor our application
+(whether our service be of the micro-kind or
+not..)
+
+        *       how are things running ?
+
+Let's freshen up our dependencies
+==================================================
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+
 
 Externalize Configuration
 ====================================================
