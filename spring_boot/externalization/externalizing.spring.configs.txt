@@ -1,0 +1,21 @@
+Externalizing Configurations in Spring Boot
+==================================================
+Spring Boot makes it easy to use external property
+soruces like properties files, command-line arguments,
+the OS enviroment, or Java System properties.
+We can bind entire "classes" of properties to ojbects in our Spring context.
+
+Externalize Configuration
+====================================================
+Binding helloapp.* to our HolaRestController
+----------------------------------------------------
+adding the annotation :
+
+        @ConfigurationProperties(prefix="helloapp")
+
+and Spring boot will autoamtically try to bind helloapp.foo
+and helloapp.bar to Java Bean properties in the class
+
+        HolaRestController 
+
+

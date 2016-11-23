@@ -1,0 +1,49 @@
+Moderningizing our app with JavaScript
+========================================
+our current situation:
+
+        app_with_views.groovy
+
+
+
+//--------------Code modern.groovy------------------
+//If it is spring related lib...I don't need 
+//full on syntax like: @Grab(group='commons-lang', module='commons-lang', version'2.4)
+
+@Grab("thymeleaf-spring4")
+@Controller
+class ModernApp{
+        def chapters = ["Quick Start With Groovy",
+                         "Quick Start with Java",
+                        "Debugging and Managing Your App",
+                        "Data Access with Spring Boot",
+                        "Securing Your App"]
+@RequestMapping("/")
+def home(@RequestParam(value="name",defaultValue="World")String n){
+                new ModelandView("home")
+                .addObject("name",n)
+                .addObject("chapters",chapters)
+        }
+}
+
+What we want
+======================================================
+//--------------Code modern.groovy------------------
+//If it is spring related lib...I don't need 
+//full on syntax like: @Grab(group='commons-lang', module='commons-lang', version'2.4)
+@Grab("org.webjars:jquery:2.1.1")
+@Grab("thymeleaf-spring4")
+@Controller
+class ViewBasedApp{
+        def chapters = ["Quick Start With Groovy",
+                         "Quick Start with Java",
+                        "Debugging and Managing Your App",
+                        "Data Access with Spring Boot",
+                        "Securing Your App"]
+@RequestMapping("/")
+def home(@RequestParam(value="name",defaultValue="World")String n){
+                new ModelandView("home")
+                .addObject("name",n)
+                .addObject("chapters",chapters)
+        }
+}

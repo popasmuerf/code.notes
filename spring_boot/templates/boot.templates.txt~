@@ -94,13 +94,8 @@ app-dir/app-dir> vim home.html
                 </title>
         </head>
         <body>
-                <p th:text="'Hello, ' + ${name}">
-                </p>
-                <ol>
-                   <li: th:each="chapter:
-                        ${chapters}"
-                        th:text=${chapter}"></li>
-                </ol>
+                <p th:text="'Hello, ' + ${name
+        
         </body>
 </html>
 
