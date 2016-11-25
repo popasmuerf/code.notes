@@ -1,0 +1,66 @@
+Calling Another Service
+===================================
+In a microservice enviroment, each service
+is responsible for providing the functionaloity or service
+to other collaborators.
+
+Building distributed systms is hard, and we cannot abstract
+away the network or the potential for failures. We
+will cover how to build rsilient interactions with 
+our dependencies....for right now....however...let's just
+focus 
+
+
+
+Extending our current hello-world microservice
+================================================
+We need to create a service to which we can
+call using Spring's REST client functionality
+
+We are going to use a backend service and modify our service to
+reach out to the backend to generate the greetings
+we want to be able to use:
+
+                        /api/greeting             /api/backend
+-----------            ----------------           ----------
+|browser   |---------->|Spring Boot   |---------->|Backend  |
+|          |<----------| Microservice |<----------|         |
+|          |           ----------------           ---------- 
+-----------
+
+
+api/backend
+================
+import java.io.IOException;
+import javax.servlet.http.HttpServlet ;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
+
+
+public class BackendHttpServlet extends HttpServlet{
+        @Override
+        protected void doGet(HttpServletRequest req,
+                             HttpServletResponse resp)throws
+                             ServletException,IOException{
+        reps.setContentType("application/json");
+        ObjectMapper mapper = new ObjectMapper();
+        String greeting = req.getParameter("greeting");
+        ResponseDTO response = new ResponseDTO();
+        rspnse.setGreeting(greeting
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
