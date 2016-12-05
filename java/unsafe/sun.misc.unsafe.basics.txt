@@ -1,209 +1,65 @@
-Understanding sun.misc.Unsafe
-https://dzone.com/articles/understanding-sunmiscunsafe
-https://docs.oracle.com/javase/8/docs/api/
-=================================================
-The biggest competitor to the Java virutal machine
-might be Microsoft's CLR that hosts languages
-such as C#.  The CLR allows to write unsafe
-code as an entry gate forlow level programming,
-something that is hard to achieve on teh JVM.  If you need
-such advanced functionality in Java, there is the JNI,
-which requires  you to know some C and will
-quickly lead to code  that is tightly coupled to a specific
-platform. With:
+http://howtodoinjava.com/core-java/related-concepts/usage-of-class-sun-misc-unsafe/
 
-        sun.misc.Unsafe
-
-there is however another alternative to low-level programming
-on the Java p;ltaform using a Java API, even though this
-altrenative is discouraged.  Nevertheless, several applications
-rely on  sun.misc.Unsafe such for example:
-
-        *       objenesis
-        *       kryo(Twitter Storm)
-        *       Grails
-        *       etc
+Basics of Java's version of 
+The Darkhold, The Shining Trapezohedron, The Book of Eternal Darkness...
+De Vermis Mysteriis
+=============================================================
+sun.misc.Unsafe
 
 
-Getting hold of an instance of sun.misc.Unsafe
-===================================================
-The sun.misc.Unsafe  cclass is intended to be 
-oly used by core Java classes which is why its
-authors mad its only constructor private and only
-added an equally private singleton instance.  The public
-getter for this instance peforms a security check in order to avoid
-its public use:
 
-import sun.misc.Unsafe ;
-public static Unsafe getUnsafe(){
-        Class cc = sun.reflect.Reflection.getCallerClass(2);
-        if(cc.getClassLoader()!=null)throw new SecurityException("Unsafe"){
-                return theUnsafe;
+
+Instantiation of sun.misc.Unsafe
+===========================================
+If you try to create an instance of Unsafe
+class, you will not be allowed
+because of two reasons:
+
+1. Unsafe class has private constructor
+2. It also has static methods:
+        *       getUnsafe()
+3. Calling Unsafe.getUnsafe() will throw
+   a security exception if not ran from 
+   trusted code
+
+
+Work arounds....
+----------------------------------------------
+Field f = Usafe.class.getDeclaredField("theUnsafe") ;
+f.setAccessable(true) ;
+Unsafe unsafe =(Unsafe) f.get(null) ;
+
+Note: If you get an error from you IDE, then more than likely
+you can ignore it.....
+
+
+
+Usage of sun.misc.Unsafe
+=======================================================
+1.) Create an instance without any restriction
+--------------------------------------------------------
+Using the method:
+
+        allocateInstance()
+
+you can create an instance of a class without
+invoking it's constructor code, initialization code,
+various JVM security checks and all other low
+level things.  Even if class has private constructor,
+Even if a class has a private constructor, then also
+you use this method to create a new instance:
+
+Alert!!! Alert!!!: This is a real nightmare for Singleton
+lovers....for obvious reasons....
+
+
+Example of using sun.misc.Unsafe to instantiate 
+an instance of the class 
+---------------------------------------------------------
+public class UnsafeDemo{
+        public static void main(String[] args)throws NoSuchFieldException IllegalArgumentException,IllegalAccessException, InstantiationException 
+    {
+        Field f = Unsafe.class.getDeclaredField("theUnsafe");
+                        
         }
 }
-
-
-
-This method first looks up the calling Class form the current
-thread's method stack.  Tis lookup is implemented by another
-internal class named:
-
-        sun.reflection.Reflection
-
-which is basically browsing down the given 
-number of call stack frames and then returns this method's
-defining class.
-
-While browsing down the the stack...the first
-found class(index 0) will 
-obviously be the Reflection class itself, and
-the second(index 1) class will be the Unsafe
-class such that index 2 will hold your application class that 
-was calling:
-
-        Unsafe#getUnsafe()
---------------------------------------
-        Stack   
-**************************************
-0       sun.reflect.Reflection.class
-**************************************
-1       Unsafe.class
-************************************** 
-2       MyApp.class
-**************************************  
-
-
-
-This is looked-up class is then checked for its
-ClassLoader where a null reference is used
-to represent the bootstrap class loader
-on a Hotspot virtual machine(This is documented
-in Class#getClassLoader() where it says that
-:some implementations may use null to represent the
-bootstrap class loader").     
-
-This security check is poorly designed and shold
-be seen as a warning against the singleton anti-pattern.
-
-
-From the Unsafe class's source code, you can learn
-that the singleton instance is stored in a private static field 
-called the "theUnsafe"
-
-public Unsafe{
-        private static Unsafe theUnsafe;
-
-}
-
-The above is true for HotSpot, unfortunately, other
-jvms sometimes use other names for this field.
-
-Android's dalvik(and possibly the AOTC?)  Unsafe class is
-for example storing its singleton instance in a field
-called :
-
-        THE_ONE
-
-Which makes it hard to provide a "compatible" way
-of recieving the instance.  However, since we already left the save
-territory of compatibility byu using the
-Unsafe class, we should not worry about this more
-than we should worry about using the class at all
-For getting hold of the singleton instance, you simply
-read the singleton field's value:
-
-Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-theUnsafe .setAccessible(true)
-Unsafe unsafe = (Unsafe) theUnsafe.get(null);
-
-        -or-
-
-Constructor<Unsafe> unsafeConstructor = Unsafe.class.getDeclaredConstruct();
-unsafeConstructor.setAccessable(true);
-Unsafe unsafe = unsafeConstructor.newInstance();
-
-Side note Class Constructor<T>
-================================================
-java.lang.Object
-        java.lang.reflect.AccessibleObject
-                java.lang.reflect.Executable
-                        java.lang.reflect.Constructor<T>
-
-Type Parameters:
-------------------------------
-T = the class in which the constructor is declared
-
-All Implemented Interfaces:
-------------------------------
-AnnotatedElement
-GenericDeclaration, Member
-
-
-
-public final class Constructor<T> extends Executable
-=====================================================
-Constructor providesinformation about, and acess to,
-a single constructor for a class.
-
-Constructor permits widening conversions to occur
-when matching the atual parameters to
-
-        newInstance()
-
-with the underlying constructor's formal parameters, but throws
-an IllegalArgumentException if a narrowing conversion would 
-occur.
-
-
-Create an Instance of a Class without calling a
-constructor:
-================================================
-The first time I made use of the Unsafe classwas 
-for creating an instane of a class without calling any of the class's constructors.  I needed to proxy an
-entire class which only had a rather noicy constructor, but
-I only wanted to delegate all method invocations to 
-a real instance whicfh I did however not
-know at the  time of construction.  Creating a subclass
-was easy and if the class had ben represneted by an interface, creating a proxy would have been a straightforward
-task.  With the expensive constructor, I was however
-stuck.
-
-By using the Unsafe class, I was hoever able to work my
-way around it.
-Conscider a class with an artificially expensive constructor:
-
-
-class ClassWithExpensiveConstructor{
-        private final int value;
-        private ClassWithExpensiveConstructor(){
-                value = doExpensiveLookup();
-        }
-        private int doExpensiveLookup(){
-                try{
-                        Thread.sleep(2000);
-                }catch(InterruptedException e){
-                        e.printStackTrace();
-                }
-                return 1;
-        }
-        public int getValue(){
-                return value ;
-        }
-
-}
-        
-Using the Unsafe, we can create an instance
-of ClassWithExpensiveConstructor(or any of its subclasses)
-without having to invoke the above consturctor, simply
-by allocating an instance directory on the heap:
-
-
-@Test
-pubic void testObjectCreation() throws Exception{
-        ClassWithExpensiveContstructor instance = 
-        (ClassWithExpensiveConstructor)unsafe.allocateInstance(ClassWithExpensiveConstructor.class);
-assertEquals(0,instance.getValue());
-}
-
-Not that the final field reamined unitialized by teh constructor but
-is set with its type's default value.
