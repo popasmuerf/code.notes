@@ -32,7 +32,39 @@ here are a few attributes of java.lang.Object.clone():
         * Throws CloneNotSupportedException
         * signature:
                 protected Object clone() throws CloneNotSupportedException
+        * Objects targeted for cloning must have
+          classes that implement interface:
+                Clonable
 
+Example Code of Shallow Copy(Default):
+---------------------------------------------------------
+class A implements Cloneable{
+        int i ;
+        int j;
+        public A(int i, intj){
+                this.i = i ;
+                this.j = j ;
+        }
+        @override
+        protected Object clone() throws CloneNotSupportedException{
+                return super.clone() ;
+        }
+
+}
+
+public class CloneMethodDemo{
+        public static void method(String[] args){
+              A a1 = new A(10,20) ;
+              A a2 = null ;  
+        }
+        try{
+                a2 = (A) a2.clone() ;
+        }catch(CloneNotSupportedException e){
+                System.out.println("Object is not clone-able");
+        }
+        System.out.println(a2.i);
+        System.out.println(a2.j) ;
+}
 
 
 more info pertaining to the method:
@@ -43,11 +75,47 @@ more info pertaining to the method:
 
 
 is availiable here :
+--------------------------------------------------------
+javaconceptoftheday.com/clone-method-java-lang-object-class/        
 
-         
+
+What exactly is Shallow Copy :
+--------------------------------------------------------
+If a cloned object and original objects are not
+100% disjoint, then it is called shallow copy.
+In a a shallow copy operation, any changes made to the
+clone will be reflected in the original or
+vice-versa.  This happens when an object has
+reference variables as fields.
+
+For example, in the below program Class B has reference
+variable 'a' of type class A.  This will be pointing
+to an object of type class A.  When you create a clone
+'b2'  of object 'b1' of type Class B, taht clonw will
+also have this reference variable pointing
+to the same object.  Any changes you make to this object thorugh
+clone will be refelcted in the original object(shallow)
+
+What exactly is a Deep Copy:
+--------------------------------------------------------
+If a cloned object and original objects are 100% disjoint,
+then it is called deep copy.   In deep
+copy operation, any changes made to a cloned object will
+not be reflected in the original object or vice-versa.
+The Deep copy of an object will have an exact copy of
+all the fields of the original object, just as a shallow
+copy, But in addition, if the original object has any references
+to other objects as fields, then the copy of those objects
+are also created by calling the clone() method on them.
+This means the cloned object and the original object will
+be 100% disjoint.....meaning they have absolutely nothing in
+common asside from being of the same type...
 
 
-Clowning using sun.misc.Unsafe
+
+
+
+Cloning using sun.misc.Unsafe
 ===========================================
 If you try to create an instance of Unsafe
 class, you will not be allowed
