@@ -6,10 +6,48 @@ De Vermis Mysteriis
 =============================================================
 sun.misc.Unsafe
 
+First...what is Cloning in Java ?
+===============================================
+Cloning is a process of creating an exact copy of
+an existing object memory.  In java, the method:
+
+        java.lang.Object.clone() ;
+
+is used in the cloning process.  This method
+creates an exact copy of an object on which it is
+called via field-by-field assignment and returns
+the reference of that object.  Not allthe  objects
+in java are eligible for the cloning process.  the objects
+which implement Clonable interface are only
+eligible for the cloning process. The Cloneable interface
+is a mareker interface which is used to 
+provide the marker to the cloning process
+
+here are a few attributes of java.lang.Object.clone():
+-------------------------------------------------------
+        * it's non-static
+        * it's public
+        * used to clone or copy 
+          a given object
+        * Throws CloneNotSupportedException
+        * signature:
+                protected Object clone() throws CloneNotSupportedException
 
 
 
-Instantiation of sun.misc.Unsafe
+more info pertaining to the method:
+
+        java.lang.Object.clone()
+
+
+
+
+is availiable here :
+
+         
+
+
+Clowning using sun.misc.Unsafe
 ===========================================
 If you try to create an instance of Unsafe
 class, you will not be allowed

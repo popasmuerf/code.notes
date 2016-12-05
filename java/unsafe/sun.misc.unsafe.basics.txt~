@@ -76,13 +76,6 @@ public class UnsafeDemo{
         Unsafe unsafe = (Unsafe) f.get(null) ;
         Player p = (Player) unsafe.allocateInstance(Player.class) ;
         System.out.println(p.getAge());
-        System.out.println(new Player().getAge());          
+        System.out.println(new Plaer().getAge());          
         }
 }
-
-
-
-
-
-
-
