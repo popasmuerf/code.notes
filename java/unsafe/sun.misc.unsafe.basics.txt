@@ -57,9 +57,9 @@ Example of using sun.misc.Unsafe to instantiate
 an instance of the class 
 ---------------------------------------------------------
 public class UnsafeDemo{
-        public static void main(String[] args)throws NoSuchFieldException IllegalArgumentException,IllegalAccessException, InstantiationException 
-    {
+        public static void main(String[] args)throws NoSuchFieldException eIllegalArgumentException,IllegalAccessException, InstantiationException{
         Field f = Unsafe.class.getDeclaredField("theUnsafe");
-                        
+        f.setAccessisble(true);
+        Unsafe unsafe = (Unsafe) f.ge(null) ;                
         }
 }
