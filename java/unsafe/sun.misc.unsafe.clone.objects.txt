@@ -1,4 +1,5 @@
 http://howtodoinjava.com/core-java/related-concepts/usage-of-class-sun-misc-unsafe/
+http://howtodoinjava.com/core-java/related-concepts/usage-of-class-sun-misc-unsafe/
 http://mishadoff.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/
 Basics of Java's version of 
 The Darkhold, The Shining Trapezohedron, The Book of Eternal Darkness...
@@ -242,7 +243,28 @@ Example code for unsafe shallow copy
 ===================================================
 static Object shallowCopy(Object obj){
         long size = sizeOf(obj) ;
-        long start = toAddress
+        long start = toAddress(obj) ;
+        long address = getUnsafe().allocateMemory(size) ;
+        getUnsafe().copyMemory(start,address,size) ;
+        return fromAddress(address) ;
+}
+
+Example code get address of object in memory
+=====================================================
+static long toAddress(Object obj){
+        Object[] array = new Object[]{obj} ;
+        long baseOffset = getUnsafe().arrayBaseOffset(Object[].class);
+
+
+Example code get object from a location in memory
+========================================================
+static Object fromAddress(long address) {
+    Object[] array = new Object[] {null};
+    long baseOffset = getUnsafe().arrayBaseOffset(Object[].class);
+    getUnsafe().putLong(array, baseOffset, address);
+    return array[0];
+}
+
 }
 
 
