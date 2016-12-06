@@ -1,5 +1,5 @@
 http://howtodoinjava.com/core-java/related-concepts/usage-of-class-sun-misc-unsafe/
-
+http://mishadoff.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/
 Basics of Java's version of 
 The Darkhold, The Shining Trapezohedron, The Book of Eternal Darkness...
 De Vermis Mysteriis
@@ -155,10 +155,6 @@ public class DeepCoplyInJava{
         }
 }
 
-
-
-
-
 Cloning using sun.misc.Unsafe
 ===========================================
 If you try to create an instance of Unsafe
@@ -231,8 +227,23 @@ public class UnsafeDemo{
 }
 
 
+Shallow clone using direct memory access
+===============================================
+How it's done ?
+-------------------------------------------
+Instead of bothering with implementing Cloneable
+and encapsulating the call to java.lang.Object.clone(),
 
+Having an implementation of calculating shallow object size, we can imply add function that copy objects.  Standard
+solution need modify your code with Cloneable, or you 
+can implement custom copy function in your object, hoewever it won't be multipurpose functionalit.
 
+Example code for unsafe shallow copy
+===================================================
+static Object shallowCopy(Object obj){
+        long size = sizeOf(obj) ;
+        long start = toAddress
+}
 
 
 
