@@ -1,0 +1,34 @@
+org.springframework.web.client
+
+Class RestTemplate
+
+java.lang.Object
+        |
+        org.springframework.http.client.support.HttpAccessor
+                |
+                org.springframework.http.client.support.InterceptingHttpAccessor
+                        |
+                        org.springframework.web.client.RestTemplate
+
+
+
+Spring's central class for synchronous client-side HTTP access.  It simplifies communication with HTTP servers,
+and enforces RESTful principles.  It handles HTTP
+connections, leaving application code to provde URLs(with
+possible template variables) and extract results
+
+
+Note: by default the RestTemplate relieds on standard JDK facilities to establish HTTP connections.  You can switch to use a different HTTP library such as :
+
+        *      Apache HttpComponents
+        *      Netty
+        *       OkHttp
+
+via the spring property:
+
+        HttpAccessor.setRequestFactory(org.springframework.http.client.ClientHttpRequestFactory)
+
+
+
+        
+

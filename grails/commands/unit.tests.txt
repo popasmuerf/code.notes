@@ -1,0 +1,15 @@
+Sponsor
+Task
+TekEvent
+TekMessage
+TekUser
+
+
+
+
+Unit Testing Domains
+==========================
+create unit tests domains
+--------------------------
+> grails create-unit-test com.tekdays.TekEvent
+> grails test-app unit: TekEvent

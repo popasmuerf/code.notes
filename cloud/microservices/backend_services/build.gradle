@@ -1,0 +1,26 @@
+/**
+Directory structure
+---------------------------
+/mywebapp
+|- /utils
+     |- build.gradle
+     |- (Java Sources and files)
+|- /web
+     |- build.gradle
+     |- (Java Sources , JSPs and files)
+|- settings.gradle
+|- build.gradle
+
+*/
+
+
+apply plugin: "war"
+apply plugin: "jetty"
+dependencies {
+        compile project("::org/services/rest/utils")
+        compile "javax.servlet:servlet-api:2.5"
+}
+
+httpPort = 8080
+stopPort = 9080
+stopKey = "stopKey"
