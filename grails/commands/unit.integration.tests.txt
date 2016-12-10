@@ -1,0 +1,35 @@
+Sponsor
+Task
+TekEvent
+TekMessage
+TekUser
+
+
+Integration Testing
+=====================================
+
+
+
+Integration Testing  Commands
+======================================
+An integration test is a Spock specification
+or JUnit test case, just like a Grails unit
+test.  The difference is in what is available to
+the test runtime.  Unit tests are meant to test a unit(class)
+in isolation...which does not test dynamic code during
+runtime.
+
+Integreation tests are meant to test multiple classes working together.  When running integration tests, Grails
+adds all of the dynamic behavior that we like to take
+advantage of in Grails.
+
+For example...in TekDays.....the process of adding
+default tasks to an event involves the instantiation of
+the following classes:
+--------------------------------------------------------
+        TaskService
+        Task
+        TekEvent
+--------------------------
+> grails create-integration-test com.tekdays.TaskService
+> grails test-app unit: TekEvent

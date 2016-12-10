@@ -1,0 +1,117 @@
+quick notes
+========================
+
+@Grab(grails_repo)
+-----------------------
+Grabs  jarred up repos we need...
+
+
+Javascript libs
+------------------------
+*       webjars
+        ------------------
+        wraps up libs like jquery
+        into jars and thus make it easy
+        to grab from boot using Groovy's
+        @Grab(js_repo)
+
+*       bower.io
+        -------------------
+        Is industry standard for js repos
+        for the clown-ass js world.
+        Don't know how to integrate 
+
+
+Static web pages may be be served from boot apps
+from teh following paths:
+
+*       /META-INF/resources
+*       /resources/
+*       /static/
+*       /public/
+
+
+bower.io
+===========================================================
+WebJars ins't the only opton when it comes to adding
+JavaScript to our app.  More sophisticated UI developers
+might ue Bower(http://bower.io), a popular JavaScript library
+management tool.  WebJars are useful for Java developers, but
+not every library has been bundled as a 
+WebJar.  There is also a huge community of frontend developers more familiar with Bower and NodeJS that will
+probably prefere using their standard tool chain to do
+their jobs.
+
+Crafting a Bower based app with Spring Boot
+----------------------------------------------------------
+We can craft a Bowser-based app with Spring Boot, we first
+need to craft the file:
+
+        .bowerrc
+
+in the same folder we plan to create our Spring Boot CLI application.  Let's pic public/ as the folder of choice
+for JavaScript modules and put it in this file, as shown
+int the following code:
+
+// .bowerrc
+{
+        "direcotry":"public/"
+
+}
+
+Boot can set this up for us...
+=======================================
+> bower init
+{
+  name: 'app_with_bower',
+  authors: [
+    'Mike Brown'
+  ],
+  description: 'Learning Spring Boot - bower sample',
+  main: '',
+  license: 'MIT',
+  homepage: 'http://thirdplant.io',
+  private: true,
+  ignore: [
+    '**/.*',
+    'node_modules',
+    'bower_components',
+    'test',
+    'tests',
+    'public/'
+  ],
+  dependencies: {
+    jquery: '^3.1.1'
+  }
+}
+
+
+using Bower to install stuff
+========================================
+> bower install jquery --save
+bower not-cached    https://github.com/jquery/jquery-dist.git#*
+bower resolve       https://github.com/jquery/jquery-dist.git#*
+bower download      https://github.com/jquery/jquery-dist/archive/3.1.1.tar.gz
+bower extract       jquery#* archive.tar.gz
+bower resolved      https://github.com/jquery/jquery-dist.git#3.1.1
+bower install       jquery#3.1.1
+
+
+Bower's configuration file takes the form of a JSOn file
+=======================================================
+public
+|
+|-------jquery
+|-------MIT-LICENSE.txt
+|-------bower.json
+|-------dist
+        |
+        |------jquery.js
+        |------jquery.min.js
+
+
+
+
+
+
+        
