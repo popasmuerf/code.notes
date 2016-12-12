@@ -1,5 +1,84 @@
-quick notes
-========================
+Our current mission if we choose to accept it...
+======================================================
+1.Using http://start.spring.io to create a 
+bare bones Spring Boot projcet with Gradle support
+
+2.Creating a simple app that looks for open issues in
+multiple GitHub repositories
+
+3.Supplying GitHub credentials using Boot's
+uber easy property support
+
+4.Learning how Boot finds templates
+
+5. Adding mobile support using Spring Mobile and jQuery Mobile
+
+6.Bundling up the application as a runnable JAR and deployingit to Cloud Foundry
+
+
+7.Adding productin-redy support with Actuator and then 
+writing a script to poll for usage metrics...
+
+
+
+1. Creating an empty project with start.spring.io
+========================================================
+We enter some information, pick a set of desired options,
+and then download either a build file or a zipped-up
+project:
+
+issue-manager
+├── build.gradle
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── learning
+    │   │       └── spring
+    │   │           └── boot
+    │   │               └── IssueManagerApplication.java
+    │   └── resources
+    │       ├── application.properties
+    │       ├── static
+    │       └── templates
+    └── test
+        └── java
+            └── learning
+                └── spring
+                    └── boot
+                        └── IssueManagerApplicationTests.java
+
+
+
+Spring Boot starters
+=================================================
+Packages plugged in by start.spring.io are known
+as "Spring Boot starters".  They are vitual packages
+that deployed to Maven centeral.  Their job is to
+pull in other dependencies while containing no code
+of their own.
+
+For example:
+
+        spring-boot-starter-thymeleaf
+
+pulls in the following dependencies:
+
+        spring-boot-starter
+        spring-boot-starter-web
+        spring-core
+        thymeleaf-spring4
+        thymeleaf-layout-dialect
+
+
+
+
+
 
 @Grab(grails_repo)
 -----------------------
