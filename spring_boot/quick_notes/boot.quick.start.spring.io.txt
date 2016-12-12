@@ -75,185 +75,285 @@ pulls in the following dependencies:
         thymeleaf-spring4
         thymeleaf-layout-dialect
 
+Basic code layout of a Spring Boot application 
+=================================================
+//------------code----------//
+import org.springframework.boot.SpringApplication ;
+import org.springframework.boot.autoconfnigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 
-
-
-
-
-@Grab(grails_repo)
------------------------
-Grabs  jarred up repos we need...
-
-
-Javascript libs
-------------------------
-*       webjars
-        ------------------
-        wraps up libs like jquery
-        into jars and thus make it easy
-        to grab from boot using Groovy's
-        @Grab(js_repo)
-
-*       bower.io
-        -------------------
-        Is industry standard for js repos
-        for the clown-ass js world.
-        Don't know how to integrate 
-
-
-Static web pages may be be served from boot apps
-from teh following paths:
-
-*       /META-INF/resources
-*       /resources/
-*       /static/
-*       /public/
-
-
-bower.io
-===========================================================
-WebJars ins't the only opton when it comes to adding
-JavaScript to our app.  More sophisticated UI developers
-might ue Bower(http://bower.io), a popular JavaScript library
-management tool.  WebJars are useful for Java developers, but
-not every library has been bundled as a 
-WebJar.  There is also a huge community of frontend developers more familiar with Bower and NodeJS that will
-probably prefere using their standard tool chain to do
-their jobs.
-
-Crafting a Bower based app with Spring Boot
-----------------------------------------------------------
-We can craft a Bowser-based app with Spring Boot, we first
-need to craft the file:
-
-        .bowerrc
-
-in the same folder we plan to create our Spring Boot CLI application.  Let's pic public/ as the folder of choice
-for JavaScript modules and put it in this file, as shown
-int the following code:
-
-// .bowerrc
-{
-        "direcotry":"public/"
-
-}
-
-Boot can set this up for us...
-=======================================
-> bower init
-{
-  name: 'app_with_bower',
-  authors: [
-    'Mike Brown'
-  ],
-  description: 'Learning Spring Boot - bower sample',
-  main: '',
-  license: 'MIT',
-  homepage: 'http://thirdplant.io',
-  private: true,
-  ignore: [
-    '**/.*',
-    'node_modules',
-    'bower_components',
-    'test',
-    'tests',
-    'public/'
-  ],
-  dependencies: {
-    jquery: '^3.1.1'
-  }
-}
-
-
-using Bower to install stuff
-========================================
-> bower install jquery --save
-bower not-cached    https://github.com/jquery/jquery-dist.git#*
-bower resolve       https://github.com/jquery/jquery-dist.git#*
-bower download      https://github.com/jquery/jquery-dist/archive/3.1.1.tar.gz
-bower extract       jquery#* archive.tar.gz
-bower resolved      https://github.com/jquery/jquery-dist.git#3.1.1
-bower install       jquery#3.1.1
-
-
-Bower's configuration file takes the form of a JSOn file
-=======================================================
-public
-|
-|-------jquery
-|-------MIT-LICENSE.txt
-|-------bower.json
-|-------dist
-        |
-        |------jquery.js
-        |------jquery.min.js
-
-
-
-What about an app that is all frontend with no backend ?
-=========================================================
-This is possible in this age of RESTful backends...where
-our persistence layer is physically remote and whom's
-data is retrieved using AJAX.
-
-
-
-
-
-Understanding CORS
-https://spring.io/understanding/CORS
-==========================================
-
-
-Boot and Ops stuff
-==========================================
-        *Spring's actuator module
-        *CRaSH remote shell support
-
-^^^^These two modules provide some slick,Ops-oriented features that are incredibly valuable in a production
-enviroment.
-
-//Sample code in Groovy
-
-@Grab("spring-boot-actuator")
-@Grab("spring-boot-starter-remote-shell")
-@Grab("org.webjars:jquery:2.1.1")
-@Grab("thymeleaf-spring4")
-@Controller
-class OpsReadApp{
-        @RequestMapping("/")
-        def home(@RequestParam(value="name",defaultValue="World",String n){
-        new ModelAndView("modern").addObject("name",n)
+@ComponentScan
+@EnableAutoconfiguration
+public class Application{
+        public static void main(Strings[] args){
+                SpringApplication.run(Application.class,args);
         }
-
 }
 
 
-Actuator endpoints (returns json)
+^^^^Breakdown of code
 ------------------------------------------------
-/autoconfig
-/beans
-/configprops
-/dump
-/env
-/health
-/info
-/metrics
-/mappings
-/trace
+
+         *       @ComponentScan
+                ---------------------------
+                Tells Spring to look for classess
+                with @Component,@Configuration,
+                @Repository,@Service, and @Controller
+                and wire them into the app context
+                as beans.  By default, it scans
+                for classes found underneath the package
+                where the annotation is declared
+
+         *       @Component
+                ---------------------------
+                @Component inidcates that annotated
+                class is a "component".  Such classes
+                are considered as candidates for
+                auto-detection.
 
 
-Efficiently consuming and processing  Actuator
-endpoint information
--------------------------------------------------
-http://projects.spring.io/spring-xd/
+         *       @Service
+                ---------------------------
+                @Service annotates a class that Spring
+                will pick up and added to the app context
+                via @ComponentScan.  It has hardcoded
+                with a GitHub passcode and a hardcoded
+                organization name, and will fetch 
+                issues from spring-boot and
+                spring-boot-issues.  This service also has
+                a GitHubTemplate.
+                public @interface Service
+                inidicates that an annotated class is a
+                "Service", originally defined by
+                Domain Driven Design(Evans, 2003) as
+                "an operation offered as an interface
+                that stands alone in the model, witn no 
+                encapsulated stated
+
+                This annotation may also indicate that a 
+                class is a "Business Service Facade"
+                (Core J2EE patterns sense), or something
+                similar.  This annotation is a 
+                general-purpose stereotype and individual
+                teams may narrow their semantics and use
+                as appropriate.
+
+                This annotation serves as a specialization
+                of @Component, allowing for implementation
+                classes to be autodetected through
+                classpath scanning.
+
+        *       @EnableAutoConfiguration
+                ---------------------------
+                This turns on Boot's auto-configuration
+                behavior.  Tells spring to turn on all
+                auto-configuration options.  Each of
+                these options looks at various aspects
+                of the application and then makes
+                decisions on adding extra beans.  It
+                makes decisions mostly based on the classpat
+                and settings found inside:
+                
+                application.properties
+            
+                For example, if Boot spots
+                JmsTemplate.class on the class path,
+                then Boot will create an instance of
+                JmsTemplate and make it available
+                for injections to other
+                Spring beans.  The developer must
+                provided a ConnectionFactory bean.
+
+          *       @Autowired
+                ---------------------------
+                Marks a constructor, field, setter
+                method or config method as to be
+                autowired by Spring's dependency
+                injection facilities.
+                Only one constructor or any given
+                bean class may carry this annnotation
+                Fields are injected right after 
+                construction of a bean, before any
+                config methods are invoked.  
+                Such a config field does not have
+                to be public
+
+        *       public static void main()
+                -----------------------------
+                This runs Boot's SpringApplication.run()
+                method as a convient way to launch
+                the app. SpringApplication.run() accepts
+                as parameters a class and command line 
+                arguments.
+
+        *       public interface Model
+                -----------------------------
+                Java-5 specific interface that defines a
+                holder for model attributes.  Primarily
+                designed for adding attributes to the
+                model.  Allows for accessing the overall
+                model as java.util.Map
+
+Note:
+=========================================================
+Constructor injection is currently the recommened way
+to wire Spring beans.  It supports immutable bean
+configurations in a better manner and avoids beans getting
+paritally configured at any particular time
+
+2. Adding Spring Social GitHub
+===================================================
+Spring Social GitHub connects our spring application
+with GitHub's REST API
+
+*Naviate here:  
+        http://projects.spring.io/spring-social-github
+
+*Choose build version
+
+*Choose your build tool(Maven or Gradle) and copy the build
+configuration:
+<!--    Maven build Info -->
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.social</groupId>
+        <artifactId>spring-social-github</artifactId>
+        <version>1.0.0.M4</version>
+    </dependency>
+</dependencies><repositories>
+    <repository>
+        <id>spring-milestones</id>
+        <name>Spring Milestones</name>
+        <url>https://repo.spring.io/libs-milestone</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
 
 
-We should take care not to tax our app too much
-while we are polling for actuator data...
+
+//----------------Gradle build Info----------------
+dependencies {
+    compile 'org.springframework.social:spring-social-github:1.0.0.M4'
+}repositories {
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+}
+ 
+
+
+* This dependency will load Spring Social GitHub.  Since it's not a general release, we need to add this to the 
+repositories section:
+
+repositories{
+        mavenCenteral()
+        maven { url
+                 url 'https://repo.spring.io/libs-milestone'
+        }
+}
+
+
+Digging into gitHub issues
+======================================================
+Let's continue working on our simple app that will fetch
+GitHub issues from multiple repositories. To fetch
+GitHub issues, we need to establish a domain object
+
+//---------------Code Issue Wrapper class----------------//
+
+package learningspringboot;
+
+import org.springframework.social.github.api.GitHubIssue ;
+
+public class Issue{
+        private String repo ;
+        private GitHubIssue githubIssue ;
+        public Issue(String repo, GitHubIssue gitHubIssue){
+                this.repo = repo ;
+                this.gitHubIssue = gitHubIssue ;
+        }
+        public String getRepo(){
+                return repo ;
+        }
+        public GitHubIssue getGithubIssue(){
+                return githubIssue ;
+        }
+}
+
+
+//---------------Code Service to retriever issues----------//
+
+package learningspringboot ;
+
+import java.util.ArrayList; 
+import java.util.List ;
+
+import org.springframework.social.github.api.GitHubIssue ;
+import org.springframework.social.github.api.im.GitHubTemplate ;
+import org.springframework.stereotype.Service;
+
+@Service
+public class IssueManager{
+        String githubToken = "936f3eb722d11e51195039e381acee73dc9445d8";
+        String org = "spring-projects" ;
+        String[] repos = new String[]{"spring-boot","spring-boot-issues"};
+        GitHubTemplate gitHubTemplate = new GitHubTemplate(githubToken) ;
+        public List<Issue> findOpenIssues(){
+                List<Issue> openIssues = new ArrayList
+                for(String repo : repos){
+                        final List<GitHubIssue> issues = gitHubTemplate.repoOperations().getIssues(org,repo);
+                for(GitHubIssue issue : issues){
+                        if(issue.getState().equals("open")){
+                                openIssues.add(new Issue(repo,issue));
+                        }
+                }
+                
+                
+                }
+                return openIssues ;
+        }
+        
+}
+
+
+//---------------Code Issue Controller issues----------//
+package learning springboot ;
+import  org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframwwork.ui.Model ;
+import org.springframework.web.bind.annotation.RequestMapping;
+@Controller
+public class IssueController{
+        private IssueManager issueManager ;
+        @Autowired
+        public IssueController(IssueManager issueManager){
+                this.issueManager  = issueManager ;
+        }
+        @RequestMapping(value="/")
+        public String index(Model model){
+                model.addAttribute("issues",issueManager.findOpenIssues());
+                return index ;
+        }
+}
 
 
 
-CRaSH (http://www.crashub.org/1.3/reference.html)
-============================================
-> ssh -p 2000 user@localhost
+Creating a GitHub access token
+===================================================
+Where did we geth this cryptic githubToken value?
+
+Th is an oauth access code that is required to plug in
+and talk to GitHub.  To create one of your own, you need
+to create an account at https://github.com.
+
+1. Login into GitHub
+2. In your account settings/control panel...Scroll down to  "Developer options" and then click "Personal access tokens"
+3. Click Generate new token
+4. Enter a description such as "Learning Spring Boot"
+accept the default access controls, and click on
+Gernerate token
+
+
+
