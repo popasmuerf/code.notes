@@ -1,23 +1,47 @@
 Our current mission if we choose to accept it...
 ======================================================
-1.Using http://start.spring.io to create a 
-bare bones Spring Boot projcet with Gradle support
+public class GamePanel extends JPanel implements Runnable{
+        private static final int PWIDTH = 500 ;
+        private static final int PHEIGHT = 400 ;
 
-2.Creating a simple app that looks for open issues in
-multiple GitHub repositories
+        private Thread animator ;
+        private Thread boolean running = false ;
+        private boolean gameOver = false ;
+        public GamePanel(){
+                setBackground(Color.white) ;
+                setPreferredSize(new Dimension(PWIDTH,PHEIGHT) ;
+        }
+        public void addNotify(){
+                super.addNotify() ;
+                startGame() ;
+        }
+        private void startGame(){
+                if(!animator || !running){
+                        animator = new Thread(this) ;
+                        animator.start() ;
+                }
+        }
+        public void stopGame(){
+                running = false ;
+        }
+        public void run(){
+                running =  true ;
+                while(running){
+                        gameUpdate() ;
+                        gameRender();
+                        repaint();
+                        try{
+                                Thread.sleep(20);
+                        }catch(InterruptedException ex){}
+                }
+                System.exit(0);
+        }
+        private void gameUpdate(){
+                //....
+        }
+}
 
-3.Supplying GitHub credentials using Boot's
-uber easy property support
 
-4.Learning how Boot finds templates
-
-5. Adding mobile support using Spring Mobile and jQuery Mobile
-
-6.Bundling up the application as a runnable JAR and deployingit to Cloud Foundry
-
-
-7.Adding productin-redy support with Actuator and then 
-writing a script to poll for usage metrics...
 
 
 
@@ -109,26 +133,8 @@ public class Application{
                 @Component inidcates that annotated
                 class is a "component".  Such classes
                 are considered as candidates for
-                auto-detection.  Usually used with
-                simple beans
+                auto-detection.
 
-
-         *       @Controller
-                ---------------------------
-                @Controller inidcates that this
-                controller will return a view instead
-                of raw output(like @RestController)
-
-
-         *       @Repository
-                ---------------------------
-                @Repository inidcates that that the
-                target class is to be designated
-                an DAO class.  Indicates that an
-                annotated class is a "Repository",
-                originally defind by Domain-Driven
-                Design(Evans,2003).  A specialization
-                of @Component
 
          *       @Service
                 ---------------------------
@@ -195,24 +201,6 @@ public class Application{
                 config methods are invoked.  
                 Such a config field does not have
                 to be public
-
-                The @Autowired annotation tells Spring
-                where an injection needs to occur.
-
-                If used targeting a method, then it
-                understands that a bean needs to 
-                be injected:
-
-                @Autowired
-                setMovieFinder(){}
-
-                //Looks for MovieFinder Beans
-                //and then injects them into method
-
-        *       @Qualifier
-                -----------------------------
-                
-        
 
         *       public static void main()
                 -----------------------------

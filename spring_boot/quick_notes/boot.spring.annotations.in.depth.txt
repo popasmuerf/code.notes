@@ -1,5 +1,19 @@
-Our current mission if we choose to accept it...
+@Qualifier
 ======================================================
+There may be situation when you create more than one
+bean of the same type and want to wire only
+one of them with a property, in such case you
+can use @Qualifier annotation along
+ @Autowired to remove the confusion by specifying
+which exact bean will be wired.
+
+ 
+
+@Qualifier
+======================================================
+
+
+
 1.Using http://start.spring.io to create a 
 bare bones Spring Boot projcet with Gradle support
 

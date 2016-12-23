@@ -1,23 +1,109 @@
-Our current mission if we choose to accept it...
+@Qualifier
 ======================================================
-1.Using http://start.spring.io to create a 
-bare bones Spring Boot projcet with Gradle support
+There may be situation when you create more than one
+bean of the same type and want to wire only
+one of them with a property, in such case you
+can use @Qualifier annotation along
+ @Autowired to remove the confusion by specifying
+which exact bean will be wired.
 
-2.Creating a simple app that looks for open issues in
-multiple GitHub repositories
+ 
 
-3.Supplying GitHub credentials using Boot's
-uber easy property support
+///------------Beans-------------///
+======================================================
 
-4.Learning how Boot finds templates
+public class Student{
+        private Integer age ;
+        private String name ;
+        public void setAge(Integer age){
+                this.age = age ;
+        }
+        public Integer getAge(){
+                return age ;
+        }
+        public void setName(String name){
+                this.name = name ;
+        }
+        public String getName(){
+                return name ;
+        }
+}
 
-5. Adding mobile support using Spring Mobile and jQuery Mobile
+///-------------Profile-----------///
+======================================================
+package com.tutorialspoint;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+public class Profile{
+        @Autowired
+        @Qualifier("student1")
+        private Student student ;
+        public Profile(){
+                System.out.println("Insided Profile constructor.");
+        }
+        public Profile(){
+                System.out.println("Inside Profile constructor." );
+        }
+        public void printAge() {
+                System.out.println("Age : " + student.getAge() );
+        }
+        public void printName() {
+                System.out.println("Name : " + student.getName() );
+   }
+}
 
-6.Bundling up the application as a runnable JAR and deployingit to Cloud Foundry
+///-------------Main-----------///
+======================================================
+package com.tutorialspoint ;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainApp{
+        public static void main(String[] args){
+                ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+                Profile profile = (Profile) context.getBean("profile") ;
+                profile.printAge() ;
+                profile.printName() ;
+        }
+
+}
+
+///=====
+
+///------------Beans-------///
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   <context:annotation-config/>
+
+   <!-- Definition for profile bean -->
+   <bean id="profile" class="com.tutorialspoint.Profile">
+   </bean>
+
+   <!-- Definition for student1 bean -->
+   <bean id="student1" class="com.tutorialspoint.Student">
+      <property name="name"  value="Zara" />
+      <property name="age"  value="11"/>
+   </bean>
+
+   <!-- Definition for student2 bean -->
+   <bean id="student2" class="com.tutorialspoint.Student">
+      <property name="name"  value="Nuha" />
+      <property name="age"  value="2"/>
+   </bean>
+
+</beans>
 
 
-7.Adding productin-redy support with Actuator and then 
-writing a script to poll for usage metrics...
+
+
 
 
 

@@ -1,0 +1,65 @@
+Grails Layout Templates:
+http://grails.asia/grails-tutorial-for-beginners-layout-templates/
+===============================================
+When coding screens, there are many elements that are common
+that are common and repetitive.  Usually the header,
+footer , have your GSP page contain only the specific
+business content, and have the reapting
+content re-factored outside.  Grails supports layout
+templates for this purpose.
+
+A template is a GSP page located in a specal folder called
+"layouts"(Grails 2 at least)
+
+grails-app
+        |
+        views
+            |
+            layouts
+                  |
+                  main.gsp
+                  test.gsp
+                  |
+                  sample
+                        |
+                        error.gsp
+                        index.gsp
+
+
+Sample GSP template: test.gsp
+====================================================
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><g:layoutTitle default="Grails"/></title>
+		<style>
+			#header {background-color:#ffe0e0;text-align: center;}
+			#footer {background-color:#e0e0ff;text-align: center;}
+		</style>
+		<g:layoutHead/>
+	</head>
+	<body>
+		<div id="header">HEADER</div>
+		<g:layoutBody/>
+		<div id="footer">FOOTER</div>
+	</body>
+</html>
+
+
+
+Using the our test.gsp template
+======================================================
+To use it, we just specify the layout meta tag in tyour specific GSP for example:
+
+<!DOCTYPE html>
+<html>
+        <head>
+                <meta name="layout" content="test"/>
+                <title>I am a test page</title>
+                <link rel="stylesheet" href="$resource(dir:'css', file: 'main.css')}" type="text/css">
+        </head>
+        <body>
+                <p>The quick brown fox jumps over the lazy dog.</p>
+        </body>
+</html>
+
