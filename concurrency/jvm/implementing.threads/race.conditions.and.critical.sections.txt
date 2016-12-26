@@ -1,15 +1,73 @@
-http://tutorials.jenkov.com/java-concurrency/concurrency-models.html
+http://tutorials.jenkov.com/java-concurrency/race-conditions-and-critical-sections.html
 
 
-Concurrent Systems
+Creating a thread in Java like this.
 ======================================
-Concurrent systems can be implemented using different 
-concurrency models.  A concurrency model specifies how
-threads in teh system collaborate
-to complete the jobs they are given.  Different
-concurrency models split the jobs
-in different ways, and teh threads may communicate
-and collaborate in different ways
+Thread thread = new Thread() ;
+thread.start() ;
+
+
+
+Thread Subclass
+====================================
+public class ThisThread extends Thread{
+        public void run(){
+                System.out.println("ThisThread running") ;
+        }
+}
+
+
+
+Thread thisThread = new ThisThread() ;
+thisThread.start() ;
+
+
+
+                -or-
+
+
+Thread thisThread = new Thread(){
+        public void run(){
+                System.out.println("Thread is running") ;
+        }
+}
+thread.start() ;
+
+
+Runnable Interface implementation
+======================================
+public class ThisThread extends Runnable{
+        public void run(){
+                System.out.println("ThisThread running") ;
+        }
+}
+
+
+                -or-
+
+
+Thread thread = new Thread( new Runnable(){
+        public void run(){
+                System.out.println("ThisThread running") ;
+        }
+}) ;
+
+
+thread.start() ;
+        -or-
+thread.run() ;
+
+
+Difference between Thread.start() and Thread.run() 
+=======================================================
+run()
+---------------------------------------------------------
+If this thread was constructed using a separate Runnable run object, then that Runnable object's run method is called; otherwise, this method does nothing and returns.
+
+start()
+--------------------------------------------------------
+Causes this thread to begin execution; the Java Virtual Machine calls the run method of this thread.
+
 
 
 
@@ -231,40 +289,42 @@ Assembly Line disadvantages
 
 
 
+Functional Parallelism
+=======================================================
+Functional parallelism is a third concurrency model
+which is being talked about a
+lot these days 
+
+The basic idea here is that you implement your program
+using function calls.  Functions can be seen as "agents"
+or "actors" that send messages to each other, just like
+assembly/event/reactive  that send messages to each other.
+One  function calls another, that is similar to sending a 
+message.
+
+All parameters are passed to the function are copied, so 
+no entity outside the recieveing function
+can manipulate the data.  This copying is essential
+to avoiding race conditions on the shared data.  This makes
+the function exectuion similar to an atomic operation;.
+
+Each function can be executed independently, each function
+call can be eecuted on sperate CPUs.  This i means that an algorithm implemented functionaly can be executed in parallel, on multple CPUs.
 
 
-sketched below:
-==========Pseudo Code Single Thread==============
-while(server is active){
-        listen for request
-        process request
-}
+With Java 7 we got the java.util.concurrent package contains
+the operation:
+
+        ForkAndJoinPool
+
+which can help us implement something similar to
+functional parallelism.  With Java 8 we got parallel streams
+which can help you parallelize the iteration of large
+collections.  Keep in mind that htere are developers who 
+are critical of the ForkAndJoinPool
 
 
-The above code works ok....if all processes 
-are not cpu/gpu or I/O intensive.  Only while the 
-server is listening may incomming requests may be 
-processed.
-
-A better design would be for the listening thread to pass
-the request to a worker thread, and return to listening 
-immediately.  The worker thread will process
-the rquest and send a reply to the client.
-
-=========Pseudo Code Multi-Thread=================
-while(server is active){
-        listen for request
-        hand request to worker thread
-}
-
-This is also true for any other applications where
-processing of multiple program features would likely
-be better served via concurrent or parralled manner.
-For instance....applications that make use of a GUI....
-like video games and your average desktop application
-It is guaranteed that the components responsible for listening to key/controller events is running in a seperate
-thread than the components responsible for building the next
-image to be displayed and updating the screen with the new image
+Why
 
 
 
