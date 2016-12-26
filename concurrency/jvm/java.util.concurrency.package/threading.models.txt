@@ -1,0 +1,76 @@
+http://tutorials.jenkov.com/java-concurrency/concurrency-models.html
+
+
+More complex design
+======================================
+Code executing by multiple threads accessing shared dta
+need special attention. Errors arising
+from incorrect thread synchornization can be
+very hard to detect, reproduce and fix.
+
+
+
+Context Switching Overhead
+=====================================
+Process and Thread context switching is not
+cheap....if you don't need to thread out
+tasks in your program...then don't do it.
+Keep in mind that threads also eat up memory
+and CPU/GPU resources. Building an app that
+is multi-threaded that does nothing but wait
+is a pretty bad design choice.  Make sure that
+there is a good reason to multi-thread
+your code out.
+
+CPU switches involve:
+        *       saving state of current thread
+                - pointer
+                - program
+                - data
+                - etc
+     
+        *       loading state of reactived thread
+                - pointer
+                - program
+                - data
+                - etc
+
+
+
+
+sketched below:
+==========Pseudo Code Single Thread==============
+while(server is active){
+        listen for request
+        process request
+}
+
+
+The above code works ok....if all processes 
+are not cpu/gpu or I/O intensive.  Only while the 
+server is listening may incomming requests may be 
+processed.
+
+A better design would be for the listening thread to pass
+the request to a worker thread, and return to listening 
+immediately.  The worker thread will process
+the rquest and send a reply to the client.
+
+=========Pseudo Code Multi-Thread=================
+while(server is active){
+        listen for request
+        hand request to worker thread
+}
+
+This is also true for any other applications where
+processing of multiple program features would likely
+be better served via concurrent or parralled manner.
+For instance....applications that make use of a GUI....
+like video games and your average desktop application
+It is guaranteed that the components responsible for listening to key/controller events is running in a seperate
+thread than the components responsible for building the next
+image to be displayed and updating the screen with the new image
+
+
+
+

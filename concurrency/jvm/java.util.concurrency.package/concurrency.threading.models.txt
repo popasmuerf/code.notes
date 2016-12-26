@@ -1,0 +1,184 @@
+http://tutorials.jenkov.com/java-concurrency/concurrency-models.html
+
+
+Concurrent Systems
+======================================
+Concurrent systems can be implemented using different 
+concurrency models.  A concurrency model specifies how
+threads in teh system collaborate
+to complete the jobs they are given.  Different
+concurrency models split the jobs
+in different ways, and teh threads may communicate
+and collaborate in different ways
+
+
+
+Concurrency Models and Distributed System
+Similarities
+=====================================
+Application concurrency model share the following
+similarities:
+
+Concurrent applications:
+        * Threads communicate with one another
+        * worker threads(analougus to load balancing nodes)
+
+Distributed Systems     
+        * Different processes communicate with one another
+        * load balancing nodes(analogus worker threads)
+
+
+Parallel Workers Model
+==========================================
+Incoming jobs are assigned to different workers.
+
+Delegator ------> Worker
+        |
+        |-------> Worker
+        |
+        |-------> Worker
+
+Attributes of Parallel Workers Model
+-----------------------------------------
+        * Most commonly used model
+        * Utilities in java.util.concurrent uses this model
+        * Delegator distributes work to worker threads
+        * Worker threads complete jobs in full
+        * Worker threads may work concurrently or parrallel
+          on seperate CPUs
+        * Most Java enterprise application servers use this
+          model
+        
+Advantages of Parrallel Workers
+-----------------------------------------
+        * Easy to comprehend
+        * Easy to scale out application via adding more
+          workers
+        * More workers reduce CPU idleness and increases
+          time to finish I/O processing
+
+Disadvantages of Parrallel Workers
+------------------------------------------
+        * Access to shared data can become complicated
+        * Access to shared memory can become complicated
+        * Any change to presistence in memory or some other
+          model must be visible to all threads
+        * Race conditions have to be accounted for
+        * Deadlock conditions have to be accounted for
+        * A degree of parralization/concurrency is lost
+          (lose of autonomy) as they all must wait for each
+          other to fully release resources
+        * Resources are often blocking..which can lead
+          to high contention rates..which in turn can
+          reduce your concurrent algorithm to a serial
+          queue
+        * Modern non-blocking algorithms may decrease
+          contention but they are difficult to implement
+        * Persistent data structures are a possible solution
+          but they tend to have poor performance
+
+Stateless Workers
+--------------------------------------------------
+Shared state can be modified by other threads
+in the system.  Therefore workers must re-read
+the state every time it needs it, to ensure that
+it is working on the most recent copy...this is
+true whether the shared state is kept in memory
+or in an external database.  A woker that does not
+keep state internally (but re-reads it every time it 
+is needed) is called stateless.  Stateless strategies
+can be slow....for obvious reasons.
+
+
+Job ordering is Nonderterministic
+---------------------------------------------
+There is no way to guarantee which jobs are
+exeicuted first or last.
+
+
+
+Assembly Line
+====================================================
+Who uses it ?:
+        * reactive systems (just another name for event)
+        * event driven systems(just another name for reactive)
+
+
+Delegator ---------->Worker------->Worker----->Worker
+
+How does Assembly Line work ?
+------------------------------------------------------
+        * Workers are organized like workers at 
+          an assembly line in a factory
+        * Each worker only performs a part of the full job
+        * When that part is finished the worker forwards
+          the job to the next worker
+        * Each worker is running its own thread, and shares
+          no state with other workers(shared nothing concurrency model)
+        
+
+Systems that use assembly/reactive/event driven concurrency
+mdodels are usually designed to use non-blocking I/O.  Non-blocking I/O  means that when a worker starts an I/O operation(reading files or data from a network stream) the worker does not wait for the I/O call to finish.  I/O is 
+slow...so waiting for the I/O operation to finish is a waste
+of CPU time.  The CPU should be doing something esle in
+the meanwhile.   When the I/O operations finishes, the next
+worker in the assembly line continues working on the job, until that has to start an I/O operation
+
+In reality this is what a non-blocking I/O reactive/event
+driven systems looks like....
+
+
+Delegator------>Worker------->Worker----->Worker
+        |
+        |------->Worker------->Worker----->Worker
+        |
+        |------->Worker------->Worker----->Worker
+
+^^^^For instance...jobs may  even be forwarded to more than
+one worker for concurrent processing.  For instance, a job may be forwared to both a job executor and a job logger
+
+
+        
+     
+
+    
+
+
+
+
+sketched below:
+==========Pseudo Code Single Thread==============
+while(server is active){
+        listen for request
+        process request
+}
+
+
+The above code works ok....if all processes 
+are not cpu/gpu or I/O intensive.  Only while the 
+server is listening may incomming requests may be 
+processed.
+
+A better design would be for the listening thread to pass
+the request to a worker thread, and return to listening 
+immediately.  The worker thread will process
+the rquest and send a reply to the client.
+
+=========Pseudo Code Multi-Thread=================
+while(server is active){
+        listen for request
+        hand request to worker thread
+}
+
+This is also true for any other applications where
+processing of multiple program features would likely
+be better served via concurrent or parralled manner.
+For instance....applications that make use of a GUI....
+like video games and your average desktop application
+It is guaranteed that the components responsible for listening to key/controller events is running in a seperate
+thread than the components responsible for building the next
+image to be displayed and updating the screen with the new image
+
+
+
+
