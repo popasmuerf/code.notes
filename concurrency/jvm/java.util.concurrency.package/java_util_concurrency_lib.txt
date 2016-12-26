@@ -1,0 +1,46 @@
+http://tutorials.jenkov.com/java-util-concurrent/index.html
+
+
+More responsive programs
+======================================
+Another common goal for turning a single threaded application into a mutlthreaded application is to achieve
+a more responsive application.  Imagine a server application
+that listens on some port for incoming requests.  When
+a request is recieved, it handles the request and then
+goes back to listening.  The server loop is
+sketched below:
+==========Pseudo Code Single Thread==============
+while(server is active){
+        listen for request
+        process request
+}
+
+
+The above code works ok....if all processes 
+are not cpu/gpu or I/O intensive.  Only while the 
+server is listening may incomming requests may be 
+processed.
+
+A better design would be for the listening thread to pass
+the request to a worker thread, and return to listening 
+immediately.  The worker thread will process
+the rquest and send a reply to the client.
+
+=========Pseudo Code Multi-Thread=================
+while(server is active){
+        listen for request
+        hand request to worker thread
+}
+
+This is also true for any other applications where
+processing of multiple program features would likely
+be better served via concurrent or parralled manner.
+For instance....applications that make use of a GUI....
+like video games and your average desktop application
+It is guaranteed that the components responsible for listening to key/controller events is running in a seperate
+thread than the components responsible for building the next
+image to be displayed and updating the screen with the new image
+
+
+
+
