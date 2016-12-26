@@ -171,7 +171,26 @@ driven systems
         * Node.JS (jscript)
 
 
-        
+
+Actors vs. Channels
+===================================================
+Actors and channels are two similar examples of 
+assembly line(or reactive/event driven) models.
+
+In the actor model..each worker is called an "actor".
+Actors can send messages directly to each other.
+Messages are sent and processed
+asynchronously.  Actors can be used to
+implement one or more job processing
+assembly lines, as descrbied earlier.  Here is
+a diagram illustrating the actor model:
+
+
+Actor------>Actor-->Actor-->Actor---
+        |                          |
+        |-->Actor-->Actor-->Actor--> Actor
+        |                          |
+        |-->Actor-->Actor-->Actor---  
      
 
     
