@@ -1,0 +1,76 @@
+
+//BAD
+
+@NotThreadSafe
+public class UnsafeSeq{
+	private int value ;
+	public int getNext(){
+		return value ++ ;
+	}
+}
+
+
+//BETTER
+
+@ThreadSafe
+public class UnsafeSeq{
+	private int value ;
+	public synchronized int getNext(){
+		return value ++ ;
+	}
+}
+
+
+
+1.4.  Threads are Everywhere
+===============================================
+Even if your program never explicitly creates a thread,
+frameworks may crate threads on your behalf, and code
+called from thee threads must be thread-safe.
+
+	*	Every Java app uses threads
+	*	Threads for jvm house keeping are always running
+	*	All main() methods that are running as entrance
+		into app code is running in it's own thread
+	*	AWT,Swing,JavaFX are all interface frameworks
+		that create threads for managing user
+		interface events.
+	*	Timer creates threads for executing
+		deferred tasks.
+	*	Component frameworks(Servlets and RMI) 
+		create pools of threads and invoke component
+		methods in these threads
+	*	It pays to know concurrency as you will run
+		into issues concerning it sooner or later
+		while dealing with code that targets the
+		jvm
+	*	Concurrency does not end with framework
+		internals....as frameworks make use of 
+		callbacks that contain your custom logic...
+		and thus..your custom code may require it's
+		components to be thread safe...
+	
+Note: About Frameworks...concurrency, and callbacks
+------------------------------------------------------------
+Frameworks introduce concurrency into application by calling application components from framework threads.  Components
+invariably access application state, thus requiring that all
+code paths accessing that state be thread state:
+
+	*	Grails or Boot controller actions
+		accessing a database or app global
+		data structure
+	*	JavaFX based components all attempting
+		to update an image(bad example....there
+		should only be one thread doing this...but
+		an example...nontheless)
+
+	*	Timer
+		-----------------------------------------------------------
+		Timer is a convenience mechanaism for scheduling tasks
+		to run at a later time, either once or periodically.
+		TimerTasks are executed in a thread managed by Timer, not
+		by the application.  As with all non-app-managed threads...
+		TimerTasks as well as any other object attempting to access
+		data must do so in a ThreadSafe mannner....
+
+
