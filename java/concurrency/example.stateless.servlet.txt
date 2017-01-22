@@ -1,0 +1,46 @@
+What is Thread Safety
+==========================================
+Very often, thrad-saftey requirements stem not from
+a decison to use threads directly
+
+
+The code below like most servlets is stateless; meaning
+that is has no fields and references no fields from 
+other classes.  The transietn state for a 
+particular computation exists solely in local
+variables that are stored on the thread's stack
+and are accessble only to the executing thread.
+
+
+One thread accessing a StatelessFactorizer cannot
+influence the result of another therad accessing
+the same StatelessFactorizer; because the two 
+threads do not share state.
+
+
+Since the actions of a thread accessing a stateless
+object cannot afect the correctness of operations in
+another thread...stateless objects are then conscidered
+thread-safe
+
+
+The fact most servlets can be implemented with no
+state greately reduces the burden of making
+servlets thread-safe.  It is only when servlets want to remember things frm on request to another that the 
+thread safety requitement becaomes a issue.
+
+//code
+
+
+@ThreadSafe
+public class StatelessFactorizer implementes Servlet{
+        public void service(ServletRequest rq, ServletResponse resp){
+                BigIngteger i = extractFromeRequest(req) ;
+                BigInteger[] factors = factor(i) ;
+                encodeIntoResponse(resp, factors) ;
+        }
+}
+
+
+
+
