@@ -1,0 +1,123 @@
+
+//BAD
+
+@NotThreadSafe
+public class UnsafeSeq{
+	private int value ;
+	public int getNext(){
+		return value ++ ;
+	}
+}
+
+
+//BETTER
+
+@ThreadSafe
+public class UnsafeSeq{
+	private int value ;
+	public synchronized int getNext(){
+		return value ++ ;
+	}
+}
+
+
+
+1.4.  Threads are Everywhere
+===============================================
+Even if your program never explicitly creates a thread,
+frameworks may crate threads on your behalf, and code
+called from thee threads must be thread-safe.
+
+	*	Every Java app uses threads
+	*	Threads for jvm house keeping are always running
+	*	All main() methods that are running as entrance
+		into app code is running in it's own thread
+	*	AWT,Swing,JavaFX are all interface frameworks
+		that create threads for managing user
+		interface events.
+	*	Timer creates threads for executing
+		deferred tasks.
+	*	Component frameworks(Servlets and RMI) 
+		create pools of threads and invoke component
+		methods in these threads
+	*	It pays to know concurrency as you will run
+		into issues concerning it sooner or later
+		while dealing with code that targets the
+		jvm
+	*	Concurrency does not end with framework
+		internals....as frameworks make use of 
+		callbacks that contain your custom logic...
+		and thus..your custom code may require it's
+		components to be thread safe...
+	
+Note: About Frameworks...concurrency, and callbacks
+------------------------------------------------------------
+Frameworks introduce concurrency into application by calling application components from framework threads.  Components
+invariably access application state, thus requiring that all
+code paths accessing that state be thread state:
+
+	*	Grails or Boot controller actions
+		accessing a database or app global
+		data structure
+	*	JavaFX based components all attempting
+		to update an image(bad example....there
+		should only be one thread doing this...but
+		an example...nontheless)
+
+	*	Servlets and JavaServer Pages(JSPs)
+		-----------------------------------------------------------
+		The servlets framework is designed to handle all the
+		infratructure of deploying a web application and dispatching
+		requests from remoret HTTP clients.  A request arriving at the server is
+		dispatched, perhaps thorugh a chain of filters, to
+		the appropiate servlet or JSP.  Each sevlet represents a
+		component of application logic, and in high-volume web sites, multiple
+		clients may require the services of the same servlet at once.  The servlets 
+		specification rquires that a servlet be propared to be called
+		simultaneously from multiple threads.  In other works, servelts need to 
+		be thread-safe
+
+			*	Servlets often share access state information
+				shared with other sevelts such as application-scoped
+				objects(ServletContext)
+			*	Servlets often share session-scoped objects(HttpSession)
+
+	*	Remote Method Invocation (Remote Method Invocation)
+		-----------------------------------------------------------
+		RMI lets you invoke methods on objects running in another jvm.  When you
+		call a remote method iwth RMI, the method arguments are packaged(marshaled)
+		into a byte stream and shipped over the network to the remote jvm, where
+		they are unpacked(unmashalled) and passed to the remote method.
+		Whe the RMI code calls your remote code, it does so in a thread it created
+		and manages, and like servlets...must take into account instances where it
+		may be called by multiple simultaneous calls.
+
+
+			*	The same remote method on the same remote object 
+				could be called simultaneously by multiple RMI threads
+			*	Remote objects must gurard against tow thread safety hazards:
+				-	Imporperly coordinated access to shared state
+				-	Improperly coordinated access to the state of the remote
+					object itself
+			
+	*	Swing and AWT(and JavaFX)
+		-----------------------------------------------------------
+		GUI apps are inherently asynchronous.  User interaction may
+		take place anywhere on the app and they expect the response
+		to be snappy.  Swing and AWT address this problem by creating
+		a separate thread for handling user-initiated evetns and updating
+		the graphical view presented to the user.  JPanel, JTable, etc, are not
+		Thread-Safe, however Swing programs achieve their thread safety by confining
+		all access to GUI components to the event thread.  If an application wants
+		to manipulate the GUI from outside the event thread, it
+		must cause the code that will manipulate the GUI to run int the
+		event thread instead.
+
+
+			*	When the user performs a UI action, an event handler is called
+				in the event thread to peform whatever operation the user
+				requested.  
+			*	If the andler needs to access application state that
+				is also access from other threads, then the event handler, along
+				with the other threads mush be thread-safe
+			
