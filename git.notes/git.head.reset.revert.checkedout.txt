@@ -1,0 +1,54 @@
+
+HEAD
+====================================
+        *       last commit snapshot, next parent
+        *       The HEAD in Git is the pointer to the current branch
+                reference which is in turn a pointer to the 
+                last commit you made or the last commit that
+                was checed out into you rworking directory.
+        *       Generally HEAD is the snapshot of  your last commit
+
+        *       View current head : 
+                //syntaxt
+                > cat .git/HEAD
+
+        *       View current head : 
+                //syntaxt
+                > cat .git/refs/heads/master
+
+        *       View changes between your last local commit
+                and your most recent pull
+                > git diff HEAD
+                
+
+git diff
+=================================================
+Shows the changes between the working directory and the index.  This shows what has been changed,
+but is not staged for a commit.
+
+
+git diff --cached
+------------------------------------------------------
+Shows the changes between the index and the HEAD(pointer to last commit on this branch).  This shows what has been added
+to the index and staged for a commit.
+
+
+git diff HEAD
+----------------------------------------------------------
+Shows the changes between the working directory and HEAD
+(which includes changes in the index).  This shows
+all the changes since the last commit,
+
+
+
+What is the git "index"(cache)
+===============================================
+The git "index" is where you place files you want
+committed to the git repository.  Index is also known as:
+        *       Directory Cache
+        *       Current directory cache
+        *       Staging area
+        *       Staged files
+
+Before you "commit" (checkin) files to the gir repository,
+you need to first place the fiels in the git "index"
