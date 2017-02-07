@@ -1,0 +1,86 @@
+
+https://dzone.com/articles/java-dynamic-proxy
+http://www.javaworld.com/article/2076233/java-se/explore-the-dynamic-proxy-api.html
+java.lang.reflect.Proxy
+----------------------------
+
+
+All implemented interfaces:
+-----------------------------
+    Serializable
+    
+    
+    
+    
+
+public class Proxy extends Object implementes Serializable 
+----------------------------------------------------------------------
+
+Proxy provides static methods for creating dynamic proxy classes and 
+instances, and it also the superclass of all
+dyanmic proxy classes created by those methods.
+
+
+
+What is a Proxy ?
+===================================================================
+Proxy is a sesign pattern.  We create and use 
+proxy objects when we want to add or modify
+some functionality that already exists(Is this similar to 
+Groovy's meta class feature ?)
+
+The proxy object is used instead of the original one.  Usually,
+the proxy objects have the same methods as the oringianl
+one and in Java proxy classes usually extend the
+original class.  The proxy has a hangle to the original
+object and can call the method on that.
+
+
+
+Proxy classes can be used to do useful stuff like
+================================================================
+    *   logging when a method starts and stops
+    *   perform extra checks on arguments
+    *   mocking the behanvigor of the original class
+    *   implement lazy access to costly resources
+    
+All without modifying the original code ofthe class...
+
+
+
+Proxies do not modify the target class...
+Proxies do not implement features itself
+=====================================================================
+Following the single responsibility principle, the proxy
+class does only proxying and the actual 
+behavior modification is implemented in handlers.
+When the proxy object is invoked instead of the original
+object, the proxy decides if
+it hast to invoke the original method or some 
+handler.  The handler may do its task and may also
+call the oringal method. 
+
+
+
+The core of the Proxy design pattern functionality
+==========================================================
+java.lang.reflect.Proxy  //class
+java.lang.reflect.InvocationHandler   //interface
+
+
+//Create a proxy for some interface Foo
+
+InvocationHandler handler = new MyInvocationHandler(....) ;
+Class proxyClass = Proxy.getProxyClass(
+    Foo.class.getClassLoader(), new Class[]{Foo.class});
+    Foo f = (Foo) proxyClass.getConstructor(new Class[]{InvocationHandler.class}).newInstance(new Object[]{handler});
+
+);
+
+
+    -or-
+    
+Foo f = (Foo) Proxy.newProxyInstance(Foo.class.getClassLoader(), new Class[]{Foo.class}, handler) ;
+    
+    
+    
