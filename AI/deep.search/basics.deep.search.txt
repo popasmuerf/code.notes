@@ -1,0 +1,66 @@
+A Frontier Search algorithm also uses Paths: a list of connected Nodes, with the 
+first node as the starting point:
+
+
+//A Path has:
+//- a List of Nodes
+class Path
+Array of Paths: contents
+
+INPUT:
+    -a Start Node
+    -a graph network(only requires start node to have a network)
+    -a goal-checking procedure OR a solution query
+    
+OUTPUT:
+    -a Path from start to Goal(a List of Nodes)
+    -a return FALSE or NULL if no paths found(wherever applicable)
+    
+EFFECT:
+Frontier Search Algorithm: Returns a set of nodes that lead from the input Node if found
+
+PROCEDURE:
+    -frontier:={new array of Nodes}
+    -crate a new Path and put the Start node in it
+    -put the new Path into the frontier
+    
+    
+    
+    
+   while frontier is not empty{
+    -select and remove a Path < s0, s1,.....,sk>;
+    If node(sk) is a goal, return selected Path <s0,s1,.....,sk>
+    Else:
+        For every connected node of end node sk:
+            -Make a copy of the selected Path
+            -Add connected node of sk onto path copy
+            -add cpied Path <s0,s1,......sk, s> to frontier
+            -indidecate 'NO SOLUTiON' if frontier empties
+            
+            
+Implementation:
+========================================
+
+Data Structures:
+
+//Node
+import java.util.Random.ints ;
+public class Node{
+    double weight = 0.0 ;
+    public List<Node> contents = new ArrayList<Node>() ;
+    public Node(){
+        this.weight = generateWeight() ;
+    }
+    private generateWeight(){
+        Random r = new Random()
+        int min = 1
+        int max = 20
+        return r.ints(min, (max + 1)).limit(1).findFirst().getAsInt() ;
+    }
+}
+
+//class Path
+public class Path{
+    double weight = 
+    public List<Node> contents = new ArrayList<Node>() ;
+}
