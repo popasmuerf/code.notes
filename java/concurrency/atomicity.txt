@@ -1,0 +1,46 @@
+Atomicity
+==========================================
+What happens when we add one element of state
+to what was a stateless object ?....like a
+"hit counter" that measures the number of requests
+processed.  The obvious
+approach is to add a long field to the servlet
+and increment it on each request as shown below
+
+//unsafe
+
+@NotThreadSafe
+public class UnsafeCountingFactorizer implements Servlet{
+        private long count = 0 ;
+        public long getCount(){
+                return count ;
+        }
+
+        public void service(ServeltRequest req, ServletResponse resp){
+                BigInteger i = extractFromRequest(req) ;
+                BigIntenter[] factors = factor(i) ;
+                ++count ;
+                encodeIntoResponse(resp,factors) ;
+        }                                                                                                
+
+}
+
+
+^^^ This servlet is not thread-safe though it would
+work just fine in a single threaded program.
+
+        ++count is NOT ATOMIC
+
+...which means that it does not execute as a single, indivisible operation.  instead, if is a shorthand 
+for a sequence of three discreet operations:
+
+        *       fetch current value
+        *       add one to currnet value
+        *       write the new value back
+
+This is what is known as a "read-modify-write" operations,
+in wich the resulting state is derived from the previous state.
+
+
+
+

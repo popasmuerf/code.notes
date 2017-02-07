@@ -1,0 +1,144 @@
+/*
+http://www.w3schools.com/xml/ajax_intro.asp
+AJAX Introduction
+=========================================
+*/
+
+
+function loadDoc(){
+        var xhttp = new XMLHttpRequest()
+        xhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status=200){
+                        document.getElementById("demo").innerHTML(this.responseText)
+                }
+        }
+        xhttp.open("GET","ajax_info.txt",true)
+        xhttp.send()
+
+}
+
+
+/***How it works***/
+  1.      Client Browser
+-----------------------------
+        * Event occurs
+        * Create an XMLHttpRequest objecte
+        * Send HttpRequest across internet(local host 
+          also conscidered part of the internet within
+          this context)
+        * 
+
+  2.      Internet
+-----------------------------
+        * HttpRequest sento Server(could also to be localhost)
+        * Could be any of these(GET,POST,PUT,DELETE...etc)
+        * Send HttpRequest
+ 
+
+  3.      Server
+-----------------------------
+        * HttpRequest recieved by Server
+        * Could be any of these(GET,POST,PUT,DELETE...etc)
+        * HttpResponse to HttpRequest sent back to client
+
+  4.      Client Browser
+-----------------------------
+        * HttpResponse recieved from server
+        * Response is processed
+        * Update web page..or do something else
+/*
+
+/***XMLHttpRequest Object***/
+  1.      What is it's function?
+-----------------------------
+        All modern browsers support the object:
+        
+                XMLHttpRequest
+
+        The XMLHttpRequest object is used to exchange data
+        with a server behind the scenes.  This
+        means that it is possible to update parts of a web
+        page, witout reloading the whole page
+
+  2.      Create an XMLHttpRequest Object
+---------------------------------------------------
+   All modern browsers have XMLHttpRequest built in
+ 
+        var ajaxObj = new XMLHttpRequest() ;
+
+ 2.2      Create an XMLHttpRequest Object
+---------------------------------------------------
+   var xhttp ;
+   if(window.XMLHttpRequest){
+        xhttp = new XMLHttpRequest() ;
+   }else{
+        new ActiveXObject("Microsoft.XMLHTTP");
+   } 
+
+*/
+
+
+/***XMLHttpRequest Object***/
+
+Method                  Description
+-------------           ------------------
+new XMLHttpRequest()      Creates a new XMLHttpRequest object
+
+
+abort()                   Cancels the current request
+
+
+getAllResponseHeaders()   Returns header indormation
+
+
+getResponseHeader()       Returns specific header information
+
+
+open(method,url,async,user,psw)      Specifies the request
+
+
+
+send()                               Send request(GET only)      
+
+send(string)                         Send request(POST)
+
+
+setRequestHeader()                   Adds a lable/value pair to the header to be sent  
+
+
+
+
+/***XMLHttpRequest Object Properties***/
+
+Property                 Description
+-------------           ------------------
+onreadystatechange      Defines a function to be called when
+                        when the readyState property changes
+
+
+readyState                   Holds the status of
+                             the XMLHttpRequest:
+
+                             0: request ot intialized
+                             1: server connection established
+                             2: request recieved
+                             3: processing request
+                             4: request finishede and 
+                                response is ready
+
+   Returns header indormation
+
+
+getResponseHeader()       Returns specific header information
+
+
+open(method,url,async,user,psw)      Specifies the request
+
+
+
+send()                               Send request(GET only)      
+
+send(string)                         Send request(POST)
+
+
+setRequestHeader()                   Adds a lable/value pair to the header to be sent  

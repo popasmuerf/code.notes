@@ -1,0 +1,57 @@
+What is Thread Safety
+==========================================
+Defining thread saftery is surprisingly tricky.
+The more formal attempt are so complicated 
+as to offer little practical guidance or
+intuitive understanding, and the rest are informal
+descriptions that can seem downright circular.
+
+An example from a random Google search on the matter
+=====================================================
+...can be called from multiple progam threads
+without unwanted interactions between the threads.
+...without unwanted interactions between the threads.
+...may be called by more than one thread at a time
+without requiring any othe action ont th ecaller's
+part.
+
+
+^^^Thisis why understanding concurency is so fucked
+up
+
+
+The concept of correctness.
+=======================================================
+Correctness means that a class conforms to it's 
+a specification.  A good specification defines inavariants
+constraining an object's state and postconditions 
+describing the effects of its
+operation.
+
+If you don't write an adequate specification for your class..
+then how do you know it's correct ?  The answer is....
+you don't.  This however does not stop us from using them
+anyway once we've convinced ourselves that "the code works".
+
+Single threaded code is "correct" because we "know" correctness when you see it.....so with this in mind...
+
+Could we say that a class is thread-safe when it continues
+to behave correctly when accessed from multiple threads regardless of schedule of interleaving of the execution
+of those threads by the 
+runtime enviroment, and with no addtional synchronization or other coordination on the par to the calling code.
+
+
+Every single-theraded program is also a valid
+multithreaded program, it cannot be therad-safe
+if it is not even correct ina a single-threaded
+enviroment.
+
+
+
+Thread-safe classes encapsulate any neeeded synchronization
+so that clients need not provide their own.
+
+
+
+
+

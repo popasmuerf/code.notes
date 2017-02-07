@@ -1,0 +1,84 @@
+https://grails.org/wiki/Builders
+Builders 
+===============================
+Hibernate Criteria Builder
+--------------------------------
+The Hibernate Criteria Builder allows you to 
+create queries that map to Hibernate Criteria API.
+There are equivalent builder nodes for most criterion
+with the Hibernate Expression class.
+
+
+Standalone builders
+---------------------------------------
+The builder can be used standalone by passing
+a persistent  class and sessionFactory instance:
+
+//-----------code-----------//
+new grails.orm.HibernateCriteriaBuilder(User.class,sessionFactory).list{
+        eq("firstName","Fred")
+}
+
+
+
+Or an instance can be retrieved via the createCriteria
+method of Grails domain class instaces:
+-------------------------------------------
+def c = Account.createCriteria()
+def results = c {
+        like("holderfirstName", "Fred%")
+        and{
+                between("balance",500,1000)
+                eq("branch","london")
+        }
+        maxResults(10)
+        order("holderLastName","desc")
+}
+
+for TekDays...finding
+=========================================
+
+def contegixEvents = TekEvent.createCriteria().list{
+        sponsorships{
+                sponsor{        
+                        eq('name','Contegix')
+                }
+        }
+}
+
+
+def eventOrganizers = Tekevent.createCriteri().list{
+                tekEvents{
+                        organizer{
+                        eq('name','brown')                        
+                }
+}
+
+OpenRico Builder
+=========================================
+Grails provides support for the OpenRico project.
+See this document for more details o how OpenRico
+handles respnse content.  Using OpenRicoBuilder in
+controllers users can generate any response
+for OpenRico rquests, see th example
+below which uses the Google API to retrieve search
+results and then creates an OpenRico ajax response
+
+
+//---------------code----------------//
+def result = google.doSearch();
+   new grails.util.OpenRicoBuilder(response).ajax {
+	object(id:"googleAutoComplete") {
+	  for (re in result.resultElements) {
+		div(class:"autoCompleteResult", re.URL)
+	  }
+	}
+  }
+
+
+
+Note:
+------------------------------------------------
+It should be noted that at the moment, OpenRico
+requests are not handled by Grails Ajax tags; there 
+is no OpenRico implementation in JavascriptTagLib
