@@ -1,0 +1,134 @@
+Architecture of a typical SOAP-based service
+====================================================
+          Encode          Encode
+          ----->          ----->
+Java types      XML Schema      Ruby types
+          <----- types    <-----
+          Decode          Decode
+
+Publishing SOAP-Based Web Services with 
+a StandAlone Web Server
+=============================================
+Publishing a @WebService with tomcat or jetty is 
+almost the same as publishing a @WebServiceProvider
+(@WebServiceProvider is for REST service publishing
+when using stand alone web servers)
+
+
+When publishing using web containers...
+we need a few things...
+==============================================
+        *       web.xml
+        *       sun-jaxws.xml
+
+The following web.xml will work for any
+implementation annotated as:
+
+        *       @WebService 
+                -or-
+        *       @WebServiceProvider
+
+
+
+<?xml version "1.0" encoding="UTF-8"?>
+<web-app>
+        <listener>
+                <listener-class>
+                        com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+                </listener-class>
+        </listener>
+        <servlet>
+                <servlet-name>
+                        jaxws
+                </servlet-name>
+                <servlet-class>
+                        com.sun.xml.ws.transport.http.servlet.WSServlet
+                </servlet-class>
+                <load-on-startup>1</load-on-startup>                
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>
+                        jaxws
+                </servlet-name>
+                <url-pattern>
+                        /*
+                </url-pattern>
+        </servlet-mapping>
+
+</web-app>
+
+
+The Metro classes :
+------------------------------------------------
+
+        WSServletContextListener
+
+                -and-
+        WSServlet 
+
+are in the JAR file
+currently names webservices-rt.jar
+which can be downloaded with the restof the Metro JARs.
+
+
+The following jar files are also required(Metro) :
+-----------------------------------------------------
+
+        webservices-rt.jar
+                -and-
+        webservices-api.jar
+
+The jar files in question should be included withing
+the src directory so whatever build tool you are using
+will include them in the WAR file.
+
+
+How doe we get the service schema from services
+deployed on a standalone server ?
+===============================================
+
+> curl http://localhost:8080/myWarFileName?xsd=1
+
+
+
+Quick Summary
+=======================================
+The RandService combines in a single source file:
+-------------------------------------------------
+        *       Service Endpoint Interface(SEI)
+        *       Service Implementation Bean(SIB)
+
+What purposes does the SEI and SIB
+serve ?
+-------------------------------------
+        *       SEI
+                -----------------
+                High level specification
+                that efits an interface,
+                service ops
+        
+        *       SIB
+                -----------------
+                    -A POJO class such
+                     as RandService annotated
+                     as @WebService and ecapsulating
+                     service operations, each 
+                     annotated as @WebMethod
+
+                    -A @Stateless Session EJB that
+                     is likewise annotated as
+                     a @WebService.  EJBs in general
+                     predate JAX-WS; hence, this
+                     second type of SIB is an inviting
+                     way to expose legacy EJBs as
+                     web services
+
+Depending on the implementation....SEI and SIB 
+may or may not be implemented within the same class
+
+
+
+
+
+
+

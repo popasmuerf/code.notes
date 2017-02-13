@@ -1,0 +1,240 @@
+SOAP-Based Web Services
+=============================================
+*       @WebServiceProvider  maybe be used with either REST or SOAP
+*       @WebService is a refinement of @WebServiceProvider and is
+        emphatically SOAP based
+*       JAX-WS is best described as a rich collection of APIs
+*       JAX-WS is the successor of JAX-RPC
+*       JAX-RPC is the successor of JAX-XML
+*       JAX-WS is officially part of JEE
+*       JAX-WS as of Java 1.6 can be compiled and published using 
+        only core java
+*       JAX-WS may be published with the standard Tomcat or Jetty server
+
+
+
+
+SOAP is an XML dialect
+=========================================================
+There are two sanctioned versions:  1.1 and 1.2
+
+SOAP is officially no longer an acronym.  The differences
+between versions 1.1 and 1.2 are more about infrastructure than API.
+
+Media type differences
+----------------------------------------------------------
+        *       1.1 :  text/xml
+
+        *       1.2 :   application.soap+xml
+
+        *       1.2 :   offical binding framework allowing for 
+                        binding to other protocals other than
+                        HTTP
+
+
+Example SOAP based service with two operations
+================================================================
+
+/*******
+The @WebService annotation  marks the RandService
+POJO calss a web service, and the @WebMethod
+annotation specifies which of the encapsulated
+methods is a service operation.
+
+The @WebMethod is optional...but always recommened.
+This all can be compiled the usually way using
+JDK 1.6 or later.....
+
+*******/
+
+
+package rand ;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod ;
+import java.util.Random ;
+
+
+
+
+@WebService
+public class RandService{
+        @WebMethod
+        public int next1(){
+                return new Random().nextInt() ;
+        }
+        @WebMethod
+        public int[] nextN(final int n){
+                final int k  = (n > maxRands) ? maxRands : Math.abs(n);
+                int[] rands = new int[k] ;
+                Random r = new Random() ;
+                for(int i = 0 ; i < k ; i++){
+                        rands[i] = r.nextInt() ;
+                }
+                return rands ;
+        }
+}
+
+
+
+/**************************
+Here we implement our Implementation of the webservice
+to be published.
+This is also our service/proxy code ....
+Java 1.6 and later provides the class:
+
+
+
+
+        
+        Endpoint
+*************************/
+
+
+package rand;
+
+import javax.xml.ws.Endpoint;
+public class RandPublisher{
+        public static void main(String[] args){
+                final String url = "http://localhost:8888/rs" ;
+                System.out.println("Pubishing RandService at endpoint" + url) ;
+                Endpoint.publish(url, new RandService()) ;
+        }
+}
+
+
+^^^
+The publish method used here takes two arguments:
+        *       a URL that specifies the service endpoint
+        *       The establishment of the Endpoint via the
+                Service enpoint URL and an instance of the 
+                actual service(The POJO that is our service)
+
+
+Run the code:
+-------------------------------------------
+> java rand.RandPublisher 
+
+^^^^Pay attention to the output from running this 
+code ...
+
+Our JAX-B artifacts representing our 
+incomming and outgoing SOAP requests
+and responses respectively...
+=====================================
+We know should have wrapper classes around
+our two service methods:
+
+        *Next1
+        *NextN
+
+Use curl to test your services
+---------------------------------
+#curl request that asks
+#for the XML Schema associated with this
+#service; the schema, like the
+#JAX-B artifacts is generated dynamically
+#Or you can also do this in a web-browser
+> curl http://localhost:8888/rs?xsd=1
+<!--
+ Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. 
+-->
+<xs:schema xmlns:tns="http://rand/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://rand/">
+<xs:element name="next1" type="tns:next1"/>
+<xs:element name="next1Response" type="tns:next1Response"/>
+<xs:element name="nextN" type="tns:nextN"/>
+<xs:element name="nextNResponse" type="tns:nextNResponse"/>
+<xs:complexType name="nextN">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="nextNResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="next1">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="next1Response">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+
+
+
+^^^^
+The schema will be studied carefully later.
+For now, the point of interest is that the schema
+provides a data type for each SOAP message that travels
+in either direction, between the service and the client.
+
+Each message is of an XML schema:
+
+        complextType
+
+as opposed to a simple type such as :
+
+        xsd:date
+        xsd:string
+        xsd:integer
+
+In our servicde there are two SOAP messagess
+per web service operation:
+
+        Next1
+        Next1Response
+
+        NextN
+        NextNResponse
+
+The complextType definitions from our
+Service schema...detailing the spec for
+our service requests and repsonses
+=============================================        
+
+<xs:complexType name="nextN">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="nextNResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="next1">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="next1Response">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+
+
+The XML Schema types such as:
+
+        Next1
+        -and-
+        Next1Response
+
+are the XML counterparts to the Jax-B
+artifacts, noted earlier, with the same names.
+The schema types and the JAX-B types
+together allow the SOAP libraries to 
+transform Java objects into XML documents
+(in particular, SOAP envelope instnaces) and 
+SOAP Envelope instances into Java ojbects.  The
+Endpoint publisher's underlying SOAP libs 
+hand the gneerateion of the JAX-B artifacts and the
+generation of the XML Schema.....
+
+
+
+
+
