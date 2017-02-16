@@ -48,16 +48,86 @@ defines an operation  by placing messages items
 in a specific order...
 
 
+element : Bindings
+--------------------------------------------------
+The binding sections, which provide implementation
+details such as teh transport used
+in the service:
+
+        *HTTP
+        *SMTP
+        *etc
+
+By default, Java generates a single binding section but
+dotNet generates two:
+
+        *SOAP 1.1
+        *SOAP 1.2
+
+
+element : service
+--------------------------------------------------
+The last section , named "service", brings all of the
+previous details together to define key attributes such
+as the:
+
+        "service endpoint"
+
+which is the URL at which the service can be accessed.
+Nested in the service element are one or more port
+sub-elements, where a portType pluse a binding
+is described:
+
+
+        <service>
+                <port>  portType + binding </port>
+        </service>
+
+As there is on ly one portType in a WSDL, the number
+of port subelements equals the number of binding elements
+
+
+
+The most verbose/largest/busiest section of a wsdl
+=========================================================
+        *HTTP
+        *SMTP
+        *etc
+
+
+
+
 Quick Summary So far....:
 --------------------------------
-<definitions>
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/
+             xmlns:tns="http://rand/
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             targetNamespace="http://rand/"
+             name="RandServiceService">
         <types>
+                <xsd:schema>
+                        <xsd:import namespace="http://rand/" schemaLocation="http//localhost:9999/rs?xsd=1">
+                     </xsd:import>   
+                </xsd:schema>
+      
         </types>
-        <messages>
-        </messages>
+        <message name="next1>
+                <part name="parameters" element="tns:next1"></part>
+        </message>
+         <message name="nextM>
+                <part name="parameters" element="tns:nextN"></part>
+        </message>
         <portType>
+        ........
+        .....
         </portType>
 </definitions>
+
+
+
+
 
 
 ------------------------------------------------------
