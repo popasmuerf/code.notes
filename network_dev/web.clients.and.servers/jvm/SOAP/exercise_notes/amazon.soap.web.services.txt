@@ -1,0 +1,33 @@
+The WSDL Service Contract in Detail
+====================================================
+          Encode          Encode
+          ----->          ----->
+Java types      XML Schema      Ruby types
+          <----- types    <-----
+          Decode          Decode
+
+The WSDL Service Contract in Detail
+=============================================
+
+
+SOAP-Based Clients Against Amazon's E-Commerce Service
+Amazon's E-Commerce Service
+=============================================================
+
+Amazo's SOAP-based clients uses a "handler"
+------------------------------------------------
+Java code that has access to every outgoing
+and incoming SOAP message.  In the case of Amazon,
+the handler's job is to inject into the 
+SOAP request the authentication information that
+Amazon requires, in particular a diegst based on 
+the "secretKey" used in both of the 
+RESTful clients.
+
+
+We shall also rely on wsimport generated classes
+================================================
+http:webservices.amazon.com/AWSECommerceService/AWSECommerceService.wsdl
+
+
+> wsimport -p awse -keep http:webservices.amazon.com/AWSECommerceService/AWSECommerceService.wsdl  -b custom.xml
