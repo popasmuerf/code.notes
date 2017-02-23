@@ -139,6 +139,25 @@ public class MutableInteger{
         public synchronized void set(int value){this.value = value;}      
 }
 
+
+Note: @Guarded and @GuardedBy(<lock>)
+==============================================
+http://jcip.net/annotations/doc/net/jcip/annotations/GuardedBy.html
+The field or mehtod to which this annotation is applied can
+only be accessed when holding a particular lock, which
+may be a built-in(synchronization) lock, or may be 
+and explicit  java.util.concurrent.Lock.  The argumenht which
+lock guards the annotated field or method:
+
+        *this
+        *class-name.this
+        *itself
+        *field-name
+        *class-name.field-name
+        *method-name()
+        *class-name.class
+
+
 ExecutorService
 ==============================================
 ExecutorService was introduced in Java SE 5.0, on of the most ground breaking Java updates when it comes to concurrency.
