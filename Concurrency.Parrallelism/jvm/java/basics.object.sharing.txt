@@ -67,6 +67,23 @@ registers, and permits CPUs to reorder operations and cache
 values in processor-specific caches....so it is not 
 always a good idea to synchronize everything....
 
+
+
+NoVisibility
+===================================================
+NoVisibility is about as simple as a concurrent
+program can get---two threads and two shared variables
+and yet it is still all too easy to come to the wrong
+conclusions about what it does or even whether it will
+terminate.  Reasonsing about insufficiently synchronized
+concurrent programs is prohibtively difficult.
+
+This may all sound scary, and it should.  Fortunately,
+there is an easy way to avoid these complex
+issues: Always use the proper synchronization whenever
+data is shared across threads.
+
+
 -----------------Code---------------------------
 public class NoVisibility{
         private static boolean ready ;
@@ -85,6 +102,41 @@ public class NoVisibility{
                 number = 42 ;
                 ready = true ;
         }
+}
+
+Stale Data
+====================================================
+        *       Unless synchronization is used
+                every time a variable is accessed,
+                it is possible to see a stale
+                value for that variable.
+        *       Staleness is not all-or-nothing:
+                a thread can see an up-to-date value of
+                one variable but a stale value of aother
+                variable that was written first
+        *       Stale values can have disasterous affects
+                in mission critical software
+        *       Reads without synchronization is analogus
+                to using READ_UNCOMMITTED isolation level
+                in a database, where you are willing
+                to trade accuracy for performance
+
+
+-----------------Code---------------------------
+@NotThreadSafe
+public class MutableInteger{
+        private int value ;
+        public int get(){return value;}
+        public void set(int value){this.value = value;}      
+}
+
+        //As opposed to
+
+@ThreadSafe
+public class MutableInteger{
+        @GuardedBy("this")private int value ;
+        public synchronized int get(){return value;}
+        public synchronized void set(int value){this.value = value;}      
 }
 
 ExecutorService
