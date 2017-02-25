@@ -1,0 +1,44 @@
+Docker images and containers
+========================================
+The docker engine provides the core Docker technology
+that enables images an containers. 
+
+//syntax
+
+> docker run hello-world
+
+
+^^^Whats going on here ?
+================================================
+	*	docker
+		-------------------------
+		Tells your OS that you
+		are using the docker progam
+
+	*	run
+		-------------------------
+		A subcommand that creates and
+		runs a docker container
+
+	*	hello-world
+		-------------------------
+		Tells docker which image to load
+		into the container
+
+What is an image ?
+----------------------------------------------------------
+A image is a filesystem and parameters to use at runtime.
+It doesn't have a state and neer changes.
+
+What is a container?
+------------------------------------------------------------
+A container is a running instance of an image
+
+
+What docker is doing....
+--------------------------------------------------------------
+	* Checks to see if you had  the hello-world image stored locally
+	* If there is no local image of hello-world....it downloads one
+	  from docker-hub if it exists
+	* After retrieving the image, then docker loads the image into
+	  the containter and runs it.
