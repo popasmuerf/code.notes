@@ -1,0 +1,33 @@
+Use of Elements vs. Attributes
+============================================
+Data can be stored in child elements
+or in attributes.  In XML, there are no
+rules about when to use attributes, and 
+when to use child elements:
+
+
+
+<person sex="female">
+  <firstname>Anna</firstname>
+  <lastname>Smith</lastname>
+</person>
+
+        -OR-
+
+<person>
+  <sex>female</sex>
+  <firstname>Anna</firstname>
+  <lastname>Smith</lastname>
+</person>
+
+
+
+There are no rules in XML to when to use
+attributes or when to use child elements
+for denoting values
+========================================
+I have found it best practice to use attributes
+in HTML but elements for XML...we should avoid
+using attributes when data actually feels like
+data, and not an attribute or charactersitic 
+of something

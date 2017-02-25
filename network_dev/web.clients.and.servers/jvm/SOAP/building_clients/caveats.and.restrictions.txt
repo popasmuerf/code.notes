@@ -1,0 +1,211 @@
+https://www.ibm.com/developerworks/library/ws-javaclient/
+
+According to IBM, there are some restrictions
+we should be aware of....
+==============================================
+
+If we wish to run a simple Java web service cleint
+outside of any JEE container, you must 
+generate the web service client into a simple Java
+project.  Apparently Eclipse's web service wizard
+is unable to create a simple Java project.  The closest
+Eclipse can manage is creating a utility project, however
+this is not supported   We must create a simple Java
+project befrore running the web service client wizard.
+
+Artifact 
+====================================================
+http://graphical.weather.gov/xml/SOAP_server/ndfdXMLserver.php?wsdl
+
+
+http://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl
+
+
+http://graphical.weather.gov/xml/
+
+
+Invoking web services with Java clients
+=================================================
+The power of web services is ineroperability.  Thanks
+to industry collaboration on the web services technologies
+        *       SOAP
+        *       WSDL
+        *       UDDI
+and more specificially, thanks to the work of
+the Web Services Interoperability organization
+(WS-I.org), a web service cna interact with
+any other web service, no matter which platofrm
+the web service is developed and run on(be it .NET or
+IBM WebSphere).
+
+
+
+
+
+WSDLs describe web services that are registered
+to a Universal Description, Discovery and Integration
+(UDDI) registery.
+====================================================
+        *       A web service requester finds
+                the web service in the UDDI registry
+                and hten bind to the web service, and
+                invokes it.
+
+        Service requester <--find---> Service Registry 
+        |                               |
+        |                               |
+        |                              publishes
+        |                               |
+        |                               |
+        |--------binds-------------->Service 
+        
+
+
+Web servies standards for Java
+=====================================================
+The development of Java technology standards 
+occurs through Java Specfication Requests(JSRs)
+being submitted to the Java communty Process(JCP)
+Two JSRs cover the Java web services architecture:
+
+        1.      JSR 101: Java API for XML based RPC(JAX-RPC)
+        2.      JSR 109: Implementing Enterprise Web Services
+
+JAX-RPC
+=====================================================
+JAX-RPC defines a simple and easy-to-use Java Application
+Programming Interface(API) for XML-based Remote Procedure
+Calls(RPC) and the Java to XML and XML to Java mapping:
+
+        *       WSDL to java and java to WSDL mappings:
+                        -       For example, a WSDL
+                                port type is maapped
+                                to a Java Service Endpoint
+                                Interface(SEI)
+        *       XML data type to Java data type and Java
+                data type to XML data type mappings,
+                including simple types, complext types,
+                and arrays
+
+JSR 109
+======================================================
+JSR 109 specifies the web services programming model
+and architechture for the Java 2 Enterprise Edition(J2EE)
+enviroment.  JSR 109 builds on SOAp1.1 and WSDL 1.1
+to cover the use of JAX-RPC in a J2EE enviroment. 
+It also defines a deployment model to J2EE application
+servers.  JSR 109's client-side programming model,
+which we will cover later.
+
+
+
+Service lookup
+=======================================================
+There are two families of clients, which differ in the 
+way the code is written, packaged, and the way they
+are invoked:
+
+1.      Unmanaged clients
+2.      J2EE cotainer-managed clients
+
+
+Here, unmanaged means the absense of a JEE container
+managed.  Both types are J2SE and are invoked with
+a simple java command.  
+
+For unmanaged clients, the service lookup is
+through the :
+
+        JAX-RPC ServiceFactory
+
+...a factory for the creation of instances of services
+access points.  For J2EE container-managed clients, service
+lookup is through JNDI lookup.
+
+
+ServiceFactory
+===============================
+JSR-101: "The JAX-RPC ServiceFactory is the standard
+way to look up web services in a J2SE enviroment"
+
+https://www.ibm.com/developerworks/library/ws-javaclient/
+
+
+The JAX-RPC ServiceFactory
+===================================
+The JAX-RPC ServiceFactory is an abstract
+class which acts as a factory for
+instantiating JAX-RPC Services.  It is vendor
+independent and lets you write portable
+code.  TheServiceFactory is instantiated and
+used as follows:
+
+        javax.xml.rpc.Service service = ServiceFactory.newInstance().createService(....) ;
+
+
+^^^  You need to pass the fully qualified name of the
+web service, that is...the namespace plus service name,
+to the method:
+
+        createService(....) ;
+
+The Steps are as follows:
+---------------------------------------
+1.      Optionally, specif the WSDL URL
+2.      Specify the web service's fully qualified name
+3.      Invoke ServiceFactory's createService() method
+
+
+What do we do with the Service Interface  now ?
+==========================================
+        *       get a stub/dynamic proxy
+                -or-
+        *       Dynamic Invokation Interface(DII)
+
+Listing 1 whos how to use the ServiceFactory to 
+instantiate a JAX-RPC Service.  QName
+is a javax.xml.namespace.QName.
+
+
+//code:
+
+String wsdlURL = "http://graphical.weather.gov/xml/SOAP_server/ndfdXMLserver.php?wsdl";
+String namespace = ""http://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl"";
+String serviceName = "WeatherService" ;
+QName serviceQN = new QName(namespace, serviceName) ;
+ServiceFactory serviceFactory = ServiceFactory.newInstance() ;
+/* The "new URL(wsdlURL)" parameter is optional */
+Service service = serviceFactory.createService(new URL(wsdlURL),serviceQN) ;
+
+
+JNDI service lookup
+=================================================
+JEE container-managed clients are packaged into Enterprise
+Archives (.EAR) files and run from inside a
+JEE container.  In addition to the Java code, descriptors
+are also packaged into the archive.  Serveral different types
+of JEE container-managed clients.
+
+What are QNames ?
+======================================
+QNames were introduced by XML Namespaces in
+order to be used as URI references.  QName
+stands for "qualified name" and defines
+a vaid identifiter for elements and 
+attributes.  QNames are generally
+used t referene particular elements or
+attributes within XML documents.        
+
+
+
+
+
+
+
+
+                     
+             
+
+        
+
+

@@ -1,0 +1,600 @@
+What is REST
+
+
+REST came about in Roy Fielding's PhD
+dissertation
+====================================================
+Author of HTTP 1.1
+Co-Founder of the Apache Foundation
+
+
+REST and SOAP are quite different
+=======================================
+SOAP is a messaging protocol in which the messages
+are XML documents, whereas REST is a style of software
+architecture for distributed hypermedia systems
+or systems in which text, graphics, audio, and
+other media stored across a network and 
+interconnected through hyperlinks..you know..
+like the World Wide Web.
+
+In REST...HTTP requests and responses ARE THE MESSAGES.
+
+
+Status code     In English      Meaning
+===========     ==========      =========
+200             Ok              Request OK
+303             See Other       Redirect
+400             Bad Request     Request malformed
+401             Unauthorized    Authentication error
+403             Forbidden       Request refused
+404             Not Found       Resource not Found
+405             Method Not      Method not supported
+                Allowed 
+415             Unsupported     Content type not
+                Media Type      Recognized
+500             Internal        Rquest processing failed
+                Server Error
+
+Payloads of HTTP
+==================================
+Can be typed using the MIME(multi-purpose internet mail extension
+) type system:
+        *       text/html
+        *       application/octet-stream
+        *       audio/mpeg3
+
+
+
+
+client                          server
+
+HTTP Requests <---------------->HTTP Responses
+=============                   =================
+POST:Create                     MIME-typed representations
+GET:Read                        GET:HTML page with my hacker bio
+PUT:Update                      GET:Short video of major disasters
+DELETE:Delete                   PUT:Plain text acknowledgement of update
+                                POST:Fancy HTML acknowloedgement of
+                                     of resource creation
+
+
+HTTP verbs and their CRUD operations
+==========================================
+HTTP verb       CRUD operation
+--------        ---------------
+POST            Create
+GET             Read
+PUT             Update
+DELETE          Delete
+
+
+Note: Modern browsers and HTTP verbs
+===========================================
+Modern browsers generate only GET and POST
+requests.  If a user enters a URL inot
+the browser's  input window, the
+browser generates a GET rquest.  A browser
+oridinarily genertes a POST request for an HTML
+form with a submit button on a for
+
+HTTP response codes
+===================================
+Web services all evovedfrom teh RPC(Remote Procedure Call)
+mechanism in DCE(Distributed Computing Enviroment), a 
+framework for software development from the early
+1990s.  DCE includes a distributed filesystem
+(DCE/DFS) and a Kerberos-based authentication system.
+
+DCE has it's origins in the Unix world, Microsoft quickly
+did its own implementation known as MSRPC, which
+in turn served as the infrastructure for interprocess
+communication in Windows.
+
+DCE/RPC is technically language/platform independent...
+but it is strongly tilted towards C in practice.
+
+DCE/RPC includes utilities for generating client and server
+artifacts(stubs and skeletons, respectively).
+
+IDL (interface Definition Language) document that acts
+as the service contract and is an input to utilities
+that generate artifacts in support of the DCE/RPC cals.
+
+/*echo.idl*/
+[uuid(2d6ead46-053e-11ca-7dd1-426909beabcd)]
+interface echo {
+        const long int ECHO_SIZE = 512;
+        void echo(
+                [in] handle_t h,
+                [in, string] idl_char from client[],
+                [out,string] idl_char from_server[ECHO_SIZE]
+        );
+}
+
+
+
+The IDL interface named echo, indentified with  a
+machine-generated UUID(Universally Unique IDentifier),
+delcares a single function with the same name, echo.
+The names are arbitrary and need not be the same.  The echo functon exp
+The names are arbitrary and need not be the same.
+
+
+IDL is more or less C syntax.
+IDL documents are the precursors of the WSDL
+document that provides a formal specification of a
+web service and its operations.
+
+
+A Microsoft twist to IDL
+================================================
+An ActiveX contrl under Windows is a 
+DLL(Dynamic Link Library) with an embedded typelib,
+which in turn is a compiled IDL file.
+
+An ActiveX contorl is a chunk of software that embeds its
+own interface.  This is yet another inspired local use
+of a technology designed for distributed computing.
+
+
+
+
+The late 90's
+========================-======
+Dave Winer of UserLand Software came up
+with devloped XML-RPC, a technology innovation that
+has a good a claim as any to mark the birth of web
+services.  XML-RPC is a very lightweight RPC system
+with support for elementary data types(basically,
+the built-in C types together with a boolean and a
+datetime type) and few simple commands.  The original
+specification is about seven pages in 
+length.
+
+
+XML-RPC marshalling/unmarshalling
+----------------------------------------------
+marshalling/unmarshaling achieves 
+language neutraligy and reliance on HTTP
+and later SMTP for transport.
+
+The term "marshaling" refers to the conversion
+of an in-memory object(like a POJO) to some other
+format(XML document); whereas unmarshaling is the inverse
+of this process...generating an in-memory object from some 
+platform agnostic format.
+
+Wordpress and O'Reilly open-wire Meerkat services
+use XML-RPC
+
+
+Key differences that separate XML-RPC and DCE/RPC
+===================================================
+*XML-RPC transport uses HTTP rather than  a proprietary
+application level communication protocol
+
+*To support XML-RPC, a programming language rquires
+only a standard HTTP library together with liberaries
+to generate, parse, transform and other wise process
+XML.
+
+
+As an RPC Technology, XML-RPC supports the 
+request/response pattern.
+===================================================
+In the example below, the XML request to invoke,
+on a remote mahcine, the Fibonacci function with an argument
+of 11.  This argument is passed as a 4-byte integer,
+as the XML start tag "<i4>" indicates:
+
+<?xml version="1.0">
+<methodCall>
+        <methodName>fib</methodName
+        <params>
+                <param>
+                        <value>
+                                <i4>11</i4>
+                        </value>
+                </param>
+        </params>
+</methodCall>
+
+*XML-RPC payloads are text, whereas DCE/RPC payloads
+are binary.  Text is relatively easy to inspect and 
+process with standard, readily available tools such as
+editors and parsers.
+
+
+The integer 11 occurs in teh XML-RPC message as text.  An
+XML-RPC library on the recieving end needs to extract 11
+as text and then convert the text into 4-byte integer
+in the reciveing language such as 
+Go or Java.  
+
+XML-RPC is deliberately low fuss andlightweight.  SOAP,
+an XML dialect derived straight from XML-RPC, is considerably
+heavier in weight.  From it's inception, XML-RPC faced competition
+from second generation DOA systems such as :
+
+        *       Java  EE
+        *       ASP.NET
+
+
+DOA(Distrubted Object Architecture: A Java  Example)
+==============================================================
+What are the advantages of webservers over DOA tech
+such as Java RMI ?  
+
+Java RMI (Including the Session and Entiry EJB constructs)
+---------------------------------------------------------
+Java RMI and DotNet Remoting are examples of second
+generation distributed object systems.  Consider what a Java
+RMI client requeires in order to invoke a mehto delared
+in a service interface such as this:
+
+///code
+import java.util.List;
+public interface BenefitsService extends java.rmi.Remote{
+        public List<Benefit> getBenefits(Emp emp) throws RemoteException; 
+}
+
+
+What's going on here ?
+------------------------------------------------------
+            BenefitsService stupid download
+RMI     <------------------------------------- RMI
+Client                                         Server                 
+
+
+
+Once the stub setup is done, the getBenefits method
+is executed as a stube method; that is, the stub
+acts as the client-side objet making a remote3
+method call through one of stub's encapsulatedd
+
+The call thus has the following syntax:
+
+Emp fred = new Emp() ;
+//....
+List<Benefit> benefits = rmStub.getBenefits(fred) ;
+
+
+Invoking the getBenefits method requires that
+the byte codes for various Java classes, standard and
+programmer-defined, be availbel on the client
+machine. 
+
+
+Java RMI uses proprietary marshaling/unmarshaling and proprietary
+transport, and dotNet does the same.  There are 3rd-party libs
+for interoperability between the two
+frameworks...Yet Java RMI service can be expected to
+have mostly java clients, and a dotNet Remoting service
+can be expected to ahve mostly dotNet clients.  Web services
+represent a move toward standardization, simplicity and \
+interoperability.
+
+
+
+
+
+Web Services to the Rescue..
+==============================================
+Web services simplify matters in distributed computing.
+For one thing, the client and service typically
+exchange XML or equivalent documents, that is; that is
+text.  If needed,non-text bytes can be persisted, and 
+otherwise processed using readily available, nonproprietary,
+and often free tools.  Each side; client and service,
+simply needs a local software library that binds
+language-specific types such aas the java String type to
+XML schema or comparable types, this case xsd:string
+
+
+
+
+
+Notes about xsd and types
+================================
+here :
+
+        <xsd:string> 
+
+is a generic type of the xsd namespace....
+not a dotNet "string" or Java "String"
+
+
+non-Java                 convert to       convert to  Java
+types    ---------------> XML------------->Java-------types
+
+
+
+
+
+M$ COM/OLE(Common Object Model/Object Linking and Embedding)
+technologies and services were build on DCE/RPC
+foundation.
+
+
+
+The first-generation frameworks for distributed object
+systems:
+
+        *       CORBA(Common Ojbect Request Broker Architecture)
+        *       DCOM(Microsofts Distributed COM) 
+        *       Java RMI(remote method invocation)
+                (especally in Session and EJBs they
+                 are both RMI calls)
+
+are all anchored in the DCE/RPC proceudral framework.
+
+
+aslo
+JAX-WS Hello World Example -- RPC Style....
+==============================================
+
+JAX-WS is bundled with JDK 1.6, which makes Java web
+service development easier to develop.  This
+tutorial shows you how to do the following tasks:
+
+1.      Create a SOAP-based RPC style web service
+        endpoint by using JAX-WS.
+2.      Create a Java web service client manually.
+3.      Create a Java web service client via 
+        wsimport tool.
+4.      Create a Ruby web service client
+
+
+Lolgz What? : Mkyong says I will be very suprised
+how simple it is to develop a RPC style web
+service in JAX-WS...challenge accepted Mkyong....
+challenge accepted..my man...
+
+
+Note:
+================================================
+In general phrases like : "web service endpoint" is a
+service which published outside for users to access;
+
+
+
+where "web service client" is the party who accesses
+the published service.
+
+JAX-WS Web Service End Point
+==================================================
+The following steps showing how to use
+JAX-WS to create a RPC style web service endpoint
+
+
+1.Create a Web Service Endpoint Interface
+-------------------------------------------------
+//code for Endpoint Service Endpoint Interface (SEI)
+package com.mikeyb.ws ;
+
+import javax.jws.WebMethod ;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding ;
+import javax.jws.soap.SOAPBinding.Style ;
+
+@WebService
+@SOAPBinding(style = Style.RPC)
+public interface HelloWorld{
+        @WebMethod String getHelloWorldAsString(String name);
+
+2.Create a Endpoint Publisher
+-------------------------------------------------
+package com.mikeyb.endpoint ;
+
+import javax.xml.ws.Endpoint ;
+import com.mkyong.ws.HelloWorldImpl ;
+
+//Endpoint publisher
+public class HellWorldPublisher{
+        public stgatic void main(String[] args){
+                Endpoint.publish("hettp://localhost:9999/ws/hello", new HelloWorld()) ;
+        }
+}
+
+
+}
+
+
+
+Artifacts
+====================================================
+http://graphical.weather.gov/xml/SOAP_server/ndfdXMLserver.php?wsdl
+
+
+http://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl
+
+
+http://graphical.weather.gov/xml/
+
+
+Invoking web services with Java clients
+=================================================
+The power of web services is ineroperability.  Thanks
+to industry collaboration on the web services technologies
+        *       SOAP
+        *       WSDL
+        *       UDDI
+and more specificially, thanks to the work of
+the Web Services Interoperability organization
+(WS-I.org), a web service cna interact with
+any other web service, no matter which platofrm
+the web service is developed and run on(be it .NET or
+IBM WebSphere).
+
+
+
+
+
+WSDLs describe web services that are registered
+to a Universal Description, Discovery and Integration
+(UDDI) registery.
+====================================================
+        *       A web service requester finds
+                the web service in the UDDI registry
+                and hten bind to the web service, and
+                invokes it.
+
+        Service requester <--find---> Service Registry 
+        |                               |
+        |                               |
+        |                              publishes
+        |                               |
+        |                               |
+        |--------binds-------------->Service 
+        
+
+
+Web servies standards for Java
+=====================================================
+The development of Java technology standards 
+occurs through Java Specfication Requests(JSRs)
+being submitted to the Java communty Process(JCP)
+Two JSRs cover the Java web services architecture:
+
+        1.      JSR 101: Java API for XML based RPC(JAX-RPC)
+        2.      JSR 109: Implementing Enterprise Web Services
+
+JAX-RPC
+=====================================================
+JAX-RPC defines a simple and easy-to-use Java Application
+Programming Interface(API) for XML-based Remote Procedure
+Calls(RPC) and the Java to XML and XML to Java mapping:
+
+        *       WSDL to java and java to WSDL mappings:
+                        -       For example, a WSDL
+                                port type is maapped
+                                to a Java Service Endpoint
+                                Interface(SEI)
+        *       XML data type to Java data type and Java
+                data type to XML data type mappings,
+                including simple types, complext types,
+                and arrays
+
+JSR 109
+======================================================
+JSR 109 specifies the web services programming model
+and architechture for the Java 2 Enterprise Edition(J2EE)
+enviroment.  JSR 109 builds on SOAp1.1 and WSDL 1.1
+to cover the use of JAX-RPC in a J2EE enviroment. 
+It also defines a deployment model to J2EE application
+servers.  JSR 109's client-side programming model,
+which we will cover later.
+
+
+
+Service lookup
+=======================================================
+There are two families of clients, which differ in the 
+way the code is written, packaged, and the way they
+are invoked:
+
+1.      Unmanaged clients
+2.      J2EE cotainer-managed clients
+
+
+Here, unmanaged means the absense of a JEE container
+managed.  Both types are J2SE and are invoked with
+a simple java command.  
+
+For unmanaged clients, the service lookup is
+through the :
+
+        JAX-RPC ServiceFactory
+
+...a factory for the creation of instances of services
+access points.  For J2EE container-managed clients, service
+lookup is through JNDI lookup.
+
+
+ServiceFactory
+===============================
+JSR-101: "The JAX-RPC ServiceFactory is the standard
+way to look up web services in a J2SE enviroment"
+
+https://www.ibm.com/developerworks/library/ws-javaclient/
+
+
+The JAX-RPC ServiceFactory
+===================================
+The JAX-RPC ServiceFactory is an abstract
+class which acts as a factory for
+instantiating JAX-RPC Services.  It is vendor
+independent and lets you write portable
+code.  TheServiceFactory is instantiated and
+used as follows:
+
+        javax.xml.rpc.Service service = ServiceFactory.newInstance().createService(....) ;
+
+
+^^^  You need to pass the fully qualified name of the
+web service, that is...the namespace plus service name,
+to the method:
+
+        createService(....) ;
+
+The Steps are as follows:
+---------------------------------------
+1.      Optionally, specif the WSDL URL
+2.      Specify the web service's fully qualified name
+3.      Invoke ServiceFactory's createService() method
+
+
+What do we do with the Service Interface  now ?
+==========================================
+        *       get a stub/dynamic proxy
+                -or-
+        *       Dynamic Invokation Interface(DII)
+
+Listing 1 whos how to use the ServiceFactory to 
+instantiate a JAX-RPC Service.  QName
+is a javax.xml.namespace.QName.
+
+
+//code:
+
+String wsdlURL = "http://graphical.weather.gov/xml/SOAP_server/ndfdXMLserver.php?wsdl";
+String namespace = ""http://graphical.weather.gov/xml/DWMLgen/wsdl/ndfdXML.wsdl"";
+String serviceName = "WeatherService" ;
+QName serviceQN = new QName(namespace, serviceName) ;
+ServiceFactory serviceFactory = ServiceFactory.newInstance() ;
+/* The "new URL(wsdlURL)" parameter is optional */
+Service service = serviceFactory.createService(new URL(wsdlURL),serviceQN) ;
+
+
+JNDI service lookup
+=================================================
+JEE container-managed clients are packaged into Enterprise
+Archives (.EAR) files and run from inside a
+JEE container.  In addition to the Java code, descriptors
+are also packaged into the archive.  Serveral different types
+of JEE container-managed clients.
+
+What are QNames ?
+======================================
+QNames were introduced by XML Namespaces in
+order to be used as URI references.  QName
+stands for "qualified name" and defines
+a vaid identifiter for elements and 
+attributes.  QNames are generally
+used t referene particular elements or
+attributes within XML documents.        
+
+
+
+
+
+
+
+
+                     
+             
+
+        
+
+
