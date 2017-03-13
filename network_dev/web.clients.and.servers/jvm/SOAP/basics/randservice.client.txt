@@ -1,0 +1,301 @@
+Clients Against the RandService
+====================================================
+          Encode          Encode
+          ----->          ----->
+Java types      XML Schema      Ruby types
+          <----- types    <-----
+          Decode          Decode
+
+Publishing SOAP-Based Web Services with 
+a StandAlone Web Server
+=============================================
+Publishing a @WebService with tomcat or jetty is 
+almost the same as publishing a @WebServiceProvider
+(@WebServiceProvider is for REST service publishing
+when using stand alone web servers)
+
+
+A Java Client Against the RandService.
+==============================================
+Recall the XML Schema that the Endpoint
+publisher generates dynamically when the 
+RandService is published.  The publisher likewise
+generates a WSDL, which can be request as follows:
+
+> curl http://localhost:8888/rs?wsdl
+
+Quick reminder..about getting some
+useful xml from a local/remote SOAP
+service
+=============================================
+###Service Schema
+> curl http://localhost:8888/rs?xsd
+####WSDL
+> curl http://localhost:8888/rs?wsdl
+
+
+What can we do with this wsdl ?
+======================================
+We can generate a client from it...
+as of Java 1.6...we have this thing
+called "wsimport"
+
+####Generating client code from
+####the command line
+
+> wsimport -p client -keep http://localhost:9999/rs?wsdl
+
+
+
+^^^Breakdown of this command :
+=======================================
+"-p <package-name>"
+----------------------------------
+Generates a package for the client
+within the project...
+
+"-keep <url for wsdl>"
+----------------------------------
+Will ensure that both *.class
+and corresponding *.java source
+files are produced.....
+
+
+wsimport generates Java classes that
+correspond with the types available within
+our service schema....
+=======================================
+our complexTypes are present in the 
+"client" package.....
+--------------------------
+        * Next1
+        * Next1Response
+
+
+
+//Code for our client...
+
+import client.RandServiceService;
+import client.RandService ;
+import java.util.List ;
+
+public class RandClient{
+        public static void main(String[] args){
+                RandService service = new RandService() ;
+                RandService port = service.getRandServicePort() ;
+                System.outprintln(port.next1());
+                System.out.println() ;
+                List<Integer> nums = port.nextN(4) ;
+                for(Integer num : nums) System.out.println(num) ;
+        }
+}
+
+^^^^BreakDown
+==========================================
+The RandClient imports two types from the wsimport-generated
+artifacts:
+--------------------------------------------------
+        * RandServiceService (class)
+        * RandService (interface)
+
+In the setups phase of the client code,
+the class's no-argument construcotr is invoked
+to create an object tht represents, on the client side, the
+service itself:
+        //remote service
+        RandServiceService service = new RandService() ;
+
+        //return a reference to an object that
+        //encapsulates the operations in RandService
+        // next1 and nextN
+        //the port is basically a proxy object of
+        //the service...maybe the also call this
+        //a service "stub"
+        RandService port = service.getRandServicePort()
+        int number = port.next1() ;
+
+Quick Review:
+--------------------
+So client side...I need to do two things before anyting else:
+        *       Get a representation of the remote service
+        *       From that remote service object...get 
+                The service object....
+        *       Now get to work...
+        
+
+
+
+
+
+
+
+The following web.xml will work for any
+implementation annotated as:
+
+        *       @WebService 
+                -or-
+        *       @WebServiceProvider
+
+
+
+<?xml version "1.0" encoding="UTF-8"?>
+<web-app>
+        <listener>
+                <listener-class>
+                        com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+                </listener-class>
+        </listener>
+        <servlet>
+                <servlet-name>
+                        jaxws
+                </servlet-name>
+                <servlet-class>
+                        com.sun.xml.ws.transport.http.servlet.WSServlet
+                </servlet-class>
+                <load-on-startup>1</load-on-startup>                
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>
+                        jaxws
+                </servlet-name>
+                <url-pattern>
+                        /*
+                </url-pattern>
+        </servlet-mapping>
+
+</web-app>
+
+
+The Metro classes :
+------------------------------------------------
+
+        WSServletContextListener
+
+                -and-
+        WSServlet 
+
+are in the JAR file
+currently names webservices-rt.jar
+which can be downloaded with the restof the Metro JARs.
+
+
+The following jar files are also required(Metro) :
+-----------------------------------------------------
+
+        webservices-rt.jar
+                -and-
+        webservices-api.jar
+
+The jar files in question should be included withing
+the src directory so whatever build tool you are using
+will include them in the WAR file.
+
+
+How doe we get the service schema from services
+deployed on a standalone server ?
+===============================================
+
+> curl http://localhost:8080/myWarFileName?xsd=1
+
+
+
+Quick Summary
+=======================================
+The RandService combines in a single source file:
+-------------------------------------------------
+        *       Service Endpoint Interface(SEI)
+        *       Service Implementation Bean(SIB)
+
+What purposes does the SEI and SIB
+serve ?
+-------------------------------------
+        *       SEI
+                -----------------
+                High level specification
+                that befits an interface,
+                service ops
+        
+        *       SIB
+                -----------------
+                    -A POJO class such
+                     as RandService annotated
+                     as @WebService and ecapsulating
+                     service operations, each 
+                     annotated as @WebMethod
+
+                    -A @Stateless Session EJB that
+                     is likewise annotated as
+                     a @WebService.  EJBs in general
+                     predate JAX-WS; hence, this
+                     second type of SIB is an inviting
+                     way to expose legacy EJBs as
+                     web services
+
+Depending on the implementation....SEI and SIB 
+may or may not be implemented within the same class
+
+Summary...
+===========================
+SEB ----> @WebService POJO
+SEI ----> Our service ops interface...(our endpoint plus service?)
+
+
+
+
+Refactored SEI for RandService
+=====================================
+package rand2
+
+import javax.jws.WebSevice ;
+import javax.jws.WebMethod ;
+import java.util.Random ;
+
+@WebService
+public interface RandService{
+        @WebMethod
+        public int next1() ;
+        @WebMethod
+        public int[] nextN(final int n) ;
+}
+
+import javax.jws.WebSevice ;
+import javax.jws.WebMethod ;
+import java.util.Random ;
+
+@WebService(endPointInterface = "rand2.RandService")
+public class RandService {
+    private static final int maxRands = 16 ;
+    @WebMethod
+    public int next1(){
+        return new Random().nextInt() ;
+    }
+    @WebMethod
+    public int[] nextN(final int n){
+        final int k  = (n > maxRands) ? maxRands : Math.abs(n);
+        int[] rands = new int[k] ;
+        Random r = new Random() ;
+        for(int i = 0 ; i < k ; i++){
+            rands[i] = r.nextInt() ;
+        }
+        return rands ;
+    }
+
+}
+
+
+
+^^^
+In the SIB class RandImpl, the @WebService interface has an
+attribute, the key/value pair that names the 
+SEI:
+==========================================================
+endpointInterface = "rand2.RandService"
+
+
+The revised RandServcie has the same functionality as
+the original.  The Endpoint publisher changes slightly:
+==============================================================
+Endpoint.publish(rul, new RandImpl()) ;
+
+
+

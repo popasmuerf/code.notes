@@ -1,0 +1,169 @@
+https://community.oracle.com/docs/DOC-921264
+
+Memory visibility
+===================================================
+        *       A visibility is subtle
+
+        *       Single thread  enviroment if a value
+                is written to variable with no
+                intervening writes, you can expect
+                to get the same value back
+
+        *       Multi-threaded progams makes no
+                guarantee that a thread reading
+                a value written by another 
+                thread on a timely basis or at all
+                (this seems counter intuitive...but
+                not really...as with threads it all
+                comes down to timing which is not
+                deterministic)
+
+        *       In order to ensure visibility of
+                memory writes across threads,
+                we must use synchronization 
+
+            
+
+        
+
+NoVisibility illustration of what can go wrong
+when thereads share data without synchronization.
+==================================================
+Two threads, the main thead and reader thread, acce the shared variables :
+
+        ready
+        number
+
+The main thrad starts the reader thread and then sets
+number to 42 and ready is true, and then prints
+out number.  while it may seem obvous that
+NoVisibility witl print 42, though it is possible it
+will in fact print 0 and never terminate at all!!!
+
+...and thus this code could loop forever because
+the ready flag may never be updated as far as
+ReaderThread is concerned....it could still print out.
+This phenomenon is known as:
+
+        "reordering"
+
+..as there is no guarantee that operations in 
+one thread  will be performed in the order given
+by the program, as long as the reordering is not
+detectable from whith that thread -- even if the 
+reordering is apparent to other threads.  When the 
+main thread writes first to number and then to ready
+without synchronization, the reader thread could see those
+writes happen in the opposite order, or not at all.
+
+Note: Reordering is not a design flaw
+----------------------------------------------
+JVMs are built to take full advantage of the 
+performance of modern multi-process/multi-core
+hardware.  For example, in the absense of
+synchronization, the Java Memory Model permits
+the compiler to reorder operations and cache values in
+registers, and permits CPUs to reorder operations and cache
+values in processor-specific caches....so it is not 
+always a good idea to synchronize everything....
+
+
+
+NoVisibility
+===================================================
+NoVisibility is about as simple as a concurrent
+program can get---two threads and two shared variables
+and yet it is still all too easy to come to the wrong
+conclusions about what it does or even whether it will
+terminate.  Reasonsing about insufficiently synchronized
+concurrent programs is prohibtively difficult.
+
+This may all sound scary, and it should.  Fortunately,
+there is an easy way to avoid these complex
+issues: Always use the proper synchronization whenever
+data is shared across threads.
+
+
+-----------------Code---------------------------
+public class NoVisibility{
+        private static boolean ready ;
+        private static int number ;
+
+        private static class ReaderThread extends Thread{
+                public void run(){
+                        while(!ready)
+                                Thread.yield() ;
+                        System.out.println(number) ;
+                }
+        }
+
+        public static void main(String[] args){
+                new ReaderThread().start() ;
+                number = 42 ;
+                ready = true ;
+        }
+}
+
+Stale Data
+====================================================
+        *       Unless synchronization is used
+                every time a variable is accessed,
+                it is possible to see a stale
+                value for that variable.
+        *       Staleness is not all-or-nothing:
+                a thread can see an up-to-date value of
+                one variable but a stale value of aother
+                variable that was written first
+        *       Stale values can have disasterous affects
+                in mission critical software
+        *       Reads without synchronization is analogus
+                to using READ_UNCOMMITTED isolation level
+                in a database, where you are willing
+                to trade accuracy for performance
+
+
+-----------------Code---------------------------
+@NotThreadSafe
+public class MutableInteger{
+        private int value ;
+        public int get(){return value;}
+        public void set(int value){this.value = value;}      
+}
+
+        //As opposed to
+
+@ThreadSafe
+public class MutableInteger{
+        @GuardedBy("this")private int value ;
+        public synchronized int get(){return value;}
+        public synchronized void set(int value){this.value = value;}      
+}
+
+
+Note: @Guarded and @GuardedBy(<lock>)
+==============================================
+http://jcip.net/annotations/doc/net/jcip/annotations/GuardedBy.html
+The field or mehtod to which this annotation is applied can
+only be accessed when holding a particular lock, which
+may be a built-in(synchronization) lock, or may be 
+and explicit  java.util.concurrent.Lock.  The argumenht which
+lock guards the annotated field or method:
+
+        *this
+        *class-name.this
+        *itself
+        *field-name
+        *class-name.field-name
+        *method-name()
+        *class-name.class
+
+
+ExecutorService
+==============================================
+ExecutorService was introduced in Java SE 5.0, on of the most ground breaking Java updates when it comes to concurrency.
+Despite it being more than a decade old, many developers still facd issues when using htis
+handy interface:
+
+	/* Code */
+
+	ExecutorService pool = new ThreadPoolExecutor(10,10,0L, TimeUnit.Milliseconds), new ArrayBlockingQueue<>(1_000)) ;

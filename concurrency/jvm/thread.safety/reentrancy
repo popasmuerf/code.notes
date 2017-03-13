@@ -1,0 +1,90 @@
+Reentrancy
+===========================================
+When a thread requests a lock that is already held by
+another thread, the rquesting thread blocks.  But
+because intrinsic locks are reentrant, if a thread
+tries to aquire a lock that it already holds...
+
+
+No thread executing a synchronized block can observe
+another thread to be in the the middle of a
+synchronized block guarded by the same lock.
+
+
+
+The machinery of synchronization makes it easy to 
+restore thread safety to the factoring servlet makes
+the service method synchronized, so only one thread may
+enter service at a time.
+
+SynchronizedFactorizer is now therad-safe, this approach is 
+farily extreme since it inhibits multiple clients from using 
+the factoring servlet simultaneously at all
+
+
+//Previous code
+
+@NotThreadSafe
+public class UnsafeCachingFactorizer implements Servlet{
+        private final AtomicReference<BigInteger> lastNumber = new AtomicReference<BigInteger>() ;
+        private final AtomicReference<BigInteger[]> lastFactors = new AtomicReference<BigInteger[]>() ;
+        public void service(ServletRquest req, ServletResponse resp){
+                BigInteger i = extractFromRequest(req);
+                if(i.equals(lastNumber.get())
+                        encodeIntoResponse(resp,lastFactors.get());
+                else{
+                        BigInteger[] factors = factor(i) ;
+                        lastNumber.set(i) ;
+                        lastFactors.set(factors);
+                        encodeIntoResponse(resp,factors) ;
+                }
+        }
+
+}
+
+
+@ThreadSafe
+public class SynchronizedFactorizer implements Servlet{
+        @GuardedBy("this")private BigInteger lastNumber ;
+        @GuardedBy("this")private BigInteger[] lastFactors ;
+
+        public synchronized void service(ServletRequest req, ServletResponse resp){
+                BigInteger i = extractFromRequest(req) ;
+                if(i.equals(lastNumber))
+                        encodeIntoResponse(resp,lastFactors) ;
+                else{
+                        BigInteger[] factors = factor(i) ;
+                        lastNumber = i ;
+                        lastFactors = factors ;
+                        encodeIntoResponse(resp, factors) ;
+                }
+        
+        }
+
+}
+
+
+
+
+How is Reentrancy implemented ?
+========================================
+        *       Associate each lock with an
+                -       acquisition count
+                -       owning thread
+        *       when an acquisition count is zero
+                -       the lock is unheld
+        *       When a thread aquires an unheld lock,
+                -       The jvm records the owner thread
+                -       The jvm increases the count to 1
+                -       If the same thread acquires the same
+                        lock again, the count is incremented
+        *       When the owning thread exits sync block
+                -       count is decremented.
+        *       When the count reaches zero
+                -       the lock is released.
+        *       Note: This differs to how locks behave
+                for pthreads(POSIX threads) mutexes, which
+                are granted on per-invocation basis
+
+Without reeantrancy....the thread-safe code we have seen
+thush far...would deadlock nearly everytime...
