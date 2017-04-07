@@ -70,24 +70,3 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 hello-world         latest              48b5124b2768        6 weeks ago         1.84 kB
 docker/whalesay     latest              6b362a9f73eb        21 months ago       247 MB
 
-
-
-Command: >docker ps -a
-=========================================================
-Returns information regarding what docker containers are running or ran
-at some point: 
-
-
-
-mikeyb@chita-home:~$ docker ps -a
-CONTAINER ID        IMAGE               COMMAND              CREATED              STATUS                          PORTS               NAMES
-379325d05372        docker/whalesay     "cowsay fuck-fuck"   About a minute ago   Exited (0) About a minute ago                       happy_carson
-89a2a92a1eb7        docker/whalesay     "cowsay boo-boo"     About a minute ago   Exited (0) About a minute ago                       kind_murdock
-7c8c62042666        docker/whalesay     "cosway boo-boo"     2 minutes ago        Created                                             xenodochial_carson
-e99e109daf8f        docker/whalesay     "cowsay boo"         13 minutes ago       Exited (0) 13 minutes ago                           quizzical_mayer
-e85143f3815a        hello-world         "/hello"             About an hour ago    Exited (0) About an hour ago                        cranky_goldstine
-mikeyb@chita-home:~$ 
-
-
-
-

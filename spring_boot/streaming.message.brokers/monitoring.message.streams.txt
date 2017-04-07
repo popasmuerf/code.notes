@@ -1,0 +1,210 @@
+@Component
+Message driven POJO
+
+package io.mdb;
+
+/**
+ * Created by mikeyb on 3/5/17.
+ */
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+@Component
+public class NetworkEventConsumer {
+    private static final Logger log  = LoggerFactory.getLogger(NetworkEventConsumer.class);
+    public void process(Alarm event){
+        log.info("Processing " + event);
+    }
+}
+
+
+
+
+
+package io.mdb;
+
+/**
+ * Created by mikeyb on 3/5/17.
+ */
+import javax.jms.ConnectionFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.listener.SimpleMessageListenerContainer;
+import org.springframework.jms.listener.adapter.MessageListenerAdapter;
+import org.springframework.scheduling.annotation.EnableScheduling;
+@Configuration
+@ComponentScan
+@EnableAutoConfiguration
+
+public class Application {
+    private static final String MAILBOX = "events";
+    @Bean
+    MessageListenerAdapter adapter(NetworkEventConsumer consumer){
+        MessageListenerAdapter adapter = new MessageListenerAdapter(consumer);
+        adapter.setDefaultListenerMethod("process");
+        return adapter ;
+    }
+    @Bean
+    SimpleMessageListenerContainer container(MessageListenerAdapter adapter, ConnectionFactory factory) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setMessageListener(adapter);
+        container.setConnectionFactory(factory);
+        container.setDestinationName(MAILBOX);
+        return container;
+    }
+    @Bean
+    NetworkEventSimulator simulator(JmsTemplate jmsTemplate){
+       NetworkEventSimulator networkEventSimulator = new NetworkEventSimulator(jmsTemplate,MAILBOX);
+       return networkEventSimulator ;
+    }
+    public static void main(String[] args){
+        SpringApplication.run(Application.class,args);
+    }
+}
+
+/**
+ * ^^^^^What's going on here ?
+ *
+ * @Configuration : looks for bean definitions
+ * inside the preceding class
+ *
+ * @ComponentScan: looks for components, controllers
+ * and other types in the preceding class's package
+ * to add to the application context
+ *
+ * @EnableScheduling: This turns on the simulator's @Schedule event generator
+ *
+ * @EnableAutoConfiguration: This turns on Spring Boot's auto-configuration logic
+ *
+ * Gradle depenencies
+ * -------------------------------
+ *
+ *
+ *
+ *
+ *The class contains the definitive name of our JMS destination, "events"
+ *
+ *
+ * There is a class:  "MessageListenerAdapter".  This convenient class
+ * lets us wrap any POJO so we can push events to it.  In this case,
+ * we are wrapping "NetworkEventConsumer" and flagging its
+ * process method as the destination of JMS messages.
+ *
+ * Short summary:
+ * --------------------------------------------------
+ * I can write a simple pojo with a any particular method
+ * that will process some incoming data...and encapsulate it
+ * within a MessageListenerAdapter class.
+ *
+ *                                                                       
+ *
+ *
+ * The SimpleMessageListenerContainer class is a super useful
+ * way to register the MessageListenerAdapter instance with the
+ * broker via the ConnectionFactory property.  It also hooks things
+ * up to the events destination.
+ *
+ * Short summary:
+ * ----------------------------------------------------
+ * Once I have my simple pojo replete with it's processing method
+ * encapsulated withing a MessageListenerAdapter, I can then
+ * register my MessageListenerAdapter instane with the broker
+ * via the "ConnectionFactory" property, which also hooks things
+ * up to the events destination( a String object)
+ *
+ *
+ * Note: Make sure in you gradle build file, you clean up any data
+ * left by ActiveMQ:
+ *
+ *  clean {
+ *      delete "activemq-data"
+ *  }
+ *
+ *
+ *
+ *
+ */
+
+
+mikeyb@chita-home:~/src/networking/boot.ini/network-monitor$ ./gradlew clean bootRun
+:clean
+:compileJava
+:processResources
+:classes
+:findMainClass
+:bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.5.2.RELEASE)
+
+2017-03-05 15:32:27.658  INFO 6776 --- [           main] io.mdb.NetworkMonitorApplication         : Starting NetworkMonitorApplication on chita-home with PID 6776 (/home/mikeyb/src/networking/boot.ini/network-monitor/build/classes/main started by mikeyb in /home/mikeyb/src/networking/boot.ini/network-monitor)
+2017-03-05 15:32:27.664  INFO 6776 --- [           main] io.mdb.NetworkMonitorApplication         : No active profile set, falling back to default profiles: default
+2017-03-05 15:32:27.738  INFO 6776 --- [           main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@b3d7190: startup date [Sun Mar 05 15:32:27 EST 2017]; root of context hierarchy
+2017-03-05 15:32:28.673  INFO 6776 --- [           main] o.apache.activemq.broker.BrokerService   : Using Persistence Adapter: MemoryPersistenceAdapter
+2017-03-05 15:32:28.719  INFO 6776 --- [  JMX connector] o.a.a.broker.jmx.ManagementContext       : JMX consoles can connect to service:jmx:rmi:///jndi/rmi://localhost:1099/jmxrmi
+2017-03-05 15:32:28.834  INFO 6776 --- [           main] o.apache.activemq.broker.BrokerService   : Apache ActiveMQ 5.14.3 (localhost, ID:chita-home-33983-1488745948700-0:1) is starting
+2017-03-05 15:32:28.841  INFO 6776 --- [           main] o.apache.activemq.broker.BrokerService   : Apache ActiveMQ 5.14.3 (localhost, ID:chita-home-33983-1488745948700-0:1) started
+2017-03-05 15:32:28.841  INFO 6776 --- [           main] o.apache.activemq.broker.BrokerService   : For help or more information please see: http://activemq.apache.org
+2017-03-05 15:32:28.879  INFO 6776 --- [           main] o.a.activemq.broker.TransportConnector   : Connector vm://localhost started
+2017-03-05 15:32:29.161  INFO 6776 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2017-03-05 15:32:29.167  INFO 6776 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Starting beans in phase 2147483647
+2017-03-05 15:32:29.178  INFO 6776 --- [           main] io.mdb.NetworkMonitorApplication         : Started NetworkMonitorApplication in 1.83 seconds (JVM running for 2.176)
+> Building 83% > :bootRun
+
+
+
+^^^^So what's happening here ?
+==========================================================
+Connector vm://localhost started
+------------------------------------------------------------- 
+indicates that an embedded ActiveMQ broker started
+
+We didn't code anything related to ActiveMQ though....but we did
+inculde the annotation @EnableAutoConfiguration.   This annotation "saw"
+that we have spring-jms and activemq-broker as dependencies.  Both of which
+cased Spring Boot to automatically configure and launch an embedded message
+broker.
+
+
+JmsTemplate is auto-magically added to the application context also
+--------------------------------------------------------------------------
+This is how we were able to publish messages from 
+NetworkEventSimulator.
+
+
+
+How Spring Boot autodetects JmsTemplate
+============================================
+....
+package org.springframework.boot.autoconfigure.jms ;
+....
+
+/**
+	{@link EnableAutoConfiguration Auto-configuration} for Spring JMS
+*/
+
+@Configuration
+@ConditionalOnClass(JmsTemplate.class)
+@ConditionalOnBean(ConnectionFactory.class)
+
+
+
+
+Summary:
+===========================================
+Spring can and will make assumpitions based on dependencies
+within your class path
+
+If by chance I am building a client for ActiveMQ in Spring boot
+then I should designate that ActiveMQ will not be in memory in 
+the app config file 

@@ -1,0 +1,136 @@
+More about Grails tags
+=================================================================================
+Part of Grail's strenth in teh view layer is its tag library.
+Grails has tags to address everying form conditional logic and
+iterating collection to displyaing errors.  This section provides
+an overview of the Grails tags.
+
+
+
+Logical Tags
+===========================================================================
+Logical tags allows you to buidl conditional "if-elseif-else" logc
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:if>									Logical switch based upon a test expression
+
+<g:else>								The else portion of an if statement
+
+<g:elseif>								The elseif portion of an if statement
+
+
+
+
+Iteration Tags
+=========================================================================================
+Iteration tags are used to iterate over collectio or loop until a condition is false.
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:while>								Loops while test condition is true
+
+<g:each>								Iterates over a collection
+
+<g:collect>								Iterates over a collection and transforms the results
+										as defined in the expr paramter
+
+<g:findAll>								Iterates over a collection where the elements math the
+										GPath defined in the expr parameter
+
+<g:grep>								The else portion of an if statement
+
+
+Assignment Tags
+=========================================================================================
+You sue assignment tags to create and assign a value to a variable.  
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:def>(deprecated)						Defines  a variable to be used within the GSP page
+
+<g:set>									Sets the value of a variable used within the GSP page
+
+
+
+Linking Tags
+=========================================================================================
+We create URLs with these tags
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:link>								Creates HTML link using supplied parameters
+
+<g:createLink>							Creates a link that you can use within other tags
+
+<g:createLinkTo>						Crates a link to a directory or file	
+
+
+
+Ajax Tags
+=========================================================================================
+You can use Ajax tags to build an Ajax-aware appliation.
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:remoteField>							Creates a text field that involkes a link when changed
+
+<g:remoteFunction>						Creates a remote function that is called on a DOM Event
+
+<g:remoteLink>							Creates a link that callls a remote function
+
+<g:formRemote>							Creates a form tag that executes an Ajax call to
+										serialize the form elements
+
+<g:javascript>							Includes a JavaScript libraries and scripts
+
+<g:submitToRemote>						Creates a button that executes an Ajax call to seralize
+										Form elemens
+
+
+
+Form Tags
+=========================================================================================
+Form tags are used create HTML forms.  Contains an overview of form tags
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:actionSubmit>						Creates a submit button
+
+<g:actionSubmitImage>					Creates a submit button using an image
+
+<g:checkBox>							Creates a check box
+
+<g:currencySelect>						Creates a select field containing currencies
+
+<g:datePicker>							Creates a configurable date picker for the
+										day, month , year, hour minute, and second
+
+<g:form>								Creates a form
+
+<g:hiddenField>							Creates a hidden field
+
+<g:localSelect>							Creates a hidden field containing locales
+
+<g:radio>								Creates radio button
+
+<g:radioGroup>							Creates a radio button group
+
+
+
+
+
+There's more.....this is just a "primer"......
+

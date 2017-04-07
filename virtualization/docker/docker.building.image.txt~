@@ -1,0 +1,105 @@
+Building our own image using Docker
+=======================================================
+
+
+
+
+Write a Dockerfile
+===============================================
+A dockerfile is a recipe which describes
+the files, enviroment, and commands that
+make up an image.  Your recipe is
+going to be very short.
+
+
+
+Make a new directory and cd to it.
+=========================================
+> mkdir mydockerbuild
+> cd mydockerbuild
+
+
+create a new text file in your build directory
+open it, and place the following text
+in the file
+===============================================
+> touch Dockerfile
+> echo 'FROM docker/whalesay:latest'
+
+
+^^^What's going on here ?
+---------------------------------------------------
+The keyword "FROM" keywoard tells docker which image
+your image is basd on.  Whalesay already has the
+cowsay program already, so let's star there.
+
+
+Add a RUN statement which will install the fortunes program 
+into the image
+===========================================================
+Wait..what is the "fortunes program" ?  It is a program available
+from many linux package repos.  It basically is a "fortune" generator...
+sans the whole fortune cookie thing...so with that being said(whalesay is a
+ubuntu image..so..this will work):
+
+RUN apt-get -y update && apt-get install -y fortunes
+
+
+also...let's qadd this command also...
+because we want the ouput from fortune to be piped
+to cowsay.
+
+
+CMD /usr/games/fortune -a | cowsay
+
+
+
+So this is what our finished docker build file looks like now
+================================================================
+FROM docker/whalesay:latest
+RUN apt-get -y update && apt-get install -y fortunes
+CMD /usr/games/fortune -a | cowsay
+
+
+
+Now it is time to build...
+================================================================
+Run the following command which will read the Dockerfile
+in our current direcoty and process its instructions one by
+one to build an image called "docker-whale" on our local machine
+
+
+> docker build -t docker-whale .  #yes..don't forget the path "."
+
+
+^^^Docker checks to see whether it already has the whalesay image locally
+and pulls it from Docker hub if not.  In this case, the image already
+exists locally beause you pulled it in a previous task.  This corresponds
+to FROM statement in the Dockerfile, and generates this message:
+
+Step 1 : FROM docker/whalesay:latest
+ ---> 6b362a9f73eb
+
+
+At the end of each step, an ID is printed.  This is the ID of the layer that
+was created by this step.  Each line in a Dockerfile corresponds to a layer
+in the image.
+
+
+
+Time to run out new version of docker-whale
+======================================================================
+Let's view our current extant images....
+
+> docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+docker-whale        latest              e3e35d1c508a        4 hours ago         275 MB
+hello-world         latest              48b5124b2768        6 weeks ago         1.84 kB
+docker/whalesay     latest              6b362a9f73eb        21 months ago       247 MB
+
+
+Let's run our new version of docker-whale
+=======================================================================
+> docker run docker-whale
+
+
