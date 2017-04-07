@@ -1,0 +1,44 @@
+Cassandra -- Architecture
+=============================================
+
+*   All the nodes in a cluster play the same role
+*   All nodes are both interconnected and independent
+    of all other nodes
+*   Each node in a cluster can accept read and write requests,
+    regardless of where the data is actually located in the cluster
+    
+*   When a node goes down, read/write requests can be served from other nodes
+    in the network.
+    
+Cassandra components
+-------------------------------------------------------
+*   Node: It is the place where data is stored
+*   Data center: It is a colleciton of realted nodes
+*   Commit log: The commit log is a crash-recovery mechanism in Cassandra,
+                Every write operation is written to the commit log
+
+    
+    
+Data Replication in Cassandra
+================================================
+In Cassandra, one or more of the nodes in a cluster act as 
+replicas for a given piece of data.  If it is detected
+that some of the nodes reponded with an out-of-data value, 
+Cassandra will return the most recent value
+to the client.  After returning the most recent value, Cassandra
+performs a read repair in the background to update the 
+stale values.
+
+Note -- Cassandra used the Gossip Protocol in the background to
+allow th enoeds to communicate with each other and etect any
+faulty nodes in the cluster.
+
+
+
+
+Cluster
+=========================================================
+Cassandra database is distributed over several machines that operate
+together.  The outermost container is known as the Cluster.
+Every node contains a replica, an din case of failure,the replica t
+
