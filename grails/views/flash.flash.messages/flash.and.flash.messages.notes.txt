@@ -1,15 +1,89 @@
-More about Grails tags
+Flash and why we need it
 =================================================================================
-Part of Grail's strenth in teh view layer is its tag library.
-Grails has tags to address everying form conditional logic and
-iterating collection to displyaing errors.  This section provides
-an overview of the Grails tags.
+The flash scope and why we need it ?  The short answer is tha tit is a technicaue
+implemented by Grails to make passing objects across redirects much easier.  In other
+workds, it iaddresses the promblem described at the end of the previous
+section.
 
 
 
-Logical Tags
+
+Scope									Description
+--------------------------				------------------------------------------------
+flash									Flash only allows the storage of objects for
+										the current and next request
+
+params									Mutable map of incoming request query string or POST
+										parameters
+
+request									The request object allows the storage of objects
+										for the current request only
+
+serveletcontext							This scope lets you share state across the entire web
+										application
+
+session									The session allows associating state with a given
+										user and typically uses
+										cookies to associate a session with a client
+
+The flash object is a Map(a hash) that you can use to store key value pairs.
+These values are transparently stored inised the session ad then cleared at the end of the next request... This pattern lets you used HTP redirects(whcih is useful for redirect after
+post) and retain values that can be retrieved from teh flash object.   
+
+The flash object  works just like the other scopes:
+	application
+	session
+	request
+	page
+by operating off a amp of key/value pairs.  It stores the information in the session and then removes it on the next rquest.  We don't have to remember to delete the object in the flash scope.                        
+
+
+
+Flash object in action
 ===========================================================================
-Logical tags allows you to buidl conditional "if-elseif-else" logc
+
+///Code
+
+.....
+
+	if(user.save()){
+		flash.message = "User ${user.id} created"
+		redirect(action:show,id:user.id)
+	}
+
+.....
+
+	def show(User user){
+		render user
+	}
+
+^^^^
+Grails implements a flash scope using a map.  In this case...:
+
+	key --->  message
+	value ----> "User ${user.id} created"
+
+We could always add this string (the value) to our message bundle
+if not for any reason we don't want to alter our gsp files but still
+want this message to be available from anywhere in our code base
+
+
+Example of setting values in a falsh scope for use by the <g:message> Tag
+-------------------------------------------------------------------------------
+///Code
+
+.....
+if(user.save()){}
+	flash.message = "user.saved.message"
+	flash.args =[user.firstName,user.lastName]
+	flash.defaultMsg = "User Saved"
+	redirect(action:show, id:user.id)
+}
+.....
+""
+<g:message code="${flash.message}" args=${flash.args}"
+default="${flash.defaultMsg}"/>
+
 
 
 

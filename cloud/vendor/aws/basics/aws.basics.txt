@@ -1,15 +1,132 @@
-More about Grails tags
+What is cloud computing
 =================================================================================
-Part of Grail's strenth in teh view layer is its tag library.
-Grails has tags to address everying form conditional logic and
-iterating collection to displyaing errors.  This section provides
-an overview of the Grails tags.
+
+Public cloud
+----------------------------------------------------------------------------------
+In public cloud, the third-party service providers make resources an dservices
+available to their customers via the interwebs.  Customer's data
+and related security is with the service provider's owned infrstructure
 
 
 
-Logical Tags
+Private cloud
+----------------------------------------------------------------------------------
+A private cloud also provides alomost similar features as public cloud, bu the data
+services are managed by the org or by the third party only for the cutomer's org.
+Major contorl is over the infrastructure of the or so security related issues
+are minimized
+
+
+Hybrid cloud
+----------------------------------------------------------------------------------
+A hybrid cloud is the combination of both private and public cloud.  The decision to run
+on a private or public cloud usually depends on the various paramters like sensistivy of data
+and applications, industry certifications and required standards, regulations, etc.
+
+
+
+
+
+Grails and action interceptors.
+==================================================================================
+Grails provides a mechanism called action interceptors that you can use
+to provide the desired functionality.   This is a similar concept to 
+AOP....if not that then servlet filter interceptors(this is similar to Ruby on Rails 
+"Rails filter")
+
+
+Grails "before" and after "intercptors"
+============================================================
+We can use both to provide the audit log functionality.
+You will use a before interceptor closure to the 
+TodoController:
+
+
+def beforeInterceptor = {
+	log.trace(${session?.user?.userName} Start action ${controllerName} Controller.${actionName}() : parameters $params")
+}
+
+def afterInterceptor = { model ->
+	log.trace("${session?.user?.userName} End action" ${controllerName}Controller.${actionName}() : returns $model")	
+}
+
+
+Scope									Description
+--------------------------				------------------------------------------------
+flash									Flash only allows the storage of objects for
+										the current and next request
+
+params									Mutable map of incoming request query string or POST
+										parameters
+
+request									The request object allows the storage of objects
+										for the current request only
+
+serveletcontext							This scope lets you share state across the entire web
+										application
+
+session									The session allows associating state with a given
+										user and typically uses
+										cookies to associate a session with a client
+
+The flash object is a Map(a hash) that you can use to store key value pairs.
+These values are transparently stored inised the session ad then cleared at the end of the next request... This pattern lets you used HTP redirects(whcih is useful for redirect after
+post) and retain values that can be retrieved from teh flash object.   
+
+The flash object  works just like the other scopes:
+	application
+	session
+	request
+	page
+by operating off a amp of key/value pairs.  It stores the information in the session and then removes it on the next rquest.  We don't have to remember to delete the object in the flash scope.                        
+
+
+
+Flash object in action
 ===========================================================================
-Logical tags allows you to buidl conditional "if-elseif-else" logc
+
+///Code
+
+.....
+
+	if(user.save()){
+		flash.message = "User ${user.id} created"
+		redirect(action:show,id:user.id)
+	}
+
+.....
+
+	def show(User user){
+		render user
+	}
+
+^^^^
+Grails implements a flash scope using a map.  In this case...:
+
+	key --->  message
+	value ----> "User ${user.id} created"
+
+We could always add this string (the value) to our message bundle
+if not for any reason we don't want to alter our gsp files but still
+want this message to be available from anywhere in our code base
+
+
+Example of setting values in a falsh scope for use by the <g:message> Tag
+-------------------------------------------------------------------------------
+///Code
+
+.....
+if(user.save()){}
+	flash.message = "user.saved.message"
+	flash.args =[user.firstName,user.lastName]
+	flash.defaultMsg = "User Saved"
+	redirect(action:show, id:user.id)
+}
+.....
+""
+<g:message code="${flash.message}" args=${flash.args}"
+default="${flash.defaultMsg}"/>
+
 
 
 

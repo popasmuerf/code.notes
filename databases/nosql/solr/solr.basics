@@ -1,0 +1,33 @@
+https://www.tutorialspoint.com/apache_solr/apache_solr_on_windows_environment.htm
+
+
+Apache Solr Intro
+======================================================
+Solr is a scalable, ready to deploy, search/storage engine optimized to search large volumes of text-centric data. Solr is enterprise-ready, fast and highly scalable. In this tutorial, we are going to learn the basics of Solr and how you can use it in practice.
+
+
+Features of Apache Solr
+=============================================================
+	-REST APIs
+	-Full Text search:
+		*Tokens
+		*phrases
+		*spell check
+		*wildcard
+		*auto-complete
+	-Enterprise ready
+		*distributed
+		*standalone
+		*cloud
+
+	-Flexible and Extensible
+
+	-NoSQL
+		*big data scale NOSQL database where we can distribute the
+		 search tasks along a cluster
+
+    -Admin Interface
+
+    -HIghly Scalable
+
+    -Text Centeric and Sorted by Relevance
