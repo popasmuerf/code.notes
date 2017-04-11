@@ -1,9 +1,27 @@
 https://objectcomputing.com/resources/publications/sett/september-2015-grails-3-interceptors/
 
-Grails interceptors Basics
+Matching Requests
 ====================================
-Grails 3 is a major step forward in the evolution of the framework.  One noteable feature of Grails 3 is Grails
-interceptors that are replacing the deprecated but still supported filters.
+The convention is imposed that will automatically configure interceptors to match all requests to their corresponding controller.  The implicit mapping from an interceptor
+to a controller is based on the artifact names.  For example, by default, the PersonInterceptor  will match all requests to the PersonController.
+
+Interceptors often need to deviate from teh convention and to define the requests in which they participate using the match or matchAll method
+
+
+
+//----Example FirstInterceptor ----//
+
+package demo
+class FirstInterceptor{
+	public FirstInterceptor(){
+		match controller: 'reporting'
+		match controller: 'person' action: 'create'
+		match controller: ~/(accounting|payrool)		
+	}
+	......
+}
+
+
 *************************************
 Note: Grails filters are a lot like servlet filters...
 *************************************
