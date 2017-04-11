@@ -1,5 +1,14 @@
 https://objectcomputing.com/resources/publications/sett/september-2015-grails-3-interceptors/
 
+
+
+
+
+Grails interceptors are Spring Beans
+====================================
+They are....
+
+
 Matching Requests
 ====================================
 The convention is imposed that will automatically configure interceptors to match all requests to their corresponding controller.  The implicit mapping from an interceptor
@@ -21,15 +30,73 @@ class FirstInterceptor{
 	......
 }
 
+^^^^The named arguments supported
+	that all except uri accept
+	either String or a regex expression whereas uri 
+	supports a String path
+	that is compatible with
+	Spring's :
+	org.springframework.util.AntPathMatcher
+	:
+	*	namespace
+	*	controller
+	*	action
+	*	method
+	*	uri
 
+An interceptor may match all requests,
+except request that satisfy 
+some condition:
+
+package demo
+
+@CompileStatic
+class FirstInterceptor{
+	public FirstInterceptor(){
+		//match all requests except
+		//requests to the auth 
+		//controller
+		matchAll().excludes(controller:'auth')
+	}
+}
+
+^^^
+The methods :
+	*	match()
+	*	matchAll()
+in an interceptor both return an
+instance of:
+	*	grails.interceptors.Matcher
+Most of the methods in Matcher
+also return the Matcher instance, which
+allows for method chaining as shown
+above with the statement:
+
+	*	matchAll().excludes(controller:'auth')
 *************************************
 Note: Grails filters are a lot like servlet filters...
 *************************************
 
-Advantages of interceptors over filters
+Interceptor methods
 =====================================
-*	Support for static compilation
-*	Flexible configurablility
+//If true then control continues as usual
+//If false then control handled by  inerceptor
+*	boolean before()
+*	boolean after()
+*	afterView()
+
+//-------Example of interrupting Controller controll-----------//
+
+@CompileStatic
+class SimpleAuthInterceptor{
+	match controller: 'person'
+	boolean before(){
+		if(!session.UserHasBeenAuthenticated){
+			return false
+		}
+		true
+	}
+}
 
 
 Defining an interceptor
