@@ -1,0 +1,72 @@
+Large object Types
+======================================================
+Large objects are generally binary large objects(BLOBs)
+and character large objects(CLOBS):
+
+	*	Binary Large Objects(BLOBs)
+	*	Character Large Objects(CLOBs)
+
+Although we generally  are storing objects to the database...you don't
+nreally want to use a database to store files.  Files can be large,
+and unless you need to version those files, it is unwise to waste
+the database as a stroage place.  Instead, use the file system
+to keep files.  Remember that the point of a file system is to
+store files.
+
+Of course, there are legitimate reasons to store files in the dtabase, so if you want to
+store BLOBs, simply set the datatype to:
+
+	byte[]
+
+
+
+
+
+Createing Relationships 
+====================================================================
+Unless you're building a domain structure with only a few classes,
+you're bound to have relations to other classes.
+
+	*	One-to-One
+	*	One-to-Many
+	*	Many-to-one
+	*	Many-to-many
+
+
+Writing relationships in Grails is relatively easy.  In fact, the syntax and usage are 
+virtually identical to Ruby on Rail's ActiveRecrod.  Knowing that GORM is based on Hibernate,
+you might expect the syntax and usage to be more like Hibernate or JPA, but this in't the 
+case,  With standard JPA, yoiu can create relationhips using annotations
+soley on one side of the bean.  However, these annotations can get complex:
+
+//JPA relationshipt annotation examples:
+
+@ManyToMany
+@JoinTable(name="COURSE_TO_STUDNET_TBL",
+		   joinColumns(name="courseId"),
+		   inverseJoinColumns=@JoinColumn(name="studentId"))
+private Collection<Student> students ;
+
+^^^Note the that there are differnet annotations for each type of relationship.
+In reality, JPA configures more from the database level, whereas GORM is programmed
+more from the verbal level.  First, we'll review the players involved, an
+then we'll show you how to create relationships
+
+
+One-to-One
+====================================
+A one to one exists when mappings between records in two different tables
+is unique.
+
+
+//----Example One to One GORM ----//
+
+class User{
+	...
+	Address address
+}
+class Address{
+	User user
+}
+
+^^^Pretty simple...right ?

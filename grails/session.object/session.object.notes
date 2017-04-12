@@ -1,0 +1,118 @@
+Grails global objects  : session
+=========================================
+http://java.scwcd.jobs4times.com/Session-Management.html#api
+
+Purpose
+========================================
+The session object is an instance of the Servlet API's
+HttpSession class
+
+
+interface javax.servlet.http.HttpSession
+========================================
+public interfae HttpSession:
+
+Proivdes a way to identify a user across more than one page request
+or visit to a Web site and to store information about that user.
+
+
+The servlet container uses this interfae to crate a session between
+an HTTP client and an HTTP server.  The session persists for
+a specified time period, across more than one connection or page request
+from the user.  A session usually corresponds
+to one user, who visit a site many times.  The server can maintain
+a session in many ways such as using cookies or rewriting URLs
+
+
+This interface allows servlets to
+
+	*	View and manipulate information about a session, such as the session identifier
+		creation time, and last accessed time
+	*	Bind objects to sessions, allowing user information to persist across
+		multiple user connections.
+
+When an application stores an object in or rmeoves an object from a session,
+the session checks whether the object implements  HttpSessionBindingListener.
+If it does, the servlet notifies the objet that it has been bound to or
+unbound from the session.  Notifications are sent after the binding methods complete.
+For sessions that invalidated or expire, notifications are sent after the session
+has been invalidated or expired
+
+HttpSession Method Summary
+---------------------------------------------------------------
+	*	java.lang Object getAttribute(java.lang.String name)
+		-	Returns the object bound with specidied name in this session or
+			null if no object is bound under the name
+	*	java.util.Enumeration getAttributeNames()
+		-	Returns the Enumeration of String objects containing the names of all the objects
+			bound to this session.
+	*	long getCreationTime()
+		-	Returns the time when this session was created, measured in milliseconds sine 
+			midnight January 1, 1970
+	*	java.lang.String getId()
+		-	Returns a string 
+	*	long getLastAccessedTime()
+		-	Returns the last time the client sent a request assocated with this session,
+			as the number of millisends since midnight January 1, 1970 GMT, and marked
+			by the time the container recieved the request
+	*	long getLastAccessedTime()
+		-	Returns the last time the client sent a request assocated with this session,
+			as the number of millisends since midnight January 1, 1970 GMT, and marked
+			by the time the container recieved the request  
+	*	ServletContext getServletConext()
+		-	Returns the ServletContext to which the session belongs.
+	*	HttpSessionContext getSessionContext()
+		-Deprecated.  As of Version 2.1, this method is deprecated and has no replacement.
+		 itwill be removed ina  future version of the Java Servlet API.
+	*	void invalidate()
+		-Invalidates this session then unbinds any objects bound to it.
+	*	 	
+This interface allows servlets to
+
+	*	View and manipulate information about a session, such as the session identifier
+		creation time, and last accessed time
+	*	Bind objects to sessions, allowing user information to persist across
+		multiple user connections.
+	*
+
+When an application stores an object in or rmeoves an object from a session,
+the session checks whether the object implements  HttpSessionBindingListener.
+If it does, the servlet notifies the objet that it has been bound to or
+unbound from the session.  Notifications are sent after the binding methods complete.
+For sessions that invalidated or expire, notifications are sent after the session
+has been invalidated or expired
+
+
+
+
+interface javax.servlet.http.HttpSessionBindingListener extnds java.util.EventListener
+=======================================================================================
+public interface HttpSessionBindingListener
+-------------------------------------------------------------------------------------
+
+
+Causes an object to be notified when it is bound to or unbound from a session.
+The object is notified by an HttpSessionBindingEvent object.  This may be as a result
+of a servlet programmer explicitly unbinding an attribute from a session, due to 
+a session being invalidated, or due to a sessiont iming out.
+
+
+HttpSessionBindingListener Method Summary
+---------------------------------------------------------------
+	*	void valueBound(HttpSessionBindingEvent event)
+	*	valueUnbound(HttpSessionBindingEvent event)
+
+This interface allows servlets to
+
+	*	View and manipulate information about a session, such as the session identifier
+		creation time, and last accessed time
+	*	Bind objects to sessions, allowing user information to persist across
+		multiple user connections.
+
+When an application stores an object in or rmeoves an object from a session,
+the session checks whether the object implements  HttpSessionBindingListener.
+If it does, the servlet notifies the objet that it has been bound to or
+unbound from the session.  Notifications are sent after the binding methods complete.
+For sessions that invalidated or expire, notifications are sent after the session
+has been invalidated or expired
+
