@@ -69,4 +69,68 @@ class Address{
 	User user
 }
 
-^^^Pretty simple...right ?
+^^^Pretty simple...right ?  All we need to do is just embedd types...
+
+
+
+One-to-Many
+====================================
+A one to one exists when mappings between records in two different tables
+is unique.
+
+
+//----Example One to One GORM ----//
+
+class User{
+	...
+	static hasMany = [buddyLists:BuddyList]
+}
+class BuddyList{
+	....
+	static belongsTo = User
+	static hastMany = [members:BuddyListMembers]
+}
+
+
+^^^Pretty simple...right ?  All we need to do is just embeded types...
+
+
+
+
+Managing relationships
+========================================================
+BuddyList myList
+myList.addToMembers(someMember)
+myList.removeFromMembers(someMember)
+
+
+Many-to-One
+==========================================================
+As you've probably guessed, a many-to-one relationship is the inverse
+of the one-to-many relatioship.  Grails GORM one to many relationship
+is enough here....as it serves the desired result.  In JPA there is 
+actually a @ManyToOne annotation....wow.....
+
+
+Many-to-Many
+==================================================================
+The many-to-many relationship further demonstrates the distinction between the
+way GORM an dJPA implement relationships.  In a many to many relationship, 
+a record in table A can reference multiple records in table B and vice versa
+At least one of these classes needs to "belong" to the other(doesn't matter which one)
+and both must include each other respectively in a "hasMany" statement.
+
+
+class Todo{
+	
+	static hasMany = [keywords:Keyword]
+}
+
+class Keyword{
+	static belongsTo = Todo
+	static hasmany = [todos:Todo]
+}
+
+
+
+

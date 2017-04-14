@@ -128,6 +128,17 @@ class DemoController{
     }
 }
 
+What if we want to inject other services into a particular service ?
+==========================================================================
+Then...we simply inject into a service class just like we inject a servcie into
+a controller class....
+
+
+What if we want to inject spring benas into the service  ?
+-----------------------------------------------------------------------------
+
+<!--injection code into spring\resources-->
+<bean id="customBean" class="com.CustomBeanImpl"/>
 
 Note  about the grails global object: params...
 =======================================================================================
@@ -175,4 +186,61 @@ We can also inject Servcies within BootStrap.groovy
 ===============================================================
 
 
+
+
+Initilizing a Service....
+==========================================================================
+Spring and EJB don't always rely on constructors for intialization.  The main
+reason dor this is because often a constructor might rely on items that need to 
+be injected(like spring services), but these items may not be available
+during instantiation.  If you have any items that need to be looked up
+at creation, use Spring's InitializingBean, which calls the 
+method:
+
+    afterPropertiesSet()
+
+//----Example code our sevice implements IntializingBean----//
+
+import org.springframework.beans.factory.InitializingBean
+
+class TodoService implements InitializingBean{
+    boolean transactional = true
+    void afterPropertiesSet(){
+        println "post Initialization"
+    }
+    def serviceMethod(){
+        println "TodoService"
+    }
+}
+
+
+Available Contexts for Sevices
+===============================================================================
+Service contexts have around for a while.  For a long time, 
+We need application contexts....for certain contexts we find ourselves
+within our application...which includes service contexts....for example...
+    *   A conversation context is more than a request and less than a session....
+        ..the data has a beginning...start...and end.
+    *   A credit card application, which can take multple pages to complete...
+        it contains data that you will want to have until the end.......
+
+By default every context is a singleton, meaning that the whole application
+shares this one instance.
+---------------------------------------------------------------------------
+This means that you don't want to have any data as a global property
+with its state specific to the user.  To adjuste the context of a service, add
+the following line to your service:
+
+    static scope = "singleton
+
+
+List of service contexts ....likely not exhasutive.....
+--------------------------------------------------------------------------
+*   prototype
+*   request
+*   flash
+*   flow
+*   conversation
+*   session
+*   singleton
 

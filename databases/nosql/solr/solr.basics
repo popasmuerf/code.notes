@@ -1,5 +1,5 @@
 https://www.tutorialspoint.com/apache_solr/apache_solr_on_windows_environment.htm
-
+http://theblogreaders.com/apache-solr-interview-questions-and-answers-for-freshers-part-3/
 
 Apache Solr Intro
 ======================================================
@@ -31,3 +31,10 @@ Features of Apache Solr
     -HIghly Scalable
 
     -Text Centeric and Sorted by Relevance
+
+
+ Spark vs. Hadoop
+ ---------------------------
+ 1. Hadoop strictly uses MapReduce
+ 2. Spark you can basically paralellize anything via loding data into RDDs/DataFrames
+ 3. Hadoop is strictly disk based.

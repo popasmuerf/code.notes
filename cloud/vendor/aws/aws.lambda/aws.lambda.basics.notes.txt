@@ -1,16 +1,44 @@
-https://www.tutorialspoint.com/amazon_web_services/amazon_web_services_basic_architecture.htm
+https://www.tutorialspoint.com/amazon_web_services/amazon_web_services_lambda.htm
 
-
-What is cloud computing
+What is AWS Lambda ?
 =================================================================================
+AWS Lambda is a responsive cloud service that inspects actions within
+the application and responds by deploying the user-defined codes, known as functions.
+It automatically manages the compue resources across multiple availabillity
+zones an scales them when a new action is triggered.
 
-Public cloud
+
+Support ?
 ----------------------------------------------------------------------------------
-In public cloud, the third-party service providers make resources an dservices
-available to their customers via the interwebs.  Customer's data
-and related security is with the service provider's owned infrstructure
+	-Java
+	-JS(Node.js)
+	-Go
+	-Ruby
 
 
+Tips for AWS Lambda
+=================================================================================
+	-Write lambdas in a statless style
+	-Never declare any function variable outside the scope of the handler
+	-Make sure to ahve a set of +rx permissions on your files in the uploaded ZIP
+	 to ensure that AWS Lambda can execute code on your behalf
+	-Delete old Lambda function when no longer required
+
+
+Advantages to using AWS Lambda
+====================================================================
+
+No servers to manage
+------------------------------------------------------------------------
+AWS Lambda automatically runs your code without requiring you to provision
+or manage serves.  Just write the code and upload it to Lambda
+
+Continuous Scaling
+------------------------------------------------------------------------
+AWS Lambda automatically scales your application by running code
+in response to each trigger.  Your  code runs in parallel and 
+processes each triger individually, scaling precisely with
+the size of the workload.
 
 Private cloud
 ----------------------------------------------------------------------------------
@@ -18,6 +46,13 @@ A private cloud also provides alomost similar features as public cloud, bu the d
 services are managed by the org or by the third party only for the cutomer's org.
 Major contorl is over the infrastructure of the or so security related issues
 are minimized
+
+
+Subsecond Metering
+-----------------------------------------------------------------------------
+With AWS Lambda, you are charged for every 100 ms your code exectues
+and then umber of times your code is triggered.  You don't pay anything
+when you code isn't running.
 
 
 Hybrid cloud
