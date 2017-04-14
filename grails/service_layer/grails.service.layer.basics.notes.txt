@@ -236,11 +236,12 @@ the following line to your service:
 
 List of service contexts ....likely not exhasutive.....
 --------------------------------------------------------------------------
-*   prototype
-*   request
-*   flash
-*   flow
-*   conversation
-*   session
-*   singleton
+*   prototype : A new service is instantiated for each service injected into a class
+*   request  :  a new servcie is spawned for each servcie request using the service
+*   flash   : The service is instantiated for the curren and next request only
+*   flow   : The servcie lives for the lifetime of a controller's web flow
+*   conversation : The service lives for the lifetime of a controller's web blow and subflows
+*   session : The service is instantiated and kept for the life of the user's HttpSession
+*   singleton : This default service is treated like a singleton and shared across the
+                application scope
 
