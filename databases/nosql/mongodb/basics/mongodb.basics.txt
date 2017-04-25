@@ -1,0 +1,110 @@
+
+
+MongoDB is a powerful but easy to get  started with.
+Some basics...
+=============================================
+*	A document is analogus to a rdb row/record
+*	A collection of documents is analogus to a rdb table with a dynamic schema
+*	A single instance of MongoDB can host multiple independent databases,
+	each  of which cna have it's own collections.
+*	Each document has a spefcial key, "_id", that is uniques within a collection.
+*	MongoDB comes with a simple but powerful JavaScript shell, which is useful 
+	for the administration of MongoDB instances and data manipulation
+
+
+
+Documents
+==========================================
+At the heart of MongoDB is the document: an ordered set of
+keys with assocated values.  The representation of a document
+varies by programming language, but most languages
+have a data structure that is a natural fit, such as a map, hash
+or dictionary.  In JavaScript, for example,
+documents are represented as objects:
+
+	{"greeting": "hello,world!!"}
+
+The key here is "greeting" with an associated value of "hello world"
+
+
+Key rules
+-----------------------------------
+* must not containe null character '\0' which is actually
+  used to signify the end of a key
+* '.' and '$' are special characters and should only be used for very good reason
+* Documents cannot contain duplicate keys...
+
+
+Mongo is type sensitive
+-------------------------------------------------
+These two documents are different:
+
+	{'foo':3}
+	{'foo':'3'}
+	{'Foo':3}
+	{'fOO':3}
+
+
+KV pairs in mongo are ordered...so the following are not the same
+---------------------------------------------------------------------
+{'y':1, 'x':1}   !=  {'x':1, 'y':1}
+
+Note: Perl, Python, and Perl do not possess native ordering of their map keys...
+but don't worry....mongodb drivers for these languages take care of this....we think...
+
+
+
+
+
+
+Collections
+==============================================================
+A collection is a group of documents.  If a document is the MongoDB analog of a
+row in a RDB then the collection is the analogy to a RDB table
+
+Naming
+-----------------------------------------------------------------
+Collections are identified by there names.  Collection names may be
+any UTF-8 string, with a few restrictions
+	* "" is not a valued colleciton name
+	*	No use of null characters '\0'
+	*	No use of 'system' as a prefix as it is reserved for internal
+		collectons....for example...:
+			system.users
+	*	User-created collections shoud not use the reserved character $
+		as some system generated collections use this character.  Avoid it.
+
+
+Subcollections
+-----------------------------------------------------------------------
+One convention for organizing collections is to use namespaced subcollecitons
+sperated by the .character for example:
+
+	blog.posts
+	blog.authors
+
+Where "blog" is a collection and "posts" are it's sub collection embedded within it.
+"authors" is also a sub collection of "blog".
+
+Note: This convention is for organizational purposes only...there is no relations
+to be had here...or anywhere in mongoDB....it's NOSQL
+
+
+
+Dynamic Schemas
+=====================================================================
+Collections have dynamic schemas.  This means that the documents within
+a single collection can have any number of different "shapes"  For example,
+both the folllowing documens could be stored ina single collection:
+
+{"red" : "rojo"}
+{"blue : "azul"}
+{"foo":5}
+
+
+Note that the previous documents not only have different types for their
+values(string versus integer) but also have entirely different keys.  Because any document
+can be put into any collection, the question often arises:  "Why do we need seperet collections
+at all ?"
+
+...because it makes sense to have different types of collections for different types of documents...

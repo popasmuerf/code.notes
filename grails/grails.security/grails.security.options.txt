@@ -1,0 +1,317 @@
+http://grails.asia/grails-tutorial-for-beginners-grails-service-layer/
+
+
+Grails security
+=========================================================================
+Grails security is application level security
+
+Security models can get fairly convoluted depending on your application's needs.
+
+
+Your average application security apparatus
+=====================================================================
+    *   Domain/model-level security
+    *   Administrator vs. regular user access
+    *   Basic access authentication
+
+Basic authentication
+=====================================================================
+    *   login creds sent to the server typically correspond with entries in a
+        database.  Of course, we will not be storing passowrds in the DB in clear
+        text.
+    *   Hashing(cryptography) is one way, as opposed to encryption which is two way.
+    *   MD5 and SHA are common Hashing algorithms
+    *   We can use org.apache.commons.codec.digest.DigestUtils as this lib has many
+        methods to produce different types of hashes
+
+org.apache.commons.codec.digest.DigestUtils
+=============================================================================
+For hashing in java...this is a common class used...
+
+    *   DigestUtils.md5(java.lang.String data): 16-element byte[]
+    *   DigestUtils..md5Hex(java.lang.String data): 32-character hext string
+    *   DigestUtils.shaHex(java.lang.String data): 32-character hex string using SHA-1 digest
+        mechanism
+
+Consider this analogy:  Imagine a company where employees
+are assigned tasks of different nature there
+is an employee named John Doe with the following responsibilities:
+
+    *   Handle accounting and releasing of check payments
+    *   Take calls from customers for product support
+    *   Handle administrative tasks such as a booking
+        flights plus accomodation of executives
+    *   Manage the schedule of the CEO
+    
+    
+More about Access Controll:
+=========================================================================
+    Session validation
+    -------------------------------------------------------------------
+
+    User
+    -------------------------------------------------------------------
+    One way to secure pages and data is on the user level itself.  Many web sites
+    that rquire authentication use data at the user level to retrieve items
+    that are specific to a particular user.  With this level, you store user data to 
+    the session, and then whenever you need to do a query against a back-end system,
+    you retreive only the data for that user.
+
+    Roles
+    -------------------------------------------------------------------
+    You can assign users to roles to provide coarse graned permissines to pages
+    or even just areas of a page.  An internal site may have roles like manager,
+    developer, trainee, and so on.  For example, a site that nandles work
+    orers could allow a worker to work o na varierty of tickets, but ht page
+    that assignes or approves th etickets is accessible only to the manager.
+    Most commonly roles for applications take the form of :
+        *   user
+        *   admin
+
+
+    Permissions
+    -------------------------------------------------------------------
+    Fine grain control.  With permissions, you can give only certain users access to certain
+    portions of a site.  Returning to the example of work order tickets, what if you 
+    wanted to allow some users to create and delete tickets; others to just view them' and
+    others to create, edit, and delte them?  Roles could accomplish this...but you would need a lot of them and things would get very messy and complicated.
+    
+    Rules
+    -------------------------------------------------------------------
+    Some sites use a rule-based access control.  Systems like JBoss Seam use a 
+    rules engine(like JBossDrools) to determine authentication privileges
+    while also using permissions and roles.  This provides for an extremely 
+    flexible authentication mechanism.  However it also requiures more
+    configuration and general knowledge of how to use th e
+    rules engine.
+
+
+
+As you might have guessed, John's work is too complicated because he
+needs to multi-task on very different tasks, and must context switch
+for each task.  His herrors could cost a lot of money in the 
+long run.
+
+Likewise in software engineering it is not a good idea to write a cloass
+that has different nature of responsibilities or behaviors.  The genearl
+consensus of experst is that a single class or source file should only 
+be invloved in one one nature of task(This is actually the Tao of Unix...each
+component should should be self-contained....have low, next to no dependence
+on anything but input, and do one thing and one thing well)
+
+Adding needless complexity to a class, or module.....will only introduce bugs and
+problems later in the application and it will be a pain to maintain(if it 
+
+
+This is called the "seperation of concerns".
+
+Conscider the following
+------------------------
+Inside a controller we can do the following:
+--------------------------------------------
+    *   Handle routing logic
+    *   Invoke GORM operations to manipulate data in the database
+    *   Render text and show it to the user
+
+We can do just about anything in a controller...but we really shouldn't.
+
+This is what we should be doing in a controller
+-----------------------------------------------
+    *   Recieve Requests from users
+    *   Invoke the most appropiate business logic
+    *   Invoke the view to display results
+    
+View logic should be taken care of inside Groovy Server pages(GSP)
+files....for biz logic, they should be implemented inside the
+service layer.  Grails has a default support and handling for 
+the service layer.
+
+
+Don't repeate yourself (DRY) Principle
+===============================================================
+We can reuse logic contained in a service layer object any and every
+where in our app....because it is in a centralized place...as opposed
+to being incapsulated individually in other specialized classes...
+theoretcially we could use a have commonly used code in a specialized
+class...and use it all over the place...but that would be very POOR design.
+
+Create a service class
+================================================================
+>grails create-service 
+
+package com.demo
+
+class TestService{
+    def serviceMethod(){
+    }
+}
+
+
+Now, let's add as many funciton as needed that pertains to business logc and GORM operations.
+=============================================================================================
+
+package com.demo
+
+class StudentService{
+
+    Student createStudent(String lastName, String firstName){
+        Student student = new Student(lastName, firstName)
+        student.save()
+        return student
+    }
+    private String genRefNumber(){
+        import java.util.Random
+        Random random = new Random()
+        int numBound = 100000000
+        int alphaBound = 0
+        def extRefNumLst = []
+        def alphalst = ["a","b","c","d","e","f","g","h","j","k"]
+        alphaBound = random.nextInt(10)
+        int refAlphaBound = random.nextInt(alphalst.size)
+        int refNum = random.nextInt(numBound )
+        String refAlpha = alphalst[refAlphaBound]
+        while(extRefNumLst.contains(refNum)){
+            refNum = random.nextInt(numBound)
+        }
+        return refNum.toString()
+    }
+}
+
+
+
+Injecting a Service
+=============================================================================================
+The service is automatically injected inside a controller by just defining
+a variable with the proper name.
+
+
+package comd.demo
+
+class DemoController{
+    def studentService  //we inject services in GRAILS merely by declaring them
+                        //inside our controller
+                        
+    displayForm(){....}
+    def handleFormSubmit(){
+        def student = studentSevice.createStudent(params.lastName,params.firstName)
+        return [student:student]  //return this model map to be used in our gsp view...
+    }
+}
+
+What if we want to inject other services into a particular service ?
+==========================================================================
+Then...we simply inject into a service class just like we inject a servcie into
+a controller class....
+
+
+What if we want to inject spring benas into the service  ?
+-----------------------------------------------------------------------------
+
+<!--injection code into spring\resources-->
+<bean id="customBean" class="com.CustomBeanImpl"/>
+
+Note  about the grails global object: params...
+=======================================================================================
+The variables used in our gsp/jsp forms in Grails may be accessed
+anywhere in our app via the "params" object
+
+
+
+Because of seperation of concerns....we can inject this Service in any other
+Controller we like.....This is a feature of the Spring framework...which by the 
+way GRAILS is based on.....All of this is Spring and JEE specfication compliant.
+#WORD
+
+
+More examples....of service injections...When I mentioned before that we can inject
+services ANYWHERE....I meant ANYWHERE....even in other services...we can chain
+service dependencies....within other services...
+==============================================================================================
+package com.demo
+
+class PersonService{
+    Person person = new Person(String lastName, String firstName){
+        Person p = new Person()
+        p.lastName = lastName
+        p.firstName = firstName
+        p.save()
+        return p
+    }
+}
+
+
+class EmployeeService{
+    def personService //employees are people...after all...and we get to re-used code...
+    Employee createEmployee(String lastName, String firstName){
+        if(Student.count() == 0){
+            studentService.createStudent("Doe","John)
+            studentService.createStudent("Smith", "Jame")
+        }
+    }
+}
+
+
+
+We can also inject Servcies within BootStrap.groovy
+===============================================================
+
+
+
+
+Initilizing a Service....
+==========================================================================
+Spring and EJB don't always rely on constructors for intialization.  The main
+reason dor this is because often a constructor might rely on items that need to 
+be injected(like spring services), but these items may not be available
+during instantiation.  If you have any items that need to be looked up
+at creation, use Spring's InitializingBean, which calls the 
+method:
+
+    afterPropertiesSet()
+
+//----Example code our sevice implements IntializingBean----//
+
+import org.springframework.beans.factory.InitializingBean
+
+class TodoService implements InitializingBean{
+    boolean transactional = true
+    void afterPropertiesSet(){
+        println "post Initialization"
+    }
+    def serviceMethod(){
+        println "TodoService"
+    }
+}
+
+
+Available Contexts for Sevices
+===============================================================================
+Service contexts have around for a while.  For a long time, 
+We need application contexts....for certain contexts we find ourselves
+within our application...which includes service contexts....for example...
+    *   A conversation context is more than a request and less than a session....
+        ..the data has a beginning...start...and end.
+    *   A credit card application, which can take multple pages to complete...
+        it contains data that you will want to have until the end.......
+
+By default every context is a singleton, meaning that the whole application
+shares this one instance.
+---------------------------------------------------------------------------
+This means that you don't want to have any data as a global property
+with its state specific to the user.  To adjuste the context of a service, add
+the following line to your service:
+
+    static scope = "singleton
+
+
+List of service contexts ....likely not exhasutive.....
+--------------------------------------------------------------------------
+*   prototype : A new service is instantiated for each service injected into a class
+*   request  :  a new servcie is spawned for each servcie request using the service
+*   flash   : The service is instantiated for the curren and next request only
+*   flow   : The servcie lives for the lifetime of a controller's web flow
+*   conversation : The service lives for the lifetime of a controller's web blow and subflows
+*   session : The service is instantiated and kept for the life of the user's HttpSession
+*   singleton : This default service is treated like a singleton and shared across the
+                application scope
+
