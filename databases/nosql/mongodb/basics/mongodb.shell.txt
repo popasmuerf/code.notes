@@ -1,9 +1,174 @@
 
 
-MongoDB data types
+MongoDB Shell
 =============================================
-Documents in MongoDB can be thought of as "JSON-like" and as
-such maybe operated upon conceptually as actual JSON.
+by default the client will conect to the local
+mongo instance..but it can connect to any any
+instance remote or not
+
+$ mongo some-host:30000/myDB
+
+
+What if I don't want to connect to any database ?
+What if we want to connect to one at our leisure ?
+===================================================
+	$ mongo --nodb
+	$ conn = new Mongo("some-host:30000")
+	$ db = conn.getDB("myDB")
+
+
+
+Getting help
+===================================================
+	$ mongo --nodb
+	> help
+	db.help()                    help on db methods
+	db.mycoll.help()             help on collection methods
+	sh.help()                    sharding helpers
+	rs.help()                    replica set helpers
+	help admin                   administrative help
+	help connect                 connecting to a db help
+	help keys                    key shortcuts
+	help misc                    misc things to know
+	help mr                      mapreduce
+
+	show dbs                     show database names
+	show collections             show collections in current database
+	show users                   show users in current database
+	show profile                 show most recent system.profile entries with time >= 1ms
+	show logs                    show the accessible logger names
+	show log [name]              prints out the last segment of log in memory, 'global' is default
+	use <db_name>                set current database
+	db.foo.find()                list objects in collection foo
+	db.foo.find( { a : 1 } )     list objects in foo where a == 1
+	it                           result of the last line evaluated; use to further iterate
+	DBQuery.shellBatchSize = x   set default number of items to display on shell
+	exit                         quit the mongo shell
+
+
+figuring out what a function does....
+=====================================================
+Remember..this is javascript...just type out the 
+method devoid of closing parenthesis:
+
+> db.blog.update
+function ( query , obj , upsert , multi ){
+    var parsed = this._parseUpdate(query, obj, upsert, multi);
+    var query = parsed.query;
+    var obj = parsed.obj;
+    var upsert = parsed.upsert;
+    var multi = parsed.multi;
+    var wc = parsed.wc;
+
+    var result = undefined;
+    var startTime = (typeof(_verboseShell) === 'undefined' ||
+                     !_verboseShell) ? 0 : new Date().getTime();
+
+    if ( this.getMongo().writeMode() != "legacy" ) {
+        var bulk = this.initializeOrderedBulkOp();
+        var updateOp = bulk.find(query);
+
+        if (upsert) {
+            updateOp = updateOp.upsert();
+        }
+
+        if (multi) {
+            updateOp.update(obj);
+        }
+        else {
+            updateOp.updateOne(obj);
+        }
+
+        try {
+            result = bulk.execute(wc).toSingleResult();
+        }
+        catch( ex ) {
+            if ( ex instanceof BulkWriteError || ex instanceof WriteCommandError ) {
+                result = ex.toSingleResult();
+            }
+            else {
+                // Other exceptions thrown
+                throw Error(ex);
+            }
+        }
+    }
+    else {
+        this._validateUpdateDoc(obj);
+        this.getMongo().update(this._fullName, query, obj, upsert, multi);
+
+        // enforce write concern, if required
+        if (wc)
+            result = this.runCommand("getLastError", wc instanceof WriteConcern ? wc.toJSON() : wc);
+    }
+
+    this._printExtraInfo("Updated", startTime);
+    return result;
+}
+
+
+
+
+
+
+Running Scripts with the Shell
+==================================================================
+Other chapters have used the shell interactively, but you can
+also pass the shell JavaScript files to execute.
+Simply pass in your scripts at the command line:
+
+$ mongo script1.js script2.js script3.js
+
+	-or-
+
+$ mongo --quiet server-1:30000/foo script1.js, script2.js, script3.js
+
+Running scripts from the interactive shell
+-----------------------------------------------------------------
+>load("script1.js")
+
+
+
+
+Shell helpers
+=======================================================================
+helpers 			JavaScript Equivalent
+---------			--------------------------
+use foo 			db.getSisterDB("foo")
+
+show dbs 			db.getMongo().getDBs()
+
+show collections    db.getCollectionNames()
+
+
+
+Using scripts to inject variables into mongo shell
+======================================================
+//defineConectTo.js
+
+/***
+*Connect to a database and set db
+*
+*/
+
+var connectTo = function (port, dbname){
+	if(!port){
+		port = 9999
+	}
+	if(!dbname){
+		dbname = "test"
+	}
+	db = connect("localhost:"+port+"/"+dbname)
+	return db
+}
+
+/***
+*Connect to a database and set db script loaded from 
+*inside shell
+*/
+
+> load('defineConnectTo.js')
+
+
 
 There are some drawbacks w/r to data types pertaining to 
 "pure" JSON as it only supports out the box six data types:
