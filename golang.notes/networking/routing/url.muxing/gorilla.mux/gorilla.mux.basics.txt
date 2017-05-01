@@ -1,0 +1,112 @@
+URI					HTTP MethodHandler Function
+---------			----------------------------
+/api/notes			GET		GetNoteHandler
+/api/notes			Post	PostNoteHandler
+/api/notes{id}		Put		PutNoteHandler
+/api/notes/{id}		Delete	DeleteNoteHandler
+
+
+
+	Gorilla Mux
+	==============================
+	The http.ServeMux is an HTTP request
+	mutilplexer that works well for most common
+	scenarios.  It was used in the example
+	programs as the request multiplexer.  If
+	you want more power for your request multiplexer,
+	you might want to consider a third party routing package that
+	is compatible with standard http.ServeMux...espeially
+	for building web services based on REST
+	Gorilla works well for this situation.
+	(github.com/orilla/mux) that allows you
+	to build.
+
+	Gorilla is a powerful mux that allows for
+	more flexibility than our default
+	http.ServeMux
+
+
+	Previous
+	==============================
+	Although http.ListenAndServe
+	helps us get something up and running quick
+	or prototyped fairly quickly regarding
+	apps that wee need to run HTTP servers....
+	but it does not allow you to customize
+	HTTP server configuration.  The http package
+	proivdes a struct name
+
+		Server
+
+	that enables us to specify HTTP server
+	configuration:
+
+	//src of http.Server Struct
+	=====================================
+	type Server struct{
+		Addr	string
+		Handler Handler
+		ReadTimeout	time.Duration
+		WriteTimeout time.Duration
+		MaxHeaderBytes int
+		TLSConfig *tls.Config
+		TLSNextProto map[string]func(*Server,*tls.Conn,Handler)
+		ConnState func(net.Conn,ConnState)
+		ErrorLog *log.Logger
+	}
+
+	^^^Unlike the http.ServeListener struct
+	that we used previously to quickly prototype
+	a web app...this struct....http.Server
+	allows us some slack in server and app configs....
+
+	Previous
+    ==================================
+	net/http package provides several
+	functions that implement the
+	http.Handler inteface and are used
+	as common handlers:
+	-FileServer
+	-NotFoundHandler
+	-RedirectHandler
+	-StripPrefix
+	-TimeoutHandler
+
+	In our examples, the ServeMux object
+	was created by calling the function
+	http.NewServeMux
+
+	DefaultServeMux is same as teh ServeMux
+	objects from the previous programs.
+	DefaultServeMux is the default
+	ServeMux used by the Serve method,,
+	and the ServeMux object is instantiaed
+	when the http package is used.
+
+	var DefaultServeMux = NewServeMux()
+		-as opposed to -
+	var mux = http.NewServeMux()
+
+	//src for NewServeMux function
+	func NewServeMux() *ServeMux{
+		return &ServeMux{m:make(map[string]muxEntry)}
+	}
+
+	The http package provides a couple of shortcut
+	methods for working with DefualtServeMux:
+		http.Handle
+		-and-
+		http.HandleFunc
+
+	The http.Handle function registers
+	the handler for the given pattern in
+	DefaultServeMux(let's establish now that
+	"Handler" is Go's parlance for "Controller")
+
+	The functions :
+
+		ListenAndServe
+
+	uses DefaultServeMux if the seconud
+	parameter is set to ni instead of providing
+	an http.Handler object

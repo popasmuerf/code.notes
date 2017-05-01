@@ -1,0 +1,76 @@
+https://crunchify.com/what-is-daemon-thread-in-java-example-attached/
+
+What is a Daemon Thread in Java ?
+=======================================
+//-----Example Code
+
+public class MDBDeamonThread extends Thread{
+	
+	public static void main(String[] args){
+		System.out.println("Main Method Entry");
+		MDBDaemonThread mdbThread = new mdbThread() ;
+		mdbThread.setDaemon(false);
+		mdbThread.strart() ;
+		try{
+
+		}catch(InterruptedException x){
+			//pass
+		}
+		System.out.print("Main Method Exit");
+	}
+
+}
+
+
+
+Daemon Threads in Java
+======================================
+Daemon theads in Java are like a service providers for other threads
+or objects running in the sasme
+process as teh daemon thread.
+Daemon threads are used for backgroudn supporting tasks ; and
+are only needed while nomrla threads
+are executing.
+
+If normal threads are not running and remaininng threads are daemon threads then the interpreter exits.
+
+^^^ Do you get this?  If no other threads outside of Daemon threads are running in the jvm....the jvm exists.  Daemon threads are SPECIFICALLY  only ment to peform services in the background for other threads...whether it be the main thread or otherwise.  #DigIt!!!
+
+
+
+Daemon Threads and inheritance
+=========================================
+When a new thread is crated it hinherits the daemon status of its parent.  Normal thread
+and daemon threads differ in what happens when they exit.  When the jvm halts...any remaining daemon threads are abandoned: finally blocks are not executed, stacks are not unwound - the JVM completely exists.
+
+Due to the above... daemon threads should be  use very sparingly and for a specific purpose that makes sens
+
+
+Setting Thread as a daemon
+================================
+//---------Code
+
+Thread thread = new Thread();
+thread.setDaemon(true);
+
+---or-------
+thread.setDaemon(false);
+
+
+
+Checking if a thread is a Daemon..
+=====================================
+public boolean isDaemon()?
+
+//-----------------Code
+Thread thread = new Thread();
+thread.setDaemon(true);
+boolean flag = thread.isDaemon() ;
+
+
+Setting a thread as a daemon thread
+=====================================
+Thread thread = new thread() ;
+if(!thread.isDaemon()){
+	thread.setDaemon(true);
+}

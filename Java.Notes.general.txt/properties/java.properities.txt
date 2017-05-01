@@ -1,0 +1,44 @@
+https://www.tutorialspoint.com/java/java_properties_class.htm
+
+The Properties class
+===================================================
+        *       Properties is a subclass of Hashtable
+
+        *       Properties class is used by many other Java
+                classes.  For example, it is the
+                type of object returned by
+                System.getProperties() when obtatining
+                enviromental values
+
+Constructor and Description
+=====================================================
+        *       Properties()
+        *       Properties(Properties propDefault)
+        *
+
+Method and Description
+=====================================================
+        *       String getProperty(String key)
+        *       String getProperty(String key,String defaultProperty)
+        *       void list(PrintStream steamOut)
+            
+
+        
+
+Example
+==================================================
+import java.util.* ;
+public class PropDemo{
+        public static void main(String args[]){
+                Properties capitals = new Properties() ;
+                Set states ;
+                String str ;
+                capitals.put("Illinois", "Springfield");
+                capitals.put("Missouri", "Jefferson City");
+                capitals.put("Washington", "Olympia");
+                capitals.put("California", "Sacramento");
+                capitals.put("Indiana", "Indianapolis");
+                states = capitals.keySet() ;
+                Iterator itr = states.iterator() ;       
+        }
+}
