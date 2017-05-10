@@ -1,0 +1,60 @@
+Data Models of Cassandra and RDBMS
+===============================================
+The following table lists down the points that differentiate
+the dta model of Cassandra rom theat of an RDBMS
+
+
+RDMBS                       Cassandra
+=========================   ======================================
+*RDMBS deals with           *Cassandra deals with unstructured data 
+structured data
+
+*Fixed Schema               *Cassandra has a flexible schema
+
+*A table is an array        *A table is a ist of nested KV pairs
+ of arrays(ROW x COLUMN)     (ROW X COLUMN Key x COLUMN VALUE)
+ 
+*Database is the highest    *Tables or column families are the entity
+Level of abstraction         of a keyspace
+
+*Tables are the entities    *Tables or column families are the entity
+of a database                of a keyspace
+
+*Row is an individual       *Row is a unit of replication in in Cassandra
+record in RDBMS
+
+*Columns represents the
+attributes of a relation    *column is a unit of storage in Cassandra
+
+*RDBMS supports the         *Relationships are represented using collections
+concepts of foriegn
+keys, joins
+    
+    
+Why is Cassandra better than your typical RDBMS ?
+========================================
+Data structures used in Cassandra are more specified
+than data structures used in relational databases.
+Cassandra data structures are faster than
+relational database structures.
+
+
+Transactions are simple....no complex joins(joins are basically
+the traversal of two or more  matrices looking for stuff)
+
+
+RDBMS have a single point of failure....NSQL DBs don't.
+NSQL handles data comming from any location, and comming
+in at high velocities.
+
+
+    
+    
+Where NOSQL works best
+==================================
+*Messaging
+*IoT
+*Product Catalogs and retail apps
+*Social Media analytics
+*Recomendation engines
+
