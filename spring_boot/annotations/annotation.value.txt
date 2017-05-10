@@ -1,0 +1,108 @@
+Spring value injection
+=========================================
+Spring's @Value annotation is used to glean
+properties instaed of hardcoding them.
+Any newly defined properties can be injected from
+multiple sources.
+
+Side Note: My  Hypothesis concerning Spring's general injection system
+
+@Value
+===================================
+@Value("${propertyName:defaultValue}")
+-------------------------
+Default values can be supplied directly with
+this syntax 
+
+@Value and application.properties file
+----------------------------------------
+defaults can be overriden in an application.properties
+file, which gets bundled with the app
+in a JAR file
+
+Bundled properties can be overridden in an auxiliary
+application.properties file adjacent to the deployed
+JAR file
+
+
+Auxilliary properties can be overridden by enviroment
+variables, either from the command line like:
+
+	*	.bashrc
+	*	windows bat file
+
+In a cloud enviroment, enviroment variables can be supplied by the configuration,
+as we'll see towerd the end of this chapter
+
+
+
+
+Mykong on Spring @Value
+===================================================
+We can set a default value in Spring using this 
+@Value annotation....it is literally causing our 
+compiler to assign(inject) a value into some variable.
+Why is this awesome ?  Haven't you guessed yet ?
+We can dynmacally assign values to variables application
+wide....
+
+
+//Code examples for setting value in an expression
+
+@Value("#{systemProperties['mongodb.port'] ?: 27017}")
+private String mongoDBPort ;
+
+@Value("#{config['mongodb.url'] ?: '127.0.0.1'}")
+private String mongodbUrl;
+
+@Value("#{aBean.age ?: 21}")
+private int age;
+
+
+//@PropertySource("classpath:/config.properties}")
+//@Configuration
+
+@Value("${mongodb.url:127.0.0.1}")
+private String mongodbUrl;
+
+@Value("#{'${mongodb.url:172.0.0.1}'}")
+private String mongodbUrl;
+
+@Value("#{config['mongodb.url']?:'127.0.0.1'}")
+private String mongodbUrl;
+
+
+//were do we get these values ?
+//A config file...fo course
+
+//config.properties
+mongodb.url=1.2.3.4
+mongodb.db=hello
+
+
+
+//for config beans
+
+<util:properties id="config" location="classpath:config.properties"/>
+
+More on this...
+===================================================
+@Value annotation is used for expression-driven dependency
+injection.  We will also see how we can use
+@Value to dynamically resolve handler method paramaters in spring mvc
+
+
+
+So where is this applications.properties file located ?
+==============================================================
+Within our spring boot app:
+
+	Project
+	|
+	|------src
+		|
+		|--------main
+			  |
+			  |
+		          --------application.properties
+

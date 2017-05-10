@@ -1,0 +1,86 @@
+https://objectcomputing.com/resources/publications/sett/september-2015-grails-3-interceptors/
+
+Grails interceptors Basics
+====================================
+Grails 3 is a major step forward in the evolution of the framework.  One noteable feature of Grails 3 is Grails
+interceptors that are replacing the deprecated but still supported filters.
+*************************************
+Note: Grails filters are a lot like servlet filters...
+*************************************
+
+Advantages of interceptors over filters
+=====================================
+*	Support for static compilation
+*	Flexible configurablility
+
+
+Defining an interceptor
+=====================================
+Like all Grails artifiacts, interceptors are simple Groovy classes.  They follow certain conventions that allow the framework to first identify and then augment them with 
+a rich set of behavior of relevant to freqenty addressed tasks
+
+Interceptors contain code for before and after routines to be executed 
+
+
+Conventions regarding implementing interceptors
+======================================
+Interceptors are by convention are located in the same directory the controllers they are associated with:
+
+	grails-app/controllers/
+
+All interceptor names should be ended with the suffix : Inerceptor
+
+
+Interceptor base syntax
+========================================
+
+ $ grails create-interceptor demo.First
+| Created grails-app/controllers/demo/FirstInterceptor.groovy
+| Created src/test/groovy/demo/FirstInterceptorSpec.groovy
+
+
+class FirstInterceptor{
+	boolean before(){true}
+	boolean after(){true}
+	void afterView()
+}
+
+import grails.test.mixin.TestFor
+import spock.lang.Specification
+ 
+@TestFor(FirstInterceptor)
+class FirstInterceptorSpec extends Specification {
+ 
+    void "Test first interceptor matching"() {
+        when:"A request matches the interceptor"
+            withRequest(controller:"first")
+ 
+        then:"The interceptor does match"
+            interceptor.doesMatch()
+    }
+}
+
+The Interceptor trait
+=======================================
+Grails 3 takes advantage of Groovy's powerful and flexible support by
+automatically making all interceptors 
+implement the trait:
+
+	grails.artefact.Interceptor
+
+Becaues of traits...we have access to
+attributes we we need app wide like:
+	*	grailsApplication
+	*	params
+	*	request
+	*	session
+
+and methods like:
+	*	redirect
+	*	render
+
+
+
+
+
+

@@ -1,0 +1,366 @@
+
+
+MongoDB data types
+=============================================
+Documents in MongoDB can be thought of as "JSON-like" and as
+such maybe operated upon conceptually as actual JSON.
+
+There are some drawbacks w/r to data types pertaining to 
+"pure" JSON as it only supports out the box six data types:
+
+	JSON supported types
+	-------------------------------------
+	*	null
+	*	boolean
+	*	numeric
+	*	string
+	*	array
+	*	object
+
+
+	Types not supported by JSON
+	------------------------------------
+	*	date
+	*	non dilineation between between integers, floats,  etc
+	*	non dilineation between 32-bit and 64-bit(i.e.  word size)
+	* 
+
+MongoDB adds support for datatypes that
+JSON does not cover.....
+====================================
+null:
+---------------------------------------
+{"x":null}
+
+boolean:
+---------------------------------------
+{"x":true}
+
+{"x":false}
+
+number:
+---------------------------------------
+The shell defaults to 64-bit words
+{"x":3} 
+
+{"x": 3.14}
+
+{"x":NumberInt("3")}
+{"x":NumberLong("3")}
+
+
+
+string:
+---------------------------------------
+{"x":"this is a string"}
+
+
+
+date:
+---------------------------------------
+{"x":new Date()}
+
+
+
+regular expressions...:
+---------------------------------------
+{"x":/foobar/i}
+
+
+array:
+---------------------------------------
+{"x":["a","b","c"]}
+
+
+
+embedded document:
+---------------------------------------
+{"x":{"foo":"bar"}
+
+
+object id
+..an objet id is an 12-byte ID for documents.  :
+---------------------------------------
+{"x":ObjectId()}
+
+binary data is less commonly used
+and cannot be manipulated in the mongo
+shell and is the only way to save 
+non-UTF-8 data into the database :
+---------------------------------------
+{"x":<blob>}
+
+
+code ....
+queries and documents can also contain
+arbitraary JavaScript code:
+---------------------------------------
+{"x":function(){/*.....*/}}
+
+
+
+Create a new database
+====================================
+>use foobar
+
+
+View current database context
+=======================================
+> db
+foobar
+
+
+Basic Operations with the Shell
+========================================
+Basic ops consist of CRUD to manipulate and
+view data in the shell.
+
+
+Create
+----------------------------------------------
+The insert function adds a document to a collection.
+For example, suppose we want to store a 
+blog post. First, we will crate a local variable
+called bost that is a JavaScript object representing
+our document.  It will have the keys :
+
+	title
+	content
+	date
+
+//************Create a Document for a collection of blog posts**********//
+> use foobar
+> post = {
+	"title":"My Blog Post",
+	"content":"Here's my blog post",
+	"date":new Date(),
+	"comments" : [ ]
+}
+ post = {
+	"title":"My Blog Post #2",
+	"content":"Here's my blog post #2",
+	"date":new Date(),
+	"comments" : [ ]
+}
+post = {
+	"title":"My Blog Post #3",
+	"content":"Here's my blog post #3",
+	"date":new Date(),
+	"comments" : [ ]
+}
+{
+	"title" : "My Blog Post",
+	"content" : "Here's my blog post",
+	"date" : ISODate("2017-04-25T17:52:06.950Z")
+
+}
+
+
+^^^This object is a valid MongoDB document, so we can save it to the
+blog collection using the insert method:
+
+>db.blog.insert(post)
+> db.blog.insert(post);
+WriteResult({ "nInserted" : 1 })
+> 
+
+
+Let's find that document and take a look at it...
+--------------------------------------------------------------
+>db.post.find()
+{ "_id" : ObjectId("58ff8d1601df850c7328a533"),
+  "title" : "My Blog Post",
+  "content" : "Here's my blog post", 
+  "date" : ISODate("2017-04-25T17:52:06.950Z") 
+}
+
+^^^ We can see that an "_id" key was added and that the other
+key/value pairs were saved as we entered them.
+
+
+Reading
+====================================================
+the methods of :
+	find()
+	findOne()
+may be used to query a collection.  If we just want
+to see one document from a collection, we can juste use
+findOne()
+
+>db.post.findOne()
+> db.blog.findOne()
+{
+	"_id" : ObjectId("58ff8d1601df850c7328a533"),
+	"title" : "My Blog Post",
+	"content" : "Here's my blog post",
+	"date" : ISODate("2017-04-25T17:52:06.950Z")
+}
+
+
+Update
+=====================================================
+If we would like to modify our post, we can use the method:
+	update()
+update takes at least two agruments, the first is the 
+criteria to find which document to update, and the second
+is the new document.
+
+Let's add a comments feature to our posts for our blog:
+
+> post.comments = []
+
+then we peform the update, replacing the post titled "My Blog Post" with
+new version of the document:
+
+> post.comments = []
+[ ]
+> post
+{
+	"title" : "My Blog Post",
+	"content" : "Here's my blog post",
+	"date" : ISODate("2017-04-25T17:52:06.950Z"),
+	"comments" : [ ]
+}
+> db.blog.update({title:"My Blog Post"},post) 
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> post
+{
+	"title" : "My Blog Post",
+	"content" : "Here's my blog post",
+	"date" : ISODate("2017-04-25T17:52:06.950Z"),
+	"comments" : [ ]
+}
+> 
+
+
+Delete
+====================================================
+The remove() method permantly deletes documents from the the
+database.  Called with no parameters, it removes all documents from
+a collection.  It can also take a document 
+specifying criteria for removal.  For example, this would remove the 
+post we just created:
+
+>db.blog.remove({title:"My blog"})
+
+^^^ Do this and the collection is now bereft of the document titled
+"My blog"
+
+
+Did you get that ?  This is all JavaScript....
+=============================================================
+
+
+Documents
+==========================================
+At the heart of MongoDB is the document: an ordered set of
+keys with assocated values.  The representation of a document
+varies by programming language, but most languages
+have a data structure that is a natural fit, such as a map, hash
+or dictionary.  In JavaScript, for example,
+documents are represented as objects:
+
+	{"greeting": "hello,world!!"}
+
+The key here is "greeting" with an associated value of "hello world"
+
+
+Key rules
+-----------------------------------
+* must not containe null character '\0' which is actually
+  used to signify the end of a key
+* '.' and '$' are special characters and should only be used for very good reason
+* Documents cannot contain duplicate keys...
+
+
+Basic syntax of MongoDB document syntax:
+--------------------------------------------------
+{'key':'value'}
+
+Where the value may be another document...or anything else...
+
+
+
+
+Mongo is type sensitive
+-------------------------------------------------
+These two documents are different:
+
+	{'foo':3}
+	{'foo':'3'}
+	{'Foo':3}
+	{'fOO':3}
+
+
+KV pairs in mongo are ordered...so the following are not the same
+---------------------------------------------------------------------
+{'y':1, 'x':1}   !=  {'x':1, 'y':1}
+
+Note: Perl, Python, and Perl do not possess native ordering of their map keys...
+but don't worry....mongodb drivers for these languages take care of this....we think...
+
+
+
+
+
+
+Collections
+==============================================================
+A collection is a group of documents.  If a document is the MongoDB analog of a
+row in a RDB then the collection is the analogy to a RDB table
+
+Naming
+-----------------------------------------------------------------
+Collections are identified by there names.  Collection names may be
+any UTF-8 string, with a few restrictions
+	* "" is not a valued colleciton name
+	*	No use of null characters '\0'
+	*	No use of 'system' as a prefix as it is reserved for internal
+		collectons....for example...:
+			system.users
+	*	User-created collections shoud not use the reserved character $
+		as some system generated collections use this character.  Avoid it.
+
+
+Subcollections
+-----------------------------------------------------------------------
+One convention for organizing collections is to use namespaced subcollecitons
+sperated by the .character for example:
+
+	blog.posts
+	blog.authors
+
+Where "blog" is a collection and "posts" are it's sub collection embedded within it.
+"authors" is also a sub collection of "blog".
+
+Note: This convention is for organizational purposes only...there is no relations
+to be had here...or anywhere in mongoDB....it's NOSQL
+
+
+
+Dynamic Schemas
+=====================================================================
+Collections have dynamic schemas.  This means that the documents within
+a single collection can have any number of different "shapes"  For example,
+both the folllowing documens could be stored ina single collection:
+
+{"red" : "rojo"}
+{"blue : "azul"}
+{"foo":5}
+
+
+Note that the previous documents not only have different types for their
+values(string versus integer) but also have entirely different keys.  Because any document
+can be put into any collection, the question often arises:  "Why do we need seperet collections
+at all ?"
+
+...because it makes sense to have different types of collections for different types of documents...
+
+
+
+Databases
+====================================================================
+Databases in mongodb are grouping of collections.  MongoDB can host
+many databases, each grouping togehter zero or more collections.
+Each DB has it's own permissions, and each datbase is stored in a seperated
+files on disk.  

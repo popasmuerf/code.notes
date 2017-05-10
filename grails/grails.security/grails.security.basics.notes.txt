@@ -1,10 +1,37 @@
 http://grails.asia/grails-tutorial-for-beginners-grails-service-layer/
 
 
-Introduction to Grails Service Layer
+Grails security
 =========================================================================
-Seperation of Concerns
-----------------------
+Grails security is application level security
+
+Security models can get fairly convoluted depending on your application's needs.
+
+
+Your average application security apparatus
+=====================================================================
+    *   Domain/model-level security
+    *   Administrator vs. regular user access
+    *   Basic access authentication
+
+Basic authentication
+=====================================================================
+    *   login creds sent to the server typically correspond with entries in a
+        database.  Of course, we will not be storing passowrds in the DB in clear
+        text.
+    *   Hashing(cryptography) is one way, as opposed to encryption which is two way.
+    *   MD5 and SHA are common Hashing algorithms
+    *   We can use org.apache.commons.codec.digest.DigestUtils as this lib has many
+        methods to produce different types of hashes
+
+org.apache.commons.codec.digest.DigestUtils
+=============================================================================
+For hashing in java...this is a common class used...
+
+    *   DigestUtils.md5(java.lang.String data): 16-element byte[]
+    *   DigestUtils..md5Hex(java.lang.String data): 32-character hext string
+    *   DigestUtils.shaHex(java.lang.String data): 32-character hex string using SHA-1 digest
+        mechanism
 
 Consider this analogy:  Imagine a company where employees
 are assigned tasks of different nature there
@@ -17,6 +44,49 @@ is an employee named John Doe with the following responsibilities:
     *   Manage the schedule of the CEO
     
     
+More about Access Controll:
+=========================================================================
+    Session validation
+    -------------------------------------------------------------------
+
+    User
+    -------------------------------------------------------------------
+    One way to secure pages and data is on the user level itself.  Many web sites
+    that rquire authentication use data at the user level to retrieve items
+    that are specific to a particular user.  With this level, you store user data to 
+    the session, and then whenever you need to do a query against a back-end system,
+    you retreive only the data for that user.
+
+    Roles
+    -------------------------------------------------------------------
+    You can assign users to roles to provide coarse graned permissines to pages
+    or even just areas of a page.  An internal site may have roles like manager,
+    developer, trainee, and so on.  For example, a site that nandles work
+    orers could allow a worker to work o na varierty of tickets, but ht page
+    that assignes or approves th etickets is accessible only to the manager.
+    Most commonly roles for applications take the form of :
+        *   user
+        *   admin
+
+
+    Permissions
+    -------------------------------------------------------------------
+    Fine grain control.  With permissions, you can give only certain users access to certain
+    portions of a site.  Returning to the example of work order tickets, what if you 
+    wanted to allow some users to create and delete tickets; others to just view them' and
+    others to create, edit, and delte them?  Roles could accomplish this...but you would need a lot of them and things would get very messy and complicated.
+    
+    Rules
+    -------------------------------------------------------------------
+    Some sites use a rule-based access control.  Systems like JBoss Seam use a 
+    rules engine(like JBossDrools) to determine authentication privileges
+    while also using permissions and roles.  This provides for an extremely 
+    flexible authentication mechanism.  However it also requiures more
+    configuration and general knowledge of how to use th e
+    rules engine.
+
+
+
 As you might have guessed, John's work is too complicated because he
 needs to multi-task on very different tasks, and must context switch
 for each task.  His herrors could cost a lot of money in the 

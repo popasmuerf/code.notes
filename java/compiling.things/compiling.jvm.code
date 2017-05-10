@@ -1,0 +1,35 @@
+Compiling java code no package
+===================================
+javac  *.java
+java -cp <addtional paths>:. Driver 
+
+Compiling java code and placing
+the class file in a specific destination
+============================================
+javac -d <generate class file output dir>  *.java
+java -cp <dir1>:<dir2>:<dirN>:. driver
+
+Compiling java code of some package
+(javac will read the package declrateion
+and create the package for you....)
+=====================================
+javac  *.java 
+java -cp <dir1>:<dir2>:<dirN>:. driver
+
+
+Compiling groovy code no package
+(groovyc will auto-magically take care
+of package information just like javac)
+====================================
+groovyc  *.java
+  -or-
+groovyc *.groovy
+  -or-
+groovyc *.java *.groovy
+
+groovy -cp  <dir1>:<dir2>:<dirN>:. driver
+
+Compiling java code that uses Groovy class files
+==============================================
+groovyc *.java *.groovy
+java -cp $GROOVY_HOME/embeddable/groovy-all-2.4.8.jar Driver

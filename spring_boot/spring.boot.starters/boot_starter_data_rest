@@ -1,0 +1,84 @@
+Dependency
+=========================================
+'org.springframework.boot:spring-boot-starter-data-rest'
+
+HAL document
+========================================
+What is a Hypertext Application Language document ?
+----------------------------------------------------------
+https://tools.ietf.org/html/draft-kelly-json-hal-06
+
+
+
+
+*	_embedded:
+-------------------------------------------
+Used for embedded resources.  Spring Data REST
+uses it to serve up collections
+
+*	teams:
+-------------------------------------------
+Used for embedded resources.  Spring Data REST
+uses it to serve up collections
+
+
+
+*	corresponding JSON
+--------------------------------------------------
+{
+  "_embedded" : {
+    "teammates" : [ {
+      "firstName" : "Greg",
+      "lastName" : "Turnquist",
+      "posistion" : "2nd base",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/teammates/1"
+        },
+        "teammate" : {
+          "href" : "http://localhost:8080/teammates/1"
+        },
+        "team" : {
+          "href" : "http://localhost:8080/teammates/1/team"
+        }
+      }
+    }, {
+      "firstName" : "Roy",
+      "lastName" : "Clarkson",
+      "posistion" : "1st base",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/teammates/2"
+        },
+        "teammate" : {
+          "href" : "http://localhost:8080/teammates/2"
+        },
+        "team" : {
+          "href" : "http://localhost:8080/teammates/2/team"
+        }
+      }
+    }, {
+      "firstName" : "Phil",
+      "lastName" : "Webb",
+      "posistion" : "pitcher",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/teammates/3"
+        },
+        "teammate" : {
+          "href" : "http://localhost:8080/teammates/3"
+        },
+        "team" : {
+          "href" : "http://localhost:8080/teammates/3/team"
+        }
+      }
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/teams/1/members"
+    }
+  }
+}
+
+

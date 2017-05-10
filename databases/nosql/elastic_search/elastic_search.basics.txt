@@ -1,0 +1,177 @@
+https://www.tutorialspoint.com//elasticsearch/index.htm
+
+Elastic Search basics
+===================================
+ES is a real-time distributed and open source full-text search and analytics engine.  It is used in Single Page Application (SPA) projects.
+
+
+Elastic Search is based on Lucene
+
+
+Prereuisites
+============================
+Basic understanding of Java, JSON,
+search engines, and understanding
+of RESTful APIs
+
+
+General Features
+================================
+The general features of Elasticsearch as follows
+
+	*	ES can be used as a
+		replacement of a document
+		stores like MongoDB and RavenDB
+	*	ES is on eof the popular
+		enterprise search engines
+		and is being currently
+		used by Wikipedia, The Guardian, Stack Overflow
+		, GitHub etc
+	*	Elastic search is open source
+		and available under the 
+		Apache licence
+
+
+ES Key Concepts
+===================================
+	*	Node:
+	-------------------------------
+	It refers to a single running
+	instance of ES .  Single physical
+	and virtual server accomodates 
+	multiple nodes depending upon
+	the capabilities of their physical resources.
+
+		*	Cluster:
+	-------------------------------
+	It is a collection of one or more
+	nodes.  Cluster provides a
+	collective indexing and search
+	capabilities across all the
+	nodes for entire data
+
+	*	Index:
+	-------------------------------
+	It is a collection of different
+	type of documents and document
+	properties.  Index also uses
+	the concept of shards to improve
+	the performance.  For example
+	, a set of document contains 
+	data of a social networking
+	application
+
+	*	Type Mapping:
+	-------------------------------
+	It is a collection of documents 
+	sharing a set of common fields
+	present in the same index.  For example, an index contains data
+	of a social networking application, and then there can be a specific type for user profile data, another type for messaging data, and another for
+	comments data.
+
+
+	*	Document:
+	-------------------------------
+	It is a collection of fields in
+	a specific manner defined in JSON
+	format.  Every document belongs to
+	a type and resides inside an index.
+	Every dofcument is associated with a unique identifier, known as a UID
+
+
+	*	Shard:
+	-------------------------------
+	Indexes are horizontally
+	subdivided into shards.  Each
+	shard of course then contains
+	all the properties of 
+	a document, but contains
+	less number of JSON objects
+	than an index.  Horizontal
+	sharding makes a shard an
+	independent node, which cna
+	be stored in any node
+
+
+Elastic Search basics
+===================================
+ES is a real-time distributed and open source full-text search and analytics engine.  It is used in Single Page Application (SPA) projects.
+
+
+Elastic Search is based on Lucene
+
+
+Prereuisites
+============================
+Basic understanding of Java, JSON,
+search engines, and understanding
+of RESTful APIs
+
+
+General Features
+================================
+The general features of Elasticsearch as follows
+
+	*	ES can be used as a
+		replacement of a document
+		stores like MongoDB and RavenDB
+	*	ES is on eof the popular
+		enterprise search engines
+		and is being currently
+		used by Wikipedia, The Guardian, Stack Overflow
+		, GitHub etc
+	*	Elastic search is open source
+		and available under the 
+		Apache licence
+
+
+ES Advantages
+===================================
+	*	Written in Java...write once, run anywhere there is a 
+	compliant jvm
+	------------------------------
+
+	*	Real time, the moment a document is added it is searchable in the system:
+	-------------------------------
+
+	*	Distributed, which makes it
+	easy to scale, and fault tolerant:
+	-------------------------------
+
+	*	Creating full backups are easy via the concept of "gateway":
+	-------------------------------
+	*	Multi tentancy: Does not suffer from this single point of
+	failure like Solr or RDBMes
+	-------------------------------
+	
+
+
+	*	JSON: responses to queries
+	are all in JSON and as such
+	is very platform agnostic w/r
+	to clients
+	-------------------------------
+	*	Support for all document types: except those that do not
+	support text rendering
+
+	note: What is text rendering?
+	Text rendering is a method of
+	deconstructing text that allows
+	the deconstructor to make decisions regarding the importance of the text...that is
+	select the portions that are most meaningful to them
+	-------------------------------
+
+
+	Disadvantages:
+	*	JSON support only: Unlike Solr that supports CSV,XML,
+	and JSON query responses
+
+
+
+	Terms
+	===============================
+	Index ---> DB
+	Mapping --> Table
+	Field --> Field
+	JSON Object ---> Tuple
+

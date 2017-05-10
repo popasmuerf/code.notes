@@ -1,0 +1,171 @@
+https://objectcomputing.com/resources/publications/sett/september-2015-grails-3-interceptors/
+
+
+
+
+
+Grails interceptors are Spring Beans
+====================================
+They are....
+
+
+Matching Requests
+====================================
+The convention is imposed that will automatically configure interceptors to match all requests to their corresponding controller.  The implicit mapping from an interceptor
+to a controller is based on the artifact names.  For example, by default, the PersonInterceptor  will match all requests to the PersonController.
+
+Interceptors often need to deviate from teh convention and to define the requests in which they participate using the match or matchAll method
+
+
+
+//----Example FirstInterceptor ----//
+
+package demo
+class FirstInterceptor{
+	public FirstInterceptor(){
+		match controller: 'reporting'
+		match controller: 'person' action: 'create'
+		match controller: ~/(accounting|payrool)		
+	}
+	......
+}
+
+^^^^The named arguments supported
+	that all except uri accept
+	either String or a regex expression whereas uri 
+	supports a String path
+	that is compatible with
+	Spring's :
+	org.springframework.util.AntPathMatcher
+	:
+	*	namespace
+	*	controller
+	*	action
+	*	method
+	*	uri
+
+An interceptor may match all requests,
+except request that satisfy 
+some condition:
+
+package demo
+
+@CompileStatic
+class FirstInterceptor{
+	public FirstInterceptor(){
+		//match all requests except
+		//requests to the auth 
+		//controller
+		matchAll().excludes(controller:'auth')
+	}
+}
+
+^^^
+The methods :
+	*	match()
+	*	matchAll()
+in an interceptor both return an
+instance of:
+	*	grails.interceptors.Matcher
+Most of the methods in Matcher
+also return the Matcher instance, which
+allows for method chaining as shown
+above with the statement:
+
+	*	matchAll().excludes(controller:'auth')
+*************************************
+Note: Grails filters are a lot like servlet filters...
+*************************************
+
+Interceptor methods
+=====================================
+//If true then control continues as usual
+//If false then control handled by  inerceptor
+*	boolean before()
+*	boolean after()
+*	afterView()
+
+//-------Example of interrupting Controller controll-----------//
+
+@CompileStatic
+class SimpleAuthInterceptor{
+	match controller: 'person'
+	boolean before(){
+		if(!session.UserHasBeenAuthenticated){
+			return false
+		}
+		true
+	}
+}
+
+
+Defining an interceptor
+=====================================
+Like all Grails artifiacts, interceptors are simple Groovy classes.  They follow certain conventions that allow the framework to first identify and then augment them with 
+a rich set of behavior of relevant to freqenty addressed tasks
+
+Interceptors contain code for before and after routines to be executed 
+
+
+Conventions regarding implementing interceptors
+======================================
+Interceptors are by convention are located in the same directory the controllers they are associated with:
+
+	grails-app/controllers/
+
+All interceptor names should be ended with the suffix : Inerceptor
+
+
+Interceptor base syntax
+========================================
+
+ $ grails create-interceptor demo.First
+| Created grails-app/controllers/demo/FirstInterceptor.groovy
+| Created src/test/groovy/demo/FirstInterceptorSpec.groovy
+
+
+class FirstInterceptor{
+	boolean before(){true}
+	boolean after(){true}
+	void afterView()
+}
+
+import grails.test.mixin.TestFor
+import spock.lang.Specification
+ 
+@TestFor(FirstInterceptor)
+class FirstInterceptorSpec extends Specification {
+ 
+    void "Test first interceptor matching"() {
+        when:"A request matches the interceptor"
+            withRequest(controller:"first")
+ 
+        then:"The interceptor does match"
+            interceptor.doesMatch()
+    }
+}
+
+The Interceptor trait
+=======================================
+Grails 3 takes advantage of Groovy's powerful and flexible support by
+automatically making all interceptors 
+implement the trait:
+
+	grails.artefact.Interceptor
+
+Becaues of traits...we have access to
+attributes we we need app wide like:
+	*	grailsApplication
+	*	params
+	*	request
+	*	session
+
+and methods like:
+	*	redirect
+	*	render
+
+
+
+
+
+

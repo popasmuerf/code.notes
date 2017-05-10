@@ -1,0 +1,222 @@
+Overwriting Default Settings
+======================================================
+Stuff we haven't covered yet....
+
+	*	constraints(validation)
+	*	DSLs
+	*	Hibernate
+
+
+
+
+
+
+Adjust the Mappings
+====================================================================
+GORM allows you to adjust names of the tables and columns on the database itself
+in a DSL way without the need for extra configuration files, as Hibernate requires.
+To demonstrate, we'll customize the Todo domain.  By th eend you will see the changes
+in reflected in the domain
+
+//---------------Adjusting mappings in a domain class----------//
+
+class Todo{
+	static mapping = {
+		.....
+	}
+}
+
+
+Let's change the table name....from todo ---> todo_tbl
+-------------------------------------------------------
+class Todo{
+	static mapping = {
+		table 'todo_tbl'
+	}
+}
+
+Let's change our table column names......
+-------------------------------------------------------
+class Todo{
+	static mapping = {
+		table 'todo_tbl'
+		columns{
+			name column:'name_str'
+			note column:'note_str'
+		}
+		hibernate{
+			cache.use_second_level_cache=true
+			cache.user_query_cache=true
+			cache.provider_class='org.hibernate.cache.EhCacheProvider'
+		}
+	}
+}
+
+
+
+
+Changing the Primary Key
+========================================================================================
+Earlier versions of Grails provided no easy way of changing the primary key.  Even worse,
+you couldn't change the generation method.  While this probably didn't affect smaller shops,
+it likely affected large companies, many of which demanded that DBAs use stroed procedures
+or other techniques to generate a primary key.  First, we'll go over hot to 
+change the generator, and then we'' discuss how to change the priamry key itself.
+
+By default, the generator uses the native implementation of the database.  This could be 
+an identiry or a sequence, depending on the database.  However, let's say you want to change it  to use  a high-low method of determing the number.  You would add this entry to
+your mapping:
+
+id generator: 'hilo', params:[table:'hi_value',column:'next_value',max_lo:100]
+
+//-------hilo code---------------------------
+class Book{
+	static mapping ={
+		id generator: 'hilo'
+			params:[table:'hi_value',column:'next_value', max_lo:100]
+	}
+}
+
+note: Default GORM id generation strategy
+---------------------------------------------------------------------------------------------
+By default GORM use the native strategy to generate a database identifier for
+each entity(typically an auto-incrementing column or a sequence)...we can alter tis
+with the argument:
+
+	id generator
+
+	
+
+note: About High/Low operations
+---------------------------------------------------------------------------------------------
+The basic idea is that you have two numbers to make up a primary key:
+	*	high number
+	*	low number
+A lcient can increment the "high" sequence, known that it can safely generate
+keys from the entire range of the previous "high" value with the variety of
+"low" values
+
+For example, supposing you have a "high" sequence with a current value of 35, and the "low"
+number is in the range 0-1023.  Then the client can increment the sequence to
+36(for other clients to be able to generate keys while it's using 35) and know that keys:
+	*	35/0
+	*	35/1
+	*	35/2
+	*	35/3
+	*	35/....
+	*	35/1023
+
+are all available.
+This is useful (particularly with ORMs) to be able to set the primary keys on
+the clientside, instead of inserting values without primary keys and for creating
+parent/child relationships and have the keys all in place before
+you do any inserts, which makes batching them simpler.
+
+^^^
+This entry starts off with identifying itself b referencing to th eid property, which is the default property on the doman.  Next, generator defines the generator to be used, and params
+defines the paramters to pass into the generator.  For a high-low calculation, th egenerator needs a table name, a column in the table, and a maximum low.  Remember, this is all
+based on what Hibernate expects as parameters for each of the generations.
+
+
+
+Writing relationships in Grails is relatively easy.  In fact, the syntax and usage are 
+virtually identical to Ruby on Rail's ActiveRecrod.  Knowing that GORM is based on Hibernate,
+you might expect the syntax and usage to be more like Hibernate or JPA, but this in't the 
+case,  With standard JPA, yoiu can create relationhips using annotations
+soley on one side of the bean.  However, these annotations can get complex:
+
+//JPA relationshipt annotation examples:
+
+@ManyToMany
+@JoinTable(name="COURSE_TO_STUDNET_TBL",
+		   joinColumns(name="courseId"),
+		   inverseJoinColumns=@JoinColumn(name="studentId"))
+private Collection<Student> students ;
+
+^^^Note the that there are differnet annotations for each type of relationship.
+In reality, JPA configures more from the database level, whereas GORM is programmed
+more from the verbal level.  First, we'll review the players involved, an
+then we'll show you how to create relationships
+
+
+One-to-One
+====================================
+A one to one exists when mappings between records in two different tables
+is unique.
+
+
+//----Example One to One GORM ----//
+
+class User{
+	...
+	Address address
+}
+class Address{
+	User user
+}
+
+^^^Pretty simple...right ?  All we need to do is just embedd types...
+
+
+
+One-to-Many
+====================================
+A one to one exists when mappings between records in two different tables
+is unique.
+
+
+//----Example One to One GORM ----//
+
+class User{
+	...
+	static hasMany = [buddyLists:BuddyList]
+}
+class BuddyList{
+	....
+	static belongsTo = User
+	static hastMany = [members:BuddyListMembers]
+}
+
+
+^^^Pretty simple...right ?  All we need to do is just embeded types...
+
+
+
+
+Managing relationships
+========================================================
+BuddyList myList
+myList.addToMembers(someMember)
+myList.removeFromMembers(someMember)
+
+
+Many-to-One
+==========================================================
+As you've probably guessed, a many-to-one relationship is the inverse
+of the one-to-many relatioship.  Grails GORM one to many relationship
+is enough here....as it serves the desired result.  In JPA there is 
+actually a @ManyToOne annotation....wow.....
+
+
+Many-to-Many
+==================================================================
+The many-to-many relationship further demonstrates the distinction between the
+way GORM an dJPA implement relationships.  In a many to many relationship, 
+a record in table A can reference multiple records in table B and vice versa
+At least one of these classes needs to "belong" to the other(doesn't matter which one)
+and both must include each other respectively in a "hasMany" statement.
+
+
+class Todo{
+	
+	static hasMany = [keywords:Keyword]
+}
+
+class Keyword{
+	static belongsTo = Todo
+	static hasmany = [todos:Todo]
+}
+
+
+
+

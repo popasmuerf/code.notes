@@ -1,0 +1,370 @@
+Creating an Audit Log Using Action Interceptors
+=================================================================================
+Occasionally, you'll have a problems with the application.  When this happens, it is useful
+to know the input and results of the actions being executed.  This entails displaying
+the inputs to the action before the action is executed aand the
+results before control is passed to the next step in the procss.  You could modify
+every action to print the inputs befoe exuctting body of the action and then again
+at the end of the action.  However, that's way to much work
+and difficult to maintain
+
+
+
+Grails and action interceptors.
+==================================================================================
+Grails provides a mechanism called action interceptors that you can use
+to provide the desired functionality.   This is a similar concept to 
+AOP....if not that then servlet filter interceptors(this is similar to Ruby on Rails 
+"Rails filter")
+
+
+Grails "before" and after "intercptors"
+============================================================
+We can use both to provide the audit log functionality.
+You will use a before interceptor closure to the 
+TodoController:
+
+
+def beforeInterceptor = {
+	log.trace(${session?.user?.userName} Start action ${controllerName} Controller.${actionName}() : parameters $params")
+}
+
+def afterInterceptor = { model ->
+	log.trace("${session?.user?.userName} End action" ${controllerName}Controller.${actionName}() : returns $model")	
+}
+
+
+
+What does Grails interceptors actually do ?
+=============================================================================
+They allow us to to execute logic before an action is invoked, and after an action
+is done executing
+
+
+Can we get more granual w/r to when interceptors execute ?
+================================================================================
+Sure we can!!!!
+Let's say that we don't want these interceptors to run for each and every action
+in our controller...as opposed to exectuing these intercepts for some specific 
+action....
+
+def beforeInterceptor = [action:this.&beforeAudit,except:['list']]
+def afterInterceptor = [action:{model -> this.&afterAudit(model)},except['list']]
+def beforeInterceptor = {
+	log.trace(${session?.user?.userName} Start action ${controllerName} Controller.${actionName}() : parameters $params")
+}
+def afterInterceptor = { model ->
+	log.trace("${session?.user?.userName} End action" ${controllerName}Controller.${actionName}() : returns $model")	
+}
+
+^^^We set up interceptor conditions for the action TodoController.list()....because loging this
+would be crazy....
+
+
+what else can we do with Grails interceptors...?
+==========================================================\
+We can roll our own security framework....
+
+
+
+Scope									Description
+--------------------------				------------------------------------------------
+flash									Flash only allows the storage of objects for
+										the current and next request
+
+params									Mutable map of incoming request query string or POST
+										parameters
+
+request									The request object allows the storage of objects
+										for the current request only
+
+serveletcontext							This scope lets you share state across the entire web
+										application
+
+session									The session allows associating state with a given
+										user and typically uses
+										cookies to associate a session with a client
+
+The flash object is a Map(a hash) that you can use to store key value pairs.
+These values are transparently stored inised the session ad then cleared at the end of the next request... This pattern lets you used HTP redirects(whcih is useful for redirect after
+post) and retain values that can be retrieved from teh flash object.   
+
+The flash object  works just like the other scopes:
+	application
+	session
+	request
+	page
+by operating off a amp of key/value pairs.  It stores the information in the session and then removes it on the next rquest.  We don't have to remember to delete the object in the flash scope.                        
+
+
+
+Flash object in action
+===========================================================================
+
+///Code
+
+.....
+
+	if(user.save()){
+		flash.message = "User ${user.id} created"
+		redirect(action:show,id:user.id)
+	}
+
+.....
+
+	def show(User user){
+		render user
+	}
+
+^^^^
+Grails implements a flash scope using a map.  In this case...:
+
+	key --->  message
+	value ----> "User ${user.id} created"
+
+We could always add this string (the value) to our message bundle
+if not for any reason we don't want to alter our gsp files but still
+want this message to be available from anywhere in our code base
+
+
+Example of setting values in a falsh scope for use by the <g:message> Tag
+-------------------------------------------------------------------------------
+///Code
+
+.....
+if(user.save()){}
+	flash.message = "user.saved.message"
+	flash.args =[user.firstName,user.lastName]
+	flash.defaultMsg = "User Saved"
+	redirect(action:show, id:user.id)
+}
+.....
+""
+<g:message code="${flash.message}" args=${flash.args}"
+default="${flash.defaultMsg}"/>
+
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:if>									Logical switch based upon a test expression
+
+<g:else>								The else portion of an if statement
+
+<g:elseif>								The elseif portion of an if statement
+
+
+
+
+Iteration Tags
+=========================================================================================
+Iteration tags are used to iterate over collectio or loop until a condition is false.
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:while>								Loops while test condition is true
+
+<g:each>								Iterates over a collection
+
+<g:collect>								Iterates over a collection and transforms the results
+										as defined in the expr paramter
+
+<g:findAll>								Iterates over a collection where the elements math the
+										GPath defined in the expr parameter
+
+<g:grep>								The else portion of an if statement
+
+
+Assignment Tags
+=========================================================================================
+You sue assignment tags to create and assign a value to a variable.  
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:def>(deprecated)						Defines  a variable to be used within the GSP page
+
+<g:set>									Sets the value of a variable used within the GSP page
+
+
+
+Linking Tags
+=========================================================================================
+We create URLs with these tags
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:link>								Creates HTML link using supplied parameters
+
+<g:createLink>							Creates a link that you can use within other tags
+
+<g:createLinkTo>						Crates a link to a directory or file	
+
+
+
+Ajax Tags
+=========================================================================================
+You can use Ajax tags to build an Ajax-aware appliation.
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:remoteField>							Creates a text field that involkes a link when changed
+
+<g:remoteFunction>						Creates a remote function that is called on a DOM Event
+
+<g:remoteLink>							Creates a link that callls a remote function
+
+<g:formRemote>							Creates a form tag that executes an Ajax call to
+										serialize the form elements
+
+<g:javascript>							Includes a JavaScript libraries and scripts
+
+<g:submitToRemote>						Creates a button that executes an Ajax call to seralize
+										Form elemens
+
+
+
+Form Tags
+=========================================================================================
+Form tags are used create HTML forms.  Contains an overview of form tags
+
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:actionSubmit>						Creates a submit button
+
+<g:actionSubmitImage>					Creates a submit button using an image
+
+<g:checkBox>							Creates a check box
+
+<g:currencySelect>						Creates a select field containing currencies
+
+<g:datePicker>							Creates a configurable date picker for the
+										day, month , year, hour minute, and second
+
+<g:form>								Creates a form
+
+<g:hiddenField>							Creates a hidden field
+
+<g:localSelect>							Creates a hidden field containing locales
+
+<g:radio>								Creates radio button
+
+<g:radioGroup>							Creates a radio button group
+
+<g:select>								Creates a select/combo box field
+
+<g:textField>							Creates a text field
+
+<g:textArea>							Creates a text area field
+
+<g:timeZoneSelect>						Creates a select field containing time zones
+
+
+Render and Layout Tags
+=========================================================================================
+Render and layout tagas are used create the layouts and render templates.  As you might
+expect, several render and layout tags were used in main.gsp.  
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:applyLayout>							Applies a layout to a body or template
+
+<g:encodeAs>							Applies dynamic encoding to a block of HTML
+										to bulk-encode the content
+
+<g:formatDate>							Applies a SimpleDateFormat to date
+
+<g:layoutHead>							Displays a decorated page's header used in
+										layouts
+
+<g:layoutBody>							Displays a decorated page's body used in
+										layouts
+
+<g:layoutTitle>							Displays a decorated page's title, which is used in
+										layouts
+
+<g:meta>								Display application metadata properities
+
+<g:render>								Display model using a template
+
+<g:renderErrors>						Display Errors
+
+<g:pageProperty>						Displays a property from a decorated page
+
+<g:paginate>							Displays Next/Previous buttons and breadcrumbs for
+										large results
+
+<g:sortableColumn>						Creates a text field
+
+
+Validation Tags
+=========================================================================================
+Validation tags are used to display errors and messages
+
+
+Tag Name								Tag Description
+--------------------------				------------------------------------------------
+<g:eachError>							Iterates through errors
+
+<g:hasErrors>							Checks if errors exist within the bean, model, or 
+										request
+
+<g:message>								Displays a message
+
+<g:fieldValue>							Displays the value of a field for a bean that has
+										a data binding.
+
+
+
+
+Static Resources
+=======================================================================================
+Resources plugin(default installed since Grails 2.0) that is used to 
+include a ling to a static resource in your application.
+
+The simple approach is below:
+---------------------------------------
+<g:resource dir="css" file="main.css"/>
+
+
+For more complex cases...use <r:require>
+-------------------------------------------------
+<html>
+	<head>
+		<r:require module="jquery"/>
+
+		<r:layoutResources/>
+	</head>
+	<body>
+	....
+	<r:layoutResources/>
+	</body>
+</html>
+
+When we have declared the resource modules that
+your GSP page requires, the framework needs
+to render the links to those resources at the correct time,
+ <r:layoutResources>
+-------------------------------------------------
+<html>
+	<head>
+		<g:layoutTitle/>
+		<r:layoutResources/>
+	</head>
+	<body>
+		<g:layoutBody/>
+		<r:layoutResources/>
+	</body>
+</html>
+

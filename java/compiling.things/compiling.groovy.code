@@ -1,0 +1,160 @@
+Compiling Java Summary
+=================================
+Compiling java code no package
+-----------------------------------
+javac  *.java
+java -cp <addtional paths>:. Driver 
+
+Compiling java code and placing
+the class file in a specific destination
+-----------------------------------
+javac -d <generate class file output dir>  *.java
+java -cp <dir1>:<dir2>:<dirN>:. driver
+
+Compiling java code of some package
+(javac will read the package declrateion
+and create the package for you....)
+-----------------------------------
+javac  *.java 
+java -cp <dir1>:<dir2>:<dirN>:. driver
+
+
+Compiling groovy code no package
+(groovyc will auto-magically take care
+of package information just like javac)
+-----------------------------------
+groovyc  *.java
+  -or-
+groovyc *.groovy
+  -or-
+groovyc *.java *.groovy
+
+groovy -cp  <dir1>:<dir2>:<dirN>:. driver
+
+Compiling java code that uses Groovy class files
+-----------------------------------
+groovyc *.java *.groovy
+java -cp $GROOVY_HOME/embeddable/groovy-all-2.4.8.jar Driver
+
+
+
+
+Compiling Groovy
+=====================================
+*Groovy will generate a class with a main
+method containing script commands when you are just running a groovy script
+
+* GroovySh: same thing as running groovy scripts...just in the GroovySh
+
+* Groovy Console...same thing as above...
+
+* compiling using groovyc(even script files)
+  and then running with groovy command
+* compiling using groovyc (even script files) and then running with java command....but usually we would only do this if we are embedding Groovy into Java.
+
+
+
+Metatobject Protocol
+============================================
+The metaobject protocol was originally defined as an interface to a programming language to 
+give the user of the language the ability to modify the language's behavior and even its
+implementation....which eventually led to
+programming languages to be little more than
+abstractions with constructs for you to build
+upon.
+
+MOP
+---------------------------------------
+...formally is the collectio of rules of how
+a request for a method call will be handled
+by the Groovy Runtime system.  EVERY method
+method call that you write in Groovy(be it 
+compiled with Groovy or Java) is redirected
+to MOP; for example, the Groovy 
+compiler generates byte code for the method
+call that calls into the MOP.
+
+
+
+Metaclass
+============================================
+A meta class proivdes the means of refelction
+and dynamic invocation.  Groovy never calls
+any methods directly in the byte code, but
+always through the object's metaclass.
+
+In Groovy, all classes, including all Java
+classes, have a property of :
+
+  metaClass
+
+of type:
+
+  groovy.lang.MetaClass
+
+When dispatching a message to an object, the meta
+metaclass helps to determine which behavior should be invoked and also the prescribed
+behavior, and the behavior to be prescribed
+if there isn't one already defined....
+
+groovy.lang.GroovyObject
+==========================================
+is an interface that ALL groovy Objects 
+implement:
+
+public inteface GroovyObject{
+  Object inmvokeMethod(String name, Object args)
+  Object getProperty(String propertyName);
+  void setProperty(String property,Object newValue);
+  MetaClass getMetaClass();
+  void setMetaClass(MetaClass metaClass);
+}
+
+^^^ These methods are what allow Groovy Objects
+to be extremely dynamic as they allow object
+properties to be created on the fly:
+
+  * invokeMethod()
+  * getProperty()
+  * setProperty()
+
+
+Using invokeMethod() and get/setProperty()
+==========================================
+Groovy allows for the ability to intercept
+methods and preperty access via 
+invokeMethod
+
+Overriding invokeMethod
+-------------------------------------------
+In any Groovy class you can override
+invokeMethod(), which will 
+essentially intecept method calls.
+When a method is called on a Groovy object,
+the method invocation is dispatched to the
+invokeMethod() of the Object:
+
+//---------Code-------------
+class Item{
+  int itemNumber
+  String itemName
+  int qty
+  Object invokeMethod(String name, Object args){
+    if(name == "test"){
+      this.properties.each{
+        println " " + it.key + ": " + it.value
+      }
+    }
+  }
+} 
+def item1 = new Item(itemNumber:1,itemName:"Item 1",qty:100)
+def item1 = new Item(itemNumber:2,itemName:"Item 2",qty:200)
+def item1 = new Item(itemNumber:3,itemName:"Item 3",qty:300)
+def itemList = [item1,item2,item3]
+itemList.each{
+  it.test()
+}
+
+
+^^^ here we more or less used the invokeMethod()
+ method to create a method Item.test() dynamically at run time.
