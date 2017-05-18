@@ -1,0 +1,41 @@
+Git Object types
+==============================
+At the heart of Git's repository
+implementation is the object store.
+It contains:
+	* original data files
+	* log messages
+	* author information\
+	* dates
+	* other info required 
+	  for rebuilds
+	* version info
+
+Git only deals with 4 types of objects
+===================================
+
+Blobs(Binary large objects)
+---------------------------------
+Each version of a file is represented as a blob.  The
+internal structured is ignored
+by the program.  A blob is treated
+as being opaque.  A blob holds a file's data but not  any metadata
+about the file or even it's name.
+
+
+Trees
+--------------------------------
+A tree object represents one level
+of directory information.  It 
+records pertaining to blobs:
+	*	identifiers
+	*	path names
+	*	meta-data for all the
+		files in a directory
+	*	meta-data for recursive
+		access to other (sub)tree
+		objects and thus build a
+		complete hierarchy of files
+		and subdirecdtories
+
+Commits 
