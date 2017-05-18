@@ -39,3 +39,34 @@ records pertaining to blobs:
 		and subdirecdtories
 
 Commits 
+-------------------------------
+A commit object holds metadata
+for each change introduced into the
+repo including:
+	*	author
+	*	committer
+	*	commit date
+	*	log message
+	*	pointer to tree object
+Each commit object points to a captured instance of a tree object
+in one complete snapshot.  The snapsot is capture in time of an instance of the state of the repo
+The intial commit ...the "root" commit has no parent.
+
+Most commits have one commit parent..though it is possible to have a 
+commit that can reference more than one parentl.
+
+
+
+Tags
+===================================
+A tag object assigns an arbitrary yet persumaby human readable name
+to a specific object, usually a
+commit.  
+Although the following refers to
+an exact commit  :
+
+	 9da581d910c9c4ac93557ca4859e767f5caf5169
+
+It might be a tad more convienient to use a tag for any particular commit such as  Ver-1.0-Alpha 
+
+	
