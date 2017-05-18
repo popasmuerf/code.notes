@@ -58,7 +58,7 @@ commit that can reference more than one parentl.
 
 
 Tags
-===================================
+--------------------------------------
 A tag object assigns an arbitrary yet persumaby human readable name
 to a specific object, usually a
 commit.  
@@ -69,4 +69,42 @@ an exact commit  :
 
 It might be a tad more convienient to use a tag for any particular commit such as  Ver-1.0-Alpha 
 
-	
+Index
+-----------------------------------
+---
+The index is a temporary and dynamic
+binary file that describes the directory structure of the entire
+repository.  More specifically,
+the index captures a version of the
+project's overall structure at
+one moment in time.
+
+A projects state could be captured
+by a commit and and atree from any
+point in the project's history, or
+it could be a future state toward
+which we are actively developing.
+
+Indexing allows for the seperation between incremental development steps and the commita of those changes
+
+How git works high level
+==================================
+	*	execute commands that stage
+		changes in the index:
+			- add files
+			- delete files
+			- editing files
+	*	changes are recorded by
+		index..keeping them safe
+		until a commit or an unstage
+
+	*	Indexes may be moved or 
+		removed
+	*	Indexes allow for gradual
+		tansistions from one repo
+		state to another
+	*	Indexes are essential for
+		all merges
+
+		
+	*	
