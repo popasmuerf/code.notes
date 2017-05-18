@@ -1,0 +1,60 @@
+RX Java
+==================================
+
+
+
+The Key Difference between Observables and Iterables
+===========================================================
+Observables provide access to asynchromous
+data streams while Iterables provide access to 
+synchronous ones
+
+
+
+
+Let's talk about the distinction further....
+==============================================================
+To make this distinction more concrete, think again
+about the precieding snippet that logs a HackerNews story's
+title within :
+
+    Collection<Story>
+    
+Let's imagine that the Story's logged in that snippet
+were not available in memory, that wach story had to 
+be fetched fromt he network, and that we wanted to log the Storys
+on the main thread.  In this case, we would need th thestram
+of Storys to be an asynchronous stream and using an Iterable
+to access each element in that stream would be inappropiate.
+
+
+Instead, in this case, we should use an Observable to access each
+story as it is returned by the HackerNews API.
+
+
+Observers
+===============================================================
+Observers are consumers of an Observable's asynchronous data stream.
+Observers can react to the data emitted by the Observable
+in whatever way they want.  For example, here is an Observer that logs
+the titles of Storys emitted by an Observable:
+
+storiesObservable.subscribe(new Observer<Story>(){
+    @Override
+    public void onCompleted(){}
+    @Override 
+    public void onNext(Story story){
+        Log.i(TAG,story.getTitle()) ;
+    }) ;
+}
+
+
+RxJava is a library 
+==================================================
+that allows us to represent any operation as an
+asynchronous data stream that can be created
+on any thread, declaratively composed, and consumed by
+multiple objects on any thread.
+
+
+

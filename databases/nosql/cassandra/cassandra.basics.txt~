@@ -40,5 +40,20 @@ Cluster
 =========================================================
 Cassandra database is distributed over several machines that operate
 together.  The outermost container is known as the Cluster.
-Every node contains a replica, an din case of failure,the replica t
+Every node contains a replica, an din case of failure,the replica takes charge.
+Cassandra arranges the nodes in a cluster, in a rieng format, an dassigns data to them.
+
+
+
+Column families
+=============================================================
+A column family is a NoSQL object that contains columns of
+related data.  It is a tuple(pair) that consists of a 
+Key-value pair, where the key is mapped to a value that is a set of 
+columns.
+
+Key -----------> col0,col1,col2,col3,col4,...,coln
+    
+    
+    
 

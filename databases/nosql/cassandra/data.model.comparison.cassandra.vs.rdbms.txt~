@@ -1,0 +1,34 @@
+Data Models of Cassandra and RDBMS
+===============================================
+The following table lists down the points that differentiate
+the dta model of Cassandra rom theat of an RDBMS
+
+
+RDMBS                       Cassandra
+=========================   ======================================
+*RDMBS deals with           *Cassandra deals with unstructured data 
+structured data
+
+*Fixed Schema               *Cassandra has a flexible schema
+
+*A table is an array        *A table is a ist of nested KV pairs
+ of arrays(ROW x COLUMN)     (ROW X COLUMN Key x COLUMN VALUE)
+ 
+*Database is the highest    *Tables or column families are the entity
+Level of abstraction         of a keyspace
+
+*Tables are the entities    *Tables or column families are the entity
+of a database                of a keyspace
+
+*Row is an individual       *Row is a unit of replication in in Cassandra
+record in RDBMS
+
+*Columns represents the
+attributes of a relation    *column is a unit of storage in Cassandra
+
+*RDBMS supports the         *Relationships are represented using collections
+concepts of foriegn
+keys, joins
+    
+    
+

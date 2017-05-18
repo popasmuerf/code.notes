@@ -1,0 +1,72 @@
+Bundling up the application as a runnable JAR
+========================================================
+Summary:
+----------------------------------------------------
+    *We can run Groovy scripts with Spring Boot's CLI tool
+    *We can create runnable JAR files, where they can be deployed
+     anywhere there is a standards compliant JVM.
+    *We can deploy our exectuable jar to any PaaS provider
+     who supports a standards compliant JVM
+    *Spirng Boot comes with two handy plugins:
+        -spring-boot-maven-plugin
+        -spring-boot-gradle-plugin
+    *The previous listed plugins are already in our build config
+     whenever we download a project skeleton from:
+        -start.spring.io
+    *We can run our apps using either of the following:
+        >gradle clean bootRun
+        
+            -or-
+        >./gradlew clean bootRun
+        
+    *It is best to use gradlew as it is a platform agnostic script
+     that is also bundled(or will be) in our executabe jar
+    *If a build fails via some test...sometimes is best just to delete the test
+    
+    
+    
+Some things to conscider before we build our executable jar
+====================================================================
+    *Spring Boot initially builds a traditional JAR file
+        -this jar file contains the compiled class files, all the public
+         resource files such as our JQueryMobile code, HTML templates
+         and the pow file(assuming we are using maven, if not maven...
+         then our build.gradle file)
+    *The initial jar file is buildlibs/issue-manager-0.0.1-SNAPSHOT.jar.original
+     which is not runnable and serves as template for building a bigger artifact
+     such as WAR file(it is also devoid of any third party libs)
+     
+    *Spring takes the SNAPSHOT jar and (via Spring Boot's plugin) and builds a new
+     one adding required 3rd party dependencices and some support code in order
+     to oad the libs. Location:
+        -build/libs/<my-app>.jar
+        
+    * mikeyb@home-1:~/src/spring/boot.1/Issue-Manager$ ls -al build/libs
+total 33176
+drwxrwxr-x 2 mikeyb mikeyb     4096 Feb 26 11:34 .
+drwxrwxr-x 9 mikeyb mikeyb     4096 Feb 26 11:34 ..
+-rw-rw-r-- 1 mikeyb mikeyb 27701163 Feb 26 11:34 Issue-Manager-0.0.1-SNAPSHOT.jar #runnable jar
+-rw-rw-r-- 1 mikeyb mikeyb  6260428 Feb 26 11:34 Issue-Manager-0.0.1-SNAPSHOT.jar.original # non-runnable jar template
+mikeyb@home-1:~/src/spring/boot.1/Issue-Manager$ 
+
+
+
+Let's run our jar...
+======================================================
+> GITHUB_TOKEN=98ac22acd67b9c646d0091a34734da5c7698aff7
+> ./gradelw clean build
+> java -jar  build/libs/Issue-Manager-0.0.1-SNAPSHOT.jar
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.4.4.RELEASE)
+
+2017-02-26 12:23:20.812  INFO 2482 --- [           main] l.IssueManagerApplication  
+........
+     
+
+

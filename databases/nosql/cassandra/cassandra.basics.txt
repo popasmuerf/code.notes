@@ -45,10 +45,34 @@ Cassandra arranges the nodes in a cluster, in a rieng format, an dassigns data t
 
 
 
+Column families
+=============================================================
+A column family is a NoSQL object that contains columns of
+related data.  It is a tuple(pair) that consists of a 
+Key-value pair, where the key is mapped to a value that is a set of 
+columns.
+
+Key(k) -----------> (k)(col0,col1,col2,col3,col4,...,coln)
+
+^^^^This is analogus to a relational database where the column  is
+a "table", where each key-value pair being a "row"(So a column family
+is like an inverted rdbs table)
 
 
-Keyspace
-==========================================================
-    Column Family               Column Family
+Each column is a tuple(triplet) consisting of:
+    *   column name
+    *   value
+    *   timestamp
+    
+    
+Unlike RDMBS schemas, the layout of data is not fixed in 
+NoSQL databases.  Alought  the cloumn families are
+defined, the columns are not.  You can freely add any colun
+to an column family at any time.
+
+
+
+    
+    
     
 
