@@ -106,5 +106,85 @@ How git works high level
 	*	Indexes are essential for
 		all merges
 
-		
-	*	
+
+Cotent-Addressable Names
+===============================
+The git object store is organized and implemented as a content addressable storage system.  Specifically, each object in the 
+object store has a unique name produced by applying SHA1 to the
+contents of the object, yeilding
+a SHA1 hash value.  Because the  complete contents of an object
+contribute to the hash value
+and the hash value is believed to 
+be effectively unique to that
+particular content, the SHA1 hash
+is a sufficient index or name for that object in the database.  Any
+tiny change to a file causes
+the SHA1 hash to change, causing
+the new version of the file
+to be indexed seperately.
+
+Git users speak of SHA1, hash code, and Object ID interchangeably.
+
+
+Note : Globally Unique Identifiers
+====================================
+Identical content has the same ID globally..regardless of the physical location of that identical data.  The same file content residing in two or more differnt places share the same
+Object Id/hash/SHA1 number.  Think
+of this id as a GUID.
+
+
+Git is more of a content tracking system than a VCS
+========================
+* Git allows you to internally manipulate data with ease
+
+* Git only tracks hashes...not file names or anything else...
+again...content is what matters here.
+
+* if two seperate files have the 
+exact same content...git stores
+a single copy of that content as 
+a blob within the object store...
+whether those two files reside in
+the same directory or not...
+
+* git computes hases based on file/directoy content alone
+
+* If a change occures to a file/directory..then a new hash 
+is computed for that file/directory
+
+* all original files remain in the
+object store.
+
+* git only stores every version of ever file...not the changes to each file.
+
+Pathname Versus Content
+=================================
+
+Database comparison
+
+---------------------------------
+System |Index mechanism	|DatStore 
+---------------------------------
+RDBS   |ISAM			|records
+----------------------------------
+Unix FS|Directories     |blocks
+----------------------------------
+Git    |.git/objects/	|Blobs
+	   | objects/hash   |tree objs
+
+
+^^^Git's physcial data layout isn't modeled after teh user's
+file directory structure.  
+Instead, it has a completely
+different structure that can
+nonetheless reproduce
+the user's orginal layout.
+
+Git's internal structure is a more
+efficient data structure for
+its own internal operations
+and storge considerations.
+
+
+
+	
