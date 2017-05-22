@@ -1,10 +1,23 @@
-Using git add
+Using git commit --all
 ==================================
-The command git add stages a file.
-In terms of Git's file classifications(tracked, untracked, ignored), if a file is untracked,
-then git add converts that file's
-status to tracked.  When git add
-is used on a directlry
+The -a or --all option to :
+
+	git commit
+
+causes it to automatically stage all
+unstaged, tracked file changes including removals of tracked files
+from the working copy before it 
+performs the commit	
+
+Note: git commit
+---------------------------
+So basically if you just
+use "git commit -a"  or "git
+commit --all" , then you 
+you skip the manual staging
+via  "git add".
+
+
 
 
 git ls-files --stage

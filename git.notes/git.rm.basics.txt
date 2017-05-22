@@ -1,0 +1,166 @@
+Using git rm 
+==================================
+The command :
+
+	> git rm
+
+is the inverse of git add.  It
+removes a file from both the
+repository and the working directory.
+
+Git will only remove a file only from
+the index or from the index and 
+working directory simultaneously.
+Git will not remove a file just
+from teh working directory; the
+regular "rm" command:
+
+	git commit
+
+may be used for that purpose.
+
+Summary:
+===============================
+*	To get rid of an unstaged file
+	just use:
+		> rm -f somefile.txt
+
+*	To get rid of an unstaged file
+	just use:
+		> rm -f somefile.txt
+
+*	To get rid of a staged file then
+	you need to remove the file from both the index and repo:
+		> git rm -f somefile.txt
+
+
+What if we want to unstage a file ?
+=====================================
+To convert a file from staged to
+unstaged, use :
+
+	> git rm -f --cached datfile.txt
+
+
+What if we want to remove a file
+that has been commited ?
+=====================================
+> git rm datfile.txt
+
+^^^^Before Git removes a file, it
+checks to make sure the version
+of the file in the working directory
+matches the latest version in the 
+current branch(pointed to by HEAD ptr).  This verification precludes the accidental loss of any changes(due to your editing) that may have been made to the file.
+
+
+Adding a file back
+=================================
+What if we have a file named
+"dat.txt" that we have staged and 
+commited...but now removed from
+both our repo and branch using:
+
+>	git rm -f dat.txt
+
+
+lets add the file back
+--------------------------
+> git add dat.txt
+fatal: pathspec 'dat.txt' did not match any files
+
+Looks like we removed it from our
+working copy...so let's grab it 
+from our last commit
+
+> git checkout HEAD -- data
+
+
+
+
+
+
+causes it to automatically stage all
+unstaged, tracked file changes including removals of tracked files
+from the working copy before it 
+performs the commit	
+
+Note: git commit
+---------------------------
+So basically if you just
+use "git commit -a"  or "git
+commit --all" , then you 
+you skip the manual staging
+via  "git add".
+
+
+
+
+git ls-files --stage
+============================
+we can use this command
+to peer under the object store
+"hood" and find the SHA1 
+values for those staged
+files:
+###########code###############
+mikeyb@cern:~/src/git/hello$ git ls-files --stage
+100644 0487f44090ad950f61955271cf0a2d6c6a83ad9a 0	.gitignore
+100644 e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 0	data
+100644 ce013625030ba8dba906f756967f9e9ca394464a 0	subdir/hello.txt
+100644 05cbc965f7555fd45ed507063fe2ea66c319c09d 0	subdir/rog.html
+100644 e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 0	subdir1/file1
+100644 e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 0	subdir2/file1
+mikeyb@cern:~/src/git/hello$ 
+
+
+Most of the day-to-day changes within your repo will likely be
+simple edits.  After any edit
+and before you commit your changes
+run the command:
+
+	>git add data.txt
+
+to update the index with the 
+absolute latest and greatest
+version of your file.
+If you do't you will 
+have two different versions
+of the file: one captured
+in the object store and referenced
+from the index, and the other in 
+your working directory.
+
+
+git hash-object data
+===========================
+We can get information about
+some object in your object 
+store:
+########Code##############
+>git hash-object data.txt
+
+
+Note: Data Objects that havent
+been staged.
+==================================
+They will be added to the repo
+data store automatically.
+For example:
+#############Code################
+> echo "data1" >> data1.txt
+> echo "data2" >> data2.txt
+> echo "data3" >> data3.txt
+
+> git hash-object data*
+e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+d760283f593557e4e4d39f4e0de7865c9021082d
+98d81a2ec6f8a779c75bc247c33ec6369a02428d
+b5c7e399c9bad0828a1e152fa190ca63b266cc8e
+
+
+Note:  git add
+=============================
+Think of it as not adding files
+to the index...as opposed to 
+adding content.
