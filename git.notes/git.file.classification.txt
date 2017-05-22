@@ -1,0 +1,40 @@
+File Classification in Git
+================================
+There are three groups of classification w/r to files in 
+Git
+====================================
+Git file classifications
+----------------------------
+Tracked:
+------------------------------
+	A tracked file is any file
+	already in the repository or
+	any file that is staged in 
+	the index.  To add a new
+	file "somefile" to this
+	groupd, run:
+	***************************
+		git add somefile
+
+Ignored:
+------------------------------
+	An ignored file must be
+	explicity declared invisible
+	or ignored in the repo een
+	though it may present 
+	within your working directory.
+	A software project tends to
+	have a good number of ignored
+	files. Such examples would be:
+
+		*temp files
+		*personal notes
+		*compiler output
+		*ide specfic files
+		*platform specfic files
+	Git maintains a default list of
+	files to ignore, and you can
+	configure your repository to 
+	recognize others within the file:
+		.gitignore
+	

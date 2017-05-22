@@ -1,0 +1,151 @@
+Git internals 
+===========================
+
+The .git directory structure
+==============================
+
+.git
+├── branches
+├── config
+├── description
+├── HEAD
+├── hooks
+│   ├── applypatch-msg.sample
+│   ├── commit-msg.sample
+│   ├── post-update.sample
+│   ├── pre-applypatch.sample
+│   ├── pre-commit.sample
+│   ├── prepare-commit-msg.sample
+│   ├── pre-push.sample
+│   ├── pre-rebase.sample
+│   └── update.sample
+├── info
+│   └── exclude
+├── objects
+│   ├── info
+│   └── pack
+└── refs
+    ├── heads
+    └── tags
+
+
+
+
+
+
+
+Packfiles
+----------------------------
+mikeyb@cern:~/src/git/cstring$ find .git/objects -type f
+.git/objects/5e/01833e800a63f55dc2cc6708f61d1a5b9b9795
+.git/objects/73/8e61dc59cb3f8ab7a837f8753230b7630add76
+.git/objects/ea/4c8a6f476c3d7d14ab9512cef39cfadd64282c
+.git/objects/2e/1c80a8849edfddd9af26afe4b716d9a647e3f9
+.git/objects/bb/c3721844addce2ab778186769ea294fc628e0d
+
+mikeyb@cern:~/src/git/cstring$ 
+
+
+
+ .git/objects
+ ============================
+Initially,the directory:
+
+	.git/objects
+
+is empty except for a few 
+place holders
+
+
+Objects, Hashes, Blobs
+============================
+when git creates an object for a 
+file like hello.txt, git doesn't
+care about it's filename...it
+only cares about what's insided the file...the sequence of 12
+bytes that represent "hello world"
+
+Git performs a few ops on thsi blob,
+calucluates its SHA1 hash, and enters it into the object store
+as a file nameed after the
+hex representation of the hash.
+
+
+Stuff we can do with the hash
+-----------------------------
+> git cat-file -p 01833e800a63f55dc2c
+
+
+Files and Trees
+================================
+Git...despite not being too 
+terribly conscerned with file names
+as opposed to their content...does
+keep track of pathnames of files via it's Tree object.
+
+The command :
+
+> git add
+
+causes git to create an object for
+the contents of each file you add,
+but it doesn't create an object
+for your tree right away...instead it updates the "index"..  the
+index is found in:
+
+	.git/index
+
+
+.git/index
+--------------------------------
+The index is foud in .git/index
+and keeps track of file
+pathnames and corresponding blobs.
+Each time you run commands such
+as:
+
+	*	git add
+	*	git rm
+	*	git mv
+
+Git updates the index with the new
+pathanme and blob information
+
+
+Whenever you want, you can
+create a tree object from
+your current index by capturing
+a snapshot of its current 
+information with the low-level
+git command :
+
+	*	git write-tree
+
+Files and Trees
+===============================
+> git ls-files -s
+100644 5e01833e800a63f55dc2cc6708f61d1a5b9b9795 0	src/dstring.c
+100644 bbc3721844addce2ab778186769ea294fc628e0d 0	src/string.c
+100644 5e01833e800a63f55dc2cc6708f61d1a5b9b9795 0	src/string_operations.c
+
+
+mikeyb@cern:~/src/git/cstring$ git write-tree
+ea4c8a6f476c3d7d14ab9512cef39cfadd64282c
+mikeyb@cern:~/src/git/cstring$ find .git/objects
+.git/objects
+.git/objects/5e
+.git/objects/5e/01833e800a63f55dc2cc6708f61d1a5b9b9795
+.git/objects/73
+.git/objects/73/8e61dc59cb3f8ab7a837f8753230b7630add76
+.git/objects/ea
+.git/objects/ea/4c8a6f476c3d7d14ab9512cef39cfadd64282c
+.git/objects/2e
+.git/objects/2e/1c80a8849edfddd9af26afe4b716d9a647e3f9
+.git/objects/bb
+.git/objects/bb/c3721844addce2ab778186769ea294fc628e0d
+.git/objects/info
+.git/objects/pack
+mikeyb@cern:~/src/git/cstring$ 
+
+
+mikeyb@cern:~/src/git/cstring$ find .git/objects  | egrep ea4c8a6f476c3d7d14ab9512cef39cfadd64282c

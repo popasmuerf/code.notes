@@ -1,0 +1,283 @@
+Git Index
+==============================
+Most VCS allow you to edit in your
+working directory and ommit your
+changes to your rository for
+safekeeping.  Git works similarly
+but inserts another layer:
+
+	The index
+
+The index is inserts the index
+"layer" between the working directory and the repository to stage.
+
+	Index-------------
+					 |
+					 v
+	working_dir --->stage---->repo
+
+
+The index is used to stage, or
+collect alterations:
+
+	1. edit working directory
+	2. accumulate changes in the index(staging)
+	3.	commit changes to your local repo
+	4. push your local repo to
+	   your current branch
+
+We can think of the index as a set
+of intended or prospective modifications where you are able
+to add, move, or repeatedly edit files right up to the culminating 
+commit, which actualizes the
+accumulated changes in the repository.
+
+
+
+Linus says it's all about the Index
+===================================
+Linus Torvalds argued on the Git mailing list that you can't 
+grasp and fully appreciate the 
+power of Git without first 
+unserstanding the purpose
+of the index.
+
+
+Git's index doesn't contain any
+file content; it simply tracks
+what you want to commit.  When
+you run :
+
+	> git commit
+
+Git checks the index...as opposed
+to the current state of your 
+native files system to determine what should be eligible for a commit.  Git's "higher level" commands are designed to 
+hide the details of the index
+from you and make your job easier,
+it is still important to keep the
+index and its state in mind.
+
+Querying our Index
+===============================
+We can query the state of the 
+index at any time with the command
+
+	git status
+
+It explicity calls out what files
+Git considers staged.
+
+We can peer into the internal
+state of Git with "plumbing" commands such as:
+
+	git ls-files
+
+
+We can use the command:
+
+	git diff
+
+during staging to display two
+differnt sets of hcanges:
+
+	*git diff
+		-changes that remain
+		 in your working dir
+		 and are not staged
+
+	*git diff --cached
+		-shows changes that are
+		 staged and will be
+		 included within your
+		 next commit
+
+
+
+
+It contains:
+	* original data files
+	* log messages
+	* author information\
+	* dates
+	* other info required 
+	  for rebuilds
+	* version info
+
+Git only deals with 4 types of objects
+===================================
+
+Blobs(Binary large objects)
+---------------------------------
+Each version of a file is represented as a blob.  The
+internal structured is ignored
+by the program.  A blob is treated
+as being opaque.  A blob holds a file's data but not  any metadata
+about the file or even it's name.
+
+
+Trees
+--------------------------------
+A tree object represents one level
+of directory information.  It 
+records pertaining to blobs:
+	*	identifiers
+	*	path names
+	*	meta-data for all the
+		files in a directory
+	*	meta-data for recursive
+		access to other (sub)tree
+		objects and thus build a
+		complete hierarchy of files
+		and subdirecdtories
+
+Commits 
+-------------------------------
+A commit object holds metadata
+for each change introduced into the
+repo including:
+	*	author
+	*	committer
+	*	commit date
+	*	log message
+	*	pointer to tree object
+Each commit object points to a captured instance of a tree object
+in one complete snapshot.  The snapsot is capture in time of an instance of the state of the repo
+The intial commit ...the "root" commit has no parent.
+
+Most commits have one commit parent..though it is possible to have a 
+commit that can reference more than one parentl.
+
+
+
+Tags
+--------------------------------------
+A tag object assigns an arbitrary yet persumaby human readable name
+to a specific object, usually a
+commit.  
+Although the following refers to
+an exact commit  :
+
+	 9da581d910c9c4ac93557ca4859e767f5caf5169
+
+It might be a tad more convienient to use a tag for any particular commit such as  Ver-1.0-Alpha 
+
+Index
+-----------------------------------
+---
+The index is a temporary and dynamic
+binary file that describes the directory structure of the entire
+repository.  More specifically,
+the index captures a version of the
+project's overall structure at
+one moment in time.
+
+A projects state could be captured
+by a commit and and atree from any
+point in the project's history, or
+it could be a future state toward
+which we are actively developing.
+
+Indexing allows for the seperation between incremental development steps and the commita of those changes
+
+How git works high level
+==================================
+	*	execute commands that stage
+		changes in the index:
+			- add files
+			- delete files
+			- editing files
+	*	changes are recorded by
+		index..keeping them safe
+		until a commit or an unstage
+
+	*	Indexes may be moved or 
+		removed
+	*	Indexes allow for gradual
+		tansistions from one repo
+		state to another
+	*	Indexes are essential for
+		all merges
+
+
+Cotent-Addressable Names
+===============================
+The git object store is organized and implemented as a content addressable storage system.  Specifically, each object in the 
+object store has a unique name produced by applying SHA1 to the
+contents of the object, yeilding
+a SHA1 hash value.  Because the  complete contents of an object
+contribute to the hash value
+and the hash value is believed to 
+be effectively unique to that
+particular content, the SHA1 hash
+is a sufficient index or name for that object in the database.  Any
+tiny change to a file causes
+the SHA1 hash to change, causing
+the new version of the file
+to be indexed seperately.
+
+Git users speak of SHA1, hash code, and Object ID interchangeably.
+
+
+Note : Globally Unique Identifiers
+====================================
+Identical content has the same ID globally..regardless of the physical location of that identical data.  The same file content residing in two or more differnt places share the same
+Object Id/hash/SHA1 number.  Think
+of this id as a GUID.
+
+
+Git is more of a content tracking system than a VCS
+========================
+* Git allows you to internally manipulate data with ease
+
+* Git only tracks hashes...not file names or anything else...
+again...content is what matters here.
+
+* if two seperate files have the 
+exact same content...git stores
+a single copy of that content as 
+a blob within the object store...
+whether those two files reside in
+the same directory or not...
+
+* git computes hases based on file/directoy content alone
+
+* If a change occures to a file/directory..then a new hash 
+is computed for that file/directory
+
+* all original files remain in the
+object store.
+
+* git only stores every version of ever file...not the changes to each file.
+
+Pathname Versus Content
+=================================
+
+Database comparison
+
+---------------------------------
+System |Index mechanism	|DatStore 
+---------------------------------
+RDBS   |ISAM			|records
+----------------------------------
+Unix FS|Directories     |blocks
+----------------------------------
+Git    |.git/objects/	|Blobs
+	   | objects/hash   |tree objs
+
+
+^^^Git's physcial data layout isn't modeled after teh user's
+file directory structure.  
+Instead, it has a completely
+different structure that can
+nonetheless reproduce
+the user's orginal layout.
+
+Git's internal structure is a more
+efficient data structure for
+its own internal operations
+and storge considerations.
+
+
+
+	

@@ -1,0 +1,70 @@
+Using git add
+==================================
+The command git add stages a file.
+In terms of Git's file classifications(tracked, untracked, ignored), if a file is untracked,
+then git add converts that file's
+status to tracked.  When git add
+is used on a directlry
+
+
+git ls-files --stage
+============================
+we can use this command
+to peer under the object store
+"hood" and find the SHA1 
+values for those staged
+files:
+###########code###############
+mikeyb@cern:~/src/git/hello$ git ls-files --stage
+100644 0487f44090ad950f61955271cf0a2d6c6a83ad9a 0	.gitignore
+100644 e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 0	data
+100644 ce013625030ba8dba906f756967f9e9ca394464a 0	subdir/hello.txt
+100644 05cbc965f7555fd45ed507063fe2ea66c319c09d 0	subdir/rog.html
+100644 e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 0	subdir1/file1
+100644 e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 0	subdir2/file1
+mikeyb@cern:~/src/git/hello$ 
+
+
+Most of the day-to-day changes within your repo will likely be
+simple edits.  After any edit
+and before you commit your changes
+run the command:
+
+	>git add data.txt
+
+to update the index with the 
+absolute latest and greatest
+version of your file.
+If you do't you will 
+have two different versions
+of the file: one captured
+in the object store and referenced
+from the index, and the other in 
+your working directory.
+
+
+git hash-object data
+===========================
+We can get information about
+some object in your object 
+store:
+########Code##############
+>git hash-object data.txt
+
+
+Note: Data Objects that havent
+been staged.
+==================================
+They will be added to the repo
+data store automatically.
+For example:
+#############Code################
+> echo "data1" >> data1.txt
+> echo "data2" >> data2.txt
+> echo "data3" >> data3.txt
+
+> git hash-object data*
+e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+d760283f593557e4e4d39f4e0de7865c9021082d
+98d81a2ec6f8a779c75bc247c33ec6369a02428d
+b5c7e399c9bad0828a1e152fa190ca63b266cc8e
