@@ -1,0 +1,175 @@
+git commit : intermediate
+===========================
+Commits are used to record
+changes to a repository.
+
+Commits in git are different
+than commits in other VCSes
+
+
+When a commit occurs, Git 
+records a snapshot of the
+index and places that snapshot in the
+object store.  This store does not
+contain a copy of every file and
+directory in the index, because
+su a strategy wuld require 
+enrmous and prohibtive amounts
+of storage.  Git creates new blobs
+only for new files...otherwise it
+simply just makes the required changes
+to exiting files.
+
+
+object becomming th enew
+		master HEAD
+
+
+Note: Dirty Indexes in the other direction
+====================================
+You can get a dirty index in the other
+direction, irrecpsective of the
+working dirctory state.  By
+reading a non-Head commit out of the
+object store into the index not 
+cheking out the corresponding files
+into the working directory, you create
+the situation where the index and working directory are not in
+aggreement and where the index is 
+still dirty with respect to the
+HEAD
+
+
+
+Commits are sometimes executed
+by git itself
+==================================
+Git itself can introduce commits.
+A merge operation causes a
+commit in the repository in
+in addition to any commits made
+by users before the merge.
+
+
+When to execute commits
+==============================
+It's really up to you and your development style....In general, you
+should perform a commit at
+well-defined points in 
+time when your development is
+at a quiescent stage, such as when 
+a test suite passes, when
+everyone goes home for the day,
+or any number of reasons....but
+whatever you do...commit and commit
+often.
+
+
+Refs and symrefs
+======================================
+A ref is a SHA1 has ID that refers
+to an object within the git object
+store.  Although a ref may refer
+to an git object, it usually rfers
+to a commit object.  A symbolic
+refernce, or sysmref, is a name
+that indirectly points to a
+git object.  It is still just a ref.
+
+Local topic branch names, remote tracking branch names, and tag 
+names are refs.
+
+
+SHA1(ref)-----------
+					|----->object
+text_name(symref)---
+
+
+
+Ref directory location
+=============================
+tree .git/refs
+.git/refs
+├── heads
+│   ├── concurrency
+│   ├── List
+│   ├── master
+│   └── microservices
+├── remotes
+│   └── origin
+│       ├── concurrency
+│       ├── f_concurrency
+│       ├── HEAD
+│       ├── master
+│       └── microservices
+└── tags
+    ├── v1.0.0
+    └── v1.1.0
+
+
+
+git's speical symrefs
+===================================
+	*	HEAD
+	*	ORIG_HEAD
+	*	FETCH_HEAD
+	*	CHERRY_PICK_HEAD
+	*	MERGE_HEAD
+
+Note:
+------------------------------
+Technically, the name of the git
+directory .git can be changed.  Thus,
+git's intenral documentation uses the
+variable $GIT_DIR instead of the
+literal .git
+
+
+HEAD
+=====================================
+HEAD always refers to the most
+recent commit on the current branch.
+When you change branches, HEAD
+is updated to refer to the 
+new branch's latest commit.
+
+
+ORIG_HEAD
+=====================================
+Certain operations, such as merge
+and reset, record the previous
+version of HEAD in ORIG_HEAD just
+prior to adjusting it to a new
+value.  You can use ORIG_HEAD
+to recover or revert to the
+previous state or to make
+a comparsion.
+
+
+FETCH_HEAD
+=====================================
+When remote repositories are used,
+git fetch records the heads of all
+branches fetched in the file:
+
+	.git/FETCH_HEAD
+
+is shorthand for the head of the
+last branch fetched and is valid only
+immediately after the fetch operation.  Using this symref, uyou can find the HEAD of commits from:
+
+	git fetch
+
+even if an anonumous fetch that doesnt specifically name a branch is
+used.  
+
+
+
+
+
+
+Identifying commits
+======================================
+
+
+
