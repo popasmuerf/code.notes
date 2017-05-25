@@ -1,0 +1,69 @@
+A Detailed View of 
+Git's Object Model and
+files ./.gitignore
+===========================
+By now, we should have the basic
+skills to manage files.  
+Nonetheless, keeping track
+of what file is where, working
+directory, index and repository
+
+
+
+Working directory
+------------------------
+project
+|
+|--->foo : a23bf
+|
+|--->bar : 9d3a2
+
+
+What's going on here?
+----------------------------
+At this point, we have staged foo
+in the index, and the working
+directory and index agree...
+however, as far as HEAD is conscerned
+the index is dirty as it differs from
+the object store in the master branch.
+
+When all changes have ben staged in
+the index, a commit applies
+them to the repository.
+
+The three steps of a commit
+-------------------------------
+	*	The virtual tree
+		of the index is converted
+		into a real tree and placed
+		into the object store under
+		their SHA1 name
+
+	*	A new commit object is
+		created with your log message
+
+	*	The new commit points to
+		the newly created tree object
+		and also to the previous
+		or parent commit.
+
+	*	The master branch ref is moved
+		from teh most recent commit
+		to the newly created commit object becomming th enew
+		master HEAD
+
+
+Note: Dirty Indexes in the other direction
+====================================
+You can get a dirty index in the other
+direction, irrecpsective of the
+working dirctory state.  By
+reading a non-Head commit out of the
+object store into the index not 
+cheking out the corresponding files
+into the working directory, you create
+the situation where the index and working directory are not in
+aggreement and where the index is 
+still dirty with respect to the
+HEAD

@@ -1,0 +1,29 @@
+Git  ./.gitignore
+===========================
+
+Features of .gitignore
+==============================
+honored from higest to lowest
+------------------------------
+*	Patterns specified on the
+	command line
+*	Patterns read from
+	.gitignore in the same
+	directory
+*	Patterns in parent directories,
+	proceeding upward.  Hence, the
+	current directory's patterns
+	overrule the parents, and
+	the parents close to the 
+	current directory take
+	precedence over higher 
+	parents
+*	Patterns from the file
+	.git/infor/exclude file
+*	Patterns from the the file
+	specified by the configuration
+	variable core.execludefile
+
+Note:  take note that your .gitignore file is treated as any other file
+and should be included in every associated repo
+
