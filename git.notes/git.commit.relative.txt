@@ -1,10 +1,85 @@
-git commit : intermediate
+git commit : relative commits
 ===========================
-Commits are used to record
-changes to a repository.
+We can identify a commit relatie
+to another reference, commonly
+the tip of a branch.
 
-Commits in git are different
-than commits in other VCSes
+You've seen some of these
+names already such as:
+
+	master
+	-and-
+	master^
+
+where master^ always referes
+to the penultimate commit
+on the master branch
+
+
+
+The topology of commits in our 
+graph...
+================================
+Except for the first root commit,
+each commit is derived from at
+least one earlier commit and
+possible many, where direct
+ancestors are called :
+
+	"parent commits"
+
+
+For a commit to have multiple parent
+commits, it must be the result of 
+a merge operation....As a result,
+there will ba parent commit for each
+branch contributing to a 
+merge commit.
+
+
+Carets and commit parents...
+==============================
+Within a single genertion, the caret
+is used to select a different
+parent.  Given some commit "C",
+
+	C^1 is the first parent
+	C^2 is the second parent
+	C^n is the nth parent
+
+
+	Ca ----> C^1
+				\	
+	Cb ----> C^2------> C
+				/
+	Cc ----> C^3
+
+^^^There is a merge here....and as such the commit "C" has parent commits C^1, C^2, C^3 from branches
+a, b, and c
+
+
+commits and tildes
+=================================
+The tilde is used to go back
+before an direct parent in order
+to select a preceding 
+generation.  Again, given the 
+commit C, C*^1 is the first parent
+and C*~1 is the first grandpanrent,
+and C*~1 is the first great-grandparent.  When there are multiple
+parents in a generation, the first parent of the first parent is followedl.  You might alos
+notice that both C^1 and C~1 refer
+to the first parent' either name is
+correct, and is shown.
+
+
+	Ca~1 ----> C^1
+				\	
+	Cb~1 ----> C^2------> C
+				/
+	Cc~1 SS----> C^3
+
+
 
 
 When a commit occurs, Git 
