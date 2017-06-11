@@ -1,0 +1,61 @@
+Maven provides developers ways to manage the following
+==========================================================
+	*	builds
+	*	documentation
+	*	reporting
+	*	dependencies
+	*	scms
+	*	releases
+	*	distributions
+	*	mailing 
+
+
+To summarize maven simplifes and standarizes the project build process.
+Maven like gradle allows you to even build multiple projects together
+
+
+
+Convention over Configuration
+==========================================================
+Maven uses Convention over Configuration which means developers are not
+required to create build processes themselves.
+
+Developers do not have to mention each and every configuration detail.  Maven
+provides sensible default behavior for projects When a maven project is created,
+Maven crates default project structure.  Developer is only required to 
+place files accordingly and he/she need not to define any configuration in pom.xml
+
+
+As an example, following table shows the default values for project source coded
+files, resource files and other configurations.  Assuming, ${basedir} denotes the 
+project location:
+
+
+Item						Default
+---------------------------------------------
+source coded                ${basedir}/src/main/java
+
+
+resources					${basedir}/src/main/resources
+
+
+Tests						${basedir}/src/test
+
+
+distributable JAR			${basedir}/target
+
+
+compiled byte coded         ${basedir}/target/classes
+
+
+
+
+Maven and life cycle goals
+=========================================================================
+In order to build the project, Maven provides developers options to mention
+life-cycle goals and project dependencies.(that rely on maven pluging
+capablilities and on its default conventions)  Much of the project management and
+build related tasks are maintaned by Maven pluns
+
+
+

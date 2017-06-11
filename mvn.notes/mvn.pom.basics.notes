@@ -1,0 +1,111 @@
+Maven POM
+==========================================================
+POM stands for Project Object Model.  It is fundamental Unit of Work
+in Maven.  It is an XML file.  It always resides in the base
+directory of the project as pom.xml
+	*	builds
+	*	documentation
+	*	reporting
+	*	dependencies
+	*	scms
+	*	releases
+	*	distributions
+	*	mailing 
+
+
+To summarize maven simplifes and standarizes the project build process.
+Maven like gradle allows you to even build multiple projects together
+
+
+
+Convention over Configuration
+==========================================================
+Maven uses Convention over Configuration which means developers are not
+required to create build processes themselves.
+
+Developers do not have to mention each and every configuration detail.  Maven
+provides sensible default behavior for projects When a maven project is created,
+Maven crates default project structure.  Developer is only required to 
+place files accordingly and he/she need not to define any configuration in pom.xml
+
+
+As an example, following table shows the default values for project source coded
+files, resource files and other configurations.  Assuming, ${basedir} denotes the 
+project location:
+
+
+Item						Default
+---------------------------------------------
+source coded                ${basedir}/src/main/java
+
+
+resources					${basedir}/src/main/resources
+
+
+Tests						${basedir}/src/test
+
+
+distributable JAR			${basedir}/target
+
+
+compiled byte coded         ${basedir}/target/classes
+
+
+
+
+Example POM
+=========================================================================
+Before creating a POM, we should first decide the project:
+
+	*	group (groupId)		: This ian Id of project's group.  This is generally
+							  unique amongst an organization or a project.  For 
+							  example, a banking group com.company.bank
+							  will contain all banking related projects-->
+							  		com.company.bank.deposits
+							  		com.copmany.bank.tellers
+							  		com.company.bank.robbers
+
+	*	name  (artifactId)  : often the name of the project.  defines the location
+							  of the project
+
+	*	version 			: tHIS IS THE VERSION OF THE PROJECT.  Along with 
+							  groupId, It is used within an artifact's repository
+							  to seperate version from each other.  For example:
+
+							  		com.company.bank:consumer-banking:1.0
+							  		com.compmany.bank:consumer-banking:1.1
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+   http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>com.mdb</groupId>
+   <artifactId>project</artifactId>
+   <version>1.0</version>
+</project>
+
+
+
+
+
+Super POM
+=================================================================================
+All POMs inherit from a parent POM.  This base POM is known as the Super POM,
+and contains values inherited by default.
+
+Maven uses the effect pom(the config from the super pom plus project config) to 
+execute the rlevant goal.  It helps developer to specify niminum configuration
+detail in his/er pom.xml  Although configuration can be overriden easily.
+
+
+An easy way to looat the default configratons of the super POM is by running
+the followng command:  
+
+	> mvn help:effective-pom
+
+
+
+Note:  You don't need to hand write a pom.xml(whew!!!) there 
+are numerous archtypes plugins to create projects which in order create the
+project sturcture and pom.xml

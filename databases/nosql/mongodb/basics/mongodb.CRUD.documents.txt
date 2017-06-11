@@ -1,20 +1,21 @@
 
 
-MongoDB Shell
+MongoDB Creating , Updating , and 
+Deleting Documents
 =============================================
-by default the client will conect to the local
-mongo instance..but it can connect to any any
-instance remote or not
-
-$ mongo some-host:30000/myDB
 
 
-What if I don't want to connect to any database ?
-What if we want to connect to one at our leisure ?
+
+Inserting and Saving Documents
 ===================================================
-	$ mongo --nodb
-	$ conn = new Mongo("some-host:30000")
-	$ db = conn.getDB("myDB")
+Inserts are the basic method for adding data to MongoDB.
+To insert a document into a collection, use the colleciton's
+insert method.
+
+> db.foo.insert({"bar":"baz"})
+
+^^^This will add an "_id" key to the document(if one does not already exist) and
+store it in MongoDB
 
 
 

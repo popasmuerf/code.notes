@@ -1,3 +1,5 @@
+https://docs.grails.org/latest/ref/Database%20Mapping/id.html
+
 Overwriting Default Settings
 ======================================================
 Stuff we haven't covered yet....
@@ -85,7 +87,6 @@ with the argument:
 
 	id generator
 
-	
 
 note: About High/Low operations
 ---------------------------------------------------------------------------------------------
@@ -116,6 +117,43 @@ you do any inserts, which makes batching them simpler.
 This entry starts off with identifying itself b referencing to th eid property, which is the default property on the doman.  Next, generator defines the generator to be used, and params
 defines the paramters to pass into the generator.  For a high-low calculation, th egenerator needs a table name, a column in the table, and a maximum low.  Remember, this is all
 based on what Hibernate expects as parameters for each of the generations.
+
+
+Composite identifiers
+============================================================================================
+We can use GORM to generate composite keys:
+----------------------------------------------------------------------
+
+//---------Code for composite IDs--------------//
+static mapping ={
+	id composite = ['title','author']
+}
+
+
+Changing the name of the property that defines the identifier
+------------------------------------------------------------------------
+//-----------Changing the name of the property that defines the identifier-----------//
+static mapping={
+	id name: 'test'
+}
+
+
+Altering the column definition
+-------------------------------------------------------------------------------
+
+
+Disabling Versioning
+=========================================================
+By default GORM is configured with optimistic locking enabled and uses versioning
+to help maintain a version number in the database.  Having versions is Hibernate's
+way of checking to make sure that as you're updating a record, someone doesn't update it underneath you.  Whenever you update a record in the table, the version
+number is incremented.  Before the actual save occurs, Hibernate doesn't allow the save
+to occur.   If by chance you don't want to use versioning....
+
+
+static mapping {
+	version false
+}
 
 
 

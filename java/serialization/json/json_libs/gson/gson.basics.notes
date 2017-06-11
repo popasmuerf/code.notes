@@ -1,0 +1,57 @@
+Google Gson is an open source, Java-based library developed by Google.
+It facilitates serialization of Java objects to JSON and vice versa.
+This tutorial asopts a simple and inutitive way to describe the 
+basic-to-advanced concepts of Google Gson and how to use its
+APIs
+
+
+
+
+https://www.tutorialspoint.com/gson/gson_first_application.htm
+
+Features of Gson
+==============================================================
+Here is a lis
+
+
+
+
+
+Three Ways of Processing JSON
+==============================================================
+	*	Streaming API
+	----------------------------------------------------------
+	It reads and writes JSON content as discrete events.
+
+		-JsonReader
+		-JsonWriter
+		-JsonToken
+
+	all process data as a token refereed to as
+
+		JsonToken
+
+This is the most powerful approach among the three
+approaches to process JSON.  It has the lowest
+overhead and it is quite fast in r/w operations.  It
+is analogous to Stax parser for XML
+
+
+*	Tree Model
+	----------------------------------------------------------
+	It prepares an in-memory tree representation of the 
+	JSON document.  It builds a tree of JsonObject nodes.
+	It is a flexible approach and is analogous to DOM 
+	parser for XML.
+
+*	Data Binding
+	----------------------------------------------------------
+	It converts JSON to and from POJO (Plain Old Java Object) using 
+	property accessor.  Gson r/w JSON using data type adapters.
+	It is analogous to JAXB parser for XML
+	
+
+
+
+
+
