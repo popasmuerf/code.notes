@@ -1,0 +1,126 @@
+Pipeline Definition
+===================================
+A pipeline definition is how you communicate
+your business logic to AWS Data Pipline.
+It contains the following inforation:
+
+	*	Names, locations, and formats for your data sources
+	*	Activities that transform the data
+	*	The schedule for those activies that transform the data
+	*	Resources that run your activities and preconditions
+	*	Preconditions that must be satisfied before
+		the activities can be scheduled
+	*	Ways to alert you with status updates
+		as pipeline execution proceeds
+
+	*	Ways to alert you with status updates
+		as pipeline execution proceeds
+
+What does AWS does with pipelines ?
+======================================
+From you pipeline definition, AWS pipeline
+determines the tasks that will 
+occur, schedules them, and assigns to task
+runners.  If a task is not completed succssfully,
+AWS Data Pipeline retries the task
+according to your instructions and,
+if necessary, reassigns it to another task runner.
+
+If the task fails repeatedly, you can configer the
+pipeline to notify you.
+
+
+Example ?
+------------------------------------------
+We specify in your pipeline definition,
+you might specify that log files generated
+by your application are archived each month in
+2017 into an Amazon S3 bucket.
+AWS Data Pipeline would then create 12
+tasks(for each month in a year), each copying 
+over a month's worth of data, regardless of whether
+the month contained 30,31,28 or 29 days.
+
+
+Durr Hurr....How do make pipeline?
+===============================================
+*	via AWS data pipline(DP) console
+*	Textually by writing a JSON file in the format used by the command line
+*Programmatically, by calling the web sercie with either one of the AWS
+ SDKs or the AWS Data Pipleine API
+
+
+Pipeline Components
+==============================================
+Data Nodes
+----------------------------------------------
+The location of input data for a task or the location
+where the output data is to be stored(dp inputs and outputs)
+
+
+Activities
+-------------------------------------------------
+A definition of work to perform on a schedule using a 
+computational resource and typically input and out put 
+data nodes...in other words...the work to be done usually
+repleate with data in/out data nodes used for designation
+of input and output urls/uris
+
+
+Precondtions
+----------------------------------------------------
+A conditional statement that must be true before an action
+is to be executed
+
+
+Scheduling Pipelines
+-----------------------------------------------------
+Defines the timeing of a scheduled event, such as when 
+an activity runs.
+
+
+Resources
+---------------------------------------------------
+The computational resoure that performs the work
+that a pipeline defines
+
+
+Actions
+-------------------------------------------------
+An action that is triggered when specified conditions
+are met, such as the failure of an activity.
+
+
+
+Pipeline Definiton File syntax
+-------------------------------------------------
+
+{
+  "objects" : [
+    {
+       "name1" : "value1",
+       "name2" : "value2"
+    },
+    {
+       "name1" : "value3",
+       "name3" : "value4",
+       "name4" : "value5"
+    }
+  ]
+}
+
+
+
+
+Pipeline fields
+========================================
+
+
+
+
+
+So assuming that I am correct in my assesment:
+Basically  ACDP-67 is a requirement such that
+
+
+

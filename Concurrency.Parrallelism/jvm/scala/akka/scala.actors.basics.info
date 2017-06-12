@@ -1,0 +1,126 @@
+http://rerun.me/2014/09/11/introducing-actors-akka-notes-part-1/
+
+Actors, what are they ?
+=============================
+*	Treat Actors like People.
+*	People who don't talk to 
+	each other in person
+*	These people talk through
+	"mail"
+
+Messaging 
+==============================
+Consider two persons - A wise
+Teacher and Student.  The Student
+sends a mail every morning
+to the Teacher and 
+the wise Teacher sends a wise
+qoute back.
+
+Points of note
+----------------------
+1. The student sends mail
+2. The Teacher checks his
+   mailbox when he wishes to do
+   so.
+3. The Teacher also sends
+   a mail back(immutable again)
+4. The studend checks the mailbox
+    at his own time
+5. The student doesn't wait for
+   the reply(no blocking)
+
+Concurrency
+=========================
+Now imagine there are 3 wise
+teachers and 3 students, and
+every student sends notes to 
+every other teacher....
+So what happens now ?
+
+Nothing changes actually.
+Everybody has their
+own mailbox. One subtle point
+to note here is this:
+
+	*By default, Mails in
+	 the mailbox are read/processed
+	 in the order they arrived
+
+Interanally by default it is
+a :
+	ConcurrentLinkedQueue
+
+And since snobody waits for the mail to
+be picked up, it is simply
+a non-blocking message.
+
+There are a variety of built-in
+mailboxes including bounded
+and priority based.  In fact,
+we could buidl one ourselves
+also.....
+
+
+Failover
+==============================
+Imagine these three teachers are
+from three different departments:
+
+	History,
+	Geography,
+	Philosophy
+
+History teachers replies with a note
+on an Event inthe past, Geography
+teachers sends an Interesting
+Plance and Philosophy teachers a
+qoute.
+
+
+Points to note:
+------------------------------
+1.	There could be a pool of
+	Actors who does differnt 
+	things.
+
+2. An Anctor could do something
+   that causes an exception.  It
+   wouldn't be able to recover by
+   itself. In such a case 
+   a new Actor coudl be created
+   in place of the old one. Alternatively,
+   the Actor could just ignore that
+   particular message and proceed
+   with the rest of the messages.
+   These are called Directoves and
+   we'll discuss them later.
+
+
+
+
+Multi-Tasking
+============================
+For a twist, let's assume
+that each of these teachers
+also send the exame score
+through mail too, if
+the student asks for it.  
+Similarly, an actor could
+handle more than one
+"type" of message comfortably.
+
+
+Chaining
+============================
+What if the student would
+like to get only one final
+consolidated trivia mail
+instead of three?
+
+
+
+
+
+
+
