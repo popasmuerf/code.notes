@@ -1,0 +1,97 @@
+http://think-like-a-git.net/sections/graphs-and-git/garbage-collection.html
+
+Git Branches
+==============================================================
+A branch is he fundamenal means of launching
+a seperate line of development within 
+a software project. A branch is a split
+from a kind of unified, primal state,
+allowing development to continue simultaneously
+and , potentially, to produce
+different versions of the project.  Often,
+a branch is reonciled and mereged with
+other branches to reunite disparae 
+efforts.
+
+Git allows many brnaches and thus many
+different lines of development
+within a repository.  Git's branching
+is lightweight and simple.  Moreover,
+Git has first rate support for merges.
+
+As a result, most Git users make routine
+use of branches.  This chapter
+
+
+Reasons for Using Branches(common
+rational):
+=============================
+
+
+References are pointers to commits
+=====================================
+Refrences are pointers that come in several flavors:
+---------------------
+*local branch
+*remote branch
+*tag
+
+Local branch reference
+----------------------
+On disk, a local branch reference consists entirely of a file
+in your project's directory:
+
+	.git/refs/heads
+
+This file contains the 40 byte identifier of the commit that
+the refernce points to...and that's it.  The entire 40 bytes
+
+You might have heard people talk about how Git allows "cheap branching."  This is 
+(part of) what they mean.  Creating a branch in Git just means writing
+40 bytes to disk, which is why :
+
+	git branch foo
+
+is so fast...
+
+The reference reference
+====================================
+The main difference between the difference
+type of references...although they all point 
+to commits in your repository....is how and when they
+move.
+
+Local branch references
+-------------------------------------
+are specific to a single repository: your local one.
+commands that affect local branch references include:
+	*commit
+	*merge
+	*rebase
+	*reset
+
+Remote branch references
+-------------------------------------
+...are also specific to a single repository,
+but one that's previously been defined as a remote.
+Commands that affect remote branch references include:
+	*fetch
+	*push
+
+
+Tag references
+-------------------------------------
+Are basically like branch refernces that never move. Once you've
+create a tag, it will never hcange(unless explicitly updated by you )
+The immutability of tag references make them great for establishing
+specific versions of a software package, or making exactly what got deployed to a production
+server on a particular date.  Only one option and  one command  that I know of affects tags references
+	* --refresh
+	* tag
+
+
+Note:
+=====================================
+Most Git visual tools hide commits from you....
+Conspirancy theory....?
+
