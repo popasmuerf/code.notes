@@ -26,8 +26,16 @@ use of branches.  This chapter
 Reasons for Using Branches(common
 rational):
 =============================
-
-
+*	A branch often represents an
+	individual customer release.
+	If you wan to start version
+*	A branch can encapsulate a dev
+	phase, such as the prototype,
+	beta, stable, or bleeding-edge
+	release.  you can think of
+	the version 1.1 release as 
+	a seperate phase, also;
+	the maintenance release.
 References are pointers to commits
 =====================================
 Refrences are pointers that come in several flavors:
@@ -88,6 +96,57 @@ specific versions of a software package, or making exactly what got deployed to 
 server on a particular date.  Only one option and  one command  that I know of affects tags references
 	* --refresh
 	* tag
+
+
+Branching and Git record 
+keeping
+===========================
+Git doesn't keep information
+about where a branch originated.
+Instead, the branch name moves
+incrementally forward as new commits
+are made on the branch.
+
+Older commits are accessed
+via their hashes..or via
+relative names like dev~5(five
+back from the latest commit
+in the dev branch)
+
+If you need to keep convenient
+track of a particular branch
+commit, then just give it
+a tag.
+
+We can also use the orginal
+fork point at which our branch
+and the branch from which it derived
+
+#CLI string
+> git merge-base ogrinal-branch new-branch
+
+How to think of a branch name
+=============================
+as a pointer to an yet-to evolve 
+and evolving commit
+
+
+On rebuilds of repos and branches
+=================================
+if a branch is currently at commit/HEAD
+"Z"...then in order to rebuild "Z"
+You will need all the commits back
+from "Z" all the way to the 
+original fork
+
+
+
+
+Merging
+==================================
+Merges are the compliments of branches.
+That is...a merge is the inverse
+of a branche.
 
 
 Note:

@@ -1,0 +1,23 @@
+> git checkout git_notes
+> git log 
+commit a95fd59c215dc5d5cbe1b123340bc7f1339c98de (HEAD -> git_notes, tag: v1.11.0, origin/master, origin/git_notes, origin/HEAD, master)
+Author: Michael Brown <mdb@Michaels-MBP.fios-router.home>
+Date:   Wed Jun 21 22:18:30 2017 -0400
+
+    ....
+
+commit 758543d3fc64be6db80f2cd28bc38f35e2217129 (tag: v1.10.0)
+Author: Michael Brown <mdb@Michaels-MBP.fios-router.home>
+Date:   Sun Jun 11 23:05:23 2017 -0400
+
+    v1.10.0
+
+commit a81995693968d2d2d2d5d0fb096a2da70827c28d (tag: v1.9.0)
+Author: Michael Brown <mdb@Michaels-MBP.fios-router.home>
+Date:   Sun Jun 11 20:19:41 2017 -0400
+
+    v1.9.0
+
+commit 8a47b656e0abc521893202e52befcc717d9a65ac
+Author: mikeyb <MichaelBrown172@Gmail.com>
+Date:   Sun Jun 11 17:12:04 2017 -0400

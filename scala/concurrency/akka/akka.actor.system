@@ -1,0 +1,175 @@
+https://www.toptal.com/scala/concurrency-and-fault-tolerance-made-easy-an-intro-to-akka
+
+The Actor System
+=======================================
+Taking a complex problem and recursively
+splitting it into smaller sub-problems is a sound problem solving technique
+in general.  This approach can 
+be particularly beneficial in computer
+science. 
+
+In an actor-based design, use of this
+technique facillitates the logical
+organization of actors into hierarchical
+structure known as an Actor
+
+G
+
+
+The Reactive Manifesto
+=================================
+Akka Strictly adheres to :
+
+	The Reactive Manifesto
+
+such that reactive applications
+aim at replacing traditional
+multithreaded applications
+with an architecture that
+satisfukes one or more
+fothe folling requirements:
+
+	*Event Driven: Using Actors
+	 one can write code that
+	 handles requests 
+	 aysnchronously and employs
+	 nonblocking operations
+	 exclusively.
+	*Scalable: in Akka, adding
+	 nodes witout having to modify
+	 the code is possible, thanks both
+	 to message passing and location
+	 transparency
+	*Resilient: Any application will
+	 encounter errors and fail at
+	 some point in time.  Akka provides
+	 "supervision"(fault tolerance)
+	 strategies to facilitate a 
+	 self healing system.
+	*Responsibe: Many of today's high
+	 performance and rapid response
+	 applications need to give quick
+	 feedback to the user and therefore
+	 need to react to events in an 
+	 extremely timely manner.  Akka's
+	 non-blocking, message-based strategy
+	 helps achieve this.
+
+Actors in Akka
+===================================
+What is an Actor ?
+----------------------------------
+An actor is essentially nothing
+more than an object that recieves
+messages and takes actions to
+handle them. It is decoupled from the
+source of the message and its
+only responsibility is to 
+properly recognize the type
+of message it has recieved and 
+take action accordingly.
+
+
+Actions allowed for an Actor
+=================================
+	*Execute some operations itself:
+		-calculations
+		-persisting data
+		-calling external services
+		-etc
+
+	*Forward message or 
+	 derived message to another
+	 actor
+
+	*Forward the message, or a derived
+	 message, to another actor
+
+	*Instantiate a new actor and 
+	 forwasrd the message to it
+
+	*Ignore a message
+
+
+
+
+Implementing an actor
+=====================
+To implement an actor, it is 
+necessary to extend the trait:
+
+	akka.actor.Actor and then
+
+implement the reiceve mehtd.
+An actor's recieve method is invoed
+(by Akka) when a message
+is sent to that actor.  Its typical
+implementation consists of pattern
+matcing, as shown in the 
+following Akka example, to identify
+themessage type and react 
+accordingly:
+
+//----------Example Akka.actor-------//
+
+/**
+  * Created by mdb on 6/21/17.
+  */
+import akka.actor.Actor
+import akka.actor.Props
+import akka.event.Logging
+class Actor extends Actor{
+  def recieve = {
+    case value:String => doSomething(value)
+    case _ => println("recieved unknown message")  
+  }
+  def doSomething(str: String): Unit ={
+    //pass
+  }
+}
+
+
+Handling messages Techniques
+=====================================
+Pattern matching is relatively elegant
+w/r to techniques for handling 
+messages, which tends to produce 
+"cleaner" and easier-to-navigate
+code than a comparable implemenation
+based on calledbacks.
+
+Conscider, for example, a simplistic 
+HTTP request/response implementation:
+
+//-----Callback in JSscript-----//
+
+route(url, function(request){
+  var query = buildQuery(request);
+  dbCall(query, function(dbResponse){
+    var wsRequest = buildWebServiceRequest(dbResponse);
+    wsCall(wsRequest, function(wsResponse) {
+      sendReply(wsResponse);
+    });
+  });
+});
+
+//-----Callback in Scala-----//
+
+msg match{
+	case HttpRequest(request) => {
+		val query = buildQuery(request)
+		dbCall(query)
+	}
+	case DbResponse(dbResponse) => {
+    var wsRequest = buildWebServiceRequest(dbResponse);
+    wsCall(dbResponse)
+  	}
+  	case WsResponse(wsResponse) => sendReply(wsResponse)
+}
+
+
+
+
+
+
+

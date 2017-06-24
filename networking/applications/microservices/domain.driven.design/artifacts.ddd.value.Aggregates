@@ -1,0 +1,297 @@
+Artifacts of Domain Driven Design(DDD)
+=================================
+Aggregate domain pattern is related
+to the object's life cycle
+and defines ownership 
+and boundaries.
+
+
+When, you reserve a table
+in your favorite restaurant
+online, using any app, you
+don't need to worry about he
+interal system and process that takes
+places to book your reservation
+such as searching the available
+restaurants, then the available
+tables during the given:
+	*	date
+	*	time
+	*	etc.
+
+Sometimes relationships need to be
+maintained in the code...when one
+object is removed, the could should
+likewise remove any reference of the removed
+object from other places.
+
+Relationships, contraints, and 
+invariants bring a complexity that
+requires an efficient handling in 
+code.  We find the solution by
+using the aggregate represented
+by the single entity known
+as the root that is associated
+with the group of objects that
+maintains consistency 
+with respect to doata changes.
+
+
+What about this root ?
+=============================
+	*	Is the only  part of the
+		aggregate that is 
+		known to the outside 
+		world
+
+
+Services and Frameworks..
+=============================
+Services are common in technical
+frameworks. These are also used
+in domain layers in DDD.  A service
+object does not have any internal
+state, the only purpose of it is to
+provide a behavior to the domain.
+Service objects may provdie one 
+or more related behaviors to one
+or more entities or value objects.
+
+
+Creating Services checklist
+================================
+	*	Service objects' behavior
+		performs on entities and
+		value objects but it does
+		not belong to entities 
+		or value objects 
+
+	*	Service objects' behavior state
+		is not maintained and hence
+		they are stateless
+
+	*	Services are part of the domain
+		model
+
+Sevices may exist in othe layers also.
+It is very important to keep domain
+layer services isolated.  It removes
+the complexities and keeps
+the design decoupled.
+
+Unlike entities that possess:
+	*	Identity
+	*	attributes
+	*	thread of
+		continuity
+
+Value objects only possess:
+	*	attributes
+
+Value objects should be
+immutable
+-----------------------------
+Value objects theoretically
+are scalars and posses no
+state.  They should be if
+possible made immutable
+upon creation
+
+Entities or Value objects ?
+==============================
+It depends....creating entities
+and tracking them will cost 
+you...rule of thumb here is that
+if the object is short lived and does
+not need a unique identifier...then
+it makes more sense for it to be
+a value object....
+
+Think a seating que for customers
+at a restaurant...do we really need
+to persist this data ?  Is it really
+necessary for each reservation to be
+uniquely identified ? Does the
+object need to be stateful? Are these
+objects going to be referenced by
+other components in the system ?
+
+It may or may not depending on how much you could be bothered to care about "at the door"
+seating....
+
+Value Object FAQ
+=================================
+1.	Can a value object contain
+	another value object ?(YES)
+
+2.	Can a value object refer to
+	anotehr value object or entity?
+	(YES)
+
+3.	Can I create a value object using
+	the attributes of different
+	value objects or entities?
+	(YES)
+Example of an entity
+------------------
+	*	Restaurant is a class
+	*	We can have two or more
+		instances of Restaurant
+	*	The instances of this
+		restaurant should not
+		be identified by it's
+		name as there could be
+		more than one instance
+		of this restaurant(in the 
+		case of franchises)
+	*	If like the name of the
+		restaurant chain all the
+		additional attributes
+		of the instances are not
+		unique to a particular
+		instance, then none of the
+		attributes may be used
+		for effective identification
+	*	A UUID would be an attribute
+		for all instances of 
+		Restaurant that would be
+		conscidered an entity 
+		as it remains unique to
+		each instance
+	*	Creating an entity is
+		providing identity to an
+		object.
+
+Examples of creating unique ids
+--------------------------------
+	*	Primary keys for records
+	*	auto generated ID via a 
+		domain model.
+	*	Real life objects carrying
+		user-defined identifiers
+		themselves.  For example,
+		each nation has it's own
+		country codes for dialing
+		ISD calls
+
+	*	An attribute or combination
+		of attributes can also be used
+		for creating an identifier as
+		explained for the preceding
+		restaurant object
+
+The importance of Entities for domain
+models
+--------------------------------------
+Their importance cannot be understated,
+therefore they should be defined
+from the initial stage of the modeling
+process.  When an object can 
+be identified by its identifier and
+not by its attributes, a class of 
+these objects shold have a simple definition
+and care shold be taken with the life
+ccle continuity and i dentity.
+
+
+
+
+
+
+
+Presentation Layer
+==============================
+This layer represents the UI and 
+provides the user interface for
+teh interaction and information
+display.  This layer could be 
+a web application, mobile app 
+or a third-party application
+consuming your services.
+
+
+Application layer
+==========================
+This layer is responsible for application
+logic.  It maintains and coordinates
+teh overall flow of the 
+product/service.  It does not
+contain business logic or UI.
+It may hold the state of application
+objects like tasks in
+progress.  For example, your
+product REST services would 
+be teh part of this application
+layer.
+
+Domain layer
+=============================
+The domain layer is a very
+important layer as it contains
+information and business logic.
+It persists the state of the 
+business objects,and communicates
+these persisted states to
+the infrastructure layer.
+
+
+
+Infrastructure layer
+=========================
+The layer provides support to all the 
+other layers and is responsible for
+communication among the other
+layers.  It contains the supporting
+libraries that are used by
+the other layers.  It also implements
+the presistence of business objects.
+
+
+
+
+
+
+
+
+
+Domain-Driven Design fundamentals
+=============================================
+An enterpise or cloud application solves business problems
+and other real world problems.  These problems cannot be 
+reaolved without knowledge of the the domain.
+Combining domain and software design, it offers a software
+desing methodology known as DDD.
+
+When we develop softare to implement real world
+scenarios offering the functionalities of a domain, we create
+a model of the domain.  A model is an abstractio or blueprint
+of the domain.
+
+
+
+Desining models
+=========================================
+It's not rocket science...but it does/will
+involve refinement and input via domain experts.
+Designing models is a collective effort that involves:
+
+	*	SMEs
+	*	Software Designers/Architects/engineers
+	*	Programmers
+
+General process:
+------------------------------------------
+	*	Organize information
+		-	Divide it into smaller parts
+				*	Group parts into logical modules
+						-	Take up module...or repeat process until
+							a module can no longer be reasonably
+							broken down.
+
+	*	Document model
+	*	Code design into a Domain modeld code desing
+	*	Implement Domain model
+
+
+
+

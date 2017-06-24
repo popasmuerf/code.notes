@@ -1,26 +1,58 @@
 Artifacts of Domain Driven Design(DDD)
 =================================
-There are different artrifacts
-used in DDD to express,
-create, and retrieve domain
-models....
+Unlike entities that possess:
+	*	Identity
+	*	attributes
+	*	thread of
+		continuity
 
+Value objects only possess:
+	*	attributes
 
-Entities
+Value objects should be
+immutable
+-----------------------------
+Value objects theoretically
+are scalars and posses no
+state.  They should be if
+possible made immutable
+upon creation
+
+Entities or Value objects ?
 ==============================
-There are certain categories
-of objects that are identifiable
-and remain same througout
-the states of the
-product/services.  These
-objects are not defined by
-its attributes, but by its
-identity and thread of
-continuity.  This is not
-a trivial matter, and one nees
-to understand how to define 
-these entities....
+It depends....creating entities
+and tracking them will cost 
+you...rule of thumb here is that
+if the object is short lived and does
+not need a unique identifier...then
+it makes more sense for it to be
+a value object....
 
+Think a seating que for customers
+at a restaurant...do we really need
+to persist this data ?  Is it really
+necessary for each reservation to be
+uniquely identified ? Does the
+object need to be stateful? Are these
+objects going to be referenced by
+other components in the system ?
+
+It may or may not depending on how much you could be bothered to care about "at the door"
+seating....
+
+Value Object FAQ
+=================================
+1.	Can a value object contain
+	another value object ?(YES)
+
+2.	Can a value object refer to
+	anotehr value object or entity?
+	(YES)
+
+3.	Can I create a value object using
+	the attributes of different
+	value objects or entities?
+	(YES)
 Example of an entity
 ------------------
 	*	Restaurant is a class
@@ -33,6 +65,58 @@ Example of an entity
 		more than one instance
 		of this restaurant(in the 
 		case of franchises)
+	*	If like the name of the
+		restaurant chain all the
+		additional attributes
+		of the instances are not
+		unique to a particular
+		instance, then none of the
+		attributes may be used
+		for effective identification
+	*	A UUID would be an attribute
+		for all instances of 
+		Restaurant that would be
+		conscidered an entity 
+		as it remains unique to
+		each instance
+	*	Creating an entity is
+		providing identity to an
+		object.
+
+Examples of creating unique ids
+--------------------------------
+	*	Primary keys for records
+	*	auto generated ID via a 
+		domain model.
+	*	Real life objects carrying
+		user-defined identifiers
+		themselves.  For example,
+		each nation has it's own
+		country codes for dialing
+		ISD calls
+
+	*	An attribute or combination
+		of attributes can also be used
+		for creating an identifier as
+		explained for the preceding
+		restaurant object
+
+The importance of Entities for domain
+models
+--------------------------------------
+Their importance cannot be understated,
+therefore they should be defined
+from the initial stage of the modeling
+process.  When an object can 
+be identified by its identifier and
+not by its attributes, a class of 
+these objects shold have a simple definition
+and care shold be taken with the life
+ccle continuity and i dentity.
+
+
+
+
 
 
 

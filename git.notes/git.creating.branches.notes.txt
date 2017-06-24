@@ -1,0 +1,69 @@
+Creating Branches
+==========================
+A new branch is based upon an
+existing commit within the 
+repository.  Your branching may
+be as simple or complex as you 
+need it to be:
+
+	*	branching branches
+	*	forking multiple branches
+		from the same commit
+
+How to branch
+=====================================
+#command
+#syntax:
+#git branch <branch>[starting-commit]
+> git branch prs/pr-1138
+
+^^^So basically we can not only switch
+branches at will...but also select 
+where exactly(what particular commit)
+to land on during that switch.
+
+When no starting commit is specified...
+we are branched off at the last commit(HEAD)
+of our current branch from which we
+are forking.
+
+You have to checkout a branch before
+you start working in it
+==================================
+this is a pain in the ass...but switching
+to a branch does not actually switch the
+context of your working enviroment...
+you actually have to check it out.
+
+so again...what the below is really
+describting is:
+> git branch prs/pr-1138
+
+^^^ is that we are creating a branch
+that we have yet to switch workspace
+contexts to named "prs" forking from
+our current brance at commit "pr-1138"
+
+
+
+Listing Branch Names
+=================================
+The git branch command lists branch
+names found in the repository
+
+Viewing branches
+=========================
+We can get some pretty detailed
+information..more more detailed
+than from :
+
+	> git branch
+
+pertaining to availiable branches,
+listing commits tat contribute to one
+ormore branches in roughly reverse
+chronological order.  As with git
+branch, no options list the 
+the topic branches, -r shows. remote
+tracking branchings and -a shows all
+branches

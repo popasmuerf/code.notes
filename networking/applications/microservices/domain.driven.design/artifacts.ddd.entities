@@ -33,6 +33,58 @@ Example of an entity
 		more than one instance
 		of this restaurant(in the 
 		case of franchises)
+	*	If like the name of the
+		restaurant chain all the
+		additional attributes
+		of the instances are not
+		unique to a particular
+		instance, then none of the
+		attributes may be used
+		for effective identification
+	*	A UUID would be an attribute
+		for all instances of 
+		Restaurant that would be
+		conscidered an entity 
+		as it remains unique to
+		each instance
+	*	Creating an entity is
+		providing identity to an
+		object.
+
+Examples of creating unique ids
+--------------------------------
+	*	Primary keys for records
+	*	auto generated ID via a 
+		domain model.
+	*	Real life objects carrying
+		user-defined identifiers
+		themselves.  For example,
+		each nation has it's own
+		country codes for dialing
+		ISD calls
+
+	*	An attribute or combination
+		of attributes can also be used
+		for creating an identifier as
+		explained for the preceding
+		restaurant object
+
+The importance of Entities for domain
+models
+--------------------------------------
+Their importance cannot be understated,
+therefore they should be defined
+from the initial stage of the modeling
+process.  When an object can 
+be identified by its identifier and
+not by its attributes, a class of 
+these objects shold have a simple definition
+and care shold be taken with the life
+ccle continuity and i dentity.
+
+
+
+
 
 
 
