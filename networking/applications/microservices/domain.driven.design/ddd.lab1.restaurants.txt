@@ -1,0 +1,33 @@
+Sample domain service
+=========================
+	*	DDD is based on domain,
+		hence it is not recommended
+		that we use a top-downapprach 
+		where the UI would be
+		develpeed first.
+	*	We are creating a restaurant
+		Service
+
+Requrements:
+===========================
+	*	As a user I would like
+		to add and retrieve
+		restaurants
+
+	*	As a user I wold like to 
+		find restaurants baced on
+		cuisine or on rating
+
+
+Design
+=========================
+	*	Entity = restaurant
+		(we assume that each
+		restaurant is unique)
+	*	Use Interface Segregation
+		Principle:
+			*	clinets should
+				not be forced
+				to depend upon
+				interfaces that they 
+				do not use
