@@ -1,0 +1,78 @@
+Strategic design and principles
+=================================
+Enterprise models are usually
+ver large and complex.
+It may be distributed among
+different departments
+oin an organization.  Each 
+department may have separte leadership
+teams, so working and designing
+together can create difficultuy
+and coordination issues.  In such
+scenarios, maintaining inegreity
+of the doamin model is not
+an easy task.
+
+In such cases, working on
+a unified model is not the solution
+and large enerprise models
+need to be divided into
+differnt submodels.
+
+There are various pinciples that could be 
+followed to maintain the integrity of the 
+domain model. and are listed as follows:
+
+*	Bounded context
+*	Continuous integration
+*	Context map
+		*	Shared Kernel
+		*	Customer-supplier
+		*	Conformist
+		*	Anticorruption layer
+		*	Seperate ways
+		*	Open host service
+		*	Distillation
+
+Bounded Context
+====================
+	*	having different  sub-models
+		makes it difficult to
+		maintain code when all 
+		submodels are combined.
+	*	Small models should be
+		assinged to a single team:
+			*	Models should always
+				consist of related
+				elements
+			*	Keep each submodel
+				well-defined and
+				consistent. 
+
+			*	This way we can refactor each
+				model independently without
+				affecting the other
+				submodels. this 
+				gives the software designer
+				the flexibility to refined
+				and improve it at any
+				point in time
+
+			*	Example of two domain models
+				within the same system that
+				have there own bounded context:
+					*	online resrvation
+						system
+					*	offline reservation
+						system
+
+
+Continuous integration
+===============================
+When you are devloping , the code is 
+scattered among many teams
+and various technologies.  This code
+may be organized into different
+modules and has applicable bounded 
+context for respective submodels.
+

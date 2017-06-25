@@ -1,3 +1,61 @@
+A Basic Example of Checking
+out a Branch
+=================================
+*	Files and directories present
+	in the branch being checked
+	out but not in the current branch
+	are checked out of the object store
+	and placed in your working tree
+
+*	Files and directories present
+	in your current branch but absent
+	in the branch being checked out will
+	be removed from your working tree
+
+*	Files common to both branches are
+	modified to reflect the content 
+	present in the checked out branch
+
+
+
+
+
+Checking out When you have uncommited
+changes
+======================================
+File and directories that are not 
+being tracked are left alone....
+
+tracked, modified files that have not been
+added and not commited
+will cause you to recieve an
+error if you try to switch...
+
+A branch checkout can be forced via
+using the "-f" option flag:
+
+> git checkout <branch> -f
+
+
+Merging Changes into a different Branch
+========================================
+> git checkout -m <target branch>
+
+Caution: Git will merge the file(s)
+changes...but...be forewarned....
+any conflicts that arise will be
+included in the new merged file...
+and git wont tell you that there
+are conflucts
+
+
+
+
+
+
+
+Checking out a new feature branch
+========================================
 > git checkout git_notes
 > git log 
 commit a95fd59c215dc5d5cbe1b123340bc7f1339c98de (HEAD -> git_notes, tag: v1.11.0, origin/master, origin/git_notes, origin/HEAD, master)
@@ -21,3 +79,36 @@ Date:   Sun Jun 11 20:19:41 2017 -0400
 commit 8a47b656e0abc521893202e52befcc717d9a65ac
 Author: mikeyb <MichaelBrown172@Gmail.com>
 Date:   Sun Jun 11 17:12:04 2017 -0400
+
+
+Checking out back to master branch
+======================================
+Michaels-MBP:code.notes mdb$ git branch -a
+* git_notes
+  master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/concurrency
+  remotes/origin/git_notes
+  remotes/origin/master
+  remotes/origin/microservices
+Michaels-MBP:code.notes mdb$ git checkout master
+warning: unable to access '/Users/mdb/.config/git/ignore': Permission denied
+warning: unable to access '/Users/mdb/.config/git/attributes': Permission denied
+Switched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+Michaels-MBP:code.notes mdb$ git branch -a
+  git_notes
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/concurrency
+  remotes/origin/git_notes
+  remotes/origin/master
+  remotes/origin/microservices
+Michaels-MBP:code.notes mdb$ 
+
+
+
+
+
+
+
