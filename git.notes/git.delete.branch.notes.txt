@@ -70,7 +70,47 @@ as garbage by the git tool:
 
 	git gc
 
-	
+
+Git Garbage collection/ter
+============================
+Runs a numberof house keeping tasks
+within the current repository, such
+as compressing file revisions(to
+reduce disk space and increase performance)
+and removing unreachable objects which
+may have been crated from prior 
+invocations of git add.
+
+We have the choice of either running
+git gc manually or as a daemon.
+
+Some commands run garbage collection
+automatically
+
+
+Running as a daemon:
+-----------------------
+> git config --global gc.auto 0
+
+
+
+Recovering deleted branches or references
+via using :
+=============================================
+	>	git reflog
+
+
+Other commands that will can help
+in recovering lost commits
+=====================================
+> git fsck
+
+gc.reflogExpire
+gc.pruneExpire
+
+
+
+
 
 
 
