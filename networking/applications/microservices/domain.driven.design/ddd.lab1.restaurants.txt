@@ -26,7 +26,7 @@ Design
 		restaurant is unique)
 	*	Use Interface Segregation
 		Principle:
-			*	clinets should
+			*	clients should
 				not be forced
 				to depend upon
 				interfaces that they 
