@@ -1,0 +1,236 @@
+Deleting Branches
+=================================
+Command to remove a branch:
+
+	> git branch -d <branch>
+
+note: Trying to remove the current
+branch only returns an error.  You 
+are only allowed to delete a
+non-current branch.
+
+
+
+
+A wrinkle that you need to 
+be aware of with deleting
+branches in Git.
+==============================
+Not only must the branch
+that you are attempting to delete
+must not be your current working
+branch...but the branch you are trying
+to delete must also not posesse any
+commits that are not present in 
+the current working branch.
+
+In excess...Git prevents you from 
+deleting a branch that contains
+development that will be lost
+forever if the branch were to 
+be deleted:
+
+	> git checkout master
+	switched to branch "master"
+
+	> git branch -d bug/pr-3
+	error: the branch 'bug/pr-3'
+	is not an ancestor of your current
+	HEAD.  If you are sure you want to 
+	delete it, run 'git brnach -d bug/pr-3'
+
+
+Git doesn't do historical records
+of branch names being created
+===============================
+It doesn't.  Once a branch is removed..
+You are kind of fucked...because
+it's gone forever....so be very judicious
+with branch deletions
+
+
+Git does some garden work....on its
+own...
+=====================================
+The commit history of a branch is however
+is maintained by git.  Git will
+eventualy prune away commits that
+are no longer referened and reachable
+form some named ref such a a
+branch or tag name.  If you are interested
+in keepping this commitsyou must
+either merge them
+into a different branch, make a branch for them,
+or point a tag referencr to them.
+Otherwise, without a reference to 
+them,commits and blobs are
+unreachable and will eventually be collected
+as garbage by the git tool:
+
+
+	git gc
+
+	
+
+
+
+	"detached HEAD"
+
+a detached HEAD is created whenever:
+
+	*	Check out a commit that is not
+		the haead of a branch.
+	*	Check out a tracking branch which
+		you might do to explore 
+		changes reently brought into
+		your repository from a remote
+		repository
+
+	*	Checout the commit reference
+		by tag.  You might do this to 
+		put together a release based
+		on tagged versions of files.
+
+	*	Starting a git bisecting operation
+
+	*	Us te git submodel update cmmand
+
+Example of Git creating a detached
+HEAD
+==============================
+> git checout v1.6.0
+Note: moving to "v1.6.0" which is't
+a local branch.
+If you eant to create a new branch frm
+this checkoui, may do so (now or later)
+by using -b with the checkout command
+again.  Example:
+HEAD is now at ea02eef...  GIT 1.6.0
+
+How do we figure out if we are on 
+a detached HEAD or not ?
+===============================
+> git branch
+*(no branch)
+
+
+
+
+A Basic Example of Checking
+out a Branch
+=================================
+*	Files and directories present
+	in the branch being checked
+	out but not in the current branch
+	are checked out of the object store
+	and placed in your working tree
+
+*	Files and directories present
+	in your current branch but absent
+	in the branch being checked out will
+	be removed from your working tree
+
+*	Files common to both branches are
+	modified to reflect the content 
+	present in the checked out branch
+
+
+
+
+
+Checking out When you have uncommited
+changes
+======================================
+File and directories that are not 
+being tracked are left alone....
+
+tracked, modified files that have not been
+added and not commited
+will cause you to recieve an
+error if you try to switch...
+
+A branch checkout can be forced via
+using the "-f" option flag:
+
+> git checkout <branch> -f
+
+
+Merging Changes into a different Branch
+========================================
+> git checkout -m <target branch>
+
+Caution: Git will merge the file(s)
+changes...but...be forewarned....
+any conflicts that arise will be
+included in the new merged file...
+and git wont tell you that there
+are conflucts
+
+
+
+
+
+
+
+
+
+
+
+Checking out a new feature branch
+========================================
+> git checkout git_notes
+> git log 
+commit a95fd59c215dc5d5cbe1b123340bc7f1339c98de (HEAD -> git_notes, tag: v1.11.0, origin/master, origin/git_notes, origin/HEAD, master)
+Author: Michael Brown <mdb@Michaels-MBP.fios-router.home>
+Date:   Wed Jun 21 22:18:30 2017 -0400
+
+    ....
+
+commit 758543d3fc64be6db80f2cd28bc38f35e2217129 (tag: v1.10.0)
+Author: Michael Brown <mdb@Michaels-MBP.fios-router.home>
+Date:   Sun Jun 11 23:05:23 2017 -0400
+
+    v1.10.0
+
+commit a81995693968d2d2d2d5d0fb096a2da70827c28d (tag: v1.9.0)
+Author: Michael Brown <mdb@Michaels-MBP.fios-router.home>
+Date:   Sun Jun 11 20:19:41 2017 -0400
+
+    v1.9.0
+
+commit 8a47b656e0abc521893202e52befcc717d9a65ac
+Author: mikeyb <MichaelBrown172@Gmail.com>
+Date:   Sun Jun 11 17:12:04 2017 -0400
+
+
+Checking out back to master branch
+======================================
+Michaels-MBP:code.notes mdb$ git branch -a
+* git_notes
+  master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/concurrency
+  remotes/origin/git_notes
+  remotes/origin/master
+  remotes/origin/microservices
+Michaels-MBP:code.notes mdb$ git checkout master
+warning: unable to access '/Users/mdb/.config/git/ignore': Permission denied
+warning: unable to access '/Users/mdb/.config/git/attributes': Permission denied
+Switched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+Michaels-MBP:code.notes mdb$ git branch -a
+  git_notes
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/concurrency
+  remotes/origin/git_notes
+  remotes/origin/master
+  remotes/origin/microservices
+Michaels-MBP:code.notes mdb$ 
+
+
+
+
+
+
+
