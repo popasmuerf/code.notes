@@ -1,0 +1,95 @@
+OTRS overview
+=========================
+Based on micro Service principles,
+we need to have separate microservices
+for each functonality that can function
+independently.  Aftre looking at
+the OTRS, we can easily divide the 
+OTRS into three main services:
+
+OTRS main services:
+---------------------------
+	*	Restaurant Service:
+			*	This service provides
+				the functonality for the
+				Restaurant resource:
+					*	Create
+					*	Read
+					*	Update
+					*	Delete
+				It provides the association
+				between restaurants and tables
+				Restaurants would also provide
+				the access to the Table entity
+	*	User Service:
+			*	This service allows the end
+				user to perform CRUD ops
+				on user entities	
+	*	Booking Service:
+			*	This makes use of the Restaurant
+				service and User service to
+				perform CRUD operations
+				on booking.  It would use
+				the Restaurant searching, its
+				associated tables lookup
+				and allocatin base on table
+				availability for a specified
+				teim duration.  It creates
+				the relationship between
+				the Restaruant/Tabl and the User
+
+Other possible services
+------------------------------
+	*	accounting
+	*	analytics
+	
+
+Table Reservation Services
+==================================
+
+-------------------------
+|	Service Registration |<---> RestaurantService
+|		&                |<---> UserService
+|	Discoverty           |<---> BookingService
+-------------------------
+	
+
+^^^^These services can each have 
+their own layered architecture and 
+database.  There is no 
+restriction to use same technologies,
+framworks, and languages to develop
+these services.  At any given point
+in time you can also introdue
+new microservices.
+
+
+
+Note: there could be other micro-services
+
+
+Requrements:
+===========================
+	*	As a user I would like
+		to add and retrieve
+		restaurants
+
+	*	As a user I wold like to 
+		find restaurants baced on
+		cuisine or on rating
+
+
+Design
+=========================
+	*	Entity = restaurant
+		(we assume that each
+		restaurant is unique)
+	*	Use Interface Segregation
+		Principle:
+			*	clients should
+				not be forced
+				to depend upon
+				interfaces that they 
+				do not use
+
+
