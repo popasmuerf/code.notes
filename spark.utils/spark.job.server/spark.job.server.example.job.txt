@@ -65,8 +65,54 @@ object SampleJob extends SparkJob{
 	 due to missing or wrong configuration
 
 
-
-New SparkJob API
+Some more example code for creating
+a Job for Spark JobServer
+======================================
+Important note:
+Note: As of version 0.7.0, a new SparkJob API that is significantly better than the old SparkJob API will take over. Existing jobs should continue to compile against the old spark.jobserver.SparkJob API, but this will be deprecated in the future. Note that jobs before 0.7.0 will need to be recompiled, older jobs may not work with the current SJS example. The new API looks like this:
 -----------------------------------------
+//-----------code------------//
+
+object WordCountExampleNewApi extends NewSparkJob{
+	
+	type JobData = Seq[String]
+	type JobOutput = collection.Map[String,Long]
+
+	def runJob(sc:SparkContext, runtime:JobEnviroment, data: JobData):JobOutput={
+		sc.parallelize(data).countByValue
+	}
+
+	def validate(sc:SparkContext, runtime:JobEnviroment,config:Config):JobData Or Every[ValidationProblem]={
+		Try(config.get("input.string").split(" ").toSeq).map(words => Good(words))
+		.getOrElse(Bad(One(SingleProblem("No input.string param"))))
+	}
+
+}
 
 
+^^^^Running the above code
+-------------------------------------
+curl -i -d "bad.input=abc" "localhost:8090/jobs?appName=test&classPath=spark.jobserver.WordCountExample"
+
+HTTP/1.1 400 Bad Request
+Server: spray-can/1.2.0
+Date: Tue, 10 Jun 2014 22:07:18 GMT
+Content-Type: application/json; charset=UTF-8
+Content-Length: 929
+
+{
+  "status": "VALIDATION FAILED",
+  "result": {
+    "message": "No input.string config param",
+    "errorClass": "java.lang.Throwable",
+    "stack": ["spark.jobserver.JobManagerActor$$anonfun$spark$jobserver$JobManagerActor$$getJobFuture$4.apply(JobManagerActor.scala:212)",
+    "scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)",
+    "scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)",
+    "akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:42)",
+    "akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:386)",
+    "scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)",
+    "scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)",
+    "scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)",
+    "scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)"]
+  }
+}
