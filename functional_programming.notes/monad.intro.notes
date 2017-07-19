@@ -1,0 +1,35 @@
+https://en.wikipedia.org/wiki/Monad_%28functional_programming%29
+https://github.com/khinsen/monads-in-clojure/blob/master/PART1.md
+
+Monad
+==========================
+
+in functional programming, a monad
+is a structure that defines
+how functions, actions, inputs,
+and outputs are used together
+to build a computer program.
+
+Monads may be viewed as a 
+functional design pattern to build
+generic types:
+
+	1.	Define a datatype and how values
+		of that datatype are combined
+
+	2.	Create functions that use the data type,
+		and compose them together into
+		actions.
+
+
+Monads in Clojure
+===========================	
+Monads are about composing computational
+steps into a bigger multi-step computation.
+The simplest monad(identity monad)
+can be created in Clojure here:
+
+(let[a 1 
+	 b (inc a)]
+  (* a b))
+

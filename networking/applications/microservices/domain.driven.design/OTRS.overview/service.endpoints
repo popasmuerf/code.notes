@@ -1,0 +1,58 @@
+
+GET
+/v1/restaurants/<Restaurant-Id>
+=================================
+Description:
+----------------------------------
+	Path parameter that represents
+	the unique restaurant assocatied
+	with this ID
+Params
+-----------------------------------
+Restaurant_Id
+
+Response
+------------------------------------
+Restaurant object
+
+
+
+GET
+/v1/restaurants/
+=================================
+Description:
+----------------------------------
+	Path parameter that represents
+	the unique restaurant assocatied
+	with this ID
+Params
+-----------------------------------
+None
+
+Response
+------------------------------------
+List(Array) of exant restaurants
+
+
+POST
+/v1/restaurants/
+=================================
+Description:
+----------------------------------
+	None
+
+Params
+-----------------------------------
+JSON represenation of a restaurant
+Object
+
+Response
+------------------------------------
+New Restaurant object is created
+
+
+
+
+
+
+

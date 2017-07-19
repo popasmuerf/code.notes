@@ -1,0 +1,67 @@
+spark.jobserver.SparkJob
+
+Nan
+John Uchiama
+
+https://github.com/spark-jobserver/spark-jobserver/blob/master/README.md#getting-started-with-spark-job-server
+
+WordCountExample walk-thru
+==============================
+*package your jar
+*send to server
+-------------------------------
+Let's assume we have a simple
+spark job named:
+
+	WordCountExample
+
+Steps:
+1. package your code into a runnable
+jar using your build tools(sbt,ivy,gradle,whatevs)
+
+2. upload you new jar to the cluster(?):
+
+	curl --data-binary @job-server-tests/target/scala-2.11/ \
+	job-server-tests-$VER.jar \
+	localhost:8090/jars/test
+
+	OK
+
+
+Modes ad-hoc : Single, Unrelated Jobs(Transient Context)
+=====================================
+Ok...so we packaged our test app in a 
+jar and loaded it up to the location
+of our jobserver....
+
+Starting an ad-hoc word count job,
+meaning that the job server will create
+it's own SparkContext, and then return
+a job ID for subsequent querying....
+
+Starting an ad-hoc word count
+--------------------------------------
+> curl -d "input.string = a b c a b see" \
+  localhost:8090/jobs?appName=test&classPath=spark.jobserver.WordCountExample"
+  
+200 OK
+  {
+  	"duration":"Job not done yet",
+  	"classPath": "spark.jobserver.WordCountExmaple",
+  	"startTime":"2016-06-19T16:27:12.196+05:30",
+  	"context":"b7ea0eb5-spark.jobserver.WordCountExample",
+  	"status": "STARTED"
+  	"jobId": "5453779a-f004-45fc-a11d-a39dae0f9bf4"
+  }
+
+
+What if we want to feed in a text file config
+and POST using curl, we want to use the
+option parameter :
+
+	"--data-binary"
+
+
+
+
+
