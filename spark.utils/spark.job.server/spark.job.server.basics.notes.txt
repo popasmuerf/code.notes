@@ -61,6 +61,61 @@ option parameter :
 
 	"--data-binary"
 
+otherwise curl will munge your line
+separator chars:
+
+# Feeding text file config via POST
+> curl --data-binary @my-job-config.json \
+  jobs?appName=test&classPath=spark.jobserver.WordCountExample"
+
+Note: If you want to use UTF-8 encoding...pass the correct meta data to CURL...or you my get
+an encoding you did not expect....
+
+
+
+Querying submited jobs
+===========================================
+#Querying the job.server about
+#our job we just submitted
+
+>curl localhost:8090/jobs/5453779a-f004-45fc-a11d-a39dae0f9bf4
+
+200 OK
+{
+  "duration": "6.341 secs",
+  "classPath": "spark.jobserver.WordCountExample",
+  "startTime": "2015-10-16T03:17:03.127Z",
+  "context": "b7ea0eb5-spark.jobserver.WordCountExample",
+  "result": {
+    "a": 2,
+    "b": 2,
+    "c": 1,
+    "see": 1
+  },
+  "status": "FINISHED",
+  "jobId": "5453779a-f004-45fc-a11d-a39dae0f9bf4"
+
+
+
+Creating a Job Server Project
+======================================
+https://github.com/spark-jobserver/spark-jobserver/blob/master/README.md#getting-started-with-spark-job-server
+
+https://github.com/spark-jobserver/spark-jobserver.g8/blob/master/src/main/g8/src/main/scala/%24package%24/WordCountExample.scala
+
+Creating a project from scratch using
+"giter8 template"
+--------------------------------------
+There is a a giter8 template available at:
+
+	https://github.com/spark-jobserver/spark-jobserver.g8
+
+Building shit:
+--------------------------------------
+> sbt new spark-jobserver/spark-jobserver.g8
+
+
+
 
 
 

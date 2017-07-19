@@ -1,0 +1,72 @@
+spark.jobserver.SparkJob
+
+Nan
+John Uchiama
+
+https://github.com/spark-jobserver/spark-jobserver/blob/master/README.md#getting-started-with-spark-job-server
+
+How do we create a job that can be submitted
+through a job server.... 
+========================================
+Requirements
+--------------
+*	job must implement the
+	trait:
+		SparkJob
+
+Constraints
+---------------
+*	None
+
+//---------Example Code----------//
+
+object SampleJob extends SparkJob{
+	override def runJob(sc:SparkContext,jobConfig:Config):Any= ???
+	orveride def validate(sc:SparkContext,config:Config):SparkValidate = ??
+}
+
+
+^^^What's going on here ?
+
+*	runJob:
+
+	-Contains the implementation of the Job
+	-The SparkContext is managed by the
+	 JobServer and will be provided
+	 to the job through this method.
+	-Programmers are relieved from the
+	 work of having to create a 
+	 Spark job and allows the Job Server
+	 to manage contexts
+
+*	validate:
+
+	-Allows for an initial validateiong
+	 of the context and any provided 
+	 configuration.
+	-If the configuration is OK
+	 then run the job returning:
+
+	 	spark.jobserver.SparkJobValid
+
+	-If the configuration is not valid then
+	 the following is returned:
+
+	 	spark.jobserver.SparkJobInvalid(reason)
+
+	 which prevnts the job from running and provides means to convey the reason of 
+	 failure. In this case the call 
+	 will immediately return an:
+
+	 	HTTP/1.1 400 Bad Request
+
+	-validate helps you preventing running
+	 jobs that will eventually fail
+	 due to missing or wrong configuration
+
+
+
+New SparkJob API
+-----------------------------------------
+
+
