@@ -1,0 +1,95 @@
+Starting embedded ZooKeeper
+===============================
+>  $KAFKA_HOME/bin/zookeeper-server.start.sh \
+$KAFKA_HOME/config/zookeeper.properties
+
+
+
+
+
+zookeeper.properties
+==============================
+Defaults
+----------------------
+#Data directory where the zookeeper snapshot
+#is stored
+dataDir=/tmp/zookeeper
+
+#The port listenting for client
+#requests
+clientPort=2181
+
+#Disable the per-ip limit on the number
+#of connections since this
+#a non-prod config
+non-production config
+maxClientCnxns=0
+
+Starting the Kafka Broker
+=============================
+>  $KAFKA_HOME/bin/kafka-server.start.sh \
+$KAFKA_HOME/config/server.properties
+
+
+
+
+server.properties: 
+==============================
+#id of the broker. This must be set
+#to a unique integer for eache broker
+Broker.id=0
+
+#Port socket server is listening on:
+port=9092
+
+#Directory to store log files
+log.dir=/tmp/kafka8-logs
+
+#The default number of log partitions
+#per topic
+num.partitions=2
+
+
+Creating a Kafka topic
+====================================
+There is a command line tool that
+kafka provides that makes creating a 
+topic quite easy....
+
+#Create a topic
+> bin/kafka-topics.sh --create \
+--zookepper localhost:2181 \
+--replication-faction 1 \
+--partitions 1  \
+--topic kafkatopic
+
+Listing extant Kafka topics
+=====================================
+#List the extant topics
+> bin/kafka-topics.sh \
+--list \
+--zookeeper localhost:2181
+
+
+Starting a producer to send messages
+====================================
+Kafka provides users witha command line
+producer client that accetps input from
+the ommand line and publishes them as a message
+tot he Kafka cluster.  Bu default, each new line entered is considered as a new message.  The following command is use to start the console
+based producer in a new console window to 
+send the messages:
+
+#Producer from the command line
+> bin/kafka-console-producer.sh \
+--broker-list localhost:9092 --topic  kafkatopic
+
+
+/bin/spark-submit \
+  --class com.fractal.spark.pfsense_etl.Main \
+  --master local[8] \
+  $JARPATH \
+  100
+
+
+

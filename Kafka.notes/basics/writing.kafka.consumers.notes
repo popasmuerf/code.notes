@@ -1,0 +1,158 @@
+Writing Kafka Consumers
+=====================================
+Consumers are the applications that consume
+the messages published by Kafka producers
+process the data extracted from them.
+Like producers, consumers can als be different
+in antures such as :
+	*real-time analysis
+	*near real-time analysis
+	*NoSQL 
+	*Datawarehousing 
+	*Backend services
+	*consumers for Hadoop
+	*various other subscriber-based
+	 applications.
+
+
+Consumers may be implemented in the following
+languages:
+===========================
+	*Java/Scala/Groovy/Kotlin
+	*C/C++ 
+	*Python
+
+
+Facts:
+=======================
+	*	Consumers subscribe
+		to messages specific
+		to some specific topic
+		on a Kafka broker
+
+	*	Consumbers sumbit 
+		fetch requests to the lead
+		broker to consume the message
+		partition by specifying
+		the message offest
+
+	*	Kafka consumers work in ta
+		pull model and always pulls
+		all avaialbe messages
+		after tis current posistion
+		in teh Kafka log
+
+
+	*	Kafka topics are diided into a set
+		ordered partitions and each partiton
+		is consumed by one conumer only.
+
+	*	once a pattions is consimed
+		the consumer changes the message
+		offset to the next 
+		partition to be consumed.
+
+	*	Partitions  represents the
+		states about what has been
+		consumed and also provides the 
+		flexibility of 
+		deliberately rewinding
+		back to an old offset and
+		re-consuming the partition.
+
+
+Kafka Consumer APIs
+==========================
+	*	High-Level API
+	*	Low-Level API
+
+
+High-level consumer API
+============================
+	*	Used when only data is needed
+		without the handling of message
+		offsets
+
+	*	Hides broker details from the consumer
+
+	*	Allows effortless communication with
+		the Kafka cluster by providing
+		an abstraction over the low-level
+		implementation.
+
+	*	The high-level consumer stores the 
+		last offest(the posistion within the
+		message partition where the cosumer
+		left off consuming the message), read
+		from a specfic partition in Zookeeper.
+
+	*	Offsets are stored in the consumer
+		group name provided to kafka at the
+		beginning of the process.
+
+	*	Consumer group names are unique and global
+		across the Kafka cluster
+
+	*	Due to design issues, when adding a new
+		consumer to a group...all running consumers of that group should be shut down before starting the new consumers
+
+
+Imported classes for basic consumers
+=========================================
+	*	ConsumerConnector:
+			-interaction between
+			 consumer and zookepper
+
+	*	KafkaStream: 
+		-objects of this type are
+		 returned by the ConsumerConnector
+		 implementation
+
+		-The list of KafkaStream
+		 objets is returned for each topic
+
+		-These lists may be iterated
+		 over
+		-Example Scala-based
+		 declaration:
+
+		 //---Declaration of KafkaStream
+
+		 class KafkaStream[K,V](
+		 queue:BlockingQueue[FetchedDataChunk],
+		 consumerTimeoutMs: Int,
+		 private val keyDecoder:Decoder[K],
+		 private val valueDecoder:Decoder[V],
+		 val clientId: String)
+
+
+Simple Java consumer
+===========================
+Single threaded simple Java consumer
+using the high-level consumer API for cosnuming 
+messages from a topic.  We are also
+assuming here that there is onl a single
+partition.
+
+//--------Simple HL Consumer
+
+import kafka.consumer.ConsumerConfig;
+import kafka.consumer.ConsumerIterator;
+import kafka.consumer.KafkaStream ;
+import kafka.javaapi.consumer.ConsumerConnector ;
+	/** Define connections to Zookeeper **/
+
+Properties props = new Properties() ;
+props.put("zookeeper.connect","localhost:2181")
+props.put("group.id","testgroup")
+props.put("zookeeper.session.timeout.ms", 500)
+props.put("auto.commit.interval.ms",1000)
+new ConsumerConfig(props)
+
+
+
+
+
+
+
+

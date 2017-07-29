@@ -51,6 +51,38 @@ Response
 New Restaurant object is created
 
 
+Side notes and Summary
+================================
+Controller classes for endpoints
+---------------------------------
+Controller classes will use the
+annotation:
+
+	@RestController
+
+for building our application end points.
+This annotation : @RestController
+is a combination of annotations:
+
+	@Controller
+	@ResponseBody
+
+API versioning
+-------------------------
+versioning is important...(duh)
+as APIs change over time
+
+We can handle the versioning in a 
+number of ways....we can either include
+the version int he path(ugly) or
+we can use the HTTP header.
+HTTP headers may be customized
+to reprsent the calling API version.
+
+
+
+
+
 
 
 
