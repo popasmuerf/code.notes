@@ -54,3 +54,14 @@ General process:
 
 
 
+Tools
+=============================================================
+*	Adopt standard, ubiqoutous language
+*	UML
+*	Multilayered architecture
+	-	Presentation layer(UI)
+	-	Application Layer(coordination/orch/applicaiton state)
+	-	Domain layer(business logic, service layer)
+	-	Infrastructure layer(supporting libraries, persistence)
+
+

@@ -1,0 +1,52 @@
+Spark Streaming Architecture and Abstraction
+==========================================================
+Spark Streaming uses a "microbatch" architecture,where:
+	*	Streaming computation is treated as a continuous 
+		series of batch computations on 
+		small batches of data
+
+	*	Spark Streaming recieives data from various input 
+		sources and groups it into small batches
+
+	*	New batches are created at regular time intervals.
+
+	*	For every new batch created per time interval arriving
+		data is is added to it.
+
+	*	The size of each interval is usually between 500 milliseconds
+		and several seconds as configured by the app developer...
+
+	*	Each input batch forms an RDD, and is processed using Spark jobs
+		to create other RDDs
+
+	*	The processed results can then be upused out to external systems
+		ini batches
+
+
+
+
+
+DStreams
+=========================================================================================
+	*	DStreams are nothing more than a discretized stream
+		that is in turn nothing more than a sequence of RDDs where each RDD has one time
+		slice of th data in the stream
+
+
+	DStream ---> | data time-0 | ---> | data time-1 | -->  | data time-2 |
+
+
+	*	We can crate DStreams either from external input sources, or by applying
+		transformations to other DStreams
+
+	*	DStreams support many of the transformations that are availible for RDDs
+
+
+	* 	Apart from transformations, DStreams support output opertations, such as
+	  	the print() used in our example.
+
+
+
+Transformations on DStreams....
+==============================================================================================
+
