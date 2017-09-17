@@ -1,0 +1,67 @@
+Differences between MongoDB
+and RDBMS
+=====================================
+
+Tables vs Collections
+----------------------------------
+In a RDMBS, the table
+contains the columns and rows
+which are used to store
+the data whereas, in  MongoDB,
+this same structure is known
+as a collection. The
+collection contains dcoments
+which in turn contains
+Fileds...which are in turn
+are key-value pairs
+
+
+
+Rows vs Documents
+======================
+In RDMBS, the row represents
+a single, implicitly  
+structured data item in a
+table .  In MongoDB, the data
+is stored in documents.
+
+Column vs. Fields
+===========================
+In RDBMS, the column denotes
+a set of data values.  These
+in MongoDB are known as Fields
+
+
+Joins vs Embedded Documents
+==============================
+In RDBMS, data is sometimes spread
+across various tables and in
+order to show a complete 
+view of all data, a join is sometimes
+formed across tables to 
+get data.  In MongoDB,
+all of this data is usually
+stored in a single collection,
+but seperated by using 
+embedded documents....so 
+there is no concept of a 
+"join" in MongoDB
+
+
+Data integrity vs...Not 
+worrying about data integrity
+==========================
+For RDBMS...this is a requirment...
+for Mongo...not so much
+
+Normalization
+======================
+Used to prvent orphan
+records and duplicates Normalizaing
+data then has the requirement 
+of more tables, which results
+in more table joins, thus requirment
+more keys and indexes....
+Which...naturally kills
+performance.  Mongo doesn't
+need normalization

@@ -1,0 +1,44 @@
+Variables
+==================
+cmake accepts variables on teh command line with
+the followoing unusual syntax that requires the 
+variable type in addtion to name-value pair:
+
+#Example syntax
+>cmake -DVARIABLE_NAME:TYPE=VALUE
+
+
+Variable types
+====================
+Useful variable types supported by 
+CMake are:
+	*	PATH
+			-file system path
+
+	*	BOOL
+			-true/false
+
+	*	STRING
+			-arbitray string of characters
+
+	*	NONE
+			-only use CFLAGS and LDFLAGS options
+	*	Debug
+			-Unoptimized with debug symbols
+	*	Release
+			-Optimized without debug symbols
+	*	RelWithDebInfo 
+			-Optimized with debug symbols
+
+
+^^^^Although the install location of the 
+resulting binaies can be passed to
+cmake with the following commaind-line:
+
+> cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/local
+
+
+
+
+
+

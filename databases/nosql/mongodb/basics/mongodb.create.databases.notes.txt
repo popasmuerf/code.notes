@@ -1,0 +1,108 @@
+Creating Databases
+=======================
+
+Document bascis
+======================
+This is what a document 
+looks like fundamentally:
+
+
+{
+	//fieldName  : fieldVAlue
+	"Employeeid" : 1,
+	"EmployeeName" : "Smith"
+}
+
+
+Command for switching
+/selecting databases
+==========================
+#Employee is the database
+#we want to use....
+user$: mongo
+> use Employee
+switched to db employee
+
+
+Creating a colleciton and usint insert()
+======================================
+#cli
+> db.Employee.insert(
+	{
+		"Employeeid" : 1,
+		"EmployeeName" : "Smith"
+	}
+)
+
+> WriteResult({ "nInserted" : 1 })
+
+
+Adding MongoDB array using
+insert()
+=======================
+We can use the insert() method
+to also insert multiple documents
+into a collection at one time.
+
+How do we go about doing 
+that ?
+
+1. Create a javascript variable
+called myEmployee to hold the
+array of documents
+
+2. add required documemnts
+with the Field Name and values to 
+the variable
+
+3. Use the insert command to insert the 
+array of documents into the 
+collection
+
+//Code------------
+
+var myEmployees = [
+{"Employeeid":1,"EmployeeName":"Smith"},
+{"Employeeid"::2,"EmployeeName":"Brown"},
+{"Employeeid"::3,"EmployeeName":"Crow"},
+{"Employeeid"::4,"EmployeeName":"Kevin"},
+{"Employeeid"::5,"EmployeeName":"Crow"}
+];
+
+#cli
+user$: mongo
+>use Employees
+>var myEmployees = [
+{"Employeeid":1,"EmployeeName":"Smith"},
+{"Employeeid":2,"EmployeeName":"Brown"},
+{"Employeeid":3,"EmployeeName":"Crow"},
+{"Employeeid":4,"EmployeeName":"Kevin"},
+{"Employeeid":5,"EmployeeName":"Crow"},
+];
+> db.Employees.insert(myEmployees);
+BulkWriteResult({
+	"writeErrors" : [ ],
+	"writeConcernErrors" : [ ],
+	"nInserted" : 5,
+	"nUpserted" : 0,
+	"nMatched" : 0,
+	"nModified" : 0,
+	"nRemoved" : 0,
+	"upserted" : [ ]
+})
+> 
+
+
+^^Note...I just noticed that I made a mistake
+via spelling the db with an ending "s" where
+there was none previously...and guess what ahppend?
+Yup...I now have a new collection in my 
+employee database named "Employees" that conteains
+my new document....and as such the "Employee"
+collection has not been updated with the intented
+document updates....so yeah...PAY ATTENTION
+
+
+
+Printing in JSON format
+===========================================

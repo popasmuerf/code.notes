@@ -1,0 +1,97 @@
+mongoimport
+=====================================
+
+Get all the documents in a collection
+----------------------------------
+#example using a csv file
+> use myDb
+> db.myColl.find({});
+
+	-or-
+> use myDb
+> db.myColl.find() ;
+
+
+Get all the documents in a collection
+and display to stdout as json...
+-------------------------------
+> use myDb
+> db.myColl.find().forEach(printjson)
+
+
+
+Find all the documents within the document
+that has Employeeid greater than : 1
+============================================
+> use myDb
+> db.mycoll.find({Employeeid:{$gt:1}})
+
+
+Find all the documents within the collection
+were there the Employeedid is greater than : 1
+and then display as json to stdout
+========================================
+> use myDb
+> db.mycoll.find({Employeeid:{$gt:1}}).forEach(printjson)
+
+
+
+Remove all records were the Employeeid is reater than : 1
+==========================================================
+> use myDb
+? db.mycoll.remove({Employeeid:{$gt:1}}).forEach(printjson)
+
+
+
+
+
+
+
+Rows vs Documents
+======================
+In RDMBS, the row represents
+a single, implicitly  
+structured data item in a
+table .  In MongoDB, the data
+is stored in documents.
+
+Column vs. Fields
+===========================
+In RDBMS, the column denotes
+a set of data values.  These
+in MongoDB are known as Fields
+
+
+Joins vs Embedded Documents
+==============================
+In RDBMS, data is sometimes spread
+across various tables and in
+order to show a complete 
+view of all data, a join is sometimes
+formed across tables to 
+get data.  In MongoDB,
+all of this data is usually
+stored in a single collection,
+but seperated by using 
+embedded documents....so 
+there is no concept of a 
+"join" in MongoDB
+
+
+Data integrity vs...Not 
+worrying about data integrity
+==========================
+For RDBMS...this is a requirment...
+for Mongo...not so much
+
+Normalization
+======================
+Used to prvent orphan
+records and duplicates Normalizaing
+data then has the requirement 
+of more tables, which results
+in more table joins, thus requirment
+more keys and indexes....
+Which...naturally kills
+performance.  Mongo doesn't
+need normalization

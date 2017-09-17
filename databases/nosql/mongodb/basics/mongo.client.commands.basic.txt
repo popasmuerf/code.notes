@@ -1,0 +1,66 @@
+mongoimport
+=====================================
+
+cli
+----------------------------------
+#example using a csv file
+> mongoimport --db TestDB --type csv \
+--headerline file data.csv
+
+#output
+> mongoimport --db TestDB --type csv --headerline --file data.csv
+2017-08-24T08:18:04.181-0400	no collection specified
+2017-08-24T08:18:04.181-0400	using filename 'data' as collection
+2017-08-24T08:18:04.189-0400	connected to: localhost
+2017-08-24T08:18:04.238-0400	imported 3 documents
+Michaels-MacBook-Pro:csv mdb$ 
+
+
+Rows vs Documents
+======================
+In RDMBS, the row represents
+a single, implicitly  
+structured data item in a
+table .  In MongoDB, the data
+is stored in documents.
+
+Column vs. Fields
+===========================
+In RDBMS, the column denotes
+a set of data values.  These
+in MongoDB are known as Fields
+
+
+Joins vs Embedded Documents
+==============================
+In RDBMS, data is sometimes spread
+across various tables and in
+order to show a complete 
+view of all data, a join is sometimes
+formed across tables to 
+get data.  In MongoDB,
+all of this data is usually
+stored in a single collection,
+but seperated by using 
+embedded documents....so 
+there is no concept of a 
+"join" in MongoDB
+
+
+Data integrity vs...Not 
+worrying about data integrity
+==========================
+For RDBMS...this is a requirment...
+for Mongo...not so much
+
+Normalization
+======================
+Used to prvent orphan
+records and duplicates Normalizaing
+data then has the requirement 
+of more tables, which results
+in more table joins, thus requirment
+more keys and indexes....
+Which...naturally kills
+performance.  Mongo doesn't
+need normalization
