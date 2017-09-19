@@ -1,0 +1,49 @@
+TypeSafe Config API Example 
+================================
+
+//Code example
+import com.typesafe.config.ConfigFactory
+
+Config conf = ConfigFractory.load();
+int bar1 = conf.getInt("foo.bar");
+Config foo = conf.getConfig("foo");
+int bar2 = foo.getInt("bar")
+
+
+Immutability of Config objects..
+Important!!!
+====================================
+Objets are immutable, so meethods
+on Config which transform the
+configuration return a new
+Config object such as:
+
+	*	ConfigParseOptions
+	*	ConfigResolveOptions
+	*	ConfigObject
+
+
+Schemas and Validation
+=============================
+There is no schema language or anything like that.
+However, two suggested tools are:
+
+	*	use the method:
+		-	checkValid()
+
+	*	Access your config though a
+		Settings class with a field
+		for each setting, and instantiate it 
+		upon start up.
+
+
+//Example of Settins class in Scala
+
+class Settings(config:Config){
+	//validate vs. reference.conf
+	config.checkValid(ConfigFactory.defaultReference(),"simple-lib")
+	//non-lazy fields, we want all exeptions at construct time
+	val foo = config.getString("simple-lib.foo")
+	var bar = config.getInt("simple-lib.bar")
+
+}
