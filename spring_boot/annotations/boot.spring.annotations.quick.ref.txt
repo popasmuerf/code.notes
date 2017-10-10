@@ -1,0 +1,481 @@
+@Qualifier
+======================================================
+There may be situation when you create more than one
+bean of the same type and want to wire only
+one of them with a property, in such case you
+can use @Qualifier annotation along
+ @Autowired to remove the confusion by specifying
+which exact bean will be wired.
+
+ 
+
+///------------Beans-------------///
+======================================================
+
+public class Student{
+        private Integer age ;
+        private String name ;
+        public void setAge(Integer age){
+                this.age = age ;
+        }
+        public Integer getAge(){
+                return age ;
+        }
+        public void setName(String name){
+                this.name = name ;
+        }
+        public String getName(){
+                return name ;
+        }
+}
+
+///-------------Profile-----------///
+======================================================
+package com.tutorialspoint;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+public class Profile{
+        @Autowired
+        @Qualifier("student1")
+        private Student student ;
+        public Profile(){
+                System.out.println("Insided Profile constructor.");
+        }
+        public Profile(){
+                System.out.println("Inside Profile constructor." );
+        }
+        public void printAge() {
+                System.out.println("Age : " + student.getAge() );
+        }
+        public void printName() {
+                System.out.println("Name : " + student.getName() );
+   }
+}
+
+///-------------Main-----------///
+======================================================
+package com.tutorialspoint ;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainApp{
+        public static void main(String[] args){
+                ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+                Profile profile = (Profile) context.getBean("profile") ;
+                profile.printAge() ;
+                profile.printName() ;
+        }
+
+}
+
+///=====
+
+///------------Beans-------///
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   <context:annotation-config/>
+
+   <!-- Definition for profile bean -->
+   <bean id="profile" class="com.tutorialspoint.Profile">
+   </bean>
+
+   <!-- Definition for student1 bean -->
+   <bean id="student1" class="com.tutorialspoint.Student">
+      <property name="name"  value="Zara" />
+      <property name="age"  value="11"/>
+   </bean>
+
+   <!-- Definition for student2 bean -->
+   <bean id="student2" class="com.tutorialspoint.Student">
+      <property name="name"  value="Nuha" />
+      <property name="age"  value="2"/>
+   </bean>
+
+</beans>
+
+
+
+
+
+
+
+1. Creating an empty project with start.spring.io
+========================================================
+We enter some information, pick a set of desired options,
+and then download either a build file or a zipped-up
+project:
+
+issue-manager
+├── build.gradle
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── learning
+    │   │       └── spring
+    │   │           └── boot
+    │   │               └── IssueManagerApplication.java
+    │   └── resources
+    │       ├── application.properties
+    │       ├── static
+    │       └── templates
+    └── test
+        └── java
+            └── learning
+                └── spring
+                    └── boot
+                        └── IssueManagerApplicationTests.java
+
+
+
+Spring Boot starters
+=================================================
+Packages plugged in by start.spring.io are known
+as "Spring Boot starters".  They are vitual packages
+that deployed to Maven centeral.  Their job is to
+pull in other dependencies while containing no code
+of their own.
+
+For example:
+
+        spring-boot-starter-thymeleaf
+
+pulls in the following dependencies:
+
+        spring-boot-starter
+        spring-boot-starter-web
+        spring-core
+        thymeleaf-spring4
+        thymeleaf-layout-dialect
+
+Basic code layout of a Spring Boot application 
+=================================================
+//------------code----------//
+import org.springframework.boot.SpringApplication ;
+import org.springframework.boot.autoconfnigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+
+@ComponentScan
+@EnableAutoconfiguration
+public class Application{
+        public static void main(Strings[] args){
+                SpringApplication.run(Application.class,args);
+        }
+}
+
+
+^^^^Breakdown of code
+------------------------------------------------
+
+         *       @ComponentScan
+                ---------------------------
+                Tells Spring to look for classess
+                with @Component,@Configuration,
+                @Repository,@Service, and @Controller
+                and wire them into the app context
+                as beans.  By default, it scans
+                for classes found underneath the package
+                where the annotation is declared
+
+         *       @Component
+                ---------------------------
+                @Component inidcates that annotated
+                class is a "component".  Such classes
+                are considered as candidates for
+                auto-detection.  Usually used with
+                simple beans
+
+
+         *       @Controller
+                ---------------------------
+                @Controller inidcates that this
+                controller will return a view instead
+                of raw output(like @RestController)
+
+
+         *       @Repository
+                ---------------------------
+                @Repository inidcates that that the
+                target class is to be designated
+                an DAO class.  Indicates that an
+                annotated class is a "Repository",
+                originally defind by Domain-Driven
+                Design(Evans,2003).  A specialization
+                of @Component
+
+         *       @Service
+                ---------------------------
+                @Service annotates a class that Spring
+                will pick up and added to the app context
+                via @ComponentScan.  It has hardcoded
+                with a GitHub passcode and a hardcoded
+                organization name, and will fetch 
+                issues from spring-boot and
+                spring-boot-issues.  This service also has
+                a GitHubTemplate.
+                public @interface Service
+                inidicates that an annotated class is a
+                "Service", originally defined by
+                Domain Driven Design(Evans, 2003) as
+                "an operation offered as an interface
+                that stands alone in the model, witn no 
+                encapsulated stated
+
+                This annotation may also indicate that a 
+                class is a "Business Service Facade"
+                (Core J2EE patterns sense), or something
+                similar.  This annotation is a 
+                general-purpose stereotype and individual
+                teams may narrow their semantics and use
+                as appropriate.
+
+                This annotation serves as a specialization
+                of @Component, allowing for implementation
+                classes to be autodetected through
+                classpath scanning.
+
+        *       @EnableAutoConfiguration
+                ---------------------------
+                This turns on Boot's auto-configuration
+                behavior.  Tells spring to turn on all
+                auto-configuration options.  Each of
+                these options looks at various aspects
+                of the application and then makes
+                decisions on adding extra beans.  It
+                makes decisions mostly based on the classpat
+                and settings found inside:
+                
+                application.properties
+            
+                For example, if Boot spots
+                JmsTemplate.class on the class path,
+                then Boot will create an instance of
+                JmsTemplate and make it available
+                for injections to other
+                Spring beans.  The developer must
+                provided a ConnectionFactory bean.
+
+          *       @Autowired
+                ---------------------------
+                Marks a constructor, field, setter
+                method or config method as to be
+                autowired by Spring's dependency
+                injection facilities.
+                Only one constructor or any given
+                bean class may carry this annnotation
+                Fields are injected right after 
+                construction of a bean, before any
+                config methods are invoked.  
+                Such a config field does not have
+                to be public
+
+                The @Autowired annotation tells Spring
+                where an injection needs to occur.
+
+                If used targeting a method, then it
+                understands that a bean needs to 
+                be injected:
+
+                @Autowired
+                setMovieFinder(){}
+
+                //Looks for MovieFinder Beans
+                //and then injects them into method
+
+        *       @Qualifier
+                -----------------------------
+                
+        
+
+        *       public static void main()
+                -----------------------------
+                This runs Boot's SpringApplication.run()
+                method as a convient way to launch
+                the app. SpringApplication.run() accepts
+                as parameters a class and command line 
+                arguments.
+
+        *       public interface Model
+                -----------------------------
+                Java-5 specific interface that defines a
+                holder for model attributes.  Primarily
+                designed for adding attributes to the
+                model.  Allows for accessing the overall
+                model as java.util.Map
+
+Note:
+=========================================================
+Constructor injection is currently the recommened way
+to wire Spring beans.  It supports immutable bean
+configurations in a better manner and avoids beans getting
+paritally configured at any particular time
+
+2. Adding Spring Social GitHub
+===================================================
+Spring Social GitHub connects our spring application
+with GitHub's REST API
+
+*Naviate here:  
+        http://projects.spring.io/spring-social-github
+
+*Choose build version
+
+*Choose your build tool(Maven or Gradle) and copy the build
+configuration:
+<!--    Maven build Info -->
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.social</groupId>
+        <artifactId>spring-social-github</artifactId>
+        <version>1.0.0.M4</version>
+    </dependency>
+</dependencies><repositories>
+    <repository>
+        <id>spring-milestones</id>
+        <name>Spring Milestones</name>
+        <url>https://repo.spring.io/libs-milestone</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+
+
+
+//----------------Gradle build Info----------------
+dependencies {
+    compile 'org.springframework.social:spring-social-github:1.0.0.M4'
+}repositories {
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+}
+ 
+
+
+* This dependency will load Spring Social GitHub.  Since it's not a general release, we need to add this to the 
+repositories section:
+
+repositories{
+        mavenCenteral()
+        maven { url
+                 url 'https://repo.spring.io/libs-milestone'
+        }
+}
+
+
+Digging into gitHub issues
+======================================================
+Let's continue working on our simple app that will fetch
+GitHub issues from multiple repositories. To fetch
+GitHub issues, we need to establish a domain object
+
+//---------------Code Issue Wrapper class----------------//
+
+package learningspringboot;
+
+import org.springframework.social.github.api.GitHubIssue ;
+
+public class Issue{
+        private String repo ;
+        private GitHubIssue githubIssue ;
+        public Issue(String repo, GitHubIssue gitHubIssue){
+                this.repo = repo ;
+                this.gitHubIssue = gitHubIssue ;
+        }
+        public String getRepo(){
+                return repo ;
+        }
+        public GitHubIssue getGithubIssue(){
+                return githubIssue ;
+        }
+}
+
+
+//---------------Code Service to retriever issues----------//
+
+package learningspringboot ;
+
+import java.util.ArrayList; 
+import java.util.List ;
+
+import org.springframework.social.github.api.GitHubIssue ;
+import org.springframework.social.github.api.im.GitHubTemplate ;
+import org.springframework.stereotype.Service;
+
+@Service
+public class IssueManager{
+        String githubToken = "936f3eb722d11e51195039e381acee73dc9445d8";
+        String org = "spring-projects" ;
+        String[] repos = new String[]{"spring-boot","spring-boot-issues"};
+        GitHubTemplate gitHubTemplate = new GitHubTemplate(githubToken) ;
+        public List<Issue> findOpenIssues(){
+                List<Issue> openIssues = new ArrayList
+                for(String repo : repos){
+                        final List<GitHubIssue> issues = gitHubTemplate.repoOperations().getIssues(org,repo);
+                for(GitHubIssue issue : issues){
+                        if(issue.getState().equals("open")){
+                                openIssues.add(new Issue(repo,issue));
+                        }
+                }
+                
+                
+                }
+                return openIssues ;
+        }
+        
+}
+
+
+//---------------Code Issue Controller issues----------//
+package learning springboot ;
+import  org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframwwork.ui.Model ;
+import org.springframework.web.bind.annotation.RequestMapping;
+@Controller
+public class IssueController{
+        private IssueManager issueManager ;
+        @Autowired
+        public IssueController(IssueManager issueManager){
+                this.issueManager  = issueManager ;
+        }
+        @RequestMapping(value="/")
+        public String index(Model model){
+                model.addAttribute("issues",issueManager.findOpenIssues());
+                return index ;
+        }
+}
+
+
+
+Creating a GitHub access token
+===================================================
+Where did we geth this cryptic githubToken value?
+
+Th is an oauth access code that is required to plug in
+and talk to GitHub.  To create one of your own, you need
+to create an account at https://github.com.
+
+1. Login into GitHub
+2. In your account settings/control panel...Scroll down to  "Developer options" and then click "Personal access tokens"
+3. Click Generate new token
+4. Enter a description such as "Learning Spring Boot"
+accept the default access controls, and click on
+Gernerate token
+
+
+

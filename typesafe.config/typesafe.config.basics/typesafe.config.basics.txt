@@ -1,6 +1,9 @@
 TypeSafe Config API Example 
 ================================
 
+info url: https://github.com/typesafehub/config#using-the-library
+
+
 //Code example
 import com.typesafe.config.ConfigFactory
 
@@ -45,5 +48,68 @@ class Settings(config:Config){
 	//non-lazy fields, we want all exeptions at construct time
 	val foo = config.getString("simple-lib.foo")
 	var bar = config.getInt("simple-lib.bar")
-
 }
+
+
+
+
+Standard behavior
+===========================================
+The convenience method:
+
+	ConfigFactory.load()
+
+^^^^loads the following (first-listed are higher priority)
+
+System properties
+------------------------------
+*	application.conf //all resources on classpath with this name
+*	application.json //all resources on classpath with this name
+*	application.properties //all resources on classpath with this name
+*	reference.conf  //all rescources on classpath with this name
+
+
+
+So...what's the deal ?
+====================================
+The idea here is that libraries and frameworks
+should ship with a file:
+
+	reference.conf
+
+in their jar.
+
+where applications should have a file like:
+
+	application.conf
+
+or if they want to create multiple configurations
+in a single JVM, they could use:
+
+	ConfigFactory.load("myapp")
+
+to load their own myapp.conf.
+This way libariers willsee configuration from
+application.conf and users can configure
+the whle app, with its libraries,in 
+a single application.config file.
+
+
+Libraries and frameworks should also allow
+theapplication to provide a custom Config
+object to be used instad of the default
+configuration, in case the application
+needs mulitple configurations in one
+JVM or wants to load extra config files from 
+somewhere.
+
+
+
+
+
+
+
+
+
+
+

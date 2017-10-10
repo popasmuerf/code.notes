@@ -1,0 +1,65 @@
+https://www.mkyong.com/spring/spring-init-method-and-destroy-method-example/
+
+
+
+Spring init-method and destroy example
+====================================================
+
+In Spring you can use methods:
+
+	init()
+	destroy()
+
+
+as atributes in bean configuration files for beans
+to perform certain actions upon the initialization
+and destruction of beans.  It is an alternative
+to interfaces :
+	InitializingBean
+	DisposableBean
+
+
+
+///Code
+
+package com.mkyong.customer.services;
+
+public class CustomerService
+{
+	String message;
+
+	public String getMessage() {
+	  return message;
+	}
+
+	public void setMessage(String message) {
+	  this.message = message;
+	}
+
+	public void initIt() throws Exception {
+	  System.out.println("Init method after properties are set : " + message);
+	}
+
+	public void cleanUp() throws Exception {
+	  System.out.println("Spring Container is destroy! Customer clean up");
+	}
+
+}
+
+
+
+###File: Spring-Customer.xml, definited init-method and
+#########destroy-method attribute in your bean
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="customerService" class="com.mkyong.customer.services.CustomerService"
+		init-method="initIt" destroy-method="cleanUp">
+
+		<property name="message" value="i'm property message" />
+	</bean>
+
+</beans>

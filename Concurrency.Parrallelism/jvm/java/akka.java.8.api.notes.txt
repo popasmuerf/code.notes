@@ -1,0 +1,91 @@
+Akka Actor Anatomy
+=================================
+package actors.ping_pong;
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.event.Logging;
+import akka.event.LoggingAdapter ;
+
+
+/**
+ * Code Example fo 
+ */
+public class JavaPongActor extends AbstractActor{
+    private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(),this);
+    @Override
+    public Receive createReceive() {
+        Receive builtReceiver = receiveBuilder()
+                .match(String.class, s -> {
+                    log.info("Recieved String message: {}", s);
+                } ).matchEquals("Ping",s -> respondToPing(s))
+                .matchEquals("Ping",s ->
+                sender().tell("Pong", ActorRef.noSender()))
+                .matchAny(o -> log.info("received uknown message"))
+                .build();
+        return null ;
+    }
+}
+
+
+
+^^^
+inherited Abstract Classes
+===========================
+AbstractActor(Abstract class)
+---------------------------
+	*	specific API that is meant to take
+	advantage of the Java8 lambda features.
+	*	There exists an older base aActor API that 
+	can be used for Java if you look at the
+	documentation --> UntypedActor
+		-	use if statements to match
+			on the object.
+		-	less expressive than the Java 8 API
+			as the Java 8 API allows for pattern
+			matching via lambdas
+
+Recieve()
+---------------------------
+	*	Abstract method --> AbstractActor.Recieve()
+	*	Returns type : PartialFunction
+	*	There is no native way to building a 
+		a type PartialFunction because it is a
+		Scala type.
+	*	A PartialFunction is a function type
+		that only matches some inputs but not
+		all
+
+	*	Scala provides a builder abstraction
+		for production of the PartialFunction
+		called --> RecieveBuilder
+
+//Code for Reciever
+public class JavaPongActor extends AbstractorActor{
+	......
+	@Override
+	public Recieve createRecieve(){
+		......
+	}
+}
+
+RecieveBuilder
+---------------------------
+	*	We cal RecieveBilder methods, 
+
+
+
+Available methods
+=======================
+
+Pipeline health
+===============================
+0. Health of Message Producer
+	1.2
+1. Health of each step of ingestion:
+	1.1 Ingest rate to the parser
+	1.2 Ingest rate into the database
+	1
+
+
+
+

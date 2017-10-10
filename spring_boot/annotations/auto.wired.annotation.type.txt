@@ -1,0 +1,108 @@
+https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/beans/factory/annotation/Autowired.html
+
+https://spring.io/blog/2007/07/11/setter-injection-versus-constructor-injection-and-the-use-of-required
+
+@Autowired
+===================================================
+So when a controller(or any other bean) is created 
+by the Spring container, it will initial it's
+class using:
+
+    "Constructor injection"
+
+
+
+
+What is "Constructor injection"
+=============================================
+url: https://spring.io/blog/2007/07/11/setter-injection-versus-constructor-injection-and-the-use-of-required
+
+Any object tht has a construtor that takes
+agruments, can(obviously) not be constructed without
+passing in arguments.  In java, we have a default or implicit
+constructor added to our class as long as we do
+not add one ourselves.  This default or implicit
+consstructor does not take arguments, so as long
+as you do not add a constructor with arguments at all, or 
+specifically add one without any arguments, it
+will be possible for Spring(or any other user of your class
+for that matter) to instantiate yoru class
+without passing it anything.
+
+
+Spring can instantiate your class for you...
+provided that you haven't created your own
+custom constructor....did you know that?
+============================================
+In other words, we can force a user of our class
+(again, this might be Spring but it could also be
+a unit test that instanties our class directly) to 
+instantiates your class directly) to instantiate it
+to instaniate it while passing in arguments
+
+
+//Hard coded custom constructor...
+//that you must satisfy per it's
+//method signature......
+
+public class Service{
+    public Service(Collaborator collaborator){
+        this.collaborator = collaborator ;
+    }
+}
+
+
+^^^We can use this to our advantage when in need to check 
+required dependencies.  If we modify the above
+code example to inclued assertins, we are 
+100% sure the class will never b instantiated
+without it's collaborators injected:
+
+//same code as above...
+//but with assertions
+
+public class Service{
+    public Service(Collaborator collaborator){
+        if(collaborator == null){
+            throw new IllegalArgumentException("Collaborator cannot be null");
+        }
+        this.collaborator = collaborator ;
+    }
+}
+
+
+
+
+
+ public @interface Autowired
+
+===============================================
+
+
+What does it doe ?
+-------------------------------------------
+Marks :
+
+    *constructors
+    *fields
+    *setter()
+    *config() 
+
+as being autowired by Spring's dependency injection
+facilities.
+
+
+Only one constructor at max of any given bean class may
+carry this annotation indicating the constructor to 
+autowiere hwne used as a Spring Bean
+
+AutoWired  constructors don't need to be
+public.
+
+
+
+Fields
+=========================================
+Fields are injected  righ after construction of a bean,
+before any config methods are invoked.  Config fields don't
+have to be pulic.
