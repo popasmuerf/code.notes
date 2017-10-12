@@ -1,0 +1,70 @@
+https://www.datadoghq.com/blog/collecting-kafka-performance-metrics/
+
+
+Intro:
+
+Like Tomcat,Cassandra, and other Java applications,
+both Kafka and ZooKeeper expose metrics
+on availability and performance via JMX(Java Management EXtenstions)
+
+
+Collection native Kafka performance metrics
+===============================================
+JConsole, JMX, can both collection all of the 
+native Kafka performance metrics outlined
+previously.  While Burrow is a more specialized
+tool focused on collecting consumer metrics.
+For host-level metrics, you should consider installing
+a monitoring agent.
+
+	*	JConsole, a GUI that ships with the JDK
+	*	JMX/Metrics integrations with external
+		graphing and monitoring tools and 
+		services.
+	*	Burrow for monitoring consumer health
+
+
+
+
+Collecting Kafka metrics with JConsole
+===================================================
+JConsole is a asimple Java GUI that ships with the 
+JDK.  It provides an interface for exploring the full range
+of metrics Kafka emits via JMX.  If the JDK was
+installed to a directory in your system path, you can 
+start JConsole by running :
+
+	> jconsole
+
+
+Viewing metrics in JConsole
+--------------------------------------
+	*	select the relevant local process or monitor
+	  	a remote process using the node's IP address
+	  	(Kafka uses port 9999 for JMX by default)
+	*	JConsole can be resource-intensive
+
+
+
+Monitoring  Kafka performance metrics via JMX/Metrics
+integrations
+=====================================================
+Virtually every major monitoring service and tool
+can collect JMX metrics from Kafka, whther via:
+	*	JMX plugins
+	*	Pluggable metrics
+	*	reporter libraries
+	*	connectors that rite JMX metrics out such as:
+		-	StatsD
+		-	Graphite
+	*	We can use the MBean names listed below
+
+MBean Kafka Consumer names
+-----------------------------------------------------
+https://www.datadoghq.com/blog/monitoring-kafka-performance-metrics/
+
+
+
+
+
+

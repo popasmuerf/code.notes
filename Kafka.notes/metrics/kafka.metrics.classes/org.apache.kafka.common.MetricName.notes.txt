@@ -1,0 +1,72 @@
+url: https://kafka.apache.org/0100/javadoc/org/apache/kafka/common/MetricName.html
+
+
+
+org.apache.kafka.common
+Class MetricName
+
+
+
+java.lang.Object
+org.apache.kafka.common.MetricName
+
+
+
+What is MetricName ?
+==================================
+*	encapsulates a metric's name
+*	encapsulates a logical group and it's related attributes
+*	It should be constructed using:
+		metric.sMetricName(...)
+
+
+
+What parameters does this class captures ??
+===============================================
+*name:
+	name of metric
+
+*group:
+	the logical group name of the metris to
+	which this metric belongs
+*description:
+	A human-readable description to include
+	the metric. This is optional
+
+*tags:
+	additoanl key/value attributes of the metic.  this is optional
+
+
+
+Parameters can be used to create unique metric names
+while reporting in JMX or any custom reporting:
+====================================================
+Ex. standard JMX MBean can be constructed like :
+
+	domainName:type=group,key1=val1,key2=val2
+
+
+Usage looks something like this:
+-----------------------------------------------
+Map<String,String> metericTags = new LinkedHashMap<String,String>() 
+metricTags.put("client-id","producer-1");
+metricTags.put("topic","pfsense-groups");
+MetricConig metricConfig = new MetricConfig().tags(metricTags);
+Metrics metrics = new Metrics(metricConfig) ;
+
+Sensor sensor = metrics.sensor("message-sizes");
+
+ MetricName metricName = metrics.metricName("message-size-avg", "producer-metrics", "average message size");
+ sensor.add(metricName, new Avg());
+
+ metricName = metrics.metricName("message-size-max", "producer-metrics");
+ sensor.add(metricName, new Max());
+
+ metricName = metrics.metricName("message-size-min", "producer-metrics", "message minimum size", "client-id", "my-client", "topic", "my-topic");
+ sensor.add(metricName, new Min());
+
+ // as messages are sent we record the sizes
+ sensor.record(messageSize);
+
+
+
