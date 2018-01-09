@@ -1,5 +1,5 @@
 http://tutorials.jenkov.com/java-reflection/index.html
-
+https://www.javacodegeeks.com/2013/09/java-reflection-tutorial.html
 
 What is reflection ?
 ==========================================
@@ -27,10 +27,124 @@ Java reflection is very powerful and can be very useful:
 	*	Invoiking methods get/set field
 		values using reflection
 
+More reasons why we might need reflection
+============================================
+* Examine an object's class at runtime
+* Construt an object for a class at runtime
+* Examine a class's field and method at runtime
+* Invoke any method of an object at rutime.
+
+
+
+
+
+
 
 
 Java Reflection Example:
 ====================================
+Method[] methods = MyObject.class.getmethods() ;
+
+for(Method method : methods){
+	System.out.println("method = " + method.getName()) ;
+}
+
+
+
+Java Reflection Example: How does JUnit doe it ?
+======================================================
+JUnit uses refelctio to look through methods
+tagged with teh @Test annotation, and htne call
+those methods wen running the unit test:
+
+
+
+package myrefelction;
+import jaa.lang.reflect.Method ;
+
+public class ReflectionHellowWorld{
+  public static void main(String[] args){
+    Foo f = new Foo() ;
+    Method method = f.getClass.getMethod("print",new Class<?>[0]);
+    try{
+      Method method = f.getClass.getMethod("print",new Class<?>[0]);
+      method.invoke(f); 
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+  }
+
+  static class Foo {
+    public void print() {
+      System.out.println("abc");
+    }
+  }
+}
+
+
+We can do cool shit like creating objects
+from a class instance...
+==============================================
+package myreflection;
+public class ReflectionHelloWorld{
+  public static void main(String[] args){
+    Class<?> c = null ;
+    try{
+      c = Class.forName("myreflection.Foo");
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+    Foo f = null ;
+    try{
+      f = (Foo) c.newInstance() ;
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+    f.print() ;
+  }
+   static class Foo {
+      public void print() {
+        System.out.println("abc");
+      }
+  }
+}
+
+
+What if we want to do fly shit like dealing with instantiating
+classes that have constructors   ?
+========================================================
+package myreflection;
+public class ReflectionHelloWorld{
+  public static void main(String[] args){
+    Class<?> c = null ;
+    try{
+      c = Class.forName("myreflection.Foo");
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+    Foo f = null ;
+    Foo f1 = null ;
+    try{
+      f = (Foo) c.newInstance() ;
+      f1 = (Foo) c.newInstance("f1");
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+    f.print() ;
+  }
+   static class Foo {
+      private String str ;
+      public Foo(){}
+      public Foo(String str){
+        this.str = str ;
+      }
+      public void print() {
+        System.out.println("abc");
+      }
+  }
+}
+
+
 
 
 
