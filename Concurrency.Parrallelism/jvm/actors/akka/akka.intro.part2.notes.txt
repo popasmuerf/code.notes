@@ -1,0 +1,33 @@
+https://doc.akka.io/docs/akka/current/guide/introduction.html
+
+Introduction to Akka..(Again)
+--------------------------------------
+
+The Actor model is not new
+and has been around since 1973..
+..why now ?
+=======================================
+	*	successful, distributed systems
+		msut cope in an enviroment where 
+		components crash without responding
+
+	*	Messages get lost witout a trace
+		on the wire
+
+	*	Network latency fluctuates.
+
+	*	The above problems occur
+		regularly managed intra-datacenter enviroments even
+		more so in virtualized architectures
+
+How does Akka(and the actor model in general deal with the above issues ?)
+==========================================
+	*	Multi-threaded behavior without
+		the use of low-level concurrency
+		constructs like:
+			-	atomics
+			-	locks
+
+	*
+
+

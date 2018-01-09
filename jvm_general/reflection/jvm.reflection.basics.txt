@@ -1,0 +1,37 @@
+http://tutorials.jenkov.com/java-reflection/index.html
+
+
+What is reflection ?
+==========================================
+The ability of programs at compile time
+to get information internal to the compiler.
+
+
+Java Reflection Basics
+==========================================
+
+Java reflection makes it possible to inspect classes,
+interface, fields and methods at runtime,
+without knowning the names of the cleasss, methods, etc. at compile time.
+
+It is also possible to instantiate new objects, invoke methods and
+get/set field values using reflection.
+
+Java reflection is very powerful and can be very useful:
+
+	*	Mapping properties in JSON files 
+		to getter / setter methods, etc. at compile time
+
+	*	Instantiating new objects
+
+	*	Invoiking methods get/set field
+		values using reflection
+
+
+
+Java Reflection Example:
+====================================
+
+
+
+

@@ -1,0 +1,84 @@
+Maps
+==============================
+A map is a data structure that provides
+an unorderd collection of key-value pairs
+Data structures in other languages similar 
+to a map is a hash table or dictionary:
+*	Order of elements cannot be predicted
+*	like slices...Maps are created via the
+	function make()
+
+
+//Code example
+-------------------------
+package main
+import "fmt"
+func main(){
+	dict := make(map[string]string)
+	dict["go"] = "golang"
+	dict["cs"] = "CSharp"
+	dict["rm"] = "Ruby"
+	dict["py"] = "Python"
+	dict["js"] = "JavaScript"
+	for k,v := range dict {
+		fmt.Printf("Key: %s Value: %s\n", k,v)
+	}
+
+}
+
+
+Length and capacity
+============================
+Length:
+	The length of th slice is the number
+	of elements referred to by the slice
+
+Capacity:
+	The number of elements in the underlying array.
+
+
+Slices cannot hold past the capacity of the
+underlying array.
+
+The append() function
+
+=======================================
+We can either "grow" slices by hand
+by creating a new array and then copying
+it using the function:
+
+	copy(<from>,><to>)
+
+		-or-
+	copy(<oldArray>,<NewArray>)
+
+		-or-
+	func copy(dst, src []T) int
+
+
+-OR-
+
+We can go the sane route by using the 
+function :
+
+	append()
+
+Iterating over Slices
+================================
+	*	use the keyword "range"
+	*	range interations returns two values
+		for each iteration of the collection:
+			-	index of element
+			-	the copy of the element
+
+//Code example iterating over a slice
+
+package main
+import "fmt"
+funct main(){
+	var x = []int{1,2,3,4,5}
+	for k,v = range x {
+		fmt.Println("Index : %d Value: %d\n",k,v)
+	}
+}
+

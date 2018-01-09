@@ -1,0 +1,117 @@
+https://bitbucket.org/fractalindustries/conmon-service-client-scala
+
+
+Conmon Agent Overview
+======================================
+An http client for Frac's conmon service
+(Written in Scala)
+
+
+
+Configuration
+========================
+
+*	Change the ConMon Service base url:
+
+	-	Add the following line to your application.conf
+		file:
+
+			comon.service.base.url = "http://somehost.com:9123"
+
+API usage
+=================================
+//setting authentication credentials
+
+	val client = new ConMon("my_api_key","your_secret_key")
+	client.Metrics.store
+
+
+//sending "raw" metrics to conmon-service rest API:
+
+	val entry = new MetricEntry(...)
+	client.Metrics.store(List(entry))
+
+
+Send metrics to conmon-agent instance
+======================================
+//Send "raw" metrics to conmon-service rest API:
+
+	val entry = new MetricEntry(...)
+	client.Metrics.store(List(entry))
+
+
+Send metrics to conmon-agent
+instance using UDP protocol
+=================================
+	*	Gauges
+		//Gauges track the ebb and flow of a particular
+		//metric value over time, like the number of active users
+		//on a website:
+		import com.fractal.conmon.client.StatsD
+		StatsD.gauge("mywebsite.page_views",getActiveusers())
+
+
+	*	Counters
+		//Counters track how many times something happens
+		//per second, like page views:
+		import com.fractal.conmon.client.StatsD
+		StatsD.increment("mywebsite.page_views")
+
+	*	Sets.set("users.uniques",userId)
+		//Sets count the number of unique elements in a
+		//group.  To track the number of unique visitors
+		//to yoru site, use a set:
+		import com.fractal.conmon.client.StatsD
+		StatsD.set("user.uniques",userId)
+
+	*	Histograms
+		//Historgams calculate the statistical distribution
+		//of any kind of value and sends the following
+		//metrics to ConMon:
+		/*
+		mywebsite.page_render.time.count - the number of times the render time was sampled
+	    mywebsite.page_render.time.avg - the average render time
+	    mywebsite.page_render.time.median - the median render time
+	    mywebsite.page_render.time.max - the maximum render time
+	    mywebsite.page_render.time.95percentile - the 95th percentile render time
+	    */
+	    import com.fractal.conmon.client.StatsD
+	    StatsD.histogram("mywebsite.page_render.time",duration)
+
+For sending metrics to external agent instance, add the following to
+your agent application .conf file:
+
+	conmon {
+	  agent {
+		    hostname = "127.0.0.1"
+		    port = 8125
+	    }
+	}
+
+
+
+
+
+Installing via docker has some limitations : https://github.com/DataDog/docker-dd-agent#limitations
+however it is the preferred method on DC/OS and this is what
+we will be using internally
+
+
+Agent Configuration
+===============================
+In order to configure the agent we need to 
+edit:
+
+	conmon.conf
+
+
+Enabling Integrations
+===================================
+In order to enable an agent integration(i.e. "check") we
+need to edit the integration's config files
+
+	*	conf.d/integration_name.yaml.example 
+
+	*	conf.d/integration_name.yaml
+
+

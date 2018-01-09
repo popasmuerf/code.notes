@@ -1,0 +1,22 @@
+What is the Actor Model ?
+=============================
+The actor model was originally invented by Carl Hewitt in 1973.
+
+Inthe Actor Model, an application is broken up into small units of execution called actors.
+
+These actors encapsulate the behavior and state ofa part of the appliction.
+
+^^^Sounds like actors are similar to objects
+in standard OOP...which istrue, however,
+what distinguishes an actor from a 
+standard object is a third property:
+
+	communcation.
+
+
+Actors never intreact dirctly with each other and instead communictae via messages.  the state of an actor is isolated from th rest o fhte sysemtem, and as such an actor never has to worry about snchronization issues, such as thread locking, when modifying its state.
+
+
+Actors may be further organized as a hierarchy....whereh there are actors that are parents of child actors and so 
+forth.  Parents may delegate work to its child...allowing for fault tolerance and 
+scaling.
