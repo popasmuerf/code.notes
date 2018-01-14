@@ -1,0 +1,54 @@
+https://golang.org/doc/faq#methods_on_values_or_pointers
+
+
+
+Whats the difference between pointer and non-pointer method
+receivers ?
+=============================================================
+
+Simply stated: you can treat the reciever as if it was
+an argument being passed to the method.
+all the same reasons why you might want to pass by value or
+pass by reference apply.
+
+
+Reasons why you would want to pass by reference as ooposed to
+by value:
+====================================================
+	*	modifications of the receiver
+	*	The struct is particularly large
+		and a deep copy might not be
+		the best idea
+	*	Consistency: if some of the methods 
+		on the stuct have pointer recievers,
+		the rest should too.
+
+
+
+//code example
+
+
+package main
+import "fmt"
+type Mutable struct{
+	a int
+	b int
+}
+func (m Mutable)StayTheSame(){
+	m.a = 5
+	m.b = 7
+}
+func (m *Mutable)Mutate(){
+	m.a = 5 
+	m.b = 7
+}
+
+
+func main(){
+	m := &Mutable{0,0}
+	fmt.Println(m)
+	m.StayTheSame()
+	fmt.Println(m)
+	m.Mutate()
+	fmt.Println(m)
+}

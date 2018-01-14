@@ -1,0 +1,213 @@
+Cookie-Based Authentication
+======================================
+A cookie-based approach is the most widley
+used method of implementing authentication
+into web applications.  In this
+approach, HTTP cookies are used to 
+authenticate users on every HTTP
+request after they have
+logged in to the system with user
+credentials.
+
+
+
+https://myapp.com						https://myapp.com
+
+---------- 								-----------------
+Browser   |								|Web Server
+-----------								------------------
+|	POST/authenticate					|
+|	user=user&password=password			|
+|-------------------------------------->|
+|										|
+|	HTTP 200K							|
+|	Set-Cookie:session=AuthCookie		|
+|<--------------------------------------|
+|										|
+|	GET/api/user						|
+|	Cookie:session=AuthCookie			|   Process
+|-------------------------------------->|---------
+|										|		  | request	
+|										|		  |	using
+|										|<--------  auth
+|										|			cookie
+|                                       |
+|                                       |
+|	HTTP 200 OK							|
+|	{HTTP Response}						|
+|<--------------------------------------|
+
+
+Cookie based authentication systems are good
+for traditional web apps that are mostly server
+side...but not for web apis that should be stateless
+or for cross site authentication.
+
+
+
+Packages that support Cookie based authentication 
+=======================================================
+	*	www.gorillatoolkit.org/pkg/sessions
+
+
+Token-Based Authentication
+=======================================================
+Methods of developing has changed a bit in the past
+few years..The era of mobile application 
+development has also changed the way 
+web-based systems are developed has also
+changed the way web-based systems are developed.
+Modern web deveolpment is moving towards
+an API-driven approach in which a web API (often than
+not is RESTful) is porovided on the server side, and weeb
+applications and mobile applications are 
+built by consuming the web API.
+
+
+Token based approach
+=====================================
+A token-based approach is a modern approach for
+implementing authentication into
+web applications and web APIs.  
+
+	*	access token ID used for 
+		authentication on every HTTP request
+	*	usernames and passwords to log
+		into the system may also be used
+		via token-based authentication
+	*	users allowed access to the system
+		the authenticating system generates an
+		access token for the subsequent
+		HTTP rquets to get
+		authentication into the web server.
+	*	Typically, the access tokens
+		are sent with an HTTP
+		Authorization header as a bearer
+		token that can be validated
+		at the web server
+
+
+https://myapp.com						https://myapp.com
+
+---------- 								-----------------
+Browser   |								|Web Server
+-----------								------------------
+|	POST/authenticate					|
+|	user=user&password=password			|
+|-------------------------------------->|
+|										|
+|	HTTP 200K							|
+|	{token:'AccessToken'}       		|
+|<--------------------------------------|
+|										|
+|	GET/api/user						|
+|	Authorization:Bearer:"AccessToken"	|          Process
+|-------------------------------------->|---------
+|										|		  | request	
+|										|		  |	using
+|										|<--------  auth
+|										|			cookie
+|                                       |
+|                                       |
+|	HTTP 200 OK							|
+|	{HTTP Response}						|
+|<--------------------------------------|
+
+
+
+
+Token based authentication Process:
+=========================================
+1.	Authenticate into the system by provding a username
+	and poassword, or by providing a client ID
+	and a secret key
+
+2.	If auth request is successful, the authentication
+	system generates a securely signed string as
+	an access token for subsequent HTTP rquests
+
+3.	The client application recieves the token from the
+	web server and uses it to access web server
+	resources.
+
+4.	The client application provides the access
+	token on every HTTP rquest into the web
+	server.  An HTTP header is
+	used to transmit the access token into
+	the web server.
+
+
+5. The web server validates the access token provided by
+the client application and then provides the web server
+resources if the access token is valid
+
+
+
+A token based approace is very convenient when you 
+build mobile applicatons for which you 
+don't need to leverage cookies on the client.
+when you use APIS as your server side implmentation,
+uou don't need to maintiain session stores that alow you 
+to build stateless APIs on the server side.
+Token based authentication is actually a derivative
+of OAuth 2
+
+
+
+
+OAuth 2
+===============================================
+OAuth 2 is an open specification.  The OAuth 2.0
+authorization framework enables a 
+third-party application to obtain limited
+access to an HTTP service such as
+FB, Twitter, GitHub, and Google.  The
+most important thing is that 
+OAuth 2 is a specification for authentication flow.
+
+	*	OAuth 2 provides the authorization flow for
+		-	web apps
+		-	desktop apps
+		-	mobile applications.
+	*	Allows for delegations of
+		identity and user authorization
+		to social identity providers
+
+	*	When you register your app
+		into an identity provider to authorize the 
+		application to acccess the user 
+		acount.
+	*	registering your app into the identity
+		provider, typically it gives ou a client ID
+		and a client secret key to obtain access
+		to the user account of th identity provider
+
+	*	Once logged into the ID provider using the 
+		client ID and client secret key, the
+		authentication server gives you access
+		token that can be used for accessing protected
+		resources of teh web server.
+
+
+Authentication with OAuth using the Goth Package
+=====================================================
+1. Bullshit....you don't need 50 years of intense study
+to figure out that doing demonstrably stupid shit that
+ALWAYS ends in disaster is a FAIL
+
+2. Are you seriously suggesting that:
+	1. Placing literal fucking Nazis in the White House
+	2. Making it easier for corporations to further destroy
+	   our enviroment that we kind of need to live.
+	3. Literally stealing from the working class and poor
+	   to give even more money to people whom already have
+	   it...just because
+
+	4. Starting shit with N.Korea and doing his best to
+	   destabilize the Mid-East even further than it has
+	   been since the assasination of Rabin
+
+	5. Actually   
+
+
+========================================

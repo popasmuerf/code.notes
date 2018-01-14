@@ -1,0 +1,9 @@
+Maven commands
+===========================
+
+
+
+mvn dependency:copy-dependencies
+mvn -U clean install
+
+

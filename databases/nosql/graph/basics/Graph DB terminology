@@ -1,0 +1,73 @@
+Graph DB terminology
+=========================================
+Vertex
+----------------------------------------
+Vertex's are abstractions of real world
+objects
+
+Edge
+------------------------------------------
+Edges are abstractions of relationships
+between vertices.  
+
+
+------					  ----------
+JCVD |-------ActedIn----> |Time Cop			
+------                    ----------
+
+
+
+What's cool about a graph ?
+-------------------------
+Relationshps can always be many to many.
+There is no need for making extra tables
+to manage more complex relationships and not
+have the DB turn into an unmanagable mess
+due to poor normalization.
+
+
+------					  ----------
+JCVD |-------ActedIn----> |Time Cop			
+------                    ----------
+\
+ \--------ActedIn---------->Blood Sport
+  \					  		   ^
+   \----- Directed------------/
+
+
+
+Properties
+===========================================
+On both vertices and edges we can store additional
+information, "called properties"
+
+
+JVCD vertex Properties
+========================
+status : amazing
+charm : infinite
+score : 1087569
+
+
+Summary 
+========================================
+*	Graph databases don't define tables
+*	Graph databaes use vertices to represent real world objects
+*	Graph databases use edges to represent relationships
+*	Adding new objects and relationships is easy, we simply create
+	new vertices and edges
+
+
+
+Accessing our graph DB for stuff
+===================================================
+g.V(4356) //single vertex
+
+g.V().has("name","Jean claude van damme") //matching a property
+
+g.V().has("Year"k,between(1980,1990))
+
+
+
+
+

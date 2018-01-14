@@ -1,0 +1,136 @@
+https://developer.lightbend.com/guides/akka-quickstart-scala/?_ga=2.219528921.1998946789.1513264346-1383352104.1496171583?_ga=2.219528921.1998946789.1513264346-1383352104.1496171583?_ga=2.219528921.1998946789.1513264346-1383352104.1496171583?_ga=2.219528921.1998946789.1513264346-1383352104.1496171583
+
+
+Introduction to Akka..(Again)
+--------------------------------------
+
+The Actor model is not new
+and has been around since 1973..
+..why now ?
+=======================================
+	*	successful, distributed systems
+		msut cope in an enviroment where 
+		components crash without responding
+
+	*	Messages get lost witout a trace
+		on the wire
+
+	*	Network latency fluctuates.
+
+	*	The above problems occur
+		regularly managed intra-datacenter enviroments even
+		more so in virtualized architectures
+
+How does Akka(and the actor model in general deal with the above issues ?)
+==========================================
+	*	Multi-threaded behavior without
+		the use of low-level concurrency
+		constructs like:
+			-	atomics
+			-	locks
+		Which alleviates one from being
+		concerned with memory visibility
+		issues.
+
+	*	Transparent remote communication
+		between systems and their components relieving one from 
+		being concerned with possibly
+		difficult network code.
+
+	*	Clustered, high-available
+		architecture that is:
+		-	elastic
+		-	scales in
+		-	scales out
+		- 	enables reactive systems
+
+
+What Hello World does
+================================
+Main Class
+-------------------
+Actor_System ---->"howdy_greeter"----
+									 |
+									 |	
+Greater_Actor --->"howdy_greeter"-------									 ----> printer actor
+
+Greater_Actor---->"hello_greeter"
+
+
+
+
+Benefits of using the Actor Model
+===================================
+*	Event-driven model:
+	-	Actors perform work in response to messages.
+	-	Communication between Actors is async
+		allowing messages and continue thier 
+		own work without blocking to wait for a
+		reply.
+*	Strong isolation principles: 
+	-	unlike regular objects in Scala, an Actor doe 			not have a public API in erms of methods
+		that you can invoke
+	-	The public api is defined via possible msgs to	 		the Actor that may be sent....this prevents
+		sharing and modifying state with and by 
+		external components.
+
+
+Defining Actors and Messages
+======================================
+Messages can be of arbitrary type(any subtype of Any).
+You can send boxed primitive values such as:
+	*	String
+	*	Integer
+	*	Boolean
+as messages as well as plain data structures such
+as:
+	*	arrays
+	*	collections
+	*	maps
+	*	etc
+Other objects like:
+	*	case classes
+	*	Custome objects
+
+Hello World Actos use three different messages
+in our example:
+
+	*	WhoToGreet:
+		-	reciepts of the greeting
+	*	Greet
+		-	instruction to execute greeting
+	*	Greeting
+		-	message containing the greeting
+
+
+
+When defining Actors keep these things in mind:
+
+	*	use naming conventions that make sense
+	*	messages should be immutable since they
+		are shared between different threads
+	*	it is good practice tto put an acor's
+		associated messages in its companion object.
+		This makes it easier to understand what
+		type of messages the actor expects
+		and handles
+	*	It is also a common pattern to use
+		a "props" method in the companion objet
+		that describes how to construct the Actor
+
+Example of a companion object that defines the messages
+handled by the Greeter Actor:
+
+	object Greeter{
+		final case class WhoToGreet(who:String)
+		case object Great
+	}
+
+
+The following defines the props method:
+
+	object Greeter {
+  		Props = Props(new Greeter(message, printerActor))
+  		final case class WhoToGreet(who: String)
+  		case object Greet
+	}

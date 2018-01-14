@@ -1,0 +1,32 @@
+https://wiki.jenkins.io/display/JENKINS/Gradle+Plugin
+https://www.tutorialspoint.com/jenkins/jenkins_quick_guide.htm
+Jenknins basics intro
+
+
+
+
+What is continuous integration
+===================================
+Continuous Integration(CI) is a development
+practice that requires developers to integrate
+code into a shared repository at rgular
+intervals.  This concept was meant to
+remove the problem of finding later occurence
+of issues in the build lifecycle.  Continuous
+integration requires that the developers
+to have frequent builds.  The common
+practice is that whenever a code commit
+occurs, a build should be triggered.
+
+
+Build tool integration support
+=========================================
+	*	Jenkins supports integration with Git
+	*	Maven
+	*	Gradle
+
+Testing tools integration support
+==========================================
+	*	JUnit
+	*	MTest
+	*

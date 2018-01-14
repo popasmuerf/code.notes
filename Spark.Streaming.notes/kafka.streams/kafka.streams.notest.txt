@@ -1,0 +1,147 @@
+
+Kafka Streams
+==============================
+*	TCP sockets are teh simplest type of network data
+*	Sockets --> (ip_addr,port)
+*	StreamingContext out of the exposes two functions
+	to create a SocketInputDStream:
+		-	socketStream():
+				creates a raw TCP socet
+		-	socketStream[T:ClassTag](hostname:String,
+			port:Int,
+			converter:(InputStream)=>Iterator[T],storageLevel:StaorageLevel)
+
+//Code examples ---> Java Produer
+import java.util.Properties ;
+import kafka.javaapi.producer.Producer ;
+import kafka.producer.KeyedMessage ;
+import kafka.producer.ProducerConfig ;
+
+public classDriver extends AbstractDriver{
+	private final String topic ;
+	private Producer<String,String> producer ;
+	public KafkaDriver(String path, String topic,Properties props){
+		super(path);
+		this.topic = topic ;
+		ProducerConfig config = new ProducerConfig(props);
+		producer = new Producer<String,String>(config);
+	}
+	@Override
+	public void init() throws Exception{
+		//pass
+	}
+	@Override
+	public void close() throws Exception{
+		producer.close() ;
+	}
+	@Override
+	public void sendRecord(String record) throws Exception{
+		producer.send(new KeyedMessage<String,String>(topic,record)) ;
+	}
+
+	public static void main(String[] args){
+		if(args.length != 3){
+			System.err.println("Usage: KafkaDriver<path_to_input_folder
+			<brokerUrl> <topic>");
+			System.exit(-1);
+		}
+		String path = args[0];
+		String brokerUrl = args[1];
+		String topic = args[2] ;
+		Properties props = new Properties() ;
+		props.put("metadata.broker.list","brokerUrl");
+		props.put("serializer.class","kafka.serializer.StringEncoder");
+		KakfaDriver driver = new KafkaDriver(path,topic,props);
+		try{
+			driver.execute() ;
+		}finally{
+			driver.close() ;
+		}
+	}
+}
+
+
+
+def bytesToLines(inputStream:InputStream):Iterator[String] ={
+	val dataInputStream = new BufferedReader(new InputStream, "UTF-8")
+	protected override def getNext() = {
+		val nextValue = dataInputStream.readLine()
+		if(nextValue == null){
+			finished = true
+		}
+		return nextValue
+	}
+	protected override def close(){
+		dataInputStream.close()
+	}
+}
+
+
+
+
+DStream
+|
+|------External data-----InputDStream
+-------Prior DStream           |
+	   |                       |
+	   |                       |
+	   |--Mapped DStream       |
+	   |                       | 
+	   |--FilteredDStream      |
+	   |                       |
+	   |--(...)                |
+                               |
+                               |
+                               \---FileInputDStream---------\
+                               |							|
+                               |							|---KafkaInputDStream
+                               \---RecieverInputDStream
+                               |
+                               |
+                               |
+                               \---ConstantInputDStream
+                               |
+                               |
+                               |
+                               \---QueueInputDStream
+                               |
+                               |
+                               |
+                               \---DirectKafkaInputDStream
+
+
+Hierarchical view of differen DStreams
+=======================================================
+*	ConstantInputDStream:
+		-	Repeats the same RDD in every batch and
+			is only used for testing
+	
+*	FileInputDStream:
+		-	Generates RDDs from files present on a file
+			system.  Examples include textFileStream
+
+*	RecieverInputDStream:
+		-	Places a receiver on each node, and geneerateds
+			RDDs from incoming data
+
+*	QueueInputDStream:
+		-	Converts data from a Scala queue to a DStream
+
+*	DirectKafkaInputDStream:
+		-	Represents a stream of KafkaRDD wherein
+			each RDD corresponds to a Kafka partition
+
+
+What sets InputStreams apart from ReceiverInputDStreams
+
+
+
+
+
+inputStream.map(record =>(record.key,record.value)).print(3)
+
+
+Serialization stack:
+	- object not serializable (class: org.apache.kafka.clients.consumer.ConsumerRecord, value: ConsumerRecord(topic = pfsense, partition = 0, offset = 0, CreateTime = 1508169767094, serialized key size = -1, serialized value size = 229, headers = RecordHeaders(headers = [], isReadOnly = false), key = null, value = LogCommand(<134>Aug  9 20:53:17 filterlog: 66,16777216,,1000002761,xn0,match,pass,out,4,0x0,,64,58537,0,none,17,udp,76,10.0.0.56,95.101.36.192,64225,53,56,44a15b05-2321-4767-a05b-b927fd599d48,4430187d-e427-4ee4-90f9-1e0d6efe35a8)))
+
+

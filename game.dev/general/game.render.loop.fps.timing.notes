@@ -1,0 +1,167 @@
+A popular measure of how fast
+an animation progresses is 
+frames per second(FPS).
+
+A frame corresponds to a single
+pass through the update
+the update-rener-sleep loop
+inside run().
+
+
+the desired 100 FPS implies
+that each iteration of the
+loop should take
+1000/100 ==10ms.  This 
+iteration time is stored in the 
+period variable in GamePanel.
+
+
+Active Rendering
+=======================
+The sue of active rendering
+makes it possible to itme
+the update and render stages
+of each iteration.  
+Subtracting this value form period
+gives the sleep time rquired to maintain
+the desired FPS.
+
+For example, a 100 FPS
+means a perioed of 10ms, and if
+update/render takes 6ms then 
+a sleep() should be called for
+4ms.  Of course this is different
+on each platform, so must be 
+calculated at runtime.
+
+Example:
+-------------------------
+//--------code---------//
+
+public void run(){
+	long beforeTime ;
+	long timeDiff ;
+	long sleepTime ;
+	beforeTime = System.currentTimeMillis();
+	running = true;
+	while(running){
+		gameUpdate();
+		gameRender() ;
+		paintScreen() ;
+	}
+	timeDiff = System.currentTimeMillis() - beforeTime ;
+	sleepTime = period - timeDiff
+	if(sleepTime <= 0){
+		sleeptime = 5 ;
+		try{
+			Thread.sleep(sleepTime);
+		}catch(InteruptedException ex){}
+		beforeTime = System.currentTimeMillis();
+	}
+	System.exit(0);
+}//end of run
+
+
+^^^Drawbacks of this approach
+=======================================
+If for whatever reason the update and render
+operations take longer than the specified
+period then the sleeptime is assigned
+a negative number.
+
+A possible solution to this problem is to
+set the time to some small value to
+make the thread sleep a bit.
+
+We can just set the period time to 
+a much smaller value...why does it
+have to be 10ms ?  why not 5ms ?
+Why not 3ms ?
+
+
+
+Timer Resolution
+=============================
+Timer resolution, or granularity, is the
+amount of time that must seperate two
+timer calls so that different
+values are returned.  For instance, what
+is the alue of diff in the code fragment
+below:
+	
+	long t1 = System.currentTimeMillis() ;
+	long t2 = System.currentTimeMillis()
+	long diff = t2 = t1 // in ms
+
+The value depends on the resolutio of
+currentTimeMilis() which unfortunately
+depends on the operating system.....
+to be more prescies, this depends
+on the resolution of the standard
+clock interrupt.
+
+In windows 98the resolution is 55 ms which
+means that repeated calls to currentTimeMillis()
+will only return different values 
+roughly every 55 ms.
+
+This will definitely fuck with your
+FPS.  An extra 55 ms for every update,
+render and redraw.  Slow screen
+refresh is what causes excessive flicker
+
+Clock Interrupt Resolutions as of
+ the early 2000's
+-----------------------------------
+Win 95/98 => 55ms
+NT => 18ms 
+Linux = 1ms
+OSX = 1ms
+
+No one is running Win 95/98 anymore..
+so the minimun period should be less
+than 15ms...making it possible to
+obtain 67 to 100FPS..which is conscidered
+pretty decent.
+
+
+Note:  Make sure that your refresh
+frequency does not exceed the ability
+of the Display or graphics card to handle...
+the missed frames will not be displayed
+and you are eating up CPU/GPU time
+for no good reason.
+
+If your monitor refresh rate is
+at 85 Hz, making a 80 to 85 FPS
+game is the goal.
+
+
+
+Improved jdk 4 Timers(circa 2004)
+================================
+There is a microsecond accurate timer
+hidden in the undocumented class
+	
+	sun.misc.Perf
+
+The diff calculation can be expressed
+as follows:
+
+Perf perf = Perf.getPerf() ;
+long countFreq = pref.highResFrequency() ; //interrupt freq
+long count1 = perf.highResCounter() ; //start count
+long count2 = pref.highResCounter() ; // start count
+long diff = (count2 - count1) * 1000000000L/countFreq //nano-sec
+
+
+jdk 5 java.util.concurrent
+===============================
+java.util.concurrent.TimeUnit class
+can measure down to the 
+nanosecond level.
+
+Java 3D
+=================================
+Java 3D timer
+

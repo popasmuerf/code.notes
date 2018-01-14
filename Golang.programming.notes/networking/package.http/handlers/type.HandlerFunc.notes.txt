@@ -1,0 +1,10 @@
+type HandlerFunc
+=================================
+The HandlerFunc type is an adapter to allow the use of ordinary
+functions as HTTP handlers(in java networking parlance..."contollers")
+If function f is a function with appropiate signature, HandlerFunc(f) is
+a Handler that calls "f"
+
+	func (f HandleFunc) ServerHTTP(w ResponseWriter r *Request)
+
+	

@@ -1,0 +1,27 @@
+We can run stock containers from dockerhug
+==================================================
+
+Running stock ubuntu 
+---------------------------------------------
+> docker run -i -t ubuntu /bin/bash
+
+root@540fff34e504:/bin# uname -a
+Linux 540fff34e504 4.9.49-moby #1 SMP Fri Dec 8 13:40:02 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+root@540fff34e504:/bin# 
+
+
+^^'s going on here ?
+--------------------------------
+	-i :flag
+		*	keeps STDIN
+			open from the container
+			even when there is no connection 
+			to it
+	-t :flag
+		*	tells doker to assign a 
+			pseudo-tty to the containder
+			we're about to create.
+		*	provides interactive shell
+			in the container 
+		*	allows for direcct interaction
+			with the container

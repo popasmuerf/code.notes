@@ -1,0 +1,65 @@
+https://www.datadoghq.com/blog/monitor-kafka-with-datadog/
+
+
+Before we begin
+=====================================
+*	Verify that Kafka is configured to report
+	metrics via JMX
+
+*	You can communicate to ZooKeeper(usually on port 2181)
+
+
+*	Confirming that (for Kafka) that the JMX_PORT
+	enviroment variable is set before starting your
+	broker (or consumer or producer) and then confirming
+	that you can onnect to that port with JConsole or
+	telnet...etc
+
+
+*	For ZooKeeper we can run this one=line which used
+	the 4-letter word :
+
+	>	ruok : echo ruok | nc <ZooKeeperHost> 2181
+
+
+	^^^ If ZooKeeper respnsd with imok, you are
+	ready to install the Agent.
+
+
+
+
+
+Install the DataDog(Conmon-Agent)
+==============================================
+	*	Install the agent : https://app.datadoghq.com/account/settings#agent
+
+Configure the Agent
+==============================================
+	*	Create a config file for both ZooKeeper and 
+		Kafka
+
+	*	Agent configuration directory for specific platforms
+		can be found here : https://docs.datadoghq.com/guides/basic_agent_usage/
+
+	*	Sample config files that will be present in your install
+		of the client:
+
+			-	kafka.yaml.example
+			-	kafka_consumer.yaml.example
+
+	*	Copy the folloing to your brokers
+
+			-	kafka.yaml
+			-	kafka_consumer.yaml
+
+	*	On producers and consumers copy only the following
+			-	kafka.yaml
+
+	*	If you are using ZooKeeper's default configuration, you
+		shouldn't need to change anything in
+			-	zk.yaml
+
+
+
+
+	*	

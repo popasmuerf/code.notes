@@ -1,0 +1,176 @@
+Java 8 Concurreny Tutorial: Threads and Executors
+http://winterbe.com/posts/2015/04/07/java8-concurrency-tutorial-thread-executor-examples/
+
+
+
+Part 1: Threads and Executors
+Part 2: Synchronization and locks
+Part 3: Atomic Variables and ConcurrentMap
+
+
+
+
+
+Do I want to set this up as an AKKA thread pool ?
+I am thinking every call to the httpd client
+inthe the sendQuery() method is already threaded?
+
+
+
+Theads and Runnables 
+--------------------------------------------
+//*---------Example
+Runnable task = () -> {
+	String threadName = Thread.currentThread().getName() ;
+	System.out.println("Hello " + threadName);
+}
+
+task.run() ;
+Thread thread = new Thread(task) ;
+thread.start() ;
+
+System.out.println("Done");
+
+//---------or---------------
+Runnable task = new Runnable(){
+	public void run(){
+		String threadName = Thread.currentThread().getName() ;
+		System.out.println("Hello " + threadName);
+	}
+
+}
+task.run() 
+new Thread(task).start() ;
+
+
+//---------------------------------
+
+
+Executiors
+======================================
+The Conccurncy API in jse 5 introcuded the concept of an 
+ExecutorService as a higher level replacement for working with threads
+direcly.  Executors are cpoable of running asynchroous
+tasks and typcally manage a pool of thereads., so we don't have
+to create new threads manually(which is now a days consicdered
+a low level task)
+
+
+
+This is how code meant to be threaded
+to run concurrently/parrallel might
+look like using an executor:
+
+//--------code----------
+
+ExecutorService executor = Executors.newSingleThreadExecutor() ;
+executor.submit(new Runnable(){
+	public void run(){
+		String threadName = Thread.currentThread().getName();
+		System.out.println("Hello " + thredName);
+	}	
+});
+
+		//---or using Java lambdas---//
+
+ExecutorService executor = Executors.newSingleThreadExecutor() ;
+executor.submit ->{
+		String threadName = Thread.currentThread().getName();
+        System.out.println("Hello " + threadName);
+});
+
+
+
+Executors
+===========================
+The class Executors provide convenient
+factory methods for creating differnt
+kinds of executor services.
+
+In the above examples, we created an 
+executor with a thread pool of
+size one.
+
+Note: The Executors have to be stopped
+EXPLICITLY!!!(which makes sense...
+if you are creating ThreadPools to 
+serve as daemons....)
+
+
+ExecutorSevice methods
+=========================
+An ExecutorService provides two
+methods for shutdowning thread pools:
+
+	*	shutdown():
+		-	waits for currently
+			running tasks to
+			finish
+	*	shutdownNow():
+		-	interupts all 
+			running tasks
+			and shut the 
+			executor down
+			immediately...
+
+
+
+//-----Code--------
+try {
+    System.out.println("attempt to shutdown executor");
+    executor.shutdown();
+    executor.awaitTermination(5, TimeUnit.SECONDS);
+}
+catch (InterruptedException e) {
+    System.err.println("tasks interrupted");
+}
+finally {
+    if (!executor.isTerminated()) {
+        System.err.println("cancel non-finished tasks");
+    }
+    executor.shutdownNow();
+    System.out.println("shutdown finished");
+}
+
+
+
+Callables and Futures
+===================================
+In addition to Runnable executors
+support another kind of task named
+"Callable". Callables are functional
+interfaces just like runnables...
+but instead of being void they return
+a value.
+
+
+This lambda expression defines a callable
+returning an interger after sleeping
+for one second....
+
+Callable<Integer> task = () -> {
+    try {
+        TimeUnit.SECONDS.sleep(1);
+        return 123;
+    }
+    catch (InterruptedException e) {
+        throw new IllegalStateException("task interrupted", e);
+    }
+};
+
+
+
+
+
+For this to work there has to be some qeueu 
+to read asynchronously from.
+
+object RunOSquery {
+	var retries:Int = 5 
+	var retrySleep:Int = 5 //seconds 
+	setQuery(){}   
+	setTargetHost(){}
+	sendQuery(){}
+}
+
+

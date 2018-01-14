@@ -1,0 +1,120 @@
+http://docs.scala-lang.org/overviews/core/futures.html
+
+
+Futures and Promises
+====================================
+http://docs.scala-lang.org/overviews/core/futures.html
+
+Introduciton
+================================
+Futures provide a way to reason about
+performing many operations in parrallel--in an efficient
+and non-blocking way
+
+
+A Future is a placeholder objet for a value that may not yet
+exist.  Generally the value of the Future is supplied concurrently
+and can subsequently be used.  Composing concurrent tasks in this way 
+tends to result in faster, async, non-blocking parrallel code.
+
+
+Typical example of what a Future looks like
+===============================================
+
+val inverseFuture: Future[Matrix] = Future{
+	fatMatrix.inverse() //non-blocking long lasting computation
+}(executionContext)
+
+
+	//--or one that is more idiomatic--//
+
+	implicit val ec: ExecutionContext = ...
+	val inverseFuture : Future[Matrix] = Future {
+		fatMatrix.inverse()
+	}
+
+
+
+Execution Context
+===============================================
+Future and Promises revolve around:
+
+	ExecutionContext s
+
+which is responsible for executing computations
+
+An execution context is simular to an Executor:  it is
+free to execute computations in a new thread, in a pooled thread
+or in the current thread(although executing the computation in the 
+current theread is discouraged....)
+
+
+
+The Global Execution Context
+================================================
+ExecutionContext.global is an ExecutionContext
+backed by ForkJoinPool manages a limited amount
+of threads (the maximum amount of theread being referred
+ot as parralelism levelon ly if each blocking call is
+wrapped insided a blocking call)
+
+
+import scala.concurrent.Furture
+import scala.concurrent.forkjoin._
+//the following is equivalient to `implicit val ec = ExeutionContext.global`
+import ExecutionContext.Implicits.global
+
+Future{
+	ForkJoinPool.managedBlock(
+		new Managed Blocker{
+			var done = false 
+			def block(): Boolean = {
+				try{
+					myLock.lock()
+					//....
+				}finally{
+					done = true
+				}
+				true
+			}
+			def isReleasable: Boolean = done
+		}
+	)
+
+}
+
+
+//fortunately the concurrent package provides a convenient way for doing so:
+
+import scala.concurrent.Furture 
+import scala.concurrent.blocking
+
+Future{
+	blocking{
+		myLock.lock()
+		//..... 
+	}
+
+}
+
+
+
+/**
+Last but not least, you must remembers that
+the ForkJoinPool is not designed for long lastig
+blocking operations.  Even when notified with blocking
+the pool might not spawn new workers as you would expect,
+and when new woerkers are created they can be as many as
+32767.  To give you an idea, the followin gcodew will
+use 32000 threads:
+**/
+
+implicit val ec = ExecutionContext.global
+
+for(i <- 1 to 32000){
+	Futrue{
+		blocking{
+			Thread.sleep(99999999)
+		}
+	}
+}

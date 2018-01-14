@@ -1,0 +1,176 @@
+PL Data Node Definiton File syntax
+-------------------------------------------------
+We can subitt pipeline definition files using
+AWS Data Pipeline command line interface(CLI). 
+This is an alternative to designing a pipeline
+interactively using the AWS Data PipeLine
+console.
+
+
+You can manually create PL definition files using any
+text editor that supports saving files
+using UTF-8 file format and submit the files
+using the AWS Data Pipeline command line interface.
+
+PL Def File Structure
+====================================================
+The first step in a pipeline creation is to compose the pipleine
+definition objects in a pipeline definition file.  The following
+example illustreates the general structure of a pipleine definition
+file.  This file defines two objects, which are delimited by typical
+C-style curly braces:
+
+	{}
+
+semperated by commas...in other words...JSON:
+
+
+	{
+		"objects" : [
+			{
+			 "name1":"val1",
+			 "name2":"val2",
+			 "name3":"val3"
+			},
+		    {
+		     "name1":"val1",
+			 "name2":"val2",
+			 "name3":"val3"
+		    }
+		]
+
+
+	}
+
+
+
+You need to plan out how to build your Pipeline via
+figuring out what PL objects you will need....
+===================================================
+
+
+
+Those are the following PL Objects and components in your
+pipeline definition:
+---------------------------------------------------------- 
+There are hierarchies to these objects.....objects
+and sub objects.....
+****************SchedulableObject*******************
+
+DataNode
+	\
+	|
+	|
+	\------DynamoDBDataNode
+	|
+	|
+	\------MySqlDataNode
+	|
+	|
+	\------RedshiftDataNode
+	|
+	|
+	\------S3DataNode
+
+
+Database
+	\
+	|
+	|
+	\------JdbcDatabase
+	|
+	|
+	\------RdsDatabase
+	|
+	|
+	\------RedshiftDatabase
+	
+
+DataNode
+	\
+	|
+	|
+	\------DynamoDBExists
+	|
+	|
+	\------DynamoDBTableExists
+	|
+	|
+	\------Exists
+	|
+	|
+	\------S3KeyExists
+
+
+
+.....
+
+
+Note...for more hit up : http://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-pipeline-objects.html
+
+
+
+
+
+
+PL Object hierarchy examples...
+===================================
+
+DataNode
+	\
+	|
+	|
+	\------DynamoDBDataNode
+		   {
+			  "id" : "MyDynamoDBTable",
+			  "type" : "DynamoDBDataNode",
+			  "schedule" : { "ref" : "CopyPeriod" },
+			  "tableName" : "adEvents",
+			  "precondition" : { "ref" : "Ready" }
+			}
+
+	|
+	|
+	\------MySqlDataNode
+		{
+		  "id" : "Sql Table",
+		  "type" : "MySqlDataNode",
+		  "schedule" : { "ref" : "CopyPeriod" },
+		  "table" : "adEvents",
+		  "username": "user_name",
+		  "*password": "my_password",
+		  "connectionString": "jdbc:mysql://mysqlinstance-rds.example.us-east-1.rds.amazonaws.com:3306/database_name",
+		  "selectQuery" : "select * from #{table} where eventTime >= '#{@scheduledStartTime.format('YYYY-MM-dd HH:mm:ss')}' and eventTime < '#{@scheduledEndTime.format('YYYY-MM-dd HH:mm:ss')}'",
+		  "precondition" : { "ref" : "Ready" }
+		}
+	|
+	|
+	\------RedshiftDataNode
+		{
+		  "id" : "MyRedshiftDataNode",
+		  "type" : "RedshiftDataNode",
+		  "database": { "ref": "MyRedshiftDatabase" },
+		  "tableName": "adEvents",
+		  "schedule": { "ref": "Hour" }
+		}
+	|
+	|
+	\------S3DataNode
+ß
+		{
+		  "id" : "OutputData",
+		  "type" : "S3DataNode",
+		  "schedule" : { "ref" : "CopyPeriod" },
+		  "filePath" : "s3://myBucket/#{@scheduledStartTime}.csv"
+		}
+
+		|
+		|
+		\------SqlDataNode
+	ß
+			{
+			  "id" : "OutputData",
+			  "type" : "S3DataNode",
+			  "schedule" : { "ref" : "CopyPeriod" },
+			  "filePath" : "s3://myBucket/#{@scheduledStartTime}.csv"
+			}

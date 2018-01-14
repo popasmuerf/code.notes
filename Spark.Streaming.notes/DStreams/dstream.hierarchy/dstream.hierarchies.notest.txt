@@ -1,0 +1,58 @@
+
+
+
+DStream
+|
+|------External data-----InputDStream
+-------Prior DStream           |
+	   |                       |
+	   |                       |
+	   |--Mapped DStream       |
+	   |                       | 
+	   |--FilteredDStream      |
+	   |                       |
+	   |--(...)                |
+                               |
+                               |
+                               \---FileInputDStream---------\
+                               |							|
+                               |							|---KafkaInputDStream
+                               \---RecieverInputDStream
+                               |
+                               |
+                               |
+                               \---ConstantInputDStream
+                               |
+                               |
+                               |
+                               \---QueueInputDStream
+                               |
+                               |
+                               |
+                               \---DirectKafkaInputDStream
+
+
+Hierarchical view of differen DStreams
+=======================================================
+*	ConstantInputDStream:
+		-	Repeats the same RDD in every batch and
+			is only used for testing
+	
+*	FileInputDStream:
+		-	Generates RDDs from files present on a file
+			system.  Examples include textFileStream
+
+*	RecieverInputDStream:
+		-	Places a receiver on each node, and geneerateds
+			RDDs from incoming data
+
+*	QueueInputDStream:
+		-	Converts data from a Scala queue to a DStream
+
+*	DirectKafkaInputDStream:
+		-	Represents a stream of KafkaRDD wherein
+			each RDD corresponds to a Kafka partition
+
+
+
+
