@@ -1,0 +1,31 @@
+https://www.journaldev.com/1789/java-reflection-example-tutorial
+
+Refelction in Java
+====================================
+Reflection in Java is very a very powerful concept and
+it's of little use in normal programming but it
+it is the backbone for most of the Java frameworks.
+Some of the frameworks that use reflection are:
+
+
+	*	Junit:
+		-	Usese refletion to parse @Test annotation
+			to get the test methods and then invoke 
+			them.
+	*	Spring
+		-	dependency injection 	
+	*	Tomcat
+		-	web container to forware request to correct module by
+			parsing their web.xml files and request URI
+	*	Eclipse:
+			auto completion of method names
+	*	Struts:
+
+	*	Hibernate:
+
+
+The list is endless and they all use java refelction
+because all these frameworks have no knowledge and
+access of user defined classes, interfaces their methods, etc
+
+

@@ -1,0 +1,22 @@
+https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs/
+
+
+OpenSSL Essentials
+=================================================
+
+OpenSSL is a versatile command line tool that can be 
+used for alarge variety of tasks related to Public Key 
+Infrastructure(PKI) and HTTPS(HTTP over TLS).  
+
+
+Certificate  Sigining Requests
+=====================================================
+If you would like to obtain an SSL certificate from a
+certificate authority(CA), you must first 
+generate a certificate signing (CSR)
+
+me ------->CSR(certificate signing request)
+^					|
+|					|
+|					V
+|-----SSL cert----Certificate Authority
