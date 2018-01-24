@@ -20,3 +20,43 @@ me ------->CSR(certificate signing request)
 |					|
 |					V
 |-----SSL cert----Certificate Authority
+
+
+What are the components of a CSR ?
+------------------------------------
+
+When we generate a CSR we will be prompted
+to provide information regarding the
+certificate:
+
+	*	Distinguished Name(DN):
+		- also contains:
+			Common Name (CN):
+				- The CN = Fully Qualified Domain Name(FQDNM)
+	*	Information about your business or organization
+
+
+
+Example of what the required/requested CSR information
+prompt will look like:
+-----------------------------------------------------------
+
+---
+Country Name (2 letter code) [AU]:US
+State or Province Name (full name) [Some-State]:New York
+Locality Name (eg, city) []:Brooklyn
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Example Brooklyn Company
+Organizational Unit Name (eg, section) []:Technology Division
+Common Name (e.g. server FQDN or YOUR name) []:examplebrooklyn.com
+Email Address []:
+
+
+Example of generating a CSR from the CLI non-interactively
+with information passed as arguments...
+-----------------------------------------------------------
+-subj "/C=US/ST=New York/L=Brooklyn/O=Example Brooklyn Company/CN=examplebrooklyn.com"
+
+
+
+
+

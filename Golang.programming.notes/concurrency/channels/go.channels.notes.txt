@@ -1,0 +1,82 @@
+//https://nanxiao.gitbooks.io/golang-101-hacks/content/posts/channel-types.html
+
+
+When declaring variables of channel. type,the most common
+intances are like this(T is any valid type):
+=======================================================
+	var v chan T
+
+Examples of declaring channels:
+--------------------------------------
+var _chanInt0 chan int = nil
+_chanInt0 <- 64
+var _chanStr0 <- chan string = nil
+_chanStr0  <- "sixty four"
+var _chanFloat0 chan float64 = nil
+_chanFloat0 <- 64.0
+-or-
+
+var _chanInt1 <- chan int
+_chanInt1 <- 64
+var _chanStr1 <- chan string
+_chanStr1 <- "sixty four"
+var _chanFloat1 <- chan float64
+_chanFloat1 <- 64.00
+
+Placing values on to your channel:
+--------------------------------------------
+	_chanInt <- 64
+	_chanStr <- "one"
+	_chanFloat <-64.00
+
+
+Channels in Go like primitives values, structs, functions, etc are types...
+and may be passed to functions.
+===============================================================================
+/**
+	Neat trick below....
+	we can make ensure that the channles generated are read or write only....
+**/
+
+package main
+
+func f()(<-chan int){
+	ch := make(chan int)
+	return ch
+}
+
+
+func main(){
+	r := f()
+	r <- 1 //this will not work...as the returned channel is read-only//
+}
+
+
+/** 
+	Let's re-write....and make it better....
+**/
+
+
+func chReadOnly(<-chan int){
+	var ch chan int = make(chan int)
+	return ch
+}
+
+func chWriteOnly(chan int <-){
+	var chan int = make(chan int)
+	return ch
+}
+
+func chReadWrite(chan int){
+	var chan int = make(chan)
+}
+
+
+
+Ok so special note to remember about channels...
+=================================================
+chan int  !=   <-chan int  !=  chan int <- 4
+
+^^^ all of tese are not the same type. they are all different
+types.
+
