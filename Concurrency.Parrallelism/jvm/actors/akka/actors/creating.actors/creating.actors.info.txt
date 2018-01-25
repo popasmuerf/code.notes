@@ -140,4 +140,24 @@ public class HelloWorld {
 
 	printerActor.tell(new Greeting(greeting), getSelf());
 
+
+
+
+The Main Class
+===========================================================
+https://developer.lightbend.com/guides/akka-quickstart-java/main-class.html
+
+
+The Main class in Hello World creates and controls the actors.
+Notice the use of an ActorSystem as a container
+and the method:
+
+	actorOf
+
+Finally, the class creates the messages to send to 
+the Actors:
+
+
+
+
 }
