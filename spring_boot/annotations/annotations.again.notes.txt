@@ -1,4 +1,12 @@
 @Component
+===================================
+Tells Spring that this object
+is a candidate for auto-detection
+Other annottions are derivatives of 
+@Component with addtional features such as:
+
+    *   @Repository
+    *   @
 
 
 @Controller

@@ -42,22 +42,6 @@ for someting that isn't there in the first place.
 
 current commit
 
-""
-1. "I saw it in a street fight" 
-Funny how these things always tend to happen when there is 
-no one around with actual ring experience to seem or 
-no at least one person with a video recording device...
-
-2. "Do you know any Judo Kata"
-Sure do....it's a requirement for promotion from
-Shodan on up...
-
-3. "The reason kata are done the way they are done is to train a lot more than just one situation"
-This is what randori is for.  Kata is nothing more than an ecyclopedia of prearranged techniques.
-Proficiency in application of these techniques is achieved via dynamic pressure testing(randori/sparring)....something of which is required of Judoka from ryoku to shodan and beyond...
-this is how I know what you demonstrated won't work. It's called actual experience trying to 
-toss people of comparable skill who not only are not interested in allowing me to do so...
-but whom are also trying to take my head off likewise and succeeding at it...without chopping them in the neck.
 
 When should we not use reflection
 ===============================================
