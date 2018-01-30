@@ -18,11 +18,31 @@ XPath Basics
 xpath as filesystme addressing
 ------------------------------------
 The basic Xpath syntax is similar to filesystem addressing.
-If the path starts with the slash/, the it represents 
+If the path starts with the slash '/', then it represents 
 an absolute path to the requiered element.
 
 	/AAA
 	/AAA/CCC
 	/AAA/DDD/BBB
+
+
+Start with '//'
+--------------------------------------
+If the path starts with  // then all 
+elements in the document which fulfill following
+criteria are selected
+
+//BBB
+//DDD/BBB
+
+
+
+All elements: *
+---------------------------------------
+The star '*' selects all elements located by preceeding path
+	
+	/AAA/CCC/DDD/*
+	/*/*/*/BBB
+	//*
 
 

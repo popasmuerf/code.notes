@@ -1,0 +1,166 @@
+http://zvon.org/comp/r/tut-XPath_1.html#Pages~List_of_XPaths
+
+
+Our sample html:
+==========================================================
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Quotes to Scrape</title>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/main.css">
+</head>
+.....
+.....
+.....
+</html>
+
+
+
+
+XPath
+============================================================
+XPath is the rsult of an effort provide a common syntax
+and semantics for functioanlity shared between XSL
+transformation and XPointer.  The primary purpose of XPath
+is to address parts of an XML document.  In support of this
+primary purpose, it also provides a basic facilities for
+manipulation of strings, numbers an dbooleans.
+
+
+
+XPath Basics
+============================================================
+
+
+xpath as filesystme addressing
+------------------------------------
+The basic Xpath syntax is similar to filesystem addressing.
+If the path starts with the slash '/', then it represents 
+an absolute path to the requiered element.
+
+	/AAA
+	/AAA/CCC
+	/AAA/DDD/BBB
+
+Example scrapy code
+-------------------------------------
+#Example-1
+In [82]: response.xpath('//head').extract()
+Out[82]: [u'<head>\n\t<meta charset="UTF-8">\n\t<title>Quotes to Scrape</title>\n    <link rel="stylesheet" href="/static/bootstrap.min.css">\n    <link rel="stylesheet" href="/static/main.css">\n</head>']
+
+#Example-2
+In [83]: response.xpath('//head/title').extract()
+Out[83]: [u'<title>Quotes to Scrape</title>']
+
+
+#Example-3
+In [85]: response.xpath('//head/link').extract()
+Out[85]: 
+[u'<link rel="stylesheet" href="/static/bootstrap.min.css">',
+ u'<link rel="stylesheet" href="/static/main.css">']
+
+
+
+
+
+Start with '//'
+--------------------------------------
+If the path starts with  // then all 
+elements in the document which fulfill following
+criteria are selected
+
+//BBB
+//DDD/BBB
+
+
+
+All elements: *
+---------------------------------------
+The star '*' selects all elements located by preceeding path
+	
+	/AAA/CCC/DDD/*
+	/*/*/*/BBB
+	//*
+
+Example-1
+-------------------------------------------------------
+In [87]: response.xpath('//head/*').extract()
+Out[87]: 
+[u'<meta charset="UTF-8">',
+ u'<title>Quotes to Scrape</title>',
+ u'<link rel="stylesheet" href="/static/bootstrap.min.css">',
+ u'<link rel="stylesheet" href="/static/main.css">']
+
+
+
+
+
+Further conditions inside[]
+--------------------------------------------------------
+Expression in squre brackets can futher specify an
+element.  A number in the brackets gives the 
+posistion of the element in the 
+selected  set.  The function last() selects the last element
+in the selection.
+
+/AAA/BBB[1]
+/AAA/BBB[last()]
+
+
+Example-1
+-------------------------------------------------------
+In [95]: response.xpath('//head/*[1]').extract()
+Out[95]: [u'<meta charset="UTF-8">']
+
+
+Example-2
+--------------------------------------------------------
+In [96]: response.xpath('//head/*[2]').extract()
+Out[96]: [u'<title>Quotes to Scrape</title>']
+
+
+
+Example-3
+--------------------------------------------------------
+In [99]: response.xpath('//head/*[last()]').extract()
+Out[99]: [u'<link rel="stylesheet" href="/static/main.css">']
+
+
+Attributes
+-------------------------------------------------------
+Attributes are specified by '@'' prefix
+
+//@id
+//BBB[@id]
+//BBB[@name]
+//BBB[@*]
+//BBB[not(@*)]
+
+
+Example-1
+-----------------------------------------------------------
+In [100]: response.xpath('//head[@*]').extract()
+Out[100]: []
+
+In [101]: response.xpath('//head/link[@*]').extract()
+Out[101]: 
+[u'<link rel="stylesheet" href="/static/bootstrap.min.css">',
+ u'<link rel="stylesheet" href="/static/main.css">']
+
+
+Example-2
+-----------------------------------------------------------
+In [102]: response.xpath('//head/link[@rel]').extract()
+Out[102]: 
+[u'<link rel="stylesheet" href="/static/bootstrap.min.css">',
+ u'<link rel="stylesheet" href="/static/main.css">']
+
+
+ In [104]: response.xpath('//head/link[@href]').extract()
+Out[104]: 
+[u'<link rel="stylesheet" href="/static/bootstrap.min.css">',
+ u'<link rel="stylesheet" href="/static/main.css">']
+
+
+
