@@ -1,0 +1,414 @@
+https://www.tutorialspoint.com/scrapy/scrapy_command_line_tools.htm
+https://www.tutorialspoint.com/scrapy/scrapy_spiders.htm
+https://www.tutorialspoint.com/scrapy/scrapy_selectors.htm
+
+
+
+Default Structure Scrapy Project
+==========================================
+the following structure shows the default
+file structure of the  scrapy project
+
+
+scrapy.cfg                - Deploy the configuration file
+project_name/             - Name of the project
+   _init_.py
+   items.py               - It is project's items file
+   pipelines.py           - It is project's pipelines file
+   settings.py            - It is project's settings file
+   spiders                - It is the spiders directory
+      _init_.py
+      spider_name.py
+      . . .
+
+
+
+
+
+scrapy.cfg
+---------------------------------------
+The scrapy.cfg file is a project root directory,
+which includes the project  settings :
+
+for insance :
+
+[settings]
+default = [name of the project].settings
+
+[deploy]
+#url = http://local:6800/
+
+project = [name of the project]
+
+
+
+
+
+
+Using the scrapy tool...
+===============================================
+Scrapy tool provides some usage and available commands
+as follows:
+
+Scrapy  X,Y  -no active project
+	Usage: 
+   scrapy  [options] [arguments] 
+
+Available commands:
+	crawl It puts spider (handle the URL) to work for crawling
+	data
+
+	fetch It fetchesthe response from the given URL
+
+
+
+Creating a Project
+===================================================
+You can use the following command to create the project
+Scrapy:
+
+> scrapy startproject <project_name>
+
+
+
+
+
+Controlling projects
+=======================================================
+You can control the project and manage them using
+the Scrapy tool and also create the new spider, using
+the following command:
+
+> cd <project_name>
+> scrapy genspider mydomain mydomain.com
+
+
+Generic Spiders
+=====================================================
+You can use generic spiders to subclass your spiders from.
+Their aim is to follow all links on the website based on certain
+rules to extract data from all pages
+
+for the examples used in the following spiders, let's assume 
+we ahve a project with the following fields:
+
+'''
+code
+'''
+
+import scrapy
+from scrapy.item import Item, Field
+
+class First_scrapyItem(scrapy.Item):
+	product_title = Field()
+	product_link = Field()
+	product_description = Field()
+
+
+CrawlSpider
+====================================================
+CrawlSpider defines a set of rules to follow the 
+links and scrape more than one page.  It has the following
+class :
+
+	class scraply.spiders.CrawlSpider
+
+
+rules
+-----------------------------------------------------
+LinkExtractor:
+	It specifies how spider follows the lines and extracts
+	the data
+
+
+callback:
+	it is to be called after each page is scraped
+
+
+follow:
+	it specifies whether to continue following 
+	links or not
+
+
+parse_start_usrl(response)
+------------------------------------------------------
+It returns either item or rquest objct by allowing to
+parse initial responses
+
+
+Note: make sure ou rename parse function to something other
+than parse while wrting the rules because the parse function 
+is used by CrawlSpider to implement its logic
+
+
+Let's take a look at the following example, where spider
+starts crawling demoexample.com's home page, collection
+all pages, links, and parses with the parse_items method
+
+
+import scdrapy
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
+
+
+class DemoSpider(CrawlSpider):
+	name = "demo"
+	allowed_domains = ["www.demoexample.com"]
+	start_urls = ["http://www.demoexample.com"]
+	rules = (Rule(LinkExtractor(allow=(),restrict_xpaths("//div[@class = 'next']",)),
+		callback = "parse_item", follow = True),
+		)
+
+	def parse_item(self,response):
+		item = DemoItem()
+		item["produt_title"] = response.xpath("a/text()").extract()
+		item["product_link"] = response.xpath("a/@href").extract()
+		item["product_description"] = response.xpath("div[@class = 'desc']/text()").extract()
+		return items
+
+
+
+
+XMLFeedSpier
+==========================================================================
+It is the base class for spiders that scrape from XML feeds and iterates
+over nodes.  It has the following class:
+
+class scrapy.spiders.XMLFeedSpider
+
+
+the following table shows the calss attributes used to set an
+iterator and tag
+
+
+CSVFeedSpider
+=========================================================================
+You guess it...
+
+
+Sitemap Spider
+=========================================================================
+Sitemap Spider with the help of Sitemaps crawl a website by
+locating the URLs from robots.txt It has the following class
+
+
+class srapy.spiders.SitemapSpider
+
+
+'''
+code
+'''
+
+from scrapy.spiders import SitemapSpider
+class DemoSpider(SiteMapper):
+	urls = urls = ["http://www.demoexample.com/sitemap.xml"]  
+
+	def parse(self,response):
+		#You can scrap items here
+
+
+
+The following SitemapSpider processes some URLs with callback
+
+
+'''
+code
+'''
+
+
+from scrapy.spiders import SitemapSpider
+class DemoSpider(SitemapSpider):
+	 urls = ["http://www.demoexample.com/sitemap.xml"]
+	 rules = [("/item","parse_item"),("/group/","parse_group")]
+
+	 def parse_item(self, response):
+	 	#you can scrape time here
+
+	 def parse_group(self, response):
+	 	#you can scrap group here
+
+
+
+
+
+
+
+
+
+Note: scrapy.items
+================================
+The main goal in scraping is to extract
+structured data from unstructured sources,
+typicall, web pages.  Scrapy spiders
+can return the extracted data as
+Python dicts.  While convenient and familar,
+Python dicts lack structure: it is easy to make
+a typo in a field name or return inconsistent data,
+especially in a larger project with many spiders.
+
+
+to define common output data format Scrapy provides
+Item class.   Item objects are simple containers
+used to collect the scraped data.  They provide a dictonary-like
+API with a convenient syntax for declaring their available fields.
+
+
+Various Scrapy componenets use extra information provided by 
+Items: exporters look at declared fields to figure otu
+comlumns to export, serialization can be customized using
+]Item fields metadata, trackref tracks Item instance sto
+help find memory leaks
+
+Declaring Items
+https://doc.scrapy.org/en/latest/topics/items.html
+-------------------------------------------
+Items are declared using a simple calss definition
+syntax and Field objects.  Here is an example:
+'''
+code
+'''
+import scrapy 
+
+class Product(scrapy.Item):
+	name = scrapy.Field()
+	price = scrapy.Field()
+	last_updated = scrapy.Field(serailizer=str)
+
+
+
+Note: Item Fields
+================================
+https://doc.scrapy.org/en/latest/topics/items.html
+
+
+Field objects are used to specify metadata for each
+field.  For example, the serializer function
+for the last_updated field illustreated in the
+example above.
+
+You can specify any kind of metadata for each field.
+There is no restruction on the values accepted
+by Field objects.  Firs th same reason, there is no 
+reference list of all available metadata keys.
+
+Declaring Items
+-------------------------------------------
+Items are declared using a simple calss definition
+syntax and Field objects.  Here is an example:
+
+
+
+
+Scrapy - Selectors
+========================================================
+Description 
+--------------------------------------------------------
+When you are scraping the web pages, you need to extract
+a certain part of the HTML souce by using the mechanism
+called selectors, achieved by using either:
+
+	XPath
+	-or-
+	CSS
+
+Selectors are built upon the lxml library, which processes the
+XML and HTML in the Python lanuage.
+
+
+
+Use the following code snippet to define different concepts
+of selectors --
+
+<html>
+   <head>
+      <title>My Website</title>
+   </head>
+   
+   <body>
+      <span>Hello world!!!</span>
+      <div class = 'links'>
+         <a href = 'one.html'>Link 1<img src = 'image1.jpg'/></a>
+         <a href = 'two.html'>Link 2<img src = 'image2.jpg'/></a>
+         <a href = 'three.html'>Link 3<img src = 'image3.jpg'/></a>
+      </div>
+   </body>
+</html>
+
+
+
+
+Constructting Selectors
+---------------------------------------------
+You can construct the selector class instances by passing
+the text of TextResponse object.  Based on the provided 
+input type the selector chooses the following rules --
+
+
+from scrapy.selector import Selector
+from scrapy.http import HtmlResponse
+
+	...
+
+
+	Selector(text = body).xpath('//span/text()').extract()
+
+	#targeting whatever is inside the span tag --->  <span>Hello world!!!</span>
+	#result
+
+	[u'Hello world!!!']
+
+
+#We can constuct from the resonse as --
+	reponse = HtmlResponse(url = 'http;//mysite.com' body = body)
+	Selector(response = response).xpath('//span/text()').extract()
+
+
+
+#again....the result will be 
+	[u'Hello world!!!']
+
+
+
+
+Using Selectors
+===============================================================
+Using the above simple code snippet, you can construct the 
+XPath for selecting the text which is defined in the title
+tag as shown below --
+
+>>response.selector.xpath('//title/text')
+
+
+Now, you can extract the textual data using the .extract()
+method shown as follows --
+
+>>response.xpath('//title/text()').extract()
+
+It will produce the result as-
+
+[u'My Website']
+
+>>response.xpath('//div[@class = "links"]/a/text()').extract()
+
+Nesting Selectors
+---------------------------------------------------------------
+Using the above code, you can nest the selectors to display the
+page link and image source using the .xpath() method, shown
+as follows --
+
+links = response.xpath('//a[contains(@href, "image")]')
+for index, link in enumerate(links):
+	args = (index, link.xpath('@href').extract()), link.xpath('img/@src').extract())
+	print 'The link %d pointing to url %s and image %s' % args 
+
+
+
+
+
+
+
+
+
+
+
+

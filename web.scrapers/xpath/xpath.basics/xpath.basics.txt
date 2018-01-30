@@ -1,0 +1,28 @@
+http://zvon.org/comp/r/tut-XPath_1.html#Pages~List_of_XPaths
+
+XPath
+============================================================
+XPath is the rsult of an effort provide a common syntax
+and semantics for functioanlity shared between XSL
+transformation and XPointer.  The primary purpose of XPath
+is to address parts of an XML document.  In support of this
+primary purpose, it also provides a basic facilities for
+manipulation of strings, numbers an dbooleans.
+
+
+
+XPath Basics
+============================================================
+
+
+xpath as filesystme addressing
+------------------------------------
+The basic Xpath syntax is similar to filesystem addressing.
+If the path starts with the slash/, the it represents 
+an absolute path to the requiered element.
+
+	/AAA
+	/AAA/CCC
+	/AAA/DDD/BBB
+
+

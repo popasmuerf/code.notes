@@ -1,0 +1,66 @@
+
+Extracting data basics
+===================================================
+The best way to learn how to extract data with Scrapy
+is trying selectors using the shell Scrapy shell. Run:
+
+(scrapy) Michaels-MacBook-Pro:tutorial mdb$ scrapy shell "http://quotes.toscrape.com/page/1/"
+
+This is what we need to pay attention to:
+============================================================
+ (referer: None)
+[s] Available Scrapy objects:
+[s]   scrapy     scrapy module (contains scrapy.Request, scrapy.Selector, etc)
+[s]   crawler    <scrapy.crawler.Crawler object at 0x102a11910>
+[s]   item       {}
+[s]   request    <GET http://quotes.toscrape.com/page/1/>
+[s]   response   <200 http://quotes.toscrape.com/page/1/>
+[s]   settings   <scrapy.settings.Settings object at 0x102a11990>
+[s]   spider     <DefaultSpider 'default' at 0x102dda4d0>
+[s] Useful shortcuts:
+[s]   fetch(url[, redirect=True]) Fetch URL and update local objects (by default, redirects are followed)
+[s]   fetch(req)                  Fetch a scrapy.Request and update local objects 
+[s]   shelp()           Shell help (print this help)
+[s]   view(response)    View response in a browser
+
+
+
+Avaiable Scrapy objects
+=====================================================================
+*	crawler :
+	-	The current Crawler object
+
+*	spider :
+		the spider which is known to handle the URL, or a 
+		Spider object if there is no spider found
+		for the current URL
+
+*	request :
+		A request object of the last fetched page.  You
+		can modify this request using 
+
+*	response :
+		a Response object containing the last
+		fetched page
+
+*	settings :
+		the current Scrapy settings
+
+
+Example of shell session
+================================================
+Here's an example of a typical sell session where we
+start by scraping the https://scrapy.org page,
+and then proceed to scrape the https://reddit.com
+page.  Finally, we modify the (Reddit) request method
+to POST and re-fetch it getting an error.
+
+
+
+First we launch the shell:
+-------------------------------
+	>scrapy shell 'https://scrapy.org' --nolog
+
+
+
+
