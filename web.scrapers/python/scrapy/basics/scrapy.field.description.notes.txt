@@ -1,0 +1,58 @@
+Field & Description
+===================================
+
+
+*	name:
+	-	name of your spider
+
+*	allowed_domains
+	-	It i a lit of domain on which the spider
+		crawls
+
+
+*	start_urls
+	-	It is a list of URLs, which will be the roots for
+		later, where the spider will begin to crawl
+		from.
+
+
+*	custom_settings
+	-	These are the settings, when running the spider,
+		will be overriden from project wid configuration.
+
+*	crawler
+	-	It is an attribute that links to Crawler object to
+		which the spider instance is bound
+
+
+*	settings 
+	-	These are the settings for running a spider
+
+
+*	logger:
+	-	it is a Python logger used to send log mesages.
+
+
+*	from_crawler(crawler,*args,**kwargs)
+	-	class method which creates your spider with params:
+		#	crawler =
+			*	A crawler to which the spider instance will be bound
+		#	args =
+			*	a list that is passed to the method _init_()
+		#	kwargs =
+			*	a dictionary full of keywords passed to the method
+				_init_()
+
+
+*	start_requests()
+	-	when no particular URLs are specified and the spider is opnened
+		for scraping , Scrapy calls start_requests() method
+
+
+*	make_requests_from_url(url)
+	-	It is a method used to convert urls to requests
+
+
+*	parse(response):
+	-	This method processes the response and returns
+		scrapped data following more URLs

@@ -1,0 +1,212 @@
+Spider Arguments
+
+
+Spider arguments are used specify start URLs and are passed
+using crawl. command with 
+
+
+> scrapy crawl first_scrapy -a group = accessories
+
+#Code desmontrating how a spider recieves arguments-
+
+import scrapy
+class FirstSpider(scrapy.Spider):
+	name = "first"
+	def	__init__(self,group = None, *args, **kwargs)
+		super(FirstSpider,self).__init__(*args,**kwargs)
+		self.start_urls = ["http://www.example.com/group/%s" % group]
+
+
+Note on *(asterisk) character in Python:
+https://codeyarns.com/2012/04/26/unpack-operator-in-python/
+==============================================
+In Python, the * (asterisk) character is not only
+used for multiplication and replication,
+but also for unpacking.  There does not seem to 
+be any name for this "*" operator and this "**"
+operator....so searhing for information on the
+topic may be a bit difficult....but they have
+the unofficial names:
+	*	unpack
+	*	splat
+
+
+
+
+* operator
+
+Applying * on any iterable object, by placing it to the left of the object, produces the individual elements of the iterable. If applied on a list-like iterable, it produces the elements of the list in the order they appear in the list. If applied on a dict-like object, it produces the keys of the dict in the order you would get as if you iterated the dict.
+
+I imagine this operator as shattering the container that holds the items together, so they are now free and individual. The look of the asterisk character helps bolster this imagination.
+
+In [4]: def foo(x,y,z):
+   ...:     print(x,y,z)
+   ...:     
+
+In [5]: foo(a)
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-5-2f81f426cad0> in <module>()
+----> 1 foo(a)
+
+TypeError: foo() takes exactly 3 arguments (1 given)
+
+In [6]: foo(*a)
+(1, 50, 99)
+
+** operator
+
+Applying ** on any dict-like object, by placing it to the left of the object, produces the individual key-value pairs of the iterable. The order of the key-value pairs produced is in the order you would get as if you iterated the dict.
+
+This ** operator makes it easy to pass a dictionary to a function that has keyword arguments. Just make sure that the number of keys and the name of the keys in the dict exactly match the number and names of the function parameters. If the number of keys is less or more than in the function parameters or if some keys do not match the function parameter names, then the function call fails.
+
+def foo(x, y, z):
+  print("First is ", x, " then ", y, " lastly ", z)
+  
+  
+d = {"y": 23, "z": 56, "x": 15}
+
+foo(**d)
+
+Python 2.7.10 (default, Jul 14 2015, 19:46:27)
+[GCC 4.8.2] on linux
+   
+('First is ', 15, ' then ', 23, ' lastly ', 56)
+
+
+
+
+Generic Spiders
+============================================================
+You can use generic spiders to subclass your spiders
+from.  Their aim is to follow the website based on certain
+rules to extract data from all pages.
+
+
+> scdrapy crawl first_scrapy -a group = acessros
+
+
+import scrapy
+from scrapy.item import Item, Field
+
+
+class First_scrapyItem(scarapy.Item):
+	product_title = Field()
+	roduct_link = Field()
+	product_description = Field()
+
+
+
+
+
+CrawlSpider
+===========================================================
+CrawlSpider defines a set of rules to follow the links
+and scrap more than one page.  It ahs the following
+class --
+
+class
+---------------------------------------------------
+class scrapy.spiders.CrawlSpider
+
+
+
+rules & description
+---------------------------------------------------
+It is a list of rule objecrs that deines
+how the crawler follow the link
+
+
+*	LinkExtractor
+	-	It specifies how spider follows the links
+		and extracts the data
+
+
+*	callback
+	-	called after each page is scraped.
+
+
+*	follow
+	- 	It specifies whether to continue following
+		links or not 
+
+
+
+parse_start_url(response)
+-----------------------------------------------
+It returns eithe item or request object by allowing
+to parse initial responses.
+
+
+Note: Make sure you rename parse function other than parse 
+while writing  the rules because parse is usec
+by CrawlSpider to implement its logic
+
+
+
+rules = (Rule(LinkExtractor(allow =(), restrict_xpaths = ("//div[@class = 'next']",)),callback = "parse_item", follow = True),) 
+
+
+
+item = DemoItem()
+item["product_title"] = response.xpath("a/text()").extract()
+item["product_link"] = response.xpath("a/@href").extract()
+item["product_description"] = response.xpath("div[@class = 'desc']/text()").extract()
+return items
+
+
+
+
+
+
+XMLFeedSpider
+=============================================================
+It is the base class for spiders that scrape from
+XML feeds and iterates over nodes.  It has
+the following class ---
+
+
+class scrapy.spiders.XMLFeedSpider
+-----------------------------------------------------
+
+
+Attribute & Description
+---------------------
+
+*	iterator:
+	-	It defines the iterator to be used.  It can be
+		either iternodes, html or xml.  Default is internodes
+
+*	itertag:
+	-	It is a string with node name to iterate
+
+*	namespaces:
+	-	It is defined by list of (prefix,uri) tuples that automatically
+		registers namespaces using
+		register_namespace() method
+
+*	adapt_response(response)
+	-	It recieves the response and modifies
+		the response body as soon as it arrives
+		from spider middleware, before spider
+		starts parsing it.
+
+*	parse_node(response,selector)
+	-	It recieves the response and a selector
+		when called for each node matching the
+		provided tag name
+		Note: the spider will not work if you don't
+		override this method.
+
+*	process_results(response,results)
+	-	It returns a list of results and response 
+		returned by the spider
+
+
+
+
+
+
+
+
+

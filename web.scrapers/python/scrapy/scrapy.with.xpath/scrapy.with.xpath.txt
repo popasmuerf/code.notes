@@ -1,6 +1,19 @@
 http://zvon.org/comp/r/tut-XPath_1.html#Pages~List_of_XPaths
 
 
+If you want to play in the scrapy repl
+==========================================================
+>virtualenv <dir>
+>cd <dir>
+Example-1
+-------------------------------------------
+> scrapy shell 'http://quotes.toscrape.com'
+
+
+Example-1
+---------------------------------------------
+scrapy shell 'http://quotes.toscrape.com'
+
 Our sample html:
 ==========================================================
 <html lang="en">

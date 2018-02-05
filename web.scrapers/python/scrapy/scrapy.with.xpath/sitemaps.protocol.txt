@@ -1,0 +1,322 @@
+http://zvon.org/comp/r/tut-XPath_1.html#Pages~List_of_XPaths
+https://doc.scrapy.org/en/latest/topics/spiders.html
+
+XPath
+============================================================
+XPath is the rsult of an effort provide a common syntax
+and semantics for functioanlity shared between XSL
+transformation and XPointer.  The primary purpose of XPath
+is to address parts of an XML document.  In support of this
+primary purpose, it also provides a basic facilities for
+manipulation of strings, numbers an dbooleans.
+
+
+
+XPath Basics
+============================================================
+
+
+xpath as filesystme addressing
+------------------------------------
+The basic Xpath syntax is similar to filesystem addressing.
+If the path starts with the slash '/', then it represents 
+an absolute path to the requiered element.
+
+	/AAA
+	/AAA/CCC
+	/AAA/DDD/BBB
+
+
+Start with '//'
+--------------------------------------
+If the path starts with  // then all 
+elements in the document which fulfill following
+criteria are selected
+
+//BBB
+//DDD/BBB
+
+
+
+All elements: *
+---------------------------------------
+The star '*' selects all elements located by preceeding path
+	
+	/AAA/CCC/DDD/*
+	/*/*/*/BBB
+	//*
+
+
+What are Sitemaps ?
+===========================================================
+https://www.sitemaps.org/index.html
+
+Sitemaps are an easy way for webmasters to inform search engines
+about pages  on their sites that are available for crawling.
+In it's simplest form, a Sitemap is an XML file that lists
+URLs for a site along with additional metadata about each
+URL:
+	*	last updated
+	*	frequency of updates
+	*	level of importance relative to other site urls
+so that search eangines can more intelligently crawl the
+site.
+
+
+Web crawlers usually discover pages from links within the 
+site and from other sites.  Sitemaps supplement
+this data to allow crawlers thaat support sitemaps to pick
+up all URLs in the sitemap nd learn about those URLs using 
+teh associated metadata.
+
+
+Using the sitemap protocol does not guarantee that web pages are included
+in the search engines, but proivdes hints for web crawlers to 
+do a better job of crawling your site
+
+Sitemap 0.90 is offered unt eh terms of the Attribution-shareAlike
+create commons license and has wide adoptiong including Google, Yaooh,
+and Microsoft 
+
+
+https://www.sitemaps.org/protocol.html XML Format
+=========================================================
+This document describes the XML schema for the Sitemap protocol.
+
+The Sitemap protocol format consists of XML tags.  All data
+values in a sitemap must be entity-escaped.  The
+file itslef must be UTF-8 encoded
+
+
+The sitemap must :
+
+	*	Begin wian an opening and end tags:
+		<urlset></urlset>
+
+	*	Specify the namespace(protocol standard) within the 
+		<urlset> tag
+	*	Included a <url> entry for each URL, as a parent XML tag
+	*	Include <loc> child entry for eah <url> parent tag
+	*	Other custom tags are otpional and support for them varies
+		along search engines
+	*	All URLS in a Sitemap must be from a single host, such
+		as www.example.com or store.example.com
+
+
+
+Sample XML Sitemap
+=================================================
+The following example shows a Sitemap that contains just one
+URL an duses all optional tags>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+   <url>
+
+      <loc>http://www.example.com/</loc>
+
+      <lastmod>2005-01-01</lastmod>
+
+      <changefreq>monthly</changefreq>
+
+      <priority>0.8</priority>
+
+   </url>
+
+</urlset> 
+
+
+
+
+
+
+
+
+So...as we said before...Scrapy provides a number of canned spiders
+that are derivaives of the class "Scrapy.Spider"....
+for sitemaps our spider class can inherite from the canned 
+Spider derivatves : SiteMapSpider:
+
+#code
+from scrapy.spiders import SitemapSpider
+
+class MySpider(SitemapSpider):
+	sitemap_urls =['https://krebsonsecurity.com/sitemap.html]
+
+
+
+
+Using Sitemap index files(to group multiple sitemap files)
+========================================================================
+You can provide multiple Sitemap files, but each Sitemap file that you 
+provide msut have no more than 50,000 URLs  an dmust be no larger than 
+50MB.  I fyou would like, yo may compress your Sitemap files using gzip
+to reduce your bandwidth requirement; however the sitemap file once unompressed
+mus tbe no larger than 50MB.  If you want to list 
+more than 50k URLs, you must create multiple Sitemap files.
+
+
+If you do provide multiple Sitemaps, you should then list each Sitemap
+file in a Sitemap index file.
+
+Sitemap index files may not list more than 50k sitemaps and must be 
+no larger than 50MB and can be compressed.  You can have more than
+one Sitemap index file.  The XML format of a Sitemap index file is
+very similar to the XML format of a Sitemap file
+
+
+The Sitemap index file must:
+
+	*	Begin with an opening <sitemapindex> tag and end with a closing
+		</sitemapindex> tag.
+
+	*	Include a <sitemap> entry for each Sitemap as a parent XML tag
+
+	*	Include a <loc> child entry for each <sitemap> parent tag.
+
+
+The optional <lastmod> tag is also available for Site
+
+
+Note:  A sitemap index file can only specify Sitemaps that are found
+		that are found on the same site as the Sitemap index file.
+
+		For example:
+			http://www.yoursite.com/sitemap_index.xml
+		can include sitemaps on:
+			http://www.yoursite.com
+		but not on:
+			http://www.example.com 
+		and not on:
+			http://yourhost.yoursite.com
+
+
+
+Sample XML Sitemap Index
+===========================================
+The followinng example shows a Sitemap index
+that lists two Sitemaps:
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<sitemap>
+	<loc>http://www.example.com/sitemap1.xml.gz</loc>
+	<lastmod>2004-10-01T18:23:17+00:00</lastmod>
+</sitemap>
+<sitemap>
+	<loc>http://www.example/com/sitemap2.xml</loc>
+	  <lastmod>2005-01-01</lastmod>
+</sitemap> 
+
+
+Note: Sitemap URLs, like all values in your XML files, must be
+	  entity escaped.
+
+
+Sitemap Index XML tag Definitions
+----------------------------------------------------
+<sitemapindex>	required 	Encapsulates information about all
+							of th sitmaps in the file
+
+<sitemap>		requiered 	Encapsulates information about an
+							individual Sitemap
+
+
+<loc>			requiered 	Indentifies the location of the 
+							Sitemap.  This an be a Sitemap,
+							an Atom file, RSS file or a simple
+							text file.
+
+
+<lastmod>		optional 	Identifies the time that the
+							corresponding Sitemap file was
+							modified.  It does not 
+							correspond to the time that any of the
+							pages listed in that Sitemap were
+							changed.  The value for the lastmod
+							tag shold be in W3C Datetime format.
+
+							By providing the last modification
+							timestamp, you enable search engine
+							crawlers to retrieve
+
+
+
+
+Questions??? :    sitemap_follow  ----> sitemap_urls
+
+
+
+sitemap_alternate_links
+-------------------------------------------------
+with this variable set, this would retrieve both
+URLs.  With this variable disabled, only :
+
+	http://example.com
+
+retrieved.
+
+Default for sitemap_alternate_links is disabled.
+
+
+
+
+Sitemap Spider examples:
+-----------------------------------------
+Simplest example: process all urls discovered throug sitemaps
+using the parse callback:
+
+
+'''
+code code code code
+'''
+
+from scrapy.spiders import SitemapSpider
+
+class MySpider(SitemapSpider):
+	sitemap_urls =['https://krebsonsecurity.com/sitemap.html']
+
+	def pars(self, response:
+		pass # scrape item here.....
+
+
+
+
+
+Example sitemaps processing with certain callback
+and other usrls with a different callback....
+===============================================
+==================================================
+
+from scrapy.spiders import Sitemap Spider
+
+class MySpider(SitemapSpider):
+	sitemap_urls = ['https://krebsonsecurity.com/sitemap.html']
+	sitemap_rules = [('/shop/','parse_shop')]
+	sitemap_follow = ['/sitemap_shops']
+
+
+
+	def parse_shop(self,response):
+		pass#
+
+
+Combine Sitemap Spider with other sources of urls:
+
+
+
+from scrapy.spiders import sitem
+
+
+
+
+
+
+
+
+
+

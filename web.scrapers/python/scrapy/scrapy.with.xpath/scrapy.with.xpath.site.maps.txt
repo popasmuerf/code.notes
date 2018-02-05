@@ -1,0 +1,99 @@
+http://zvon.org/comp/r/tut-XPath_1.html#Pages~List_of_XPaths
+https://doc.scrapy.org/en/latest/topics/spiders.html
+
+XPath
+============================================================
+XPath is the rsult of an effort provide a common syntax
+and semantics for functioanlity shared between XSL
+transformation and XPointer.  The primary purpose of XPath
+is to address parts of an XML document.  In support of this
+primary purpose, it also provides a basic facilities for
+manipulation of strings, numbers an dbooleans.
+
+
+
+XPath Basics
+============================================================
+
+
+xpath as filesystme addressing
+------------------------------------
+The basic Xpath syntax is similar to filesystem addressing.
+If the path starts with the slash '/', then it represents 
+an absolute path to the requiered element.
+
+	/AAA
+	/AAA/CCC
+	/AAA/DDD/BBB
+
+
+Start with '//'
+--------------------------------------
+If the path starts with  // then all 
+elements in the document which fulfill following
+criteria are selected
+
+//BBB
+//DDD/BBB
+
+
+
+All elements: *
+---------------------------------------
+The star '*' selects all elements located by preceeding path
+	
+	/AAA/CCC/DDD/*
+	/*/*/*/BBB
+	//*
+
+
+What are Sitemaps ?
+===========================================================
+https://www.sitemaps.org/index.html
+
+Sitemaps are an easy way for webmasters to inform search engines
+about pages  on their sites that are available for crawling.
+In it's simplest form, a Sitemap is an XML file that lists
+URLs for a site along with additional metadata about each
+URL:
+	*	last updated
+	*	frequency of updates
+	*	level of importance relative to other site urls
+so that search eangines can more intelligently crawl the
+site.
+
+
+Web crawlers usually discover pages from links within the 
+site and from other sites.  Sitemaps supplement
+this data to allow crawlers thaat support sitemaps to pick
+up all URLs in the sitemap nd learn about those URLs using 
+teh associated metadata.
+
+
+Using the sitemap protocol does not guarantee that web pages are included
+in the search engines, but proivdes hints for web crawlers to 
+do a better job of crawling your site
+
+Sitemap 0.90 is offered unt eh terms of the Attribution-shareAlike
+create commons license and has wide adoptiong including Google, Yaooh,
+and Microsoft 
+
+
+
+So...as we said before...Scrapy provides a number of canned spiders
+that are derivaives of the class "Scrapy.Spider"....
+for sitemaps our spider class can inherite from the canned 
+Spider derivatves : SiteMapSpider:
+
+#code
+from scrapy.spiders import SitemapSpider
+
+class MySpider(SitemapSpider):
+	sitemap_urls =['https://krebsonsecurity.com/sitemap.html;]
+
+
+
+
+
+
+
