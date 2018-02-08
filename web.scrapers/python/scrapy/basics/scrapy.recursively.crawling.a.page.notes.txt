@@ -1,0 +1,398 @@
+Recursively Scraping Web Pages with
+Scrapy
+===================================
+
+
+CrawlSpider
+===================================
+Last time, we created a newScrapy(v0.16.5)
+project, updated th Item ,
+and wrote the spider
+to pull jobs from a single page.
+This time, we just need to do some basic
+changes to add the ability
+to follow links and scrape more 
+than one page.  The first change is that
+this spider will
+inherit from CrawlSpider and
+not BaseSpider
+
+Rules
+=================================
+We need to add some Rules objects
+to define how the crawler follows the
+links.  We will be
+using the following rules:
+
+
+	*	SgmlLinkExrtactor:
+		-	defines how you want to the
+			spider to follow the lins
+				*	allows:
+						defines the link href
+				*	restrict_xpaths:
+						restructs the link to a certain Xpath
+	*	callback:
+		-	calls the parsing functon after each page is scraped.
+	*	follow: instructs whether to ontinue following the links as
+		long as they exit
+
+
+
+
+https://blog.siliconstraits.vn/building-web-crawler-scrapy/
+
+
+3. Define your crawl object
+============================================================
+Whe working with Scrapy, you must specify what you want to
+get after crawling, which is called an item
+(another terminology whih might be familiar with
+you is "model") to do this,  open the items.py fiel please and
+have a look at it...
+
+
+
+# -*- coding: utf-8 -*-
+
+# Define here the models for your scraped items
+#
+# See documentation in:
+# http://doc.scrapy.org/en/latest/topics/items.html
+
+import scrapy
+
+
+class TutorialspointItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    pass
+
+
+
+^^^What's going on here?
+------------------------------------------
+This clss which is derived from the Item class
+stores the data you want to get.
+Each field in this clas must be an object of Field
+class as above.  In our example, we 
+wwant to get only the title of a post,so ther e is 
+only one field:
+
+
+
+
+What do we do now that we have a Model ?
+===============================================
+We need to create a spider that will control all
+of our crawling.... 
+
+Inside the spider's folder create a new python file
+and import the following modules; declare and initialize
+attributes for our spider class:
+
+
+#
+# code start
+#
+from scrapy.spiders import Spider
+from tutsplus.items import TutsplusItem
+from scrapy.http    import Request
+
+
+
+class tutspider(Spider):
+    name = "tutsplus"
+    allowed_domains = ["code.tutsplus.com"]
+    start_urls = ["http://code.tutspluscom/"]
+
+#
+# code end
+#
+
+
+^^^
+	*	Spider: is the basic crawling class
+	*	Request: allows us to recursively crawl a page
+	*	name: name of your spider, which is used to
+		lanuch the spider
+	*	allowed_domains: a list of domains on which the
+		crawler crawls.  Every domain which are
+		in this list are not available for crawling.
+		This is optional
+
+	*	start_urls: a lit of URLs, which will be the roots
+		of later crawls
+	*	pars(self, response): main method whih is invoked
+		by BaseSpider and contains main logic of our 
+		crawler.
+
+
+^^^
+	We have to figure out what we want to get from the 
+	website.  In our case, it's the post's title,
+	which can easily "Inspect Element" as follow:
+
+
+	<a class="posts__post-title" href="http://codetutsplus.com/tutorials/
+	non-activerecord-models-inrails-4--cms-25452">
+	<h1 class="nolinks">Non-ActiveRecord Models in Rails 4</h1>
+	</a>
+
+^^^^
+Obviously th etitle is the text of a h1 tag,
+whih is nested indised an anchor tag.
+
+Alright, at this moment, we must have a way t
+extract the above structure and the answer isusing XPAth
+Selector.  For those who havne;t
+hear about XPath before, iti sia common 
+syntax to traverse through XML douments
+in general and HTML in our case.
+
+
+the xpath we need for this particula situation:
+
+
+xpath('//a[contains(@class,"posts__post-title")]/h1/text()')
+
+
+^^^^Now that we have our scraping expath....
+let's define our parse method:
+
+
+#
+# code start
+#
+from scrapy.spiders import Spider
+from tutsplus.items import TutsplusItem
+from scrapy.http    import Request
+
+
+
+class tutspider(Spider):
+    name = "tutsplus"
+    allowed_domains = ["code.tutsplus.com"]
+    start_urls = ["http://code.tutspluscom/"]
+
+    def parse(self,response):
+    	titles = response.xpath('//a[contains(@class,"posts__post-title")]/h1/text()')
+    	for title in titles:
+    		item = TutsplustItem()
+    		item["title"] = title
+    		yield item
+
+#
+# code end
+#
+
+
+
+^^^Launch the spider
+------------------------
+> scrapy crawl tutsplus
+
+
+^^^Launch the spider with output 
+to a file
+------------------------------------
+>scrapy crawl tutsplus -o data.csv -t csv
+	-or-
+>scdrapy crawl tutsplus -o data.json -t json
+
+>scrpy crawe tutsplus -o data.xml -t xml 
+
+Side bar: what I am looking for for krebs
+=====================================================
+
+
+
+
+Recursively crawling
+=======================================================
+In previous spide, it only investigates the
+root page without adding new link to
+crawl.  In order to recursively crawl
+the page, we must extract the href
+attribute of any anchor tag
+in the HTML file and yeld it for the 
+Spider to process:
+
+
+
+#
+# code start
+#
+#https://blog.siliconstraits.vn/building-web-crawler-scrapy/
+#
+from scrapy.spiders import Spider
+from tutsplus.items import TutsplusItem
+from scrapy.http    import Request
+import re
+
+
+
+class tutspider(Spider):
+    name = "tutsplus"
+    allowed_domains = ["code.tutsplus.com"]
+    start_urls = ["http://code.tutspluscom/"]
+
+    def parse(self,response):
+    	links = response.xpath('//a/@href').extract()
+    	#We stored already crawled links in this list
+    	crawledLinks = []
+    	#Pattern to check proper link
+    	#I only want to get the tutorial posts
+    	linkPattern = re.compile("^\/tutorials\?page=\d+")
+    	for link in links:
+    		#If it is a proper link and is not checked yet,
+    		#yield it to the Spider
+    		if linkPattern.match(link) and not link in crawledLinks:
+    			link = "http://code.tutsplus.com" + link
+    			crawledLinks.append(link)
+    			yield Request(link,self.parse)
+    	titles = response.xpath('//a[contains(@class, "posts__post-title")]/h1/text()').extract()
+    	for title in titles:
+    		item = TutsplustItem()
+    		item["title"] = title
+    		yield item
+#
+# code end
+#
+
+
+
+
+
+If I just go with basic crawler
+=============================================================================
+
+https://krebsonsecurity.com/2018/02/would-you-have-spotted-this-skimmer/
+|
+|---><body><p....></body>
+
+//-----------------------------------------------------------
+https://krebsonsecurity.com/sitemap.html
+			|
+			|
+			|
+			|------->https://krebsonsecurity.com/sitemap-pt-post-2018-02.html
+
+						|
+						|
+						|
+						|------->https://krebsonsecurity.com/2018/02/would-you-have-spotted-this-skimmer/
+						|-------->https://krebsonsecurity.com/2018/02/alleged-spam-kingpin-severa-extradited-to-us/
+								  |
+								  |
+								  |-----> re.('body')
+
+
+
+Following links
+===========================================================
+
+https://www.tutorialspoint.com/scrapy/scrapy_following_links.htm
+
+
+
+
+
+1. Finalizing design
+2. Questions about crawlee --> does what I know about Scrapy is pretty much 1-to-1
+3. 
+
+
+
+
+user gui/cli <-----> operations interface <-------> service <----> database
+
+
+
+Description 
+===================================
+In this chapter, we'' study how to extract
+the links of the pages of our interest,
+follow them and extract data from that page.
+
+For this , we need to make the following changes in 
+our previous code show as follows --
+
+#
+# code start
+#
+#https://blog.siliconstraits.vn/building-web-crawler-scrapy/
+#
+class DmozItem(Item):
+	title = Field()
+	link = Field()
+	desc = Field()
+
+
+import scrapy
+import DmozItem
+
+
+class recursiveSpider(scrapy.Spider):
+    name = "tutsplus"
+    allowed_domains = ["http://www.dmoz.org"]
+    start_urls = [
+      "http://www.dmoz.org/Computers/Programming/Languages/Python/",
+   ]
+
+    def parse(self,response):
+    	for href in response.css("ul.directory.dir-col > li > a::attr('href')"):
+    		url = response.urljoin(href.extract())
+    		yield scrapy.Request(url,callback = self.parse_dir_contents)
+
+    def parse_dir_contents(self,response):
+    	for sel in response.xpath('//ul/li'):
+    	item = DmozItem()
+         item['title'] = sel.xpath('a/text()').extract()
+         item['link'] = sel.xpath('a/@href').extract()
+         item['desc'] = sel.xpath('text()').extract()
+         yield item
+#
+# code end
+#
+
+
+
+
+'''
+Recurive Example -2
+https://stackoverflow.com/questions/30152261/make-scrapy-follow-links-and-collect-data
+'''
+import scrapy
+
+class DmozItem(scrapy.Item):
+	#define the fields for your item here like:
+	link = scrapy.Field()
+	attr = scrapy.Field()
+
+class DmozSpider(scrpay.Spider):
+	name = "dmoz"
+	allowed_domains == ["craigslist.org"]
+	start_urls = ["http://chicago.craigslist.org/search/emd?"]
+	BASE_URL = 'http://chicago.craigslist.org/'
+	def parse(self, response):
+		links response.xpath('//a[@class="hdrlnk"]/@href').extract()
+		for link in links:
+			absolute_url = self.BASE_URL + link
+			yield scrapy.Request(absolute_url,callback=self.parse_attr)
+	def parse_attr(self,response):
+		item = DmozItem()
+		item["link"] = response.url
+		item["attr"] = "".join(response.xpath("//p[@class='attrgroup']//text()").extract())
+		return item
+
+
+
+
+
+
+
+
+
+
+

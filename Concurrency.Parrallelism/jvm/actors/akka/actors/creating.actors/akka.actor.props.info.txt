@@ -1,0 +1,49 @@
+Props
+============================================
+Props is a configuration class to specify options
+for the creation of actors, think of it as an immutable
+and thus freely shareable recipe for creating an 
+ator including assoicated deployment information(e.eg
+which dispatcher to use, see more below).
+Here are some examples of how to create a Props instance.
+
+
+//Scala
+//code start
+
+
+import akka.actor.Actor
+import akka.actor.Props
+import akka.event.Logging
+
+val props1 = Props[ActorPrime]
+val props2 = Props(new ActorWithArgs("arg"))
+val props3 = Props(classOf[ActorWithArgs],"args")
+
+
+
+//Scala
+//code end
+
+
+//Java
+//code start
+
+
+import akka.actor.Actor
+import akka.actor.Props
+import akka.event.Logging
+
+Props props1 = new Props.create(ActorPrime.class);
+Props props2 = new Props.create(ActorWithArgs.class,()->ActorWithArgs("arg"));
+Props props3 = new Props.create(ActorWithArgs.class,"arg");
+
+//Java
+//code end
+
+
+
+
+
+Recommended  practices
+=============================================================

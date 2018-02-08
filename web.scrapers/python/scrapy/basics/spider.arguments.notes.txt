@@ -206,6 +206,65 @@ Attribute & Description
 
 
 
+SitemapSpider
+===================================================
+
+class scrapy.spiders.SitemapSpider
+-----------------------------------------------------
+
+
+
+Field & Description
+------------------------------------------
+	*	sitemap_urls
+		-	A list of URLs which you want to 
+			crawl pointing to the 
+			sitemaps
+
+	*	sitemap_rules
+		-	It is a list of tuples(regex,callback),
+			where regex is a regular expression,
+			callback is used to process URLs matching
+			a regular expression
+
+	*	sitemap_follow
+		-	It is a list of sitemap's regexes to follow.
+		-	sitemap_follow = ['foo | foo*']
+	
+	*	sitemap_alternate_links
+		-	Specifies alternate links to be followed for
+			a single url
+
+
+
+SitemapSpider Example
+-----------------------------------------------
+from scrapy.spiders import SitemapSpider
+
+class DemoSpider(SitemapSpider):
+	urls = ["http://www.demoexample.com/sitemap.xml"]
+	def parse(self,response):
+		#We can scrap items here
+
+
+
+The following SitemapSpider porcessess some URLs
+with callback --
+--------------------------------------------------
+from scrapy.spiders import SitemapSpider
+
+class DemoSpider(SitemapSpider):
+	urls = ["http://www.demoexample.com/sitemap.xml"]
+	rules = [("/item/","parse_item"),("/group/","parse_group"),]
+
+	def parse_item(self,response):
+		#we can scrap here item here
+
+	def pars_group(self,response):
+		#you can scrap group here
+
+
+
 
 
 
