@@ -1,0 +1,115 @@
+Examples of common XPath tasks
+====================================
+
+url : https://en.wikipedia.org/wiki/Blockchain
+
+
+Getting the text ofthe span under the div
+with the id "firstHeading":
+----------------------------------------------------
+#code start
+
+> $x('//h1[@id="firstHeading"]/text()')
+
+#code end
+
+
+
+Getting the URLs of links in an 
+unordered list(ul) inside a div
+with id "toc":
+--------------------------------
+> $x('//*[@id="www-wikipedia-org"]/div[6]/div[1]/div/div[2]')
+
+
+
+What if we need to get the text anywhere inside a header 
+element(h1) inside any element with a class attribute 
+containing "ltr" and a class 
+attribute containing  "skin-vector".  The
+two strings may be in teh same class 
+or diffrent ones.
+
+This means that you will see for example,
+some of your divs with their class attribute
+set to "link" and some other to
+"link active" in a navigation system.
+The latter will be links that are currently
+active, thus visible or highlited with 
+a speical color (via CSS).  When scraping,
+you will usually be interesed in elements that
+contain a certain class that is , both "link" 
+and "link active".
+
+The Xpath function: 
+	contains()
+
+allows u to select all the elements that contain
+a certain class.
+
+*	 to select the URL for the first iamage
+	 in a table that has a class attribute with 
+	 values "infobox" use the following:
+
+	 //table[@class="infobox"]//image[1]/@src
+
+
+*	to select 
+
+
+
+Actually, you will often need to use classes
+in your XPath expressions.  In these cases,
+you should remember that due to some
+styling elements called CSS, you will often see
+HTML elements haing multiple classes
+stated ont heir class attribute.
+
+> 
+
+
+
+
+
+HTMl pages often change....and with it
+so does your xpath....so here are some tips
+to make your xpath less brittle:
+
+
+*	Avoid array indexes(numbers)
+	Chrome will often give you expressions
+	with lots of constant numbers such as:
+
+		//*[@id="myid"]/div/div/div/[1]/div[2]
+	    /div/div[1]/div[1]/a/img
+
+
+	This is quite fragile, because if something like
+	an advertisment block adds an extra div somethwere
+	i theat hierarchy, those numbers will end up pointing
+	different elements.  The solution in this case is to go
+	as much as possible to the target path
+
+	//div[@class="thumbnail"]/a/img
+
+
+
+*	Classes are not that good:
+	-	 Using class attributes makes it easy to
+		pinpoing elements, but they are often used to
+		affect the looks of the page via CSS, and may
+		be up for change more often than not.
+
+		for example...changes like this are not uncommon:
+
+			//div[@class="thumbnail"]/a/img
+
+		    -might after a few months or so become this-
+
+		    //div[@class="preview green"]/a/img
+
+
+
+
+
+

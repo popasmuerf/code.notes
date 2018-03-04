@@ -40,6 +40,20 @@ class QuotesSpider(scrapy.Spider):
 		a list of requests or write
 		a generateor function)
 
+*	parse(self,response):
+	-	Method called to handle
+		the response downloaded for
+		each of the rquests made.
+		Each instance of Response holds
+		the page content and has further
+		helpful methods to handle it.
+
+
+	    parse() usually parses the response,
+	    exracting the scraped dta as dicts
+	    and also finding new URLs to follow and
+	    creating new Requests from them
+
 
 
 

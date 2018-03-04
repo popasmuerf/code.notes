@@ -56,3 +56,11 @@ Field & Description
 *	parse(response):
 	-	This method processes the response and returns
 		scrapped data following more URLs
+
+
+*	log(message[,level,component])
+	-	It is a method that sends a log messge through spiders
+		logger.
+
+*	closed(reason)
+	-	this method is called when the spider closes

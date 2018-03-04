@@ -1,0 +1,77 @@
+Reactive system design
+=====================================
+Reactive platforms
+==========================
+1. Akka
+2. Gpars
+3. Quasar
+4. go routines
+
+
+Reactive Manifesto...
+=================================
+https://www.reactivemanifesto.org/
+
+
+What's the big deal ?
+===================================
+	*	flexibile
+	*	loosely-coupled
+	*	scalable
+	*	fault tolerant
+	*	Reponsive
+	*	elasticity
+	*	resiliency
+	*	event-driven design
+
+
+
+Responsive
+------------------------------------------
+	*	Our applications should respod to
+		requests as fast as possible
+	*	If data can only be aquired
+		in a serial manner, or in a parallel manner,
+		you should always chooose to get the ata in
+		parallel in order to gt a response
+		back to a user faster.
+	*	Requests for unrelated data can be 
+		made at the same time.
+	*	When requesting unrelated non-dependent
+		pics of data, we should evaluate
+		if it's possible to make those requests
+		at the same tiem.
+	*	errors shold be returned as a notification
+		immediately rather than having to wait for a timeout.
+
+
+
+Elastic
+---------------------------------------------
+	*	all applications should be able
+		to scale undr varying workloads(via
+		optimal logic and resources)
+	*	If we have an  in-memory database
+		running on a virtual machine, adding
+		a second machine node could split the 
+		quiries across th etwo servers, doubling
+		potential throughput.
+
+	*	adding a seconding in -memory database node
+		coudl double memory capacity by splitting
+		the data and moving half of oit to the 
+		new node.  Adding nodes shold expand 
+		capacity in a near-liniear manner.
+
+
+
+Eveent-driven/message-driven
+----------------------------------------------
+	*	resources are only used when they are needed.
+	*	messages delivered to remote
+		machines as well(location transparency).  As
+		messages are quied and elivered outside an actor,
+		it is possible to self-heal a failing
+		system via supervision.	
+
+

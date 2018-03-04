@@ -268,4 +268,74 @@ class DemoSpider(SitemapSpider):
 
 
 
+sitemap_posts_list = response.xpath('//a[contains(@href,"sitemap-pt-post")]/text()').extract()
+
+
+
+
+import datetime
+import urlparse
+import socket
+import scrapy
+
+from scrapy.loader.processors import MapCompose, Join
+from scrapy.loader import ItemLoader
+
+from tutsplus.items import PropertiesItem
+
+
+class blue(scrapy.Spider):
+    name = "blue"
+    #allowed_domains = ["krebsonsecurity.com"]
+
+    # Start on a property page
+    start_urls = ['https://krebsonsecurity.com/sitemap.html']
+
+
+
+
+    def parse(self, response):
+        urls = response.xpath('//a[contains(@href,"sitemap-pt-post")]/text()').extract()
+        for _url in urls:
+            #print(_url)
+            #yield scrapy.http.Request(url=_url,callback='parseII')
+           # yield scrapy.http.Request(urlparse.urljoin(response.url, _url))
+            yield scrapy.http.Request(urls = _url, callback='parseII')
+
+            '''
+            item_urls = response.xpath('//a[contains(@href,"https")]/text()').extract()
+            for item_url in  item_urls:
+                yield scrapy.http.Request(url=item_url,callback='parse_item')
+            '''
+
+    def parse_item(self,response):
+        print(response.body)
+        item =  PropertiesItem()
+        item['_title'] = " ".join(response.xpath('//*/title/text()').extract())
+        item['_body'] = " ".join(response.xpath('//*/p/text()').extract())
+
+
+    def parseII(self,response):
+        urls = response.xpath('//a[contains(@href,"https")]/text()').extract()
+        for _url in urls:
+            print(_url)
+            yield scrapy.http.Request(url=_url,callback='parseIII')
+
+    def parseIII(self,response):
+        item =  PropertiesItem()
+        item['_link'] = " ".join(reponse.url)
+        item['_title'] = " ".join(response.xpath('//*/title/text()').extract())
+        item['_body'] = " ".join(response.xpath('//*/p/text()').extract())
+
+        return item
+        #sitemap_body=response.xpath('//a[contains(@href,"https")]/text()').extract()
+
+
+
+...and lolz at this bullshit --> "You're holding all white people accountable for something very few participated in. You speak in generalizations that would be absolutely acceptable against any other race."
+
+1. No one said "all white people"...I said white people...which is demonstrably true.
+2. When you can find a generalization that applies such that black people in general in the US
+have literally enslaved, subjugated, and  terrorized to this very day any other "race" or "ethnic" group in the Americas get back to me.
+3. Again...you don't know what that word "logic" means.  Stop using it until you do.
 

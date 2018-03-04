@@ -1,0 +1,143 @@
+https://docs.docker.com/get-started/part2/
+https://docs.docker.com/get-started/part2/#share-your-image
+
+
+Unable to make the module:akka_lab_main, related gradle configuration was not found. Please re-import the Gradle project
+
+
+
+Building Containers
+=========================================================
+
+virtualenv -p /usr/local/lib/python2.7.13/bin/python /crawlee_env
+
+
+Define a container with Docker with Dockerfile
+----------------------------------------------------
+This is what the Dockerfile is for....
+
+	*	defines networking interfaces
+	*	defines access to storage devices
+	*	defines network port mapping
+	*	defines runtimes
+	*	defines app
+	*	defines app working directories
+	*	def
+
+Example Docker container field
+-------------------------------------------------------
+#Use the python runtime of your choosing as the
+#parent image....
+FROM python:2.7-slim
+
+
+#Set app working directory
+WORKDIR /app
+
+
+# Install the current directory contents into the container
+# at the working directory
+ADD . /app
+
+
+#Install any needed dependencies/packages
+RUN pip install --trusted-host pypi.python.org
+
+
+#Open the container to the outside world via port 80
+EXPOSE 80
+
+#DEFINE any enviromental variables for this container...
+ENV NAME World
+
+#Actions to perform during container initialization....
+CMD ["python","app.py"]
+
+
+
+requirements.txt
+------------------------------------------------------
+Flask
+Redis
+
+
+
+app.py
+-------------------------------------------------------
+from flask import Flask
+from redis import Redis, RedisError
+import os
+import socket
+
+# Connect to Redis
+redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    try:
+        visits = redis.incr("counter")
+    except RedisError:
+        visits = "<i>cannot connect to Redis, counter disabled</i>"
+
+    html = "<h3>Hello {name}!</h3>" \
+           "<b>Hostname:</b> {hostname}<br/>" \
+           "<b>Visits:</b> {visits}"
+    return html.format(name=os.getenv("NAME", "world"), hostname=socket.gethostname(), visits=visits)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=80)
+
+
+
+
+Building your container
+==========================================
+> mkdir -p <container-dir>
+> touch Dockerfile requirements.txt app.py
+># configure your files....
+> docker -build my_container
+># check out your new container
+> docker image ls
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+friendlyhello2            latest              08921c9d2bfc        20 hours ago        148MB
+popasmuerf/getstarted2    part3               08921c9d2bfc        20 hours ago        148MB
+friendlyhello             latest              7834cffb40fd        24 hours ago        148MB
+popasmuerf/gete-started   part2               7834cffb40fd        24 hours ago        148MB
+<none>                    <none>              f37588dc01b0        24 hours ago        139MB
+python                    2.7-slim            52ad41c7aea4        7 days ago          139MB
+hello-world               latest              f2a91732366c        3 months ago        1.85kB
+># list docker containers(running containers)
+> docker container ls 
+Michaels-MacBook-Pro:reservation_monster mdb$ docker container ls
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+># ^^^ No images are running obviously...
+
+
+
+Common docker commands
+============================================
+Commands:
+  build       Build an image from a Dockerfile
+  history     Show the history of an image
+  import      Import the contents from a tarball to create a filesystem image
+  inspect     Display detailed information on one or more images
+  load        Load an image from a tar archive or STDIN
+  ls          List images
+  prune       Remove unused images
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rm          Remove one or more images
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE 
+
+
+
+
+Running docker containers
+===================================================
+>#Running your app "attached"
+> docker run -p 4000:80 <new_container>
+>#Running your app detached
+> docker run -d p 4000:80 <new_container>
