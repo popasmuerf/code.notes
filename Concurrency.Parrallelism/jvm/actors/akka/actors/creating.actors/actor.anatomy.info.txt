@@ -164,4 +164,30 @@ Creating an actor
 	classOf[ScalaPongActor])
 	)
 
+
+Creating an actor via factory method
+==================================================
+//Java
+
+class PongActor extends AbstractActor{
+	public static Props props(String response){
+		return Props.create(this.class, response);
+	}
+}
+
+.....
+	ActorRef actor = actorSystem
+	.actorOf(PongActor.props("PongFoo"))
+.......
+
+//Scala
+	
+	object ScalaPongActor{
+		def props(response:String):Props ={
+			Props(classOf[ScalaPongActor],response)
+		}
+	}
+.......
+	val actor = actorSsytem.actorOf(PongActor.props "PongFoo")
+......
 //Ka
