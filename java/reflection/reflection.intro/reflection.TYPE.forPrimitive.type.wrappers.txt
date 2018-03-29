@@ -1,0 +1,128 @@
+The Reflection API
+
+
+
+https://docs.oracle.com/javase/tutorial/reflect/class/index.html
+
+
+Uses of Reflection
+===================================================
+Reflection is commonlyused by programs which require
+the ability to examine or modify the runtime behavior of
+applications running in the Java machine.
+
+
+
+
+Lesson:Classes
+=======================================================
+Every type is either a reference or a primitive:
+	*	Classes (inherits from java.lang.Object)
+	*	enums (inherits from java.lang.Object)
+	*	arrays (inherits from java.lang.Object)
+	*	interfaces
+	*	boolean(primitive)
+	*	byte(primitive)
+	*	short(primitive)
+	*	int(primitive)
+	*	long(primitive)
+	*	char(primitive)
+	*	float(primitive)
+
+
+java.lang.Class
+====================================================
+For every type of object the Java virtual machine instantiates
+an immutable instance of :
+
+	java.lang.Class
+
+which provides methods to examine the runtim eproperties
+of the object including its member and type 
+information.
+
+Class provides the ability to create new classes
+and objects.  Most importantly, it is the entry point
+for all of the Reflection APIs.  this lession covers
+the most commonly used reflection operations involving 
+classes:
+
+	*	Retrieving Class Objects
+	*	Examining Class Modifiers and Types
+	*	Discovering Class Members
+	*	Troubleshooting
+
+
+
+
+
+Retrieving Class Objects
+========================================
+If an instance of an object is 
+available, then the simplest way to 
+get it's Class is to invoke:
+
+	Object.getClass() 
+
+Class c =  "foo".getClass() ; //returns Class for String
+
+int varInt = 0 ;
+Class c = varInt.getClass() ;//compile time error.  Primitives
+							// in Java cannot be dereferenced..
+							// all primitives in Java are passed
+							// by value.
+
+
+Class c = int.class; //this will work....
+
+
+
+
+Class.forName()
+==============================================
+If the fully-qualified name of a calss is
+available , it is possible to get the 
+coressponding Classusing the static 
+method:
+
+	Class.forName()
+
+This icannot be used for primitive types.
+
+Class c = Class.forName("com.duke.localServicePovider")
+
+
+TYPE Field for Primitive Type Wrappers
+============================================
+The .class syntax is more convenient and the preferred
+way to obtain the Class for a primitive type;
+however there is another way to acquire the 
+Class.  Each of the primitive types and void has
+a wraper class in 
+
+	java.lang
+
+that is used for boxing of primitive types
+to reference types.  Each wrapper 
+class contains a field name TYPE 
+which is equal to the Class for the primitive
+type being wrapped.
+
+
+Class c = Double.TYPE ;
+class d = Void.TYPE ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

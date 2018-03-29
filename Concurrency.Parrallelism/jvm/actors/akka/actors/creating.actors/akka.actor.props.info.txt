@@ -1,4 +1,5 @@
 Props
+https://doc.akka.io/docs/akka/2.5/actors.html
 ============================================
 Props is a configuration class to specify options
 for the creation of actors, think of it as an immutable
@@ -29,6 +30,8 @@ val props3 = Props(classOf[ActorWithArgs],"args")
 //Java
 //code start
 
+317 Muddy Branch Rd, Gaithersburg, MD 20878
+
 
 import akka.actor.Actor
 import akka.actor.Props
@@ -47,3 +50,14 @@ Props props3 = new Props.create(ActorWithArgs.class,"arg");
 
 Recommended  practices
 =============================================================
+It is a good idea to provide static factory methods for each Actor
+which help keeping the creation of 
+suitable Props as close to the actor definition as
+possible.  
+
+This also avoid the pitfalls associated with using the
+Props.create(...) method which 
+takes arguments as consructor parameters,
+since witin static method the given code block will
+not retain a reference to its enclosing scope
+

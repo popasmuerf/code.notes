@@ -1,0 +1,132 @@
+url: https://blog.talpor.com/2015/07/ssltls-certificates-beginners-tutorial/
+
+
+
+Basics of TLS
+========================================
+
+
+Confidentiality and integrity in TLS
+===========================================
+Types of public key encryption(TLS is just the protocol
+...the method of encryption is up to you)
+
+*	AES
+*	Block ciphers modes of operation
+*	Cyptographic hashes
+*	SHA-2
+*	HMAC
+
+
+*	Key exchange
+*	Diffie-Hellman
+*	Public key cryptography
+
+
+For confidentitiality TLSuses either:
+
+	*	Diffie-Hellman(elliptic curve mode supported) or
+	RSA for the key exchange.  With the whole HeartBlead 
+	dibacle, it is now recommended using a key
+	exchange mechnaism with forward secrecy, which 
+	implies Diffie-Hellman in this case.  the actual 
+	encryption is normally done using AES with several modes
+	available(CBC,CCM, GCM)
+
+
+	For integreity normally HMAC is used, today is pretty
+	much mandatoary to use SHA256
+
+
+
+Bascis of authenticaon in TLS
+==================================================
+
+*	Depends on authentication.
+	-	authentication prevents Man in the Middle
+		attacks
+	-	Authentication with new endpoints is achieved via
+		TLS certificates.
+	-	Certs are nothing more than public keys replete
+		with information such as 
+			*	FQDN being authenticated
+			*	contact email
+			*	date of issue
+			*	experation date
+			*	tect
+	-	The server stores the corresponding private
+		key.
+	-	TLS uses these keys to authenticate the server 
+		tot he client.
+
+
+ *	Recall taht in public key cryptography, messages
+ 	encrypted with teh public key can only be
+ 	decrtyped using the private key, but messages
+ 	encrypted withthe private key can be decrypted
+ 	with either.
+ 		-	public key <---decrypted with private key
+ 		-	messages <---decrypted with private key
+ 		-	messages <---decrypted with public key
+ 		-	The owner of the keys keeps the private
+ 			key secret, and distrbutes the public key freely.
+
+
+ *	Usual way of of authenticatinog someone using PK crypto
+ 	1. Bob sends Alics a random message encryptd with Alice's public key
+ 	2. Alice decrypts the message using her private key and sends it back to bob
+ 	3. Bob compares the message from Alice against the one that it
+ 	   the one that it send.  If they match Alic is who she
+ 	   syas she is, because only she could have decrypted the message,
+ 	   because only she has the private key.
+
+
+ TLS uses a variation of the above technique, but
+ it is essentially the same...
+
+
+ Now, even twith this trick validtion of a certificte, is not
+ straightfoard, so for didactice puproses
+ we being with an ovesimplified, navie and flawed
+ solution.
+
+
+
+
+ Self Signed Certs
+ ===========================================
+ 1. A hash of the certificate is made, encrypted with the
+ 	private key on the server, and then appended to the 
+ 	certificate to create a new certificate
+ 2. The server sends this new certificate to the clients that
+ 	connected to it
+ 3. To verify the certificate, the client decrypts the hash using
+ 	the public key of the certificate, then calculates ist own hash
+ 	and compares them, if they are equal the certificate is
+ 	valid.
+
+ 4.	The clients sends a random message to the server encrypted
+ 	witht he provided public key, if the server sends the original unencrypted
+ 	message back, then is conscidered authenticcated.
+
+
+ ^^^This process ensures that:
+ 	*	The provided public key corresponds to the private key used to 
+ 		encyrpt the hash
+ 	*	The server has access to the private key
+
+ Important NOTE: Use only Self Signed Certs on intranets !!!!
+ Everytme a TLS handshake takes place using a self signed cert...
+ the the public key is available to any one listening in on 
+ the transmission....known as "Man in the middle attacks". This is
+ especially dangerous on WiFi networks...ALWAYS get your certs if possible
+ from a signing authority...or perhaps you can use the ones that arleady
+ ship with common operating systems ?
+
+
+ 
+
+
+
+
+
