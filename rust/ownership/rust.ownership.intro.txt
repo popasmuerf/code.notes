@@ -39,5 +39,34 @@ A "String" is made up of three parts:
 	2. The actual String is stored on the 
 	heap
 
+This could be a problem, whens2 and s1 go out
+of scope, they will both try to free the
+same memory.   This is known as a double free
+error and is on of the memory safety bugs that
+Rust tries to do away with.  Freeing memory twice
+may lead to memory corruptions, which can lead
+to security vulnerabilities.
+
+
+To ensure memory safety, there's one more detail to
+what happens in this situation in Rust.  Instead
+of trying to copy the allocated memory, Rust considers
+s1 to no longer be valid and therefore, Rust
+doesn't need to free anything when s1 goes out of 
+scope.  checkout what happens when we attempt this 
+and try to compile...
+
+let s1 = String::from("Hello");
+let s2 = s1
+
+println!("{}, world!", s1);
+
+
+
 So variable s1 goes out of scope somehow....and we try to use
 variable s2...then the compiler will hammer us for it...
+
+
+
+
+
