@@ -94,4 +94,54 @@ variable s2...then the compiler will hammer us for it...
 
 
 
+Stack-Only Data:Copy
+=============================================
+There's another wrinkle we haven't talked
+about yet.  this is shown below:
+
+
+let x = 5 ;
+let y = x ; 
+
+println!("x = {}, y = {} ",x,y);
+
+^^^Does this code seem to contradict what we just
+learned ?   we don't  have to call to
+clone() but x is valid and wasn't moved into y
+
+
+The reason is that types like lintegers
+that have a known size at compile time
+are stored entirely in th stack, so 
+copies of the actual values are quikck
+to make.  That means there's no
+reason we want to prevent x from being valid 
+after we create the variable y.  In other
+words 
+there is a dffierence
+between deep and shallow copying and we can
+leave it out.
+
+
+Rust has a special annotation called the 
+"Copy" trait that we can place on
+types like integers that are stored
+on the stack
+
+If a type has the "Trait", an older
+variable is still usable after assignment.
+
+Rust wont let us annotate a type with the 
+"Copy" trait if the type, or any of
+its parts, has implemented the
+"Drop" trait.
+
+So...if we are going to get into
+the deep of it all with respect to ownership
+of types....then we need to dive into
+the documntation.
+
+
+
+
 
