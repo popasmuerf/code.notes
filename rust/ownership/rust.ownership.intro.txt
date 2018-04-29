@@ -61,6 +61,27 @@ let s2 = s1
 
 println!("{}, world!", s1);
 
+///code 
+
+fn main() {
+   let s1 = String::from("hello");
+   let s2 = s1;
+   println!("{} world!!", s1)
+}
+
+>
+   Compiling playground v0.0.1 (file:///playground)
+warning: unused variable: `s2`
+ --> src/main.rs:3:8
+  |
+3 |    let s2 = s1;
+  |        ^^ help: consider using `_s2` instead
+  |
+  = note: #[warn(unused_variables)] on by default
+
+error[E0382]: use of moved value: `s1`
+ --> src/main.rs:4:27
+
 
 
 So variable s1 goes out of scope somehow....and we try to use
