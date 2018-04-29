@@ -1,0 +1,122 @@
+https://doc.rust-lang.org/book/second-edition/ch04-02-references-and-borrowing.html
+
+
+
+Rust References and Borrowing
+===========================
+The issue with the tuple code at the end of the preceding section is that we have to return the String to the calling function so we can still use the String after the call to calculate_length, because the String was moved into calculate_length.
+
+Here is how you would define and use a calculate_length function that has a reference to an object as a parameter instead of taking ownership of the value:
+
+
+
+fn main(){
+	let s1 = String::from("hello");
+	let len = calculate_length(&1);
+	println!("The length of '{}' is {}. ", s1, len);
+}
+
+fn calculate_length(s:&String) -> usize{
+	s.len() 
+}
+
+
+^^^^ So basically we are creating a reference to a 
+reference ---> in C++ and C it would be :
+
+	int *ptr = &number ;
+	int **ref_ptr = ptr ; 
+
+
+First, notice that all the tuple code in the variable declareation
+and the function return value is gone.
+Second, note that we pass &s1  into
+calculate_length, and in its definition, we take
+&String rather than String
+
+These ampersands are references, and they allow you to 
+refer to some value without taking 
+owndership of it.
+
+The &s1 syntax lets us create a reference that rfers to the value
+of s1 but does not own it.  Because
+it does not own it, the value it points to
+will not be dropped when the
+reference goes out of scope.
+
+
+...we are not allowed to edit referneces...
+they are immutable by default, so this one wil
+not work:
+
+fn main(){
+	let s = String::from("hello");
+	change(&s);
+}
+
+fn change(some_string: &String){
+	some_string.push_str(", world");;
+}
+
+
+
+
+
+Mutable References
+=============================
+We can fix the error in the code from with just
+a small tweak:
+
+// src/main.rs
+
+
+fn main() {
+    let mut s = String::from("hello");
+
+    change(&mut s);
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+
+
+^^^^First we had to chang "s"
+ to be "mut".  then we had to create a mutable 
+ reference with &mut s and 
+ accept a mutable reference with 
+ some_string.push_str(", world");
+
+
+Mutable references have one big restriction:
+you can only have one mutable reference to
+a particluar piece of data in a particular scope.
+...and as such, this code will fail:
+
+
+	let mut s = String::from("hello");
+	let r1 = &mut s;
+	let r2 = &mut s ;
+
+
+
+The Rules of References:
+
+	Let's recoap what we'eve discussed about referneces:
+
+	1. At any given time, you can have either but not both
+	   of:
+
+	   		*	one mutable reference
+	   		*	Any number of immutable references.
+
+Note: Rust slices are infact a kind of reference.
+
+
+
+
+
+
+
+
+

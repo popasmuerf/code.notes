@@ -139,9 +139,134 @@ its parts, has implemented the
 So...if we are going to get into
 the deep of it all with respect to ownership
 of types....then we need to dive into
-the documntation.
+the documentation:
+
+	*	All the integer types, like u32
+	*	The Boolean type, bool, with values ture, and false
+	*	The characer type, char
+	*	All the floating point types, like f64
+	*	Tuples, but only if they contain types that are also
+		"Copy". (i32, i32) is "Copy", but
+		(i32,String) is not
+
+
+/**
+	The heap is where we perform 
+	dynamic computing w/r to allocation
+	of new memory.  This type of computing 
+	will always be slower than computing
+	off the stack because the stack
+	will always be O(n=1).  Java(at least
+	initially)
+**/
+
+
+Owndership and Functions
+================================================
+the semantics for passing a value to a 
+function are similar to assigning a value to
+
+Passing a varaible to a function will move or copy
+just like assignment. 
+a variable to a function will move or
+copy, just like assgnment.  Below is 
+an example with some annotations showing where variables go into
+and out of scope
+
+//code --> src/main.rs
+
+
+fn main(){
+	let s = String::from("hello"); //s comes into scope
+	takes_ownership(s);
+	let x = 5 ;
+ 	makes_copy(x);
+}
 
 
 
+fn takes_ownershp(some_string:String){
+	println!("{}", some_string);
+	//Here some_string goes out of  scoope
+	//and `drop` is called.  The backing
+	//memory is freed
+}
 
 
+fn makes_copy(some_integer:i32){
+	println!("{}", some_integer)
+	//Here, some_integer goes out of
+	//scope.  Nothing special
+	//happens
+}
+
+
+
+Returning Values and Scope
+=================================================
+
+Returning values can also transfer ownership
+// src/main.rs
+
+fn main(){
+	let s = String::from("hello"); //s comes into scope
+	takes_ownership(s);
+	let x = 5 ;
+ 	makes_copy(x);
+}
+
+
+fn gives_ownership() -> String{
+	let s1 = gives_ownership() ;
+	let s2 = String::from("hello");
+	let s3 = takes_and_gives_back(s2);
+}
+
+fn takes_ownership(some_string:String){
+	println!("{}", some_string);
+	//Here some_string goes out of  scoope
+	//and `drop` is called.  The backing
+	//memory is freed
+}
+
+
+fn makes_copy(some_integer:i32){
+	println!("{}", some_integer)
+	//Here, some_integer goes out of
+	//scope.  Nothing special
+	//happens
+}
+
+fn gives_ownersip -> String{
+	let some_string = String::from("hello");
+	some_string
+}
+
+fn takes_and_gives_back(a_string:String)->String{
+	a_string
+}
+
+
+
+Taking ownership and then returning ownsership
+with every function is a bit tdious.  What if 
+we want to let a function use a value but not take ownersip?
+It's quite annoying that anything we
+pass in also needs to be passed back 
+if we want to use it again, in addtion to any data resulting
+from teh body of the function that we might want
+to return as well.
+
+// src/main.rs
+
+fn main(){
+	let s1 = String::from("hello");
+	let (s2, len) = calculate_length(s1);
+	println!("The length of '{}' is {}.", s2, len)l
+}
+
+
+fn calculate_length(s:String) -> (String, usize){
+	let length = s.len();
+	(s, length)
+}
