@@ -1,0 +1,27 @@
+If we do want to deeply copy the 
+heap data of the String, not just stack data(ptr to string
+in heap, the length, and capacity). we can use 
+String's clown() function
+
+fn main() {
+   let s1 = String::from("hello");
+   let s2 = s1.clone();
+   println!("s1 = {}, s2 = {}", s1, s2);
+}
+
+>
+s1 = hello, s2 = hello
+
+
+Notice how we can still use s1 because
+the compiler no longer detects possble
+double data release issues...because now
+both variables point to differen areas
+on the heap.
+
+
+Side note: ...Everything as far as I know in Java
+is done by reference and as such everthing is allocated
+from the heap during runtime....which at least often
+makes is slower(but possibly not the case for long
+running processes)
