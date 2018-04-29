@@ -1,0 +1,43 @@
+https://doc.rust-lang.org/book/second-edition/ch04-01-what-is-ownership.html
+
+Rust and Ownership
+===========================
+let x = 5;
+let y = x;
+
+
+Multiple variables can interact with the same
+data in different ways in Rust.
+
+We can probably guess what this is doing based on our
+experience with other languages: "Bind the
+value 5 to x ; then make a copy of the value
+in x and bind it to y."  We now have tow
+varaibles, x and y, and both equal 5.  this is
+indeed what is happening because integers
+are simple values with a known,
+fixed size, and these two 5 values are pushed onto 
+the stack.
+
+
+
+Now let's look at the string version:
+
+let s1 = String::from("hello");
+let s2 = s1
+
+this looks very similar to the previous code,
+so we might assume that the way if towrks would be th 
+same: that is, the second line would make a copy of the value in 
+s1 and bind to s2, but that isn't 
+what quite happens:
+
+A "String" is made up of three parts:
+	1. a ptr on the stack pointing to the
+	first element in of the String...which
+	is really just an array of chars
+	2. The actual String is stored on the 
+	heap
+
+So variable s1 goes out of scope somehow....and we try to use
+variable s2...then the compiler will hammer us for it...
