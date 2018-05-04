@@ -1,0 +1,141 @@
+
+
+    case object Increment
+    case object Decrement
+    final case class Get(counterId: Long)
+    final case class EntityEnvelope(id: Long, payload: Any)
+
+    case object Stop
+    final case class CounterChanged(delta: Int)
+
+    class Counter extends PersistentActor {
+      import ShardRegion.Passivate
+
+      context.setReceiveTimeout(120.seconds)
+
+      // self.path.name is the entity identifier (utf-8 URL-encoded)
+      override def persistenceId: String = "Counter-" + self.path.name
+
+      var count = 0
+
+      def updateState(event: CounterChanged): Unit =
+        count += event.delta
+
+      override def receiveRecover: Receive = {
+        case evt: CounterChanged ⇒ updateState(evt)
+      }
+
+      override def receiveCommand: Receive = {
+        case Increment      ⇒ persist(CounterChanged(+1))(updateState)
+        case Decrement      ⇒ persist(CounterChanged(-1))(updateState)
+        case Get(_)         ⇒ sender() ! count
+        case ReceiveTimeout ⇒ context.parent ! Passivate(stopMessage = Stop)
+        case Stop           ⇒ context.stop(self)
+      }
+    }
+
+Cluster Sharding
+=========================================================
+
+Cluster sharding is useful when you need to distribute
+actors across several nodes in the cluster and 
+want to be able to interact with them using their logical identifier,
+but without having to care about their physical location in the
+cluster, which might also change over time.
+
+
+It could for example be actors representing
+Aggregate Roots in Domain-Driven Design terminology.
+here will call theses actosrs "entities". These
+actors typically have presistent 
+(durable state, but this feature is not 
+limited to actors with persistent state.
+
+
+Cluster sharding is typically used when you have many stateful actors
+that togther consume more resources(e.g. memory)
+than fit one one machine.  I fyou only have a few
+stateful actors it might be easier to run them on 
+a Cluster Singleton node.
+
+
+In this context sharding means that actors with an
+identifier, so called entities, can be 
+automatically distributed across multiple nodes
+in the cluster.  
+
+Cluster sharidng will not be active 
+
+
+Dependency for Akka Sharding:
+
+
+    <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-cluster-sharding_2.12</artifactId>
+      <version>2.5.12</version>
+    </dependency>
+
+
+    -or-
+
+
+        dependencies {
+      compile group: 'com.typesafe.akka', name: 'akka-cluster-sharding_2.12', version: '2.5.12'
+    }
+
+
+
+
+Example of sharding code :
+===============================
+
+//Scala
+
+
+
+    case object Increment
+    case object Decrement
+    final case class Get(counterId: Long)
+    final case class EntityEnvelope(id: Long, payload: Any)
+
+    case object Stop
+    final case class CounterChanged(delta: Int)
+
+    class Counter extends PersistentActor {
+      import ShardRegion.Passivate
+
+      context.setReceiveTimeout(120.seconds)
+
+      // self.path.name is the entity identifier (utf-8 URL-encoded)
+      override def persistenceId: String = "Counter-" + self.path.name
+
+      var count = 0
+
+      def updateState(event: CounterChanged): Unit =
+        count += event.delta
+
+      override def receiveRecover: Receive = {
+        case evt: CounterChanged ⇒ updateState(evt)
+      }
+
+      override def receiveCommand: Receive = {
+        case Increment      ⇒ persist(CounterChanged(+1))(updateState)
+        case Decrement      ⇒ persist(CounterChanged(-1))(updateState)
+        case Get(_)         ⇒ sender() ! count
+        case ReceiveTimeout ⇒ context.parent ! Passivate(stopMessage = Stop)
+        case Stop           ⇒ context.stop(self)
+      }
+    }
+
+
+
+
+
+
+}
+
+
+
+
+
