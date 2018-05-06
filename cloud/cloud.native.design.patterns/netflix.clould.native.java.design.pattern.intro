@@ -1,0 +1,187 @@
+
+
+
+
+
+
+/*CRUD operations*/
+----------------------------
+delete_spider:
+	/spiderFileList/{OSID}/{APPID}/{spiderid}'
+
+
+
+
+IaaS
+=========================================
+Providing management services to control
+virtualized computing infrastructure 
+is one of the primary concepts of cloud 
+computing, called 
+"Infrastructure as a Service" aka
+IaaS
+
+
+
+
+Declaritve formats for setup automation
+tht minimize time and cost for new developers
+joining the project
+===============================================
+
+maximum portability
+-------------------------------------------
+Have a clean contract with the underlying
+operating system, offereing maximum
+portability between execution enviorment
+
+
+suitable for deployment
+--------------------------------------------
+Are suitable for deployment on modern cloud
+platforms, obviating the need for servers
+and systems administreation
+
+
+Minimize divergence
+----------------------------------------------
+Minimize divergence between deveolopment and
+production, enabling continous deployment
+for maximum agility
+
+
+Scaling up
+-------------------------------------------------
+And can scale up without significant changes
+to tooling, architechture, or development practices
+
+
+
+
+The practices of a twelve-factor application
+====================================================
+
+Codebase
+-----------------------------------------------------
+One codebase tracked in revision
+control, many deploys
+
+
+Dependencies
+-----------------------------------------------------
+Explicitly declare and isolate dependencies
+
+Config
+-----------------------------------------------------
+Store config in the enviroment
+
+
+Backing services
+-----------------------------------------------------
+Treat backing services as attached 
+resources
+
+
+Build release, run
+-----------------------------------------------------
+Strictly separate build and run
+stages
+
+Processes
+-----------------------------------------------------
+Execute the app as one or more
+stateless processes
+
+
+Port binding
+-----------------------------------------------------
+Export services via port binding
+
+
+Concurrency
+-----------------------------------------------------
+Scale out via the process model
+
+
+Disposability
+-----------------------------------------------------
+Maximize robustness with fast startup and graceful
+shutdown
+
+
+Dev/prod parit
+-----------------------------------------------------
+Keep evelopment, staging and 
+production as similar as possible
+
+
+Admin processes
+-----------------------------------------------------
+Run admin/management tasks
+as one-off processes
+
+
+
+
+Codebase
+===============================
+One codebase tracked in revision
+control, many deploys
+
+	*	Souce code repos for an application
+		should contain a single application
+		with a manifest to its application
+		dependencies.  
+
+	*	There should be
+		no need to recompile or package an
+		application for different 
+		enviroments.	The code should 
+		be the same for:
+			-	Dev
+			-	Q/A
+			-	Staging
+			-	Production
+
+
+	*	Explicitly declare and isolate 
+		dependencies
+			-	Appliation dependencies
+				should be explicityly declared,
+				and any and all dependencies
+				should be avaiable from 
+				an artifact repository that can
+				be downloaded using a dependency
+				manager such as Apache Maven.
+
+			-	12-factor applications neer rely
+				on the existene of implicit 
+				systewide packages required as a dependency
+				to run the application. 
+
+			-	 All dependencies of
+				 an application are declared explicitly
+
+
+
+	*	The things that are unique to each
+		enviroment should live external
+		to the code
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
