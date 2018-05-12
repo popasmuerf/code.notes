@@ -1,0 +1,50 @@
+https://doc.akka.io/docs/akka/2.5/guide/tutorial_1.html
+
+Akka Architecture
+=============================
+
+
+
+The Akka actor hierarchy
+=================================
+	*	actors always belong to a parent
+	*	typcially an actor is created via
+		callying:
+
+			//code
+
+				getContext().actorOf()
+
+		Which instead of creating a 
+		"freestanding" actor, this injects
+		the new actor as a child into an
+		already existing tree:  The creator
+		actor becomes the parent of the newly
+		created child actor.  You might
+		ask then, who isthe the 
+		parent of the first actor you crate ?
+
+
+
+
+	*	New actor instances can be created under an actory using
+
+		//code
+
+			system.actorOf()
+
+	*	Creation of an actor returns a refernce that
+		is a valid URL.
+
+
+
+						/(root guardian)
+								|
+								|
+								|
+							   / \
+							  /   \	
+							 /     \
+							/ 	    \
+					/user 			 /system(system guardian)
+					(user guadian)		
