@@ -250,4 +250,22 @@ be sure to include this in your gradle file:
 Note:  Futures are nothing new....infact they are nothing more than
 a more convienient way to call a thread and off load block work to it.
 You are writing async code every time you create threaded code....
+The Future is no thing more than a reference to the threaded out code
+you wrote....
+
+
+package ActorTesting;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+import scala.compat.java8.FutureConverters ;
+/**
+ * Created by mdb on 3/20/18.
+ */
+public class PongActorTest {
+    ActorSystem system = 
+            ActorSystem.create();
+    //ActorRef actorRef = system.actorOf(Props.create(PongActor.class));
+}
+
 ....

@@ -128,11 +128,6 @@ Example of sharding code :
       }
     }
 
-
-
-
-
-
 }
 
 

@@ -63,7 +63,6 @@ are characteristics of a Stream --
 	iteration is required.
 
 
-
 with Java 8, collection interface has two methods to 
 generate a Stream:
 
@@ -79,3 +78,38 @@ generate a Stream:
 	List<String> filtered = strings.stream()
 	.filter(string -> !string.isEmpty())
 	.collect(Collectors.toList());
+
+
+
+
+Running Docker container interactively out the gate
+====================================================
+> docker run ubuntu /bin/sh 
+
+
+Running Docker conatiner via id and then via id and giving it a persistant name
+==========================================================================
+> docker run 123768 ubuntu /bin/sh
+
+> docker run 123768 --name ubuntu0 ubuntu /bin/sh
+
+
+Starting and stopping docker container
+=================================================
+> docker start ubuntu0
+
+> docker stop ubuntu0
+
+Running docker containers as "daemons"
+=============================================================
+> docker run --name d0 -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1 ; done" 
+> docker run --name d1 -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1 ; done"
+> docker run --name d2 -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1 ; done"
+
+
+Viewing the activity of docker containers
+============================================================
+> docker logs d0
+> docker logs d1
+> docker logs d3
+

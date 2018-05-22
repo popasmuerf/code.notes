@@ -48,3 +48,129 @@ The Akka actor hierarchy
 							/ 	    \
 					/user 			 /system(system guardian)
 					(user guadian)		
+
+
+		^^^^^
+
+
+
+What we need to know about the internals of Akka for a minute
+==============================================================
+
+In fact, before you create an actor in your code, 
+Akka has already created three actors in the system.
+The names of these built-in actors contain "guardian"
+because they supervise every child actor in their path.
+
+What are the "guardian actors" ????
+
+
+*	"/" the so-called root guardian
+	-	This is the parent of all actors in the system
+		, and the last one to stop when the system itself
+		is terminated
+
+*	"/user" the guardian.
+
+	-	This is the parent actor for all user created
+		actors.  Don't let the name "user" confuse you
+		as it has nothing to do with end users, nor with 
+		user handling.
+
+	-	Every actor you create using the Akka library will
+		have the constant path "/user/" prepended to it
+
+
+
+*	"/system" the system guardian
+
+
+
+
+^^^In the Hello World example, we have already
+seen how :
+
+	system.actorOf()
+
+creates an actor directly under "/user".
+We call this a top level actor, even thopugh,
+in pracdtice it is only on the top of the user
+defined hierarchy.  
+
+You typically have on one (or very few) top
+level actors in your ActorSystem.  We
+create child, or non-top-level, actors by 
+invoking 
+
+	context.actorOf()
+
+
+from an existing actor.  The context.actorOf()
+method has a signarture identical to 
+system.actorOf(), it's top level 
+counterpart
+
+curl -X GET --header 'X-SECRET-KEY: 4430187d-e427-4ee4-90f9-1e0d6efe35a8' --header 'X-API-KEY: 44a15b05-2321-4767-a05b-b927fd599d48' http://extractor-service.fos/extractor/api/spiders/osidX/aptest
+
+
+
+package akka_actors;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+
+import static java.lang.System.out ;
+
+/**
+ * Created by mdb on 5/14/18.
+ */
+
+
+package akka_actors;
+
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+
+/**
+ * Created by mdb on 5/14/18.
+ */
+public class PrintMyActorRefActor extends AbstractActor {
+    @Override
+    public Receive createReceive() {
+        return receiveBuilder()
+                .matchEquals("first", p -> {ActorRef firstRef = getContext().actorOf(Props.empty(),"firstActor");
+                System.out.println("Second: " + firstRef);})
+                .matchEquals("second", p-> {ActorRef secRef = getContext().actorOf(Props.empty(),"secondActor");
+                    System.out.println("Second: " + secRef);})
+                .matchEquals("third", p-> {ActorRef thirdRef = getContext().actorOf(Props.empty(),"thirdActor");
+                    System.out.println("Second: " + thirdRef);})
+                .matchEquals("printit", p -> {
+                    ActorRef secondRef = getContext().actorOf(Props.empty(), "second-actor");
+                    System.out.println("Second: " + secondRef);
+                })
+                .build();}
+}
+
+
+ 
+public class ActorHierarchyExperiments {
+    public static void main(String args[])throws java.io.IOException{
+        ActorSystem system = ActorSystem.create("testSystem");
+        ActorRef firstRef = system.actorOf(Props.create(PrintMyActorRefActor.class),"firstActor") ;
+        ActorRef secRef = system.actorOf(Props.create(PrintMyActorRefActor.class),"secondActor") ;
+        ActorRef thirRef = system.actorOf(Props.create(PrintMyActorRefActor.class),"thirdActor") ;
+        firstRef.tell("first",ActorRef.noSender());
+        secRef.tell("second",ActorRef.noSender());
+        thirRef.tell("third",ActorRef.noSender());
+        System.out.println(">>> Press Enter to EXIT <<<");
+        try{
+            System.in.read();
+        }finally{
+            system.terminate();
+        }
+    }
+}
+
+
+
