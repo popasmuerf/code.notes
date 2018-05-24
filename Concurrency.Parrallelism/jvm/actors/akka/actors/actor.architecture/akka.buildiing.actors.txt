@@ -508,7 +508,107 @@ our spec
 
 
 
-   
+^^^ Some stuff we need to take into account here....
+---------------------------------------------------------
+
+these two messages seem to cover the required functionality.
+However, the approach we shoose must take into account the distributed
+nature of the application....
+
+While the basic mechanism is theame for communicating
+with an actor on the local JVM as with a remote actor...
+we need to keep the following in mind:
+
+
+
+	*	Latency issues that will be apparent more often
+		than you think...
+
+	*	Reliability is a concern because a remote message
+		send involves more steps, which means that more
+		can go wrong
+
+	*	We should write or actor always with the thought that they can
+		and will at least be periodically lost.
+
+
+
+
+But to futher understand  the need for flexibility
+in the protocol, we need to consider Akka message
+ordering and message delivery guarantees.
+Akka provides the following behavior for messae sends
+
+	*	At-most-once delivery, that is, no guarnateed
+		delivery.
+
+	*	Message ordring is maintained per sender, reciever pair.
+
+
+Message delivery
+==================================
+
+In an actor system, we need to 
+determine exact meanin gof a guarantee --
+at which point does th esystem consider the 
+delivery as 
+accomplished"
+
+	1.	When the message is sent out on the nework?
+	2.	When the message is recieved by the 
+		target actor's host ?
+ 	3. 	When the message is put into the target
+ 		actors' mailbox ?
+ 	4.	When the message target actor starts to 
+ 		process teh message ?
+ 	5.	When the target actor has successfully 
+ 		processed the message ?
+
+
+Mose frameworks and protocols that calim guaranteed
+delivery actully provide someting similar to 
+points #4 and #5
+
+	*	Actor A1 sends messages m1, m2, m3 --> A2
+
+	*	Actor A3 sends messages m4, m5, m6 --> A2
+
+	This means that, for Akka messages:
+
+	*	If m1 is delivered it must be delivered before
+		-	m2
+		-	m3
+
+	*	If m2 is delivereed it must be. delivered before
+		-	m3
+
+	*	If m4 is delivered it must be delivered before
+		-	m5
+		-	m6
+
+	*	If m5 is delivered it must be delivered before
+		-	m6
+
+Since there is not guaranteed delivery, and of the 
+messages may be dropped, i.e. not arrive at A2
+
+
+So basically A2 can discard messages as it sees fit
+based on it's protocal....
+we can drop messages that arrive before they 
+are supposed to....we can proceed with processing
+despite getting messages out of order....
+etc...
+
+The fact that we are not opperating on the 
+assumption of guarantees......
+
+
+
+
+
+
+
 
 
 
