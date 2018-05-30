@@ -1,0 +1,131 @@
+url: http://therealdanvega.com/blog/2017/03/27/spring-stereotype-annotations
+
+Spring stereotype annotations
+=============================
+
+
+
+What are stereotype annotations and how do I use them in 
+the Spring Framework ?
+
+
+
+Stereotypes and Annotations defined
+========================================
+
+Stereotype:(noun)
+Something conforming to a fixed or general pattern;
+especially :
+	a standardized mental picture that is held in
+	common by memer of a group and that represents
+	an oversimplified opinion, prejudiced attude,
+	or uncritcal judgmnt
+
+
+^^^When applied to people...this is awful, stupid, and
+wrong....but in Spring...you should use this 
+whenever possible:
+
+	*	We know tht a controller's role in 
+		MVC pattern is to direct traffic and route
+		requests
+
+	*	We know that a service is a place where we 
+		can place all of our business logic
+
+	*	We know that a repository is a place for us to implement
+		data access layers for various persistence
+		stores.
+
+In a Spring MVC project, it is important for us to
+group classes based on their role in the 
+application
+
+
+
+Annotation:(noun)
+A note added (as to a statue) by way of commnt or explanation
+often furnising summaries of releveant court decisions
+
+
+^^^outside of the ethereal world of software development,
+we use the word annotation as a note or comment to describe
+something further.  In Java, we use them much as the same
+but there are some technical things going on 
+behind the scenes.  We describe a class in our project as
+being a controller by using the @Controller annotation.
+We know just by looking at that class that it is a
+Controller bu so does the framework which will do 
+some cool things to this class behind the scenes.
+
+
+
+
+Spring Stereotypes and how to use them
+===============================================
+Now that we understand what these words meant i might
+give us some insight as to what
+role they play in our Spring projects.  When
+a class is annotated with one of the following
+Stereotypes Spring will automatically
+register them in the application context.
+This makes the class available for dependency
+injecttion in othe rclasses and. this
+become vital to building out our applications.
+These classes can all be found under the  package
+
+org.springframework.stereotype
+
+
+Annotation 				Description
+---------------------------------------------
+@Component				Indicates that an annotated
+						class is a "component".
+
+
+@Service 	 			Indicates that an annotated
+						class is a "Service",
+						originally defined by
+						Domain-Driven Design as
+						"an operation offred as an inteface
+						that stands alone in the model,
+						with no ecapsulated state"
+
+
+
+@controller 			Indicates taht an annotated
+						class is a "Controller"
+
+
+@Repository 			Indicates that annotated class
+						is a "Repository", originally defined
+						by Domain-Driven Design as "a mechanism for
+						encapsulating storage, retrieval and 
+						search behavior which emulates a 
+						collection of objects"
+
+
+*** Where's is @RestController ?  I left this out on purpose 
+as RestController is a "convienience" annotation that combines
+the attributes  of annotations @Controller and @ResponseBody
+
+
+
+@Component
+----------------------------------------
+@Component is a generic steretype annotation for
+any Spring-managed component.  This means that 
+if you want to register a class in the application context
+you can use @Component to do so.
+
+The other stereotypes(Controller, Service,Repository) are
+simpy specializations of the  @Component class.
+In fact if you look at their source code you will
+see they themselves
+
+
+So why not just annotate everything as a Component ?
+it helps other programmrs to classify a particular class.
+It also helps to know where our demarcations are when we
+get into AOP.
+
