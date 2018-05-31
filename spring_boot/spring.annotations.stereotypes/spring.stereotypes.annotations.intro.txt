@@ -129,3 +129,107 @@ it helps other programmrs to classify a particular class.
 It also helps to know where our demarcations are when we
 get into AOP.
 
+
+Classes annotated with @Component essentially become
+registered beans with the framework...
+
+
+
+If we mark a class with @Component or one of 
+the othre Stereotype annotations these
+classes will be auto-dectected using
+classpath scanning. As long as these
+classes are in under our base package
+or Spring is aware of another package
+to scan, a new bean will be created
+for each of these classes.
+
+
+there's an implicit one-to-one mapping
+between the annotated class and the 
+bean (i.e. one bean per class).  Control
+of wiring is quite limited with this approach
+since it is purely declaratives
+
+
+
+
+@Bean
+-------------------------------------------------
+@Bean is used to explicityly declare a single bean,
+rather than letting Spring do it.
+Automatically like we did with @Controller.  It
+decouples the declaration of the bean from 
+the class definition nd lets you creat and configure
+beans exactly how you choose.
+
+
+@Bean isn't a class level annotation.
+It is used for methods that will be returning
+an instance of this bean...for example:
+
+
+public class User {
+ 
+    private String first;
+    private String last;
+ 
+    public User(String first, String last) {
+        this.first = first;
+        this.last = last;
+    }
+}
+
+
+ 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+ 
+@Configuration
+public class ApplicationConfig {
+ 
+    @Bean
+    public User superUser() {
+        return new User("Dan","Vega");
+    }
+ 
+}
+
+
+
+^^^^Typically, @Bean methods are declared within
+@Configuration clases.
+
+
+
+
+
+
+@Service
+--------------------------------------------------
+
+
+
+@Controller
+--------------------------------------------------
+
+
+
+
+Spring AOP
+=========================================================
+If you are not familiar with Aspect Oriented Programming
+(AOP) don't worry at all.
+
+
+
+Paedo looks camera man right in the fucking face...
+
+Chris-DipShit-Hansen : The decoy goes into full distraction mode!!!"
+
+God-awful-actor-who-doesnt-at-all-look-13:"hey...uhm...you ever seen a kitchen counter top before? They totally make you forget that you just saw a grown ass man with a camera trying to hide in a closet because this whole sting operation is ran by a gaggle of incompetent idiots..."
+
+
+
+
+
