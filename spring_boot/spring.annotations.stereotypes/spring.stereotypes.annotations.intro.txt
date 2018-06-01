@@ -215,6 +215,138 @@ public class ApplicationConfig {
 
 
 
+@Autowired injection
+--------------------------------------------------
+http://www.baeldung.com/spring-autowire
+
+
+Should we think of @Autowire as the method
+of injecting some already IoC container aware
+component into some instance of some class that the 
+IoC may or may not be aware of ?
+
+
+The annotation can be used directly on 
+properties, therefore eliminating
+the need for getters and setters
+
+@Component("fooFormatter")
+public class FooFormatter{
+	public String format(){
+		return "foo";
+	}
+}
+
+
+
+@Component
+public class FooService {
+	@Autowired
+	private FooFormatter fooFormatter; //an instance of FooMatter
+									   //is created and injected for
+									   //us whenever any instance of
+									   //FooService is instantiated
+}
+
+
+^^^ Here Spring looks for and injects 
+fooFormatter when FooService is created
+
+
+
+@Autowired on Setters
+------------------------------------------------
+The @Autowired annotation can be used on 
+setter methods.
+In the below example, when the 
+annotation isused on the setter method, the setter
+method is called with the instance of
+FooFormatter when FooService is created
+
+
+
+
+/**
+	So bascially if we annotate the setter method
+	with @AutoWired within this context....
+	it will execute the method and pass 
+	some available bean that has been annotated 
+	with or some derivative with of @Component 
+
+
+**/
+
+public class FooService{
+	private FooFormatter foomatter ; //an instance of FooMatter iscreated 
+									 //and injected for us whenever
+									 //an instance of FooService
+									 //is created for us
+	@Autowired
+	public void setFooFormatter(FooFormatter fooFormatter){
+		this.fooFormattter = fooFormattter; //this setter is called
+											//automatigically when the
+											//FooService is created
+	}
+
+}
+
+
+@Autowired and Optional Dependencies
+------------------------------------------------
+http://www.baeldung.com/spring-autowire
+
+
+Spring expects @Autowired dependencies to be
+available when the dependent bean 
+is being constructed.  If the framework cannot 
+resolve a bean for wiring, it will throw the 
+below-qouted exception and prevent the 
+Spring container from launching successfully:
+
+
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: 
+No qualifying bean of type [com.autowire.sample.FooDAO] found for dependency: 
+expected at least 1 bean which qualifies as autowire candidate for this dependency. 
+Dependency annotations: 
+{@org.springframework.beans.factory.annotation.Autowired(required=true)}
+
+
+
+
+
+public class FooService{
+	
+	@Autowired(required = false)
+	private FooFormatter fooFormatter ;
+}
+
+
+
+Autowiring by @Qualifier
+-----------------------------------------------------
+http://www.baeldung.com/spring-autowire
+
+
+
+
+
+
+
+@Autowired on Constructors
+------------------------------------------------
+The @Autowired annotation can be used on 
+setter methods.
+In the below example, when the 
+annotation isused on a constructor, an instance of,
+FooFormatter is injected as an arguent
+to the contructor when FooService is created
+
+
+
+
+
+
+
 
 Spring AOP
 =========================================================
