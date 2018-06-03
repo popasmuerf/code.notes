@@ -202,11 +202,55 @@ public class ApplicationConfig {
 
 
 
+@Configuration
+-------------------------------------------------
+annotation tells the Spring IoC container
+to expect to find definitions of objects and how
+they wire together in this class
 
+@Bean
+------------------------------------------------------
+By default, a Spring bean is singleton scoped...
+meaning that once instantiated(once and only once
+by the IoC container)...any number of Spring
+components that depend on that particular bean,
+then they will all have access to the
+same instance in the memory, by default.
+
+Spring has the notion of scope...by default, a
+Spring bean is a singleton scoped.....
+
+A @Component is the integral of @Bean....
+so does this also apply to instances of @Component
 
 
 @Service
 --------------------------------------------------
+
+
+
+@Component
+-----------------------------------------------------
+Tells Spring to discover other beans
+in teh application context by scanning
+the current package( or below) and looking
+for all objects tagged with this annotation
+and all of it's derivatives....
+Spring percieves them on 
+components and creates a new 
+instance of the object on 
+which they are applied.  It calls 
+the "no-argument" constructor by 
+default, or it will call a
+constructor with parameters so 
+long as all the parameters themselves
+are satisfiable with referene to 
+other objects in 
+the application context.
+
+Spring provides a lot of services
+as opt-in annotations
+expected on  @Configuration classes
 
 
 
@@ -218,6 +262,10 @@ public class ApplicationConfig {
 @Autowired injection
 --------------------------------------------------
 http://www.baeldung.com/spring-autowire
+
+
+
+
 
 
 Should we think of @Autowire as the method
