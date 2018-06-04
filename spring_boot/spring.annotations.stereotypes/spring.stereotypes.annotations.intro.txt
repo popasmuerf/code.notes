@@ -227,8 +227,6 @@ so does this also apply to instances of @Component
 @Service
 --------------------------------------------------
 
-
-
 @Component
 -----------------------------------------------------
 Tells Spring to discover other beans
@@ -373,8 +371,47 @@ public class FooService{
 Autowiring by @Qualifier
 -----------------------------------------------------
 http://www.baeldung.com/spring-autowire
+The @Qualifier annotation can be used to 
+hint at an narrow down the required bean:
+
+Since there are two concrete implementations of 
+Formatter avaialble for the Spring
+container to inject, Spring will throw a 
+NoUniqueBeanDefinitionException
+when construction FooService
 
 
+This can be avoided by narrowing the
+implementation using the annotation
+@Qualifer with name of the specific
+implemenation and thus avoid any
+exception throwing ambiguities
+when Spring finds mulitple beans
+of the same type.
+
+
+
+@Component("fooFormatter")
+public class FooFormatter implements Formatter{
+	public String format(){
+		return "foo";
+	}
+}
+
+@Component("barFormatter")
+public class BarFormatter implements Formatter{
+	public String format(){
+		return "bar";
+	}
+}
+
+
+public class FooService{
+	@AutoWired
+	@Qualifer
+	private Formatter fooFormatter ;
+
+}
 
 
 
