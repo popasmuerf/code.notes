@@ -417,6 +417,54 @@ public class FooService{
 
 
 
+@Autowiring by Custom Qualifier
+---------------------------------------------
+Spring allows us to create our own
+@Qualifier annotation.  To create a 
+custom Qualifier, define an annotation
+and provide the @Qaulifier annotation within
+the definition as below:
+
+
+
+@Qualifier
+@Target{
+	 ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER})
+	 @Retention(RetentionPolicy.RUNTIME)
+	 public @interface FormatterType{
+	 	Sring value() ;
+	 }
+}
+
+@FormatterType("Foo")
+@Component
+public class FooFormatter implements Formatter {
+ 
+    public String format() {
+        return "foo";
+    }
+}
+
+@FormatterType("Bar")
+@Component
+public class BarFormatter implements Formatter {
+ 
+    public String format() {
+        return "bar";
+    }
+}
+
+
+@Component
+public class FooService {
+     
+    @Autowired
+    @FormatterType("Foo")
+    private Formatter formatter;
+     
+}
+
+
 @Autowired on Constructors
 ------------------------------------------------
 The @Autowired annotation can be used on 
@@ -437,14 +485,6 @@ Spring AOP
 =========================================================
 If you are not familiar with Aspect Oriented Programming
 (AOP) don't worry at all.
-
-
-
-Paedo looks camera man right in the fucking face...
-
-Chris-DipShit-Hansen : The decoy goes into full distraction mode!!!"
-
-God-awful-actor-who-doesnt-at-all-look-13:"hey...uhm...you ever seen a kitchen counter top before? They totally make you forget that you just saw a grown ass man with a camera trying to hide in a closet because this whole sting operation is ran by a gaggle of incompetent idiots..."
 
 
 

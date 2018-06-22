@@ -1,0 +1,204 @@
+
+https://developer.lightbend.com/docs/akka-management/current/bootstrap.html
+
+
+These are the two issues that he is currently working through. 
+
+1. Scheduler cron representation 
+2. Managing/Keeping track of crawlId, which he needs to do things like 
+   creating, starting,displaying stats of, and stopping a spider
+   Currently there is no easy way for him to persist state, but he is 
+   looking at work arounds.
+
+He just signed off, but will answer anyother questions 
+I may have in the morning his time.
+
+He believes that early next week is a reasonable estimate.
+
+
+...but anyways, I am sort of leading The Extractor project.  It makes use of AkkaHttp....and we are having some issues
+
+
+
+
+
+
+
+
+
+Akka Management
+==============================================
+
+
+Service Discovery
+-----------------------------------------------
+Akka discovery provides a simple inerface around 
+various ways of locating services such 
+as DNS or suing configuration or key-value stores like
+zookeeper, consul etc.
+
+What is Service Discovery(Que es Serviso discovery ?)
+-----------------------------------------------------
+Akka's Service Discovery talks speckfically discovering hosts
+and ports that relate to some logical name of a service
+
+
+If you are looking for a way to discover
+Actors in a Cluster, you may want to look at the 
+Receptionist pattern from Akka Typed instead.
+
+Since it provides a more fine-tuned towards 
+Actors mechanism of doing the disovery 
+
+Discovery Method: Akka DNS Discovery
+----------------------------------------------------
+The most natural form of service discovery is to use
+DNS as the source of truth regarding available services.  In
+the simplest version, we quer for a service
+name-which each cluster manager, such as Kubernetes, 
+Mesos or others define using their own naming schemes,
+and expect to get back a list of IPs that are
+related to this service.
+
+
+***Mechanism 
+======================================================
+
+Note: Akka Seeds...what are they ?
+--------------------------------------------------------
+As the number of nodes is not known in the 
+beginning and can vary over time, it's useful to
+have a Seed node to form the cluster.  Seed node
+is an actor system without any actors, and it's used as
+and entry point to the cluster for nealy created nodes.
+
+You may set your sees in the application.conf file:
+
+
+akka{
+	actor{
+		provider = "cluster"
+	}
+	remote{
+		log-remote-lifecycle-events = off
+		netty.tcp{
+			hostname = "127.0.0.1"
+			port = 0
+		}
+	}
+}
+
+cluster{
+	seed-nodes = [
+	"akka.tcp://ClusterSystem@127.0.0.1:2551",
+	"akka.tcp://ClusterSystem@127.0.0.1:2552"
+	]
+}
+
+
+#Disable legacy metrics in akka-cluster
+akka.cluster.metrics.enabled=off
+
+
+
+
+Case 1: "Initial" Bootstrap process
+-------------------------------------------------------
+
+*	New node is started, desiganted ---> Node-1
+
+*	The node discoveres its "neighbors" using akka-discovery
+	(e.g. using DNS)
+	-	This is NOT enough to dafely join or form a cluster,
+		some initial negotiation between the nodes
+		must take place
+*	The node starts to probe the Contact Points of the
+	disovered notes(which are HTTP endpoints, exposed
+	via Akka Management by the Bootstrap Management Extension
+	) for known seeds to join.
+
+*	Since no cluster exists yet, none fo the contacted nodes
+	return any seed nodes during the probing process
+	-	The stable-margin timout passes, and no discover
+		changes are observed as well
+	-	At least akka.management.cluster.bootstrap.required-contact-point-nr
+		nodes have been discovered.
+	-	Communication with all discovered Contanct Points
+		have been confirmed via successful HTTP 
+		request-response
+
+	-	The nodes all decide(autonomously) that no cluter
+		exists, and a new one should be formed,
+		they know all their addresses, and decide that the"lowest"
+		sorted address is to start forming the
+		cluster.
+
+	-	The lowest address node(e.g. "A") notices the same,
+		and makes the decision to join itself.
+
+	-	Once the lowest addressed node has joined itself, it has formed
+		a new cluster
+
+	-	Other nodes, including X, will notice that A has
+		notice that A has started returning itself as 
+		a seed-node in the Contact Point responses.
+
+	-	Any node, including X, immediately joins such
+		seed node that it has obsered in the Contact
+		Point process.
+
+	-	Nodes continue probing the other nodes, and
+		eventualy will notice any of the existing
+		nodes that are part of the cluster, and
+		immediately join it.  The phase is referred to
+		as "epidemic joining".
+
+	-	Eventually all nodes have joined the same
+		cluster, the process is complete.
+
+
+
+Case 2: Bootstrap process, with existing cluster
+========================================================
+
+The Bootstrap process in face of an existing cluster in a 
+deployment is very simple, and actually if you
+read through Case 1, you already seen it in action.
+
+
+*	New node is started, called "X"
+*	The node discovers its "neighbors" using akka-discovery(DNS)
+
+*	The node starts to probe the Contact Points of the discovered nodes
+	(http endpoints) exposed via Akka Management by the 
+	BootStrap Management Extension for known seeds to join
+
+*	The cluster already exists, and when probing the various nodes node
+	X will recieve at least one seed-node adddress from the
+	contact pts
+	-	The node joins any discovered(via contact point probing)
+		and immediately become part of the cluster
+	-	The process is complete, the node has successfully
+		joned the "right" cluster
+
+	-
+
+Akka behind NAT or in a Docker container
+=========================================================
+In setups involving Network Address Translation(NAT),
+Load Balancers or Docker containers the hostname and 
+port pair that Akka binds to will be different than
+the "logical" host name and port pair that is used
+to connect to the system from the outside.
+
+
+akka{
+	remote{
+		netty.tcp{
+			hostname = my.domain.com #external (logical) hostname
+			port = 8000	#external (logical)  port
+			bind-hostname = local.address  #internal (bind) hostname
+			bind-port = 2552	#internal (bind) port
+		}
+	}
+}
