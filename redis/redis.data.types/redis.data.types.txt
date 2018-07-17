@@ -1,0 +1,278 @@
+http://openmymind.net/2011/11/8/Redis-Zero-To-Master-In-30-Minutes-Part-1/
+
+
+Red Data Types
+====================================================
+
+Note:
+====================================================
+
+
+Strings
+--------------------------------------------
+Redis string is a sequence of bytes
+Strings in Redis are binary safe,
+meaning they have a known length not
+determined by any special terminating 
+characters.  Thus, uou can store
+anytng ip to 
+512 megabyets in one string
+
+
+
+Example:
+**********************
+> SET name "tutorialspont"
+> GET name 
+"tutorialspont"
+
+
+Hashes
+
+---------------------------------
+A Redis hash is a collection of
+key value pairs.  Redis Hashes are
+maps between string fields and strin balues
+ They are used to represent
+objects
+
+Every has can store up to 232 -1 field pairs
+(more than 4 billion)
+
+> HMSET user:1 username tutorialspont password
+
+> HGETALL user:1 
+1) "username" 
+2) "tutorialspoint" 
+3) "password" 
+4) "tutorialspoint" 
+5) "points" 
+6) "200"
+
+
+Redis hases are maps between teh string fields and teh
+string values.  Hence, they are the perfet data type t 
+represent objects.  I redis, every has can 
+store up to more than 4 billoin field-value
+pair..
+
+
+
+
+
+
+
+Lists
+------------------------------------------
+
+
+
+
+HSMAP
+
+
+US:
+	proxy-0:
+		key
+		name 
+		ip_internal
+		ip_external
+
+	proxy-1:
+		key
+		name 
+		ip_internal
+		ip_external
+
+	proxy-2:
+		key
+		name 
+		ip_internal
+		ip_external 
+
+	proxy-3:
+		key
+		name 
+		ip_internal
+		ip_external
+--------------------------------------------------
+
+Region:
+	field:USA
+	field:HKEY--
+				|
+				----->
+
+--------------------------------------------------
+Europe:
+	proxy-0:
+		key
+		name 
+		ip_internal
+		ip_external
+
+	proxy-1:
+		key
+		name 
+		ip_internal
+		ip_external
+
+	proxy-2:
+		key
+		name 
+		ip_internal
+		ip_external 
+
+	proxy-3:
+		key
+		name 
+		ip_internal
+		ip_external
+
+
+
+
+Formalizations of Data Pipeline Model
+==================================================
+
+
+Extractor Scrum 6-28-2018
+
+Mic Meija 
+==========================================
+	*	Working on providing reliable persistance
+		for crawlee continer state using Portworkx.
+		This effort is part of EXTR-421
+
+Oliver Staats
+==================================================
+	*	Working on Extractor health reporting
+		EXTR-471
+		-	Involves adding new REST endpoints 
+			for the Extractor API
+	*	Investigating the causes for the recent 
+		Extractor outtages
+
+
+Mike Brown
+=================================================== 
+	*	Working on DCG/Extractor integration.
+	*	Designed potential data model for storing
+		proxy information within Redis. Will document
+		and send out to team for discussion.
+
+
+Team
+=====================================================
+	*	Meeting with Angad's team on Monday
+		to discuss persistence strategies.
+
+
+
+
+Hey Den.  Long time no talk to.  If you would be so kind,
+I have a few questions about tying in the DCG editor 
+for Extractor Jobs.
+
+I am not that familiar with DCG, but from what I understand,
+DCG is more or less an orchestration framework for running one or more
+in FracWeb associated services with each job being a node in 
+an acyclic graph.
+
+
+For the base requirements for making Extractor available 
+in the DCG editor is :
+
+	*	A DCG pipeline for Extractor
+
+	*	Extractor Scala client for Fracweb to to launch and pass
+		DCG pipeline arguments to.
+
+Where the DCG pipeline is a definition of parameters and runtime 
+instructions for any particular Extraction Job.
+
+
+
+Would this all be correct ?
+
+https://www.abouthoroscope.com/wp-content/uploads/2015/09/Taurus-and-Cancer-Compatibility.png.png
+
+
+
+Redis is often described as a Key Value storage engine. 
+This is accurate, however it may help to think of Redis
+more as a data-structure engine.
+
+I good introduction to the data structures supported by 
+Redis may be found here : http://openmymind.net/2011/11/8/Redis-Zero-To-Master-In-30-Minutes-Part-1/
+
+
+The current proxy architecture for Extractor has the Crawlee backend making
+use "off site" proxies, meaning proxie instances that are not being hosted by
+Amazon.  Any user of Extractor while creating their spider will be allowed to 
+select a specific proxy to be used by their generated spider.  The selection of 
+proxies should be based on attributes that a user believes would be advantages to their
+spider crawl.
+
+The attributes of an Extractor proxy would be the following:
+
+	-	Region
+	-	Country
+	-	State/Province
+	-	proxy related information 
+
+Each attribute can be imagined as an object that encapsulates fields that contain data that
+describes each object(Why not just have a collection of "proxy objects" that just encapsulate nested objects of "Region", "Country",etc ?  Redis doesn't support nested data structures)
+
+
+
+
+
+// Middleware for validating JWT tokens
+func Authorize(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+    // validate the token
+    token, err := jwt.ParseFromRequest(r, func(token *jwt.Token) (interface{}, error) {
+         // Verify the token with public key, which is the counter part of private key
+        return verifyKey, nil
+    })
+     if err != nil {
+        switch err.(type) {
+        	case *jwt.ValidationError: // JWT validation error
+            vErr := err.(*jwt.ValidationError)
+             switch vErr.Errors {
+            case jwt.ValidationErrorExpired: //JWT expired
+                DisplayAppError(
+                    w,
+                    err,
+                    "Access Token is expired, get a new Token",
+                    401,
+                )
+                return
+             default:
+                DisplayAppError(w,
+                    err,
+                    "Error while parsing the Access Token!",
+                    500,
+                )
+                return
+            }
+         default:
+            DisplayAppError(w,
+                err,
+                "Error while parsing Access Token!",
+                500)
+            return
+        }
+     }
+    if token. Valid {
+        next(w, r)
+    } else {
+        DisplayAppError(w,
+        err,
+            "Invalid Access Token",
+            401,
+        )
+    }
+}
+
+

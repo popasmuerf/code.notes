@@ -81,6 +81,10 @@ Annotation 				Description
 ---------------------------------------------
 @Component				Indicates that an annotated
 						class is a "component".
+						Annotated classes will be
+						pickuped as being part
+						of the class path
+						by Spring
 
 
 @Service 	 			Indicates that an annotated
@@ -89,7 +93,12 @@ Annotation 				Description
 						Domain-Driven Design as
 						"an operation offred as an inteface
 						that stands alone in the model,
-						with no ecapsulated state"
+						with no ecapsulated state".  Is 
+						basically the same as @Component
+						but has a different name
+						for logical designation of
+						purpose.  As a named attribute
+						option.
 
 
 
@@ -102,7 +111,8 @@ Annotation 				Description
 						by Domain-Driven Design as "a mechanism for
 						encapsulating storage, retrieval and 
 						search behavior which emulates a 
-						collection of objects"
+						collection of objects". Has a named
+						attribute option
 
 
 *** Where's is @RestController ?  I left this out on purpose 
@@ -477,6 +487,13 @@ to the contructor when FooService is created
 
 
 
+@PostConstruct
+------------------------------------------------
+@PostConstruct is run just after all services are initialized.
+Such starup init components can inject/autowire custom
+managed servies and use them for initializion.  This
+way we can, for example, injecting Spring Data repository
+and do some data intialization in our appliction.
 
 
 

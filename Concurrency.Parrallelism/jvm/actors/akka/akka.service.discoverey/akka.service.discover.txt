@@ -201,4 +201,115 @@ akka{
 			bind-port = 2552	#internal (bind) port
 		}
 	}
+------------------------------------------------------------
+//Scala 
+import akka.discovery.ServiceDiscovery
+
+val system = ActorySystem("example")
+//..
+val discovery = ServiceDiscovery(system).discovery
+val result:Future[Resolved] = discovery.lookup("serivcie-name,
+resolveTimeout = 500")
+
+
+//Java
+import akka.discovery.ServiceDiscovery;
+ActorSystem  system = ActorSystem.create("example");
+SimpleServiceDiscovery discovery = ServiceDiscovery.get(system);
+Future<SimpleServiceDiscovery.Resolved> result = discovery.lookup("servie-name",
+resolveTimeout = 500);
+
+
+
+Mechanism exlpanation
+---------------------------------------------------------------
+The simplest way of resolving mutiple hosts of a
+(micro-)service  is to perform a 
+DNS lookup would look like Kubernetes *see the bootstrap-joining-demo
+demo application if yu want to try it out for yourself)
+
+$ kubectl exec -it $POD -- dig appka-service.default.svc.cluster.local
+
+; <<>> DiG 9.10.3-P4-Debian <<>> appka-service.default.svc.cluster.local
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 3457
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;appka-service.default.svc.cluster.local. IN A
+
+;; ANSWER SECTION:
+
+
+appka-service.default.svc.cluster.local. 30 IN A 172.17.0.6
+appka-service.default.svc.cluster.local. 30 IN A 172.17.0.2
+appka-service.default.svc.cluster.local. 30 IN A 172.17.0.3
+appka-service.default.svc.cluster.local. 30 IN A 172.17.0.4
+
+
+
+;; Query time: 0 msec
+;; SERVER: 10.0.0.10#53(10.0.0.10)
+;; WHEN: Fri Dec 08 12:04:38 UTC 2017
+;; MSG SIZE  rcvd: 121
+
+
+
+Discovery Method: Marathon API
+==============================================================
+If your are a Mesos or DC/OS user, you can use the provided Marathon
+API implementation.  You will need to add a 
+label toyour Marathon JSON(named ACTOR_SYSTEM_NAME by default)
+and set the value equal to the name of the
+configured effective name, which defaults to your
+applications actor system name.
+
+You will also have to add a named port, by 
+default akkamgmhttp, and ensure that
+Akka Management's HTTP interface i bound to this port.
+
+
+This is included into a a seperate JAR file:
+
+	<dependency>
+	  <groupId>com.lightbend.akka.discovery</groupId>
+	  <artifactId>akka-discovery-marathon-api_2.12</artifactId>
+	  <version>0.14.0</version>
+	</dependency>
+
+
+...and your application.conf
+
+
+	akka.discovery{
+		method = marathon-api
+	}
+
+...and your marathon.json
+
+
+{
+   ...
+   "cmd": "path-to-your-app -Dakka.remote.netty.tcp.hostname=$HOST -Dakka.remote.netty.tcp.port=$PORT_AKKAREMOTE -Dakka.management.http.hostname=$HOST -Dakka.management.http.port=$PORT_AKKAMGMTHTTP",
+
+   "labels": {
+     "ACTOR_SYSTEM_NAME": "my-system"
+   },
+
+   "portDefinitions": [
+     { "port": 0, "name": "akkaremote" },
+     { "port": 0, "name": "akkamgmthttp" }
+   ]
+   ...
 }
+
+
+
+
+
+
+
+
+	}
+

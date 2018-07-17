@@ -1,0 +1,34 @@
+https://dzone.com/articles/docker-for-mac-mysql-setup
+
+
+Rules
+========================
+1. install image/run container
+
+>docker run -p 3306:3306 -d --name mysql -e MYSQL_ROOT_PASSWORD=password mysql/mysql-server
+
+
+2. Verify that container is running
+
+>docker ps
+
+
+3. Log in to the app running in the container
+
+> docker exec -it mysql bash
+bash-4.2# mysql -uroot -ppassword
+
+>mysql
+
+
+4. check that mysql is listening on port 3306
+
+> lsof -nP -iTCP:3306 | grep LISTEN
+com.docke 84629  mdb   18u  IPv4 0x6041ec4119bb0e5d      0t0  TCP *:3306 (LISTEN)
+com.docke 84629  mdb   19u  IPv6 0x6041ec40e5641eb5      0t0  TCP [::1]:3306 (LISTEN)
+
+
+
+
+
+

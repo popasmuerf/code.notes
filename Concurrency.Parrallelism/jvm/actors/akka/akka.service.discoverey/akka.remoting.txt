@@ -1,0 +1,36 @@
+https://doc.akka.io/docs/akka/2.5.4/java/remoting-artery.html
+
+
+
+Remoting(codename Artery)
+==============================================================
+
+Remoting enables Actor systems on different hosts or 
+JVMs to communicate with each other.  By enabling
+remoting the system will start listening on a 
+provided network address and also gaisn
+the ability to connect to other systems 
+through the network.
+
+
+Trom the application's perspective, there is no
+API difference between local or remote systems, 
+ActorRef instances that point to 
+remote systems look exatly the same as 
+local ones: they can be sent messages to,
+wathed, etc.  
+
+Every ActorRef contans hostname and port information
+and can be passed around even on the netowrk.
+
+Thsi means that on a network eery ActorRef is a uniqu
+identifier of an actor on that network.
+
+
+Remoting is not a server-client technology.  All systems using
+remoting can contact any other system on the netowrk
+if they possess an ActorRef pointing to 
+those systems.  This means that
+every system that is remoting enabled acts as 
+"server" to which arbitrary systems
+on the same nework can connect to.

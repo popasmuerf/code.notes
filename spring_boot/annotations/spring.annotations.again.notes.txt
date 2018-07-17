@@ -1,0 +1,42 @@
+@Component
+===========================
+	*	annotation is a stereotype
+	*	class level
+	*	stereotypes class as a component
+	*	auto detected via classpath scanning
+	*	value attribute:
+		@Component(<component name>)
+
+	*	//code
+		@Component
+		public class MyClass{....}
+
+
+
+@Service
+===========================
+	*	annotation is a stereotype
+	*	class level
+	*	Annalogous to "JEE Business Service Facade"
+	*	For classes that encapsulates application 
+		business logic
+	*	Provides the logical sense that these
+		classes are services.  You could actually
+		use @Component annoation in place of
+		@Service and there would be absolutely
+		no delta in functionality with respect to
+		that class in relation with the rest of
+		the application.
+
+	*	auto detected via classpath scanning
+	*	value attribute:
+		@Service(<service field name>)
+
+	*	//code
+		@Service
+		public class MyClass{....}
+
+
+
+
+

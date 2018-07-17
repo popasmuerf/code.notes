@@ -1,0 +1,137 @@
+
+Get version 
+======================================
+> docker version
+
+Michaels-MBP:docker_stuff mdb$ docker image ls
+REPOSITORY                                         TAG                 IMAGE ID            CREATED             SIZE
+mysql                                              latest              8d99edb9fd40        2 weeks ago         445MB
+<none>                                             <none>              291332eb28eb        4 months ago        152MB
+docker.fractalindustries.com/crawlee               latest              64fa8b635057        4 months ago        1.49GB
+docker.fractalindustries.com/crawlee-wheels-base   latest              20cc404c5773        4 months ago        1.49GB
+ubuntu                                             latest              f975c5035748        4 months ago        112MB
+<none>                                             <none>              4a06dc36621f        4 months ago        1.49GB
+centos                                             latest              2d194b392dd1        4 months ago        195MB
+<none>                                             <none>              05567d98ef69        4 months ago        1.49GB
+<none>                                             <none>              d2c665ed402b        4 months ago        1.4GB
+docker.fractalindustries.com/crawlee-ubuntu-base   latest              7eadca17bc95        4 months ago        1.4GB
+cassandra                                          latest              0fb9df189322        4 months ago        323MB
+friendlyhello2                                     latest              08921c9d2bfc        4 months ago        148MB
+popasmuerf/getstarted2                             part3               08921c9d2bfc        4 months ago        148MB
+friendlyhello                                      latest              7834cffb40fd        4 months ago        148MB
+popasmuerf/gete-started                            part2               7834cffb40fd        4 months ago        148MB
+<none>                                             <none>              f37588dc01b0        4 months ago        139MB
+jenkins                                            latest              194289d0fefd        4 months ago        809MB
+python                                             2.7-slim            52ad41c7aea4        4 months ago        139MB
+redis                                              latest              33c26d72bd74        4 months ago        107MB
+ubuntu                                             14.04               dc4491992653        5 months ago        222MB
+mysql/mysql-server                                 latest              f92f0896ed95        5 months ago        246MB
+hello-world                                        latest              f2a91732366c        7 months ago        1.85kB
+mongo                                              3.4.4               34ba9aead272        13 months ago       360MB
+jpetazzo/nsenter                                   latest              c16fe938c1a5        2 years 
+
+
+Docker compose
+================================================
+> docker --version
+
+docker-compose version 1.21.1, build 5a3f1a3
+
+
+
+
+Docker-machine
+=================================================
+> docker-machine --version
+
+
+
+
+Docker images vs containers
+===================================================
+We can stop a container and create a new image from 
+it.  With this in mind, images
+are considered build-time constructs whreas
+conatianers are run-time constructs
+
+
+Images
+------------------------------------------------
+Images are made up of multiple layers that get
+stacked on top of each other and represented
+as a single object.
+
+What's inside of an image ?
+-------------------------------------------------
+Inside of the image is a cut-down operating system(OS)
+and all of the files and dependencies required to run an
+application.  Because containers are intended to be 
+fast and lightweight, miages tend to be
+small
+
+
+Images are immortal...until they are not...
+----------------------------------------------------
+#Releated commands:
+>	docker <conatiner> run
+>	docker <service> create
+
+
+When starting a container from an image, the 
+two constructs become dependent on each other
+and you cannot delete the image until the last container
+using it has been stopped and destroyed.
+
+
+You cannot delete the image until the last container using it
+has been stopped and destroyed.
+
+
+
+
+Running docker on Linux
+======================================================
+add your userid to the docker group...
+this will solve so many problems....
+
+
+
+Pulling images
+======================================================
+#> docker image pull <image>:<tag>
+
+>docker image pull neo4j:latest
+
+
+
+Repositories
+========================================================
+	*	store images(multiple versions often)
+	*	There are official/trusted repositories
+	*	There are unoffical/untrusted repositoriers
+	*	Some of the bigger outfits have their own repos:
+		-	nginx:https://hub.docker.com/_/nginx/
+		-	busybox:https://hub.docker.com/_/busyboxy
+		-	redis:https://hub.docker.com/_/redis
+		-	mongo:https://hub.docker.com
+
+
+Dangling repos...
+==========================================================
+Michaels-MBP:docker_stuff mdb$ docker image ls --filter dangling=true
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+<none>              <none>              291332eb28eb        4 months ago        152MB
+<none>              <none>              4a06dc36621f        4 months ago        1.49GB
+<none>              <none>              05567d98ef69        4 months ago        1.49GB
+<none>              <none>              d2c665ed402b        4 months ago        1.4GB
+<none>              <none>              f37588dc01b0        4 months ago        139MB
+Michaels-MBP:docker_stuff mdb$ 
+
+
+^^^What are they ? How do I get rid of them ?
+
+
+Dangling images is an image that is no longer tagged,
+and appears in listings as :
+
+	<none
