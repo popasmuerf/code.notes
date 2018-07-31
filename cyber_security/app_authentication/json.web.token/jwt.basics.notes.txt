@@ -175,3 +175,10 @@ Benefits of JWT
 			are not ideal when consuming a secure API. Adopting
 			a token-based approach simplifies this as you don't
 			have to deal with cookie containers...
+
+	*	CRSF:
+		-	since you are not relying on cookies, you don't
+			need to protect against cross site requests.
+
+
+			

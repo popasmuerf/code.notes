@@ -36,6 +36,9 @@ operating system, offereing maximum
 portability between execution enviorment
 
 
+
+
+
 suitable for deployment
 --------------------------------------------
 Are suitable for deployment on modern cloud
@@ -344,6 +347,47 @@ Disposablity
 		high volume traffic spike that is
 		capable of overloading all available 
 		healthy application instances.
+
+
+
+Dev/Prod Parity
+================================================
+Keep development, staging and production as
+similar as possible
+
+The 12-factor application should
+prevent divergence between
+development and production
+enviroments.  there are three
+types of gaps to be mindful of>
+
+
+	*	Time gap
+		-	Developrs should expect development
+			changes to be quickly
+			deployed into production
+
+	*	Personnel gap 
+		-	Devlopers who make a code change
+			are closely involved with its
+			deployment into production, and 
+			closely monitor the behavior of 
+			an application after making changes
+
+
+	*	Tools gap
+		-	Each enviroment should mirror
+			technology and framework choices in 
+			order to limit unexpected behavior
+			due to small inconsistencies
+
+
+Logs
+=========================================
+Treat logs as evernt streams
+
+	-	Tweleve-factor aps write logs as 
+
 
 
 

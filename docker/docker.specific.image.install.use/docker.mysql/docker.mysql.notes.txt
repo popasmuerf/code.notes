@@ -1,4 +1,5 @@
 https://dzone.com/articles/docker-for-mac-mysql-setup
+https://severalnines.com/blog/mysql-docker-containers-understanding-basics
 
 
 Rules
@@ -7,16 +8,29 @@ Rules
 
 >docker run -p 3306:3306 -d --name mysql -e MYSQL_ROOT_PASSWORD=password mysql/mysql-server
 
+>docker run --name=<container name> --env="MYSQL_ROOT_PASSWORD=<mypassword>" mysql
+
+>docker run -p 3306:3306 -d --name=mysql_instance04 --env="MYSQL_ROOT_PASSWORD=r3dbl@ck" mysql
+
+>docker run --name=testsql -e MYSQL_ROOT_PASSWORD=r3dbl@ck -d mysql 
+
+>docker run --detach --name=test-mysql --env="MYSQL_ROOT_PASSWORD=r3db@ck" mysql
+
+>docker run --detach --name=test-mysql --env="MYSQL_ROOT_PASSWORD=r3dbl@ck" --publish 3306:3306 mysql
 
 2. Verify that container is running
 
 >docker ps
+>docker ps -a
+>docker logs testsql
+>docker inspect testsql
 
 
 3. Log in to the app running in the container
 
 > docker exec -it mysql bash
-bash-4.2# mysql -uroot -ppassword
+bash-4.2# mysql -uroot -pr3dbl@ck
+
 
 >mysql
 
@@ -28,7 +42,24 @@ com.docke 84629  mdb   18u  IPv4 0x6041ec4119bb0e5d      0t0  TCP *:3306 (LISTEN
 com.docke 84629  mdb   19u  IPv6 0x6041ec40e5641eb5      0t0  TCP [::1]:3306 (LISTEN)
 
 
+>docker-machine ip default
+
+>mysql -uroot -pr3dbl@ck -h 172.17.0.2 -P 3306
+
+5. creat a new user
+
+mysql>CREATE USER 'popasmuerf'@'%' IDENTIFIED BY 'r3dbl@ck';
+
+mysql>GRANT ALL PRIVILEGES ON * . * TO 'popasmuerf'@'%';
+
+mysql>CREATE USER 'mdb'@'%' IDENTIFIED BY 'r3dbl@ck';
+
+mysql>CREATE USER 'popasmuerf'@'%' IDENTIFIED BY 'r3dbl@ck';
 
 
 
+6. stop docker container
+
+> docker stop testsql
+> docer rm test sql
 

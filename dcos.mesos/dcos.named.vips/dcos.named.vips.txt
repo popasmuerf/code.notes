@@ -185,16 +185,20 @@ So in summar:
 
 
 
-	 
 
+insert into team
+(id, name)
+values
+(1, 'Spring Boot Badgers');
 
+insert into teammate
+(id, first_name, last_name, position, team_id) values
+(1, 'Greg', 'Turnquist', '2nd base', 1);
 
+insert into teammate (id, first_name,
+last_name, position, team_id) values
+(2, 'Roy', 'Clarkson', '1st base', 1);
 
-
-....and no...civilzations/empires do not collapse from
-people calling out and refusing to tolerate bullshit and 
-being bereft in decorum while doing so...they collapse
-from the same thing they always collapse from....the
-patrician class purposely undermining the 
-
-
+insert into teammate
+(id, first_name, last_name, position, team_id) values
+(3, 'Phil', 'Webb', 'pitcher', 1);

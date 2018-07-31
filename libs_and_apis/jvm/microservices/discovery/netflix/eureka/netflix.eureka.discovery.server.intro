@@ -1,0 +1,46 @@
+Registration and Discovery service(Eureka Service)
+====================================================
+
+Spring Cloud provides a state of the art support for 
+Netflix Eureka, a service registry and discovery tool.
+All services executed by you get listed and 
+discovere by Eureka service, which it reads from the
+Eureka client Spring configuration insided your service project.
+
+
+
+Dependency
+===============================
+artifactId: spring-cloud-starter-eureka-server
+
+
+
+
+Startup class
+================================
+The startuup class App would run the Eureka
+service seamlessly by just using the annotation:
+
+
+	@EnableEurekaApplication
+
+
+
+
+Example code
+===================================
+package com.packtpub.mmj.eureka.service;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+
+@SpringBootApplication
+@EnableEurekaServer
+
+public class App{
+	public static void main(String[] args){
+		SpringApplication.run(App.class, args);
+	}
+
+}

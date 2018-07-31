@@ -39,4 +39,66 @@
 
 
 
+Mic Meija
+===========================
+	*	EXTR-481 
+		-	Updating crawlee to prevent user from modifying the spiderid
+		-	Users should not be able to alter spiderIds
+		-	Spider source files will now be split into 3 seperate spider modules,
+			one of which contains the spiderid and will not be accessble to 
+			users like the general spider source code.
+		
 
+	*	EXTR-484
+		-	Update crawlee crawls api to use iso date and include status, tags and notes
+		-	Switching from presenting time stamps in  unix time to human readable Date time format
+		-	Changes made for presentation layer.
+
+
+Oliver Staats
+===========================
+	*	Back from holiday
+	*	EXTR-480
+		- in progress --> "he state of a cluster node is monitored by
+		  the rest node. That state is not always reflecting what the
+		  cluster reality is."
+
+    *	EXTR-471
+    	- Import akka-http-healthcheck lib in the project to expose a REST
+		  endpoint /health for returning a  standardized json response denoting
+		  the status of the service.
+
+
+Rutvik 
+===========================
+	*	Subitted code updates for review(PR)
+		-	Crawl History
+		-	UI updates
+
+
+
+Mike Brown
+==========================
+	*	Discussed initial design of proxie selection UI
+		with Rutvik.
+
+	*	Discussed Extractor/Crawlee design w/r to providing
+		fracweb user with a selection of proxies.
+			*	Arrived at aggreement that the data structure
+				I designed is adequate for our needs and will scale
+				as needed.
+
+			*	Team decided that it is best to design and implement
+				the API for this feature first, testing with someting
+				like in-mem proxy test data, and then work on designing
+				and then implementing a DB dedicated to proxies(along with
+				populating the DB with proxy entries)
+
+			*	Created tickets per Angad's request:
+				-	EXTR-488
+					*	Provide API in Extractor for generating and returning an AppID
+				-	EXTR-489
+					*	Use mongo instance under "crawlee-shared-components", and create a separate db to 	manage crawlee schedules.
+				
+
+	*	Arranged meeting with Sunil regarding Extractor object storage(Mon 23)
