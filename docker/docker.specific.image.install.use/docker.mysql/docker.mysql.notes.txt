@@ -2,6 +2,31 @@ https://dzone.com/articles/docker-for-mac-mysql-setup
 https://severalnines.com/blog/mysql-docker-containers-understanding-basics
 
 
+
+Notes
+========================================
+options
+-----------------------------------------
+https://www.tutorialspoint.com/docker/docker_setting_mongodb.htm
+*	-it
+	+	interfactive mode
+	+	will die the momement your
+		host shell dies or you interrupt
+		the running app on the host command
+		shell
+
+*	-d
+	+	daemon monde
+	+	you will need to open up a docker shell
+		to work with interactively
+
+We can run an instance of an image as both ?
+---------------------------------------------
+
+> docker run -it -d mongo
+
+
+
 Rules
 ========================
 1. install image/run container
