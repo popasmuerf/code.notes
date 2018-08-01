@@ -41,3 +41,16 @@ Michaels-MacBook-Pro:nginx mdb$
 ssh_srv                                            1.0                 7d6a3f15a1f3        2 minutes ago       239MB
 
 
+#docker build -t eg_sshd .
+
+>  docker build -t eg_sshd .
+
+> docker run -d -P --name test_sshd eg_sshd
+
+> docker ps
+CONTAINER ID        IMAGE               COMMAND               CREATED             STATUS              PORTS                   NAMES
+ac0412fd9665        eg_sshd             "/usr/sbin/sshd -D"   16 seconds ago      Up 14 seconds       0.0.0.0:32768->22/tcp   test_sshd
+Michaels-MacBook-Pro:ssh mdb$ docker port test_sshd 22
+0.0.0.0:32768
+
+
