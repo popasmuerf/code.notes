@@ -1,0 +1,43 @@
+Building images
+=============================================
+
+
+create a docker file(nginx on ubuntu in this example)
+===============================================
+
+FROM ubuntu
+MAINTAINER michaelbrown172@gmail.com
+
+RUN apt-get update
+RUN apt-get install -y nginx
+CMD ["echo","Ubuntu NGINX Image created"]
+
+
+
+
+
+Build image
+==============================================
+#Syntax
+> docker build -t <image_name>:<tag> <target dir>
+
+
+#examples
+> sudo docker build -t myimage:0.1
+
+> sudo docker build -t nginx_server:nginx_server ./
+
+> docker image list | egrep nginx
+
+nginx_srv                                          1.0                 1a6395d80a17        7 minutes ago       181MB
+ubuntu_nginx                                       ubuntu_nginx        1a6395d80a17        7 minutes ago       181MB
+Michaels-MacBook-Pro:nginx mdb$ 
+
+
+
+> sudo docker build -t ssh_srv:1.0 ./
+
+> docker image list | egrep ssh
+ssh_srv                                            1.0                 7d6a3f15a1f3        2 minutes ago       239MB
+
+
