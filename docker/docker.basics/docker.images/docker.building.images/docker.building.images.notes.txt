@@ -1,3 +1,6 @@
+https://docs.docker.com/samples/
+
+
 Building images
 =============================================
 
@@ -53,4 +56,9 @@ ac0412fd9665        eg_sshd             "/usr/sbin/sshd -D"   16 seconds ago    
 Michaels-MacBook-Pro:ssh mdb$ docker port test_sshd 22
 0.0.0.0:32768
 
+
+#Clean up
+> docker container stop test_sshd
+> docker container rm test_sshd
+> docker image rm eg_sshd
 

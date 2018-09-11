@@ -1,0 +1,90 @@
+https://www.baeldung.com/spring-mvc-model-model-map-model-view
+
+Model
+================================
+Let's start with most basic concept here -- "The Model"
+Simply put, the model can supply attributes used for
+rendering views.
+
+
+To provide a view with usable data, we simply add this data to
+its Model object.  Additionally,
+maps with attributes can be merged with Model instances.
+
+
+@GetMapping("/showViewPage")
+public String passParameterWithModel(Model model){
+	Map<String,String>map = new HashMap<>();
+	map.put("spring","mvc");
+	model.addAttribute("message","Baeldung");
+	model.mergeAttributes(map);
+	return "viewPage";
+
+}
+
+/*
+	take aways...
+	Model.addAttribute("...")
+	Model.mergeAttributes("...")
+*/
+
+
+
+
+ModelMap
+================================
+Just like the Model interface above, 
+ModelMap is also used to pass values to
+render a view.  The advantage of ModelMap
+is it gives us te ability to pass a colletion 
+of values and treat these values as if they were within
+a Map
+
+/*
+	Take aways
+*/
+
+
+@GetMapping("/printViewPage")
+public String passParametersWithModelmap(ModelMap map)
+	map.addAttribute("welcomeMessage","welcome");
+	map.addAttribute("message","Baeldung");
+	return "veiwPage";
+
+
+
+ModelandView
+===================================
+The final interface to pass values to a view is the Model
+This interface allows us to pass all the information
+equired by Spring MVC in one return.
+
+
+
+@GetMapping("/goToViewPage")
+pubic ModelandView passParametersWithModelAndView(){
+	ModelAndView modelAndView = new ModelAndView("viewPage");
+	modelAndView.addObject("message","Baeldung");
+	return modelAndView ;
+
+
+
+The View 
+==================================================
+All the data, we place within these models, is used by 
+a view --  in general a templated view to 
+render the web page.
+
+If we have a Thymeleaf template file targeted byour controller's methods
+s their iew.  A paramter passed through the model will b
+accessable from within the thymeleaf HTML code:
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Title</title>
+	</head>
+	<body>
+		<div>Web Application. Passed parameter : th:test="${message}"</div>
+	</body>
+</html>

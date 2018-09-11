@@ -1,0 +1,102 @@
+http://phantomjs.org/
+
+PhantomJS -- Scriptable Headless Browser
+
+
+
+Important: PhantomJS development is suspended until 
+further notice.
+
+
+
+
+What is PhantomJS ?
+==========================================
+PhantomJs is a headless web browser scriptable
+with JavaScript.
+
+
+Usig QtWebKit as the back-end, it offers fast and
+native suport for various web standards:
+
+	1.	DOM handling
+	2.	CSS selector
+	3.	JSON 
+	4. 	Canvas
+	5. 	SVG
+
+
+
+The following simple scripts for PhantomJS loads
+Google homepage, waits a bit, and then captures
+it to an image.
+
+
+//code
+
+	var page = require('webpage').create();
+	function fn = {
+		setTimeout(function(){
+			page.render('google.png');
+			phantom.exit() ;
+		},200);
+	}
+	page.open('http://www.google.com', fn);
+
+
+
+
+PhantomJs is an optimal solution for :
+==========================================
+
+*	Page automation:
+	-	Acess webpages and extract information using the
+		standard DOM API, or with usual libraries like
+		JQuery
+
+
+*	Screen capture
+	-	Programattically caputure web contents, including
+		SVG and Canvas
+
+	-	Create web site screen shots with thumbnail 
+		preview
+
+*	Headless website testing
+	-	Run functional tests with frameworks such as 
+			*	Jamine, QUnit, Mocha, WebDriver,etc
+
+*	Network monitoring
+	-	Monitor page loading and export as standard
+		HaR files.  auomate performance annalysis using
+		YSlow and Jenkins.
+
+
+
+
+Page Automationwith PhantomJS
+=============================================
+Because PhaontomJS can load and manipuluate a web page, it is perfect
+to carry out various page automation tasks.
+
+
+DOM manipulation
+---------------------------------------------
+Sinc ethe script is executed as if it is running
+on a web browser, standard DOM scripting and CSS selectors
+work just fine.
+
+
+The following useragent.js  example demonstrates reading the
+property:
+
+	textContent property of the element whose id is :
+
+		qua
+
+
+// code
+
+var page = require('webpage').create() ;
+console.log('The default user agent is ' + page.settings.userAgent);
+page.settings.userAgent = 'SpecialAgent' ;
