@@ -97,6 +97,126 @@ property:
 
 // code
 
-var page = require('webpage').create() ;
+var page = require('webpage').create();
 console.log('The default user agent is ' + page.settings.userAgent);
-page.settings.userAgent = 'SpecialAgent' ;
+page.settings.userAgent = 'SpecialAgent';
+page.open('http://www.httpuseragent.org', function(status) {
+  if (status !== 'success') {
+    console.log('Unable to access network');
+  } else {
+    var ua = page.evaluate(function() {
+      return document.getElementById('qua').textContent;
+    });
+    console.log(ua);
+  }
+  phantom.exit();
+});
+
+
+
+
+The above example also shows the approach to customize the User-Agent 
+string seen by teh remote web sever
+
+side note...what is the User-Agent String ?
+-------------------------------------------------
+The User-Agent request-header field contains information
+about he user agent originating the request.  This is
+for statistical purposes, the tracing of protocol violations,
+and automated recognition of user agents for the 
+sake of tailoring responses.t avoid particular user agent
+limitations.  
+
+//example
+
+User-Agent ="User-Agent" ":" 1*( product | comment )
+
+
+
+
+
+
+Ue jQuery and Otehr Libraries
+------------------------------------------------
+
+As of version 1.6, you area lso able to include jQuery into your page using
+
+	page.includeJs as follows:
+
+
+	//code
+
+var page = require('webpage').create();
+page.open('http://www.sample.com', function() {
+  page.includeJs("http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", function() {
+    page.evaluate(function() {
+      $("button").click();
+    });
+    phantom.exit()
+  });
+});
+
+
+
+
+The Webpage instance
+====================================================
+Suppose you have an instance of the webpage:
+	// code 
+	var page = require('webpage').create() ;
+
+what can be etracted and executed on it ?
+
+
+Attributes
+--------------------------------------------------------
+	
+	*	page.conGoForward -> boolean
+		-	If window.history.forawrd coulw be a valid action
+
+	*	page.canGoBack -> boolean
+		-	If window.history.ack would be a valid action
+
+	*	page.clipRect -> object
+		-	
+
+
+added : BadIps.py
+        version: initial version
+        date : 2018.09.07
+        author : mdb172
+        modified by: mdb172
+        modifications: Added code for despositing body of  data retrieved 
+        from site crawling into data object store(minio/s3)
+
+
+
+
+
+@Pavel just to be clear.....
+1. OxPath uses MongoDB for both(?):
+	1.1 picking up jobs to run
+	1.2 Storing data retrieved from websites
+
+2. PhantomJs for rendering target data that can only be
+   achieved via scripting and then using the OxPath
+   query language to actually retrieve the data from the rendered
+   page(?)
+
+3. We really don't have to worry about the mechanics of #1
+   as Crawlee should be able to use the OxPath api to run jobs
+   and recieve back site date OxPath has retrieved(?)
+
+
+
+ def parse_ip_info(self,response):
+        fdir = ''
+        body = response.body
+        if body:
+            iplist = re.findall(self.pttr_ip,body)
+            if (len(iplist) > 1):
+                fname = 'badip-' + iplist[1] + "-" + strftime("%Y-%m-%d %H:%M:%S", gmtime() ).replace(" ","-")
+                yield swob.FileStoreItem(data=body,filename=fname,filedir=fdir)
+            else:
+                fname = 'badip-EMPTY_RESP' + "-" + strftime("%Y-%m-%d %H:%M:%S", gmtime() )
+                yield swob.FileStoreItem(data=body,filename=fname,filedir=fdir)

@@ -62,3 +62,98 @@ Michaels-MacBook-Pro:ssh mdb$ docker port test_sshd 22
 > docker container rm test_sshd
 > docker image rm eg_sshd
 
+
+/usr/local/etc/my.cnf
+/usr/local/Cellar/mysql/8.0.12/.bottle/etc/my.cnf
+
+
+CREATE USER 'popasmuerf'@'localhost' IDENTIFIED BY 'r3dbl@ck';
+GRANT ALL PRIVILEGES ON * . * TO 'popasmuerf'@'localhost';
+
+ALTER USER 'popasmuerf'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'r3dbl@ck';
+
+
+ALTER USER 'popasmuerf'@'localhost' IDENTIFIED WITH mysql_native_password BY 'r3dbl@ck';
+
+
+
+
+https://rationemllc.atlassian.net/wiki/s/211448943/6452/d4b3d48cd314cbb30ebc0ba44a7ffde437bcb1c3/_/images/icons/emoticons/check.png
+
+
+
+Oliver Staats
+==================================================
+	*	EXTR-491/EXTR-490
+	*	-	Releasing latest version of extractor client
+		-	Provides a full set of proxies stored in 
+			the extractor-service
+		-	Accepts a subset of proxies selected for any particular
+			spider
+
+	*	Will start working on EXTR-488
+		-	Provide API in Extractor for generating and returning an AppID
+
+
+	*	Common Crawl
+		-	storing about 1 peta per year compressed
+		-	100 terabytes per year in wad files(request response)
+		-	What are these urls are used for ?  
+		-	Common Crawl provides for free 
+		-	Problems:
+			*	Runs slow
+			*	gunzip and wap format
+			*	data wharehousing issue
+			*	Extractor problem or a data wharehousing problem ?
+			*	Why are we doing this?  Value could be a lot cheaper 
+			*	We could store on AWS ?
+			*	There is a storage issue
+			*	
+
+	*	Extractor-Service maintencance trouble-shooting
+
+
+Mic Miejia
+===================================================
+	*	EXTR-214
+		-	Monitor and collect all data sets from 
+			http://www.secrepo.com/
+		-	Running into issues scraping this 
+			site due to site encoding--> Working
+
+Rutvik
+===================================================
+	*	Currently working another project(AMM)
+
+
+Michael Brown
+===================================================
+	*	EXTR-182
+		-	Split this issue into multiple tickets
+			after determining that it would be best
+			that the root url is more or less a catalog
+			of seperate sites to be crawled by its own
+			associated spider
+
+	*	Udpated spider matrix for news spiders that 
+			are port of epic EXTR-182
+
+	*	Met with Nahn to gather initial requirements for 
+		the automation of data extraction using Bethoven
+
+
+	*	EXTR-499
+		-	Android Malware Tracker
+		-	Working
+
+	*	EXTR-500
+		-	BadIPs.com an IP based abuse tracker
+		-	Working
+
+
+mkdir -p /Users/mdb/src20/spring_bootlab/sqldemo/src/main/java/repos
+
+
+
+
+application-production.properties
