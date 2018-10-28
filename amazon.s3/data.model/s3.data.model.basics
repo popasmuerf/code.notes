@@ -1,0 +1,96 @@
+Data Model
+===========================================
+	*	Basic unit to stor data inside Amazon S# is the "object"
+	*	Objects conssists of the actual 
+		data enriched with metadata
+	*	The metadata is a set of name-value pairs that
+		provide additional information about the object.
+			-	modification date : Default
+			-	content type	: Default
+			-	user defined meta data : Optional
+
+	*	Objects are organized in buckets
+	*	A bucket is a collection of objects that
+		share the same namespace
+	*	buckets are also used for:
+			-	access control
+			-	usage reporting
+			-	transfer charges.
+			-	Example:
+					*	image : geek.jpg
+					*	located in bucket "codegeeks"
+					*	has url : http://codegeeks.s3.amazonaws.com/photos/geek.jpg
+
+			-	Buckets may span namespaces, and every object within a bucket
+				has a unique key hence the combination of:
+					*	webservice endpoint + bucket + key + version
+						which identifies an object in S3
+						-	endpt : s3.amazonaws.com
+						-	bucket : codegeeks
+						-	key : photos/geek.jpg
+
+
+	*	Although Amazon states that you can access the data from anywhere
+		in th world, for many appls it is crucial to know wheer the resides.
+		Therefore you can shoose the region a bucket is located  on.  This helps end 
+		users to optimize latency times and to address regulatory requs.
+
+
+	*	Updates of a key in a bucket are atomic....either the entire
+		operation on that key is successful or the entire operation is
+		abandonded.
+
+
+	*	Oject locking is not supportedin Amazon S3.  This means that if you application needs
+		to project an existing object against modifcation from other
+		processes...you have to implement this yourself in your app...in other
+		words...S3 objects are not thread safe....
+
+
+	*	As Amazon S3 does not provide any kind of transactional behaior, moving for example data
+		from one key to another might result in the state of that
+		data is successfully created at the new location but the 
+		subsequent deletion of the old key fails
+
+
+	*	If that data is easily reproducible, e.g. thumbnail images, one can
+		use the "Reduced Redundancy Storage" (RRS) option of Amazon S3
+
+
+
+Usage
+=============================================================
+Amazon S3 offers tow differnt APIs for developers:
+	*	REST apis
+		-	GET
+		-	POST
+		-	PUT
+		-	S3 actually stores the objects meta data
+			within the HTTP headers during data retrieval
+	*	SOAP apis
+	*	
+
+
+
+What is S3 compared to other databases
+========================================================
+	-	S3 is a file store
+	-	S3 is well suited for storing unstructured data
+	-	S3 doesn't follow a folder structure and uses
+		everything as an object
+	-	S3 lacks any hierarchical structure to it's method
+		of data storage in leiu of a flat organisation of
+		containers called Buckets.
+	-	S3 uses unique Ids known as Keys to retrieve files from the
+		bucket.
+	-	The maximum size for each item (Object) is 5TB.
+	-	S3 is suitable for storing large objects
+
+	-	S3 isn't a database in the way we often think of
+		what is a database
+
+
+
+
+/extractor/api/infoDump/{infoType} 
+
