@@ -25,4 +25,31 @@ possible for the full-text-search engine
 to directly scan the contents of the 
 documents with each query, a strategy called 
 "serial scanning".  This is what
-some tools, such as grep do when searhing.
+some tools, such as grep do when searching.
+
+
+However, when the number of documents to search
+is potentially large, or the quantity of search
+queries to perfom is substantial, the problem of full-text search is
+often dividedinto two tasks:
+
+	-	indexing:
+			*	scan the text of all the documents
+			*	build a list of search terms
+			*	often called an index...but more appropiately
+				called a concordance...
+			*	Example:
+				-	A few spiders crawl empidemiology/pathology
+					site data
+				-	Information pertaining to such crawls
+					will be indexed...references being key woarkds...
+				-	Queries using these keywords will result
+					in repsonses including data pertaining to
+					these spiders...
+
+
+	-	searching
+			*	specific queries will only refernece the index
+				as opposed to the text of the original document.
+
+
