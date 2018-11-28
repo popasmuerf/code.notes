@@ -1,0 +1,84 @@
+http://kafka.apache.org/documentation.html#security_ssl
+
+Encryption and Authentication using SSL
+==============================================================
+
+Step-1 : Genereate SSL key and certificate for each Kafka broker 
+------------------------------------------------------------------
+The first step is to deploy one or more brokers with the 
+SSL suport is to generate the key and the ceertificate
+for each machine in the cluster.  You can use Java's keytool
+utility to accomplish this task.  We will generate the key into a temporary
+keystore initially so that we can export and sign it later with 
+a CA
+
+	*	Junit:
+		-	Usese refletion to parse @Test annotation
+			to get the test methods and then invoke 
+			them.
+	*	Spring
+		-	dependency injection 	
+	*	Tomcat
+		-	web container to forware request to correct module by
+			parsing their web.xml files and request URI
+	*	Eclipse:
+			auto completion of method names
+	*	Struts:
+
+	*	Hibernate:
+
+
+The list is endless and they all use java refelction
+because all these frameworks have no knowledge and
+access of user defined classes, interfaces their methods, etc
+
+
+"but if you have never studied kata beyond the surface, then you would not know that"
+^^^LOLz...what rubbish.  If you are unable to discern what your kata is doing "on the 
+surface"...then either you are unfamiliar with your own martial art, or you are looking
+for someting that isn't there in the first place.
+
+0f6e695fac49fcd8463908d3e42a64ad08598865 
+
+current commit
+
+
+When should we not use reflection
+===============================================
+We shouldn't be using reflection in normal programming where we
+
+
+Started by user Michael Brown
+hudson.plugins.git.GitException: Command "git fetch --tags --progress origin +refs/heads/artifactory:refs/remotes/origin/artifactory --prune" returned status code 128:
+stdout: 
+stderr: fatal: Couldn't find remote ref refs/heads/artifactory
+fatal: The remote end hung up unexpectedly
+already have access to the classes and interfaces because
+of the following drawbacks:
+
+*	Poor Performance:
+	-	dymanic resolution of types involves processing lise
+		scanning the classpath to find the clas to load,
+		causing slow peformance
+
+*	Security Restrictiosn:
+	-	Reflection requires runtime permissims that might not
+		be available for  system running under security manager.
+		this can cause you applicaiton to fail at runtime
+		because of the security manager
+
+*	Security issues:
+	-	Using refelction we can access par of code that we are not supposed
+		to access.  For example, we can access private fields
+		of a class and change it's value.  this can be 
+		be a serious security thera and cause our application to 
+		behave abnormally
+
+*	High Maintenance:
+	-	Reflection code is hard to understand and debug, also any
+		also, any issues iwth the code can't be found at compile time because
+		the classes might not be available, making it less flexible
+		and hard to maintain.
+
+
+

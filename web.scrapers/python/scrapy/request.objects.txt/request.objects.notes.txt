@@ -1,0 +1,121 @@
+
+https://doc.scrapy.org/en/latest/topics/request-response.html
+
+Request objects basics
+===================================================
+
+Scrapy uses Request and Response objects for crawling
+web sites.
+
+Typically, Request objects are generated
+in the spiders and pass across the system
+until they reach the Downloader, which executes
+the request and returns an object of type
+
+	Response
+
+which travels back to the the 
+spider that issued the request.
+
+
+
+Both Request and Response classes have subclasses
+which add functionality not required in
+the base classes.  These are described below
+in Request subclasses and Response subjclasses.
+
+
+
+
+Request ---->returns---->Response
+
+
+
+
+
+Request objects
+==========================================
+class:
+	scrapy.http.Request(url[, callback, method='GET', headers, body, cookies, meta, encoding='utf-8', priority=0, dont_filter=False, errback, flags])
+
+
+
+
+A Request objcet represents an HTTP request, whih is usually generated
+in the Spider and executed by the Downloader, and as a result
+generates a Response object.
+
+
+Parameters:
+======================================
+	*	url(string):
+			A url string of the request
+	*	callback(callable):
+			The function that will be called with the response
+			of this request(once downloaded) as its first parameter.
+
+	*	method(string):
+			the HTTP method of this request.  Defaults to
+			'GET'
+	*	meta(dict):
+			the intial values for the Request.meta attribute.
+			If given, the dict passed in this parameter will be shallow
+			copied
+	*	body(str or unicode):
+			the request body.
+	*	headers(dict)
+
+	*	cookies(dict or list)
+
+
+Examples of request with cookies
+=========================================
+request_with_cookies = Request(url="http://www.example.com",
+cookies=[{'currency':'USD','country':'UY'}])
+
+		-or-
+
+
+request_with_cookies = Request(url="http://www.example.com",
+                               cookies=[{'name': 'currency',
+                                        'value': 'USD',
+                                        'domain': 'example.com',
+                                        'path': '/currency'}])
+
+
+
+
+Passing addtional data to callback functions
+==========================================
+the callback of a request is a function that will
+be called when the response 
+of that request is downloaded.  The callback
+function will be called with the downloaded
+Response object as its first argument:
+
+
+Example :
+----------------------------------------
+Here's an example of how to pass an item using this
+mechanism, to populate different fields from 
+different pages:
+
+def parse_page1(self,response):
+	item = MyItem()
+	item['main_url'] = response.url
+	request = scrapy.Request("http://www.example.com/some_page.html",callback=self.parse_page2)
+	request.meta['item'] = item
+	yield request
+
+
+def parse_page2(self,response):
+	item = response.meta['item']
+	item['other_url'] = response.url
+	yield item
+
+
+
+
+
+
+

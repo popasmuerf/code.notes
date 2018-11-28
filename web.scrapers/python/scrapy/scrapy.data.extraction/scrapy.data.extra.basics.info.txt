@@ -1,0 +1,209 @@
+
+Extracting data basics
+===================================================
+The best way to learn how to extract data with Scrapy
+is trying selectors using the shell Scrapy shell. Run:
+
+(scrapy) Michaels-MacBook-Pro:tutorial mdb$ scrapy shell "http://quotes.toscrape.com/page/1/"
+
+This is what we need to pay attention to:
+============================================================
+ (referer: None)
+[s] Available Scrapy objects:
+[s]   scrapy     scrapy module (contains scrapy.Request, scrapy.Selector, etc)
+[s]   crawler    <scrapy.crawler.Crawler object at 0x102a11910>
+[s]   item       {}
+[s]   request    <GET http://quotes.toscrape.com/page/1/>
+[s]   response   <200 http://quotes.toscrape.com/page/1/>
+[s]   settings   <scrapy.settings.Settings object at 0x102a11990>
+[s]   spider     <DefaultSpider 'default' at 0x102dda4d0>
+[s] Useful shortcuts:
+[s]   fetch(url[, redirect=True]) Fetch URL and update local objects (by default, redirects are followed)
+[s]   fetch(req)                  Fetch a scrapy.Request and update local objects 
+[s]   shelp()           Shell help (print this help)
+[s]   view(response)    View response in a browser
+
+
+
+^^^^
+using the shell we can try selecting elements using 
+CSS with the response object
+-------------------------------------------------------
+[s]   request    <GET http://quotes.toscrape.com/page/1/>
+[s]   response   <200 http://quotes.toscrape.com/page/1/>
+
+^^^ we can extract stuff from both of these guys:
+---------------------------------------------------------
+>>> response.css('title')
+[<Selector xpath=u'descendant-or-self::title' data=u'<title>Quotes to Scrape</title>'>]
+
+>>> response.css('title').extract()
+[u'<title>Quotes to Scrape</title>']
+
+>>> response.css('title::text').extract
+<bound method SelectorList.extract of [<Selector xpath=u'descendant-or-self::title/text()' data=u'Quotes to Scrape'>]>
+>>> 
+
+
+
+
+
+We can use our response object to extract data.
+We can try selecting elements using CSS with the 
+respose object:
+
+
+>>> response.css('title')
+[<Selector xpath=u'descendant-or-self::title' data=u'<title>Quotes to Scrape</title>'>]
+>>> 
+
+
+A list like object is returned here 
+known as :
+
+	SelectorList
+
+which represents a list of Selector objects
+that wrap around XML/HTML elements
+and allow you to run further queries
+to fine-grain the selection or
+extract the data:
+
+	>>> selectList = response.css('title')
+	>>> type(selectList)
+	<class 'scrapy.selector.unified.SelectorList'>
+	>>> 
+
+
+	>>> selectList
+	[<Selector xpath=u'descendant-or-self::title' data=u'<title>Quotes to Scrape</title>'>]
+	>>> 
+
+	>>> len(selectList)
+	1
+
+
+The items in an object of type SelectorList are of type:
+'scrapy.selector.unified.Selector'
+
+	>>> type(selectList[0])
+	<class 'scrapy.selector.unified.Selector'>
+	>>> 
+
+Selector objects wrap around XML/HTML elements and allow
+you to run further queries to fine-grain the selection
+or extract the data
+
+
+Let's extract the text from the title above:
+=================================================
+scrapy shell 'http://qoutes.toscrape.com/page/1/'
+>>> response.css('title').extract
+<bound method SelectorList.extract of [<Selector xpath=u'descendant-or-self::title' data=u'<title>Quotes to Scrape</title>'>]>
+
+>>> response.css('title').extract()
+[u'<title>Quotes to Scrape</title>']
+>>> 
+
+>>> response.css('title::text')
+[<Selector xpath=u'descendant-or-self::title/text()' data=u'Quotes to Scrape'>]
+
+
+>>> response.css('title::text').extract()
+[u'Quotes to Scrape']
+>>> 
+
+
+^^^ What's going on here ?
+--------------------------------------------------
+The other thing is that the result of calling
+.extract() is a list, because we are dealing  with
+an instance of :
+
+	SelectorList.
+
+When you know you just want the first result,
+as in this case(there is only one element..but
+still...it's a list):
+
+#code
+>>> response.css('title').extract()[0]
+u'<title>Quotes to Scrape</title>'
+
+>>> response.css('title::text').extract()[0]
+u'Quotes to Scrape'
+>>> 
+
+
+We can avoid indexing errors...but how ?
+--------------------------------------------------
+..by using extract_first() instead of extract()
+
+>>> response.css('title').extract_first()
+u'<title>Quotes to Scrape</title>'
+
+>>> response.css('title::text').extract_first()
+u'Quotes to Scrape'
+
+
+
+Using regex to get what we need....
+===========================================================
+>>> response.css('title').re(r'Q\w+')
+[u'Quotes']
+
+>>> response.css('title::text').re(r'Quotes.*')
+[u'Quotes to Scrape']
+
+
+
+XPath: a brief intro
+=========================================================
+Besides CSS, Scrapy selectors aslo support using XPath
+expressions:
+
+>>> response.xpath('//title')
+[<Selector xpath='//title' data=u'<title>Quotes to Scrape</title>'>]
+>>> response.xpath('//title').extract()
+[u'<title>Quotes to Scrape</title>']
+
+>>> response.xpath('//title').extract_first()
+u'<title>Quotes to Scrape</title>'
+
+>>> response.xpath('//title/text()').extract_first()
+u'Quotes to Scrape'
+
+
+XPath expressions are very powerful, and are the foundation of Scrapy Selectors. In fact, CSS selectors are converted to XPath under-the-hood. You can see that if you read closely the text representation of the selector objects in the shell.
+
+While perhaps not as popular as CSS selectors, XPath expressions offer more power because besides navigating the structure, it can also look at the content. Using XPath, you’re able to select things like: select the link that contains the text “Next Page”. This makes XPath very fitting to the task of scraping, and we encourage you to learn XPath even if you already know how to construct CSS selectors, it will make scraping much easier.
+
+
+
+
+Extracting qoutes and authors
+==========================================================
+Now that you know a bit about selection and extraction,
+let's complete our spider by
+writing the code to extract the qoutes
+form teh web page.
+
+
+Each qoute in http://qoutes.toscrape.com
+
+<div class="quote">
+    <span class="text">“The world as we have created it is a process of our
+    thinking. It cannot be changed without changing our thinking.”</span>
+    <span>
+        by <small class="author">Albert Einstein</small>
+        <a href="/author/Albert-Einstein">(about)</a>
+    </span>
+    <div class="tags">
+        Tags:
+        <a class="tag" href="/tag/change/page/1/">change</a>
+        <a class="tag" href="/tag/deep-thoughts/page/1/">deep-thoughts</a>
+        <a class="tag" href="/tag/thinking/page/1/">thinking</a>
+        <a class="tag" href="/tag/world/page/1/">world</a>
+    </div>
+</div>
+

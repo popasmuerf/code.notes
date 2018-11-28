@@ -1,0 +1,39 @@
+The Reflection API
+
+
+
+https://docs.oracle.com/javase/tutorial/reflect/class/index.html
+
+
+Uses of Reflection
+===================================================
+Reflection is commonlyused by programs which require
+the ability to examine or modify the runtime behavior of
+applications running in the Java machine.
+
+
+
+
+Lesson:Classes
+=======================================================
+Every type is either a reference or a primitive:
+	*	Classes (inherits from java.lang.Object)
+	*	enums (inherits from java.lang.Object)
+	*	arrays (inherits from java.lang.Object)
+	*	interfaces
+	*	boolean(primitive)
+	*	byte(primitive)
+	*	short(primitive)
+	*	int(primitive)
+	*	long(primitive)
+	*	char(primitive)
+	*	float(primitive)
+
+
+
+
+
+
+
+
+

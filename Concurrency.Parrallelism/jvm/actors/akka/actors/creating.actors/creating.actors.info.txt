@@ -1,0 +1,165 @@
+https://developer.lightbend.com/guides/akka-quickstart-java/create-actors.html
+
+
+
+The power of location transparency
+========================================================
+*	In Akka you cannot create an instance of an Actor using "new"
+	(though...I think you likely could....)
+*	You create references to your new actor using the method
+	actor.
+
+*	actor referneces are of type:
+	-	akka.actor.ActorRef
+
+*	Using referneces instead of the actual
+	actor objects allows for certain 
+	power of flexibility in a distributed 
+	system.
+
+*	In Akka the location doesn't matter.
+	Location transparency means that the ActorRef
+	can, while retaining the same semantics,
+	represent an instance of the runnign actor
+	in-process or ona a remote machine.  If needed,
+	the runtime can optimize the system by
+	changing an Actor's location or the entire
+	application topology while it is running.  This
+	enables the "let it crash" model of 
+	failure management in which the system can 
+	heal itslef by crashing faulty Actors
+	and restarting healthy ones.
+
+
+
+
+
+
+The Akka Actor System
+==============================================
+	*	akka.actor.ActorSystem factory is to some
+		extent is similar to Spring's BeanFactory.
+		It acts as a container.  It acts as
+		a containr for Ators and manages their life-cycles.
+
+	*	actorOf factory method creates Actors
+		takes two parameters, a configureation object
+		call Props and a name.
+
+	*	Actor and ActorSystem naems are important in Akka
+		For example, you use them for lookups.  Using 
+		meaningful names consistent with yoru domain model
+		with your domain model makes it easier to reason
+		about them down the road.
+
+
+	*Example :
+
+	//code example
+	final ActorRef printerActor = system.actorOf(Printer.props(),"printerActor") ;
+	final ActorRef howdyGreeter = system.actorOf(Greeter.Props("Howdy"),printActor),"howdyGreeter");
+	final ActorRef helloGreeter = system.actorOf(Greeter.Props("Hello"),printActor),"helloGretter") ;
+	final ActorRef goodDayGreeter = system.actorOf(Greeter.props("Good day", printerActor), "goodDayGreeter");
+
+
+
+^^^^ What is going on here ?
+	*	The actorOf method ont he ActorSystem creates the Printer
+		Actor
+			-	Makes use of each actor class' props
+				method to get the Props value.
+			-	Returns the reference to newly created
+				Printer Actor instances
+
+	*	For Greeter, the code creates three Actor intances
+		each with a specific greeting message.
+
+
+
+
+Aysnchronous communication
+=========================================
+https://developer.lightbend.com/guides/akka-quickstart-java/communicate-with-actors.html
+
+
+*	Actors are reactive and message driven
+*	An actor doesn't do anything until it recieves
+	a message
+*	Actors communicate using asynch messages
+
+*	Asynch communication ensures that
+	the sender does not stick around waiting
+	for  their message to be processed by the
+	recipient's mailbox and is free to do
+	other work.
+
+*	An actor's mailbox is essentially a message 
+	queue with ordering semantics.  The order of
+	multiple messages sent fromt he same 
+	Actor is preserved, but can be interleaved
+	with messages sent by another actor
+
+*	Actors that are not processing messages
+	are in a suspended state which do not 
+	consume any resources save for memory.
+	This is what we mean by actors are lightwieht
+	and efficient in nature
+
+
+Sending messages to an Actor
+=====================================
+To put a message into an Actor's mailbox, use the method:
+
+	ActorRef.tell()
+
+
+
+public class HelloWorld {
+	...
+
+	//Instantiate our ActorRefs.....
+	final ActorRef printerActor = system.actorOf(Printer.props(),"printerActor") ;
+	final ActorRef howdyGreeter = system.actorOf(Greeter.Props("Howdy"),printActor),"howdyGreeter");
+	final ActorRef helloGreeter = system.actorOf(Greeter.Props("Hello"),printActor),"helloGretter") ;
+	final ActorRef goodDayGreeter = system.actorOf(Greeter.props("Good day", printerActor), "goodDayGreeter");
+
+
+	//Put stuff into our respective actor mailboxes
+
+	howdyGreeter.tell(new WhoToGreet("Akka"), ActorRef.noSender());
+	howdyGreeter.tell(new Greet(), ActorRef.noSender());
+
+	howdyGreeter.tell(new WhoToGreet("Lightbend"), ActorRef.noSender());
+	howdyGreeter.tell(new Greet(), ActorRef.noSender());
+
+	helloGreeter.tell(new WhoToGreet("Java"), ActorRef.noSender());
+	helloGreeter.tell(new Greet(), ActorRef.noSender());
+
+	goodDayGreeter.tell(new WhoToGreet("Play"), ActorRef.noSender());
+	goodDayGreeter.tell(new Greet(), ActorRef.noSender());
+
+	printerActor.tell(new Greeting(greeting), getSelf());
+
+
+this is what really cheases me off:
+https://youtu.be/HlqReC92Bm4?t=159
+
+
+The Main Class
+===========================================================
+https://developer.lightbend.com/guides/akka-quickstart-java/main-class.html
+
+
+The Main class in Hello World creates and controls the actors.
+Notice the use of an ActorSystem as a container
+and the method:
+
+	actorOf
+
+Finally, the class creates the messages to send to 
+the Actors:
+
+
+
+
+

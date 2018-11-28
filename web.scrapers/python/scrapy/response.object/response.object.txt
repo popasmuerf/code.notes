@@ -1,0 +1,80 @@
+Open scrapy shell
+===============================================
+> scrapy shell <url>
+In[1] ....
+
+
+
+Investigating what we can do with the response object...using 
+(css)
+===========================================================
+
+Get the body of the page as 
+string
+--------------------------------
+In[1]: bodyStr = response.body
+
+
+Get the target url as a string
+--------------------------------
+In[1]: respStr = response.url
+
+
+
+get the contents of some tag
+using css selector as a list
+of the contents of every matching
+tag(css)
+--------------------------------
+In[1]: tagList = response.css("<tag>").extract()
+
+
+
+Get the contents of the target tag directly
+--------------------------------
+In[1]: tagList = response.css("<tag>::<text>").extract()
+
+
+Get the first item of the target tag
+directly(css)
+-----------------------------------------
+In[1]: tagList = response.css("<tag>::<text>").extract_first()
+
+
+Investigating what we can do with the response object...using 
+(xpath)
+===========================================================
+
+Get the body of the page as 
+string
+--------------------------------
+In[1]: bodyStr = response.body
+
+
+Get the target url as a string
+--------------------------------
+In[1]: respStr = response.url
+
+
+
+get the contents of some tag
+using css selector as a list
+of the contents of every matching
+tag(css)
+--------------------------------
+In[1]: tagList = response.css("<tag>").extract()
+
+
+
+Get the contents of the target tag directly
+--------------------------------
+In[1]: tagList = response.css("<tag>::<text>").extract()
+
+
+Get the first item of the target tag
+directly(css)
+-----------------------------------------
+In[1]: tagList = response.css('//<tag>').extract_first()
+
+
+

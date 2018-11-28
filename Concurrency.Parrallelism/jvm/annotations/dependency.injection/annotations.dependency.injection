@@ -1,0 +1,138 @@
+https://docs.oracle.com/javaee/7/api/javax/inject/Inject.html
+
+
+javax.inject
+Annotation Type Inject
+
+
+Injectable methods:
+	*	are annotated with @Inject
+	*	are not abstract
+	*	do not declare type parameters of their own
+	*	may return a result
+	*	may have any othewise valid name
+	*	accept zero or more dependencies as arguments
+
+
+Examples:
+
+
+public class Car{
+	//Injectable constructor
+	@Inject public Car(Engine engine){.....}
+
+	//Injectable field
+	@Inject private Provider<Seat> seatProvider;
+
+
+	//Injectable package-private method
+	@Inject void install(Windshiel windshield, Trunk trunk){.....}
+}
+
+
+Am method annotated with @Inject that overrides another method annotated
+with @Inject will only 
+
+
+
+
+Dependency injection in Java
+==========================================
+What is dependency injection ?
+
+Dependency injection is a concept valid
+for any programming language.  The general
+concept behind dependency injection is called
+Inversion of Control(IoC).  According to this
+concept a class should not configure its dependencies
+statically but shold be 
+configured from the outside
+
+
+
+A Java class has a dependency  on another class,
+if it uses an instance of this class.
+We call this a _class dependency.  For example, a 
+class which accesses a logger service has
+a dependency on this service  class
+
+
+Ideally Java classes should be as independent as 
+possible from other Java classes.  This 
+increasses the possibility of reusing these
+classes and to be able to test them 
+independently from other classes.
+
+If the java class creates an instance of
+another class via the new
+operator, it cannot
+be used(and tested) independently from
+this class and this is called a hard
+dependency. The following example shows a calss
+which has no hard dependencies
+
+
+import java.util.logging.Logger;
+public MyClass{
+	private final static Logger loger ;
+	public MyClass(Logger logger){
+		this.logger = logger ;
+		logger.info("This is a log message.");
+	}
+}
+
+
+
+A framework class, usually called the "dependency container"
+, could analyze the dependencies of this class.
+With this analysis it is able to create an
+instance of the class and 
+inject teh objects into the defined dependencies,
+via java reflection.
+
+This way the Java class has no hard dependencies, which means it does
+not rely on an instance of a certain class.  This allows you to test yoru class
+in isolation, for xample by using mock objects.
+
+
+Using annotations to describe class dependencies
+====================================================
+Different approaches exist to describe the 
+dependencies of a class.  The most 
+common approach is to use java annotations to describe
+the dependencies directly in the calss.
+
+
+The standard Java  annotations for describing the 
+dependencies directly in the class.
+
+The standard Java annotations for describing the 
+dependencies of a class are defined in 
+the Java Specification Request 30(JSR330).
+This specification describes the 
+@Inject and @Named annotations.
+
+
+The following listng shows a lass which uses 
+annotations to describe its dependencies
+
+//http://www.vogella.com/tutorials/DependencyInjection/article.html
+
+//example code
+import javax.inject.Inject ;
+import javax.inject.Name ;
+
+
+
+@Inject private Logger logger ;
+@Inject private DatabaseAccessClass dao ;
+
+@Inject 
+public void createControls(Composiste parent){
+	logger.info("UI will start to build");
+    Label label = new Label(parent, SWT.NONE);
+    label.setText("Eclipse 4");
+    Text text = new Text(parent, SWT.NONE);
+    text.setText(dao.getNumber());
+}
+

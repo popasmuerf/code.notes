@@ -1,0 +1,90 @@
+
+Running Docker container interactively out the gate
+====================================================
+> docker run ubuntu /bin/sh 
+
+
+Running Docker conatiner via id and then via id and giving it a persistant name
+==========================================================================
+> docker run 123768 ubuntu /bin/sh
+
+> docker run 123768 --name ubuntu0 ubuntu /bin/sh
+
+
+Starting and stopping docker container
+=================================================
+> docker start ubuntu0
+
+> docker stop ubuntu0
+
+Running docker containers as "daemons"
+=============================================================
+> docker run --name d0 -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1 ; done" 
+> docker run --name d1 -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1 ; done"
+> docker run --name d2 -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1 ; done"
+
+
+Viewing the activity of docker containers
+============================================================
+> docker logs d0
+> docker logs d1
+> docker logs d3
+
+
+
+wget http://graph.facebook.com
+
+
+31.13.69.228 --> facebook
+
+
+list of suspected spiders
+==========================
+*	weather/badips (not implemented or running ?)
+
+*	weather/PacketStormSecurity (not implemented or running ?)
+
+
+
+
+Where I have found interesting src code/resources
+=====================================================
+* /Users/mdb/src/scrapylab/scrapy-weather-data/READONLY-spiders-old-non-crawlee/Phishing Intelligence Feeds/files/full/feed.txt
+	- mulitple entries for FB
+
+* social_media.py  --> graph.facebook.com --> error
+
+
+
+
+social:
+    twitter: MarkWarner
+    facebook: MarkRWarner
+    youtube: SenatorMarkWarner
+    facebook_id: '7935122852'
+    youtube_id: UCwyivNlEGf4sGd1oDLfY5jw
+    instagram: senatorwarner
+    instagram_id: 515327940
+
+
+
+    wget  https://graph.facebook.com/7935122852
+
+
+
+edge-star-shv-01-iad3.facebook.com	31.13.69.197
+PTR	31.13.69.228. Facebook, Inc. (AS32934)	edge-star-mini-shv-01-iad3.facebook.com	60 min
+
+
+
+Wireless Double Shock Controller SIXAXIS Gamepad for Sony Playstation 3 PS3, Charge and Play Cable Included (Blue) 
+
+Rage - Playstation 3 
+
+
+Sanabul Essentials Short Sleeve Compression Base Layer Rash Guard (Medium, Blue)
+
+
+
+PTR	31.13.69.228
+Facebook, Inc. (AS32934)	edge-star-mini-shv-01-iad3.facebook.com	60 min

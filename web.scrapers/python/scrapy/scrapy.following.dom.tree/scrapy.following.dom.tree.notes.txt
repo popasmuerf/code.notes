@@ -1,0 +1,101 @@
+Extracting more URLs
+======================================
+Up to now, we have been working with a single
+URL that we set in the spider's:
+
+	*	start_urls
+
+properties. It's a tupl, we can
+hardcode multiple URLs, for example:
+
+
+	start_urls = (
+		'<url-0>',
+		'<url-1>',
+		'<url-2>',
+		'<url-3>',
+		'<url-N>',
+
+	)
+
+We can also use a file as the source of those
+URLs as follows:
+
+
+	start_urls = [i.strip() for i in open('todo.urls.txt').readlines()]
+
+
+What will happen more often than not is that a website of
+interst will have some index pages and some listing pages.
+For example
+
+
+
+Traversing the DOM
+============================================================
+	*	Horizontally:
+		-	from an index page to another
+	*	Vertically:
+		-	froma n index page to the listing pages to extract Items
+
+
+
+
+"yield" as opposed to "return"
+==========================================================
+
+	*	 yield:
+		-like "return" in the sense that it returns values to
+		the caller. However, in contrast to return, it doesn't 
+		exit the function, bu continues with any data routine instruction
+		that it may find itself encapsulated within.
+		"yield" is a bit of Python arcane magicks that allows for 
+		efficent routine writing.
+
+
+....
+
+class EasySpider(CrawlSpider):
+	name = 'easy'
+	allowed_domains = ['web']
+	start_urls = ['http://www.web/']
+	rules = (Rule(LinkExtractor(allow=r'Items/'),
+	callback='parse_item',
+	follow=True),
+	)
+	def parse_item(self, response):
+		...
+
+
+Link Extractors
+-----------------------
+What are they are ?
+Link extractors are objets whose only purpose is to extract
+links from web pages(scrapy.http.Response objects) which will
+be eventually followed.
+
+
+We will now set :
+
+	start_urls 
+
+to our first index page, and replace
+
+
+What if we don't set a callback in our Rule sets ?
+---------------------------------------------------------
+
+
+
+I am going to need all these "constitutional scholars" to understand
+that The Constitution is not a sacred, inviolate  document handed
+down to us by The Seven Gods of Andalos. It was designed SPECIFICALLY
+to be modified as needed.  I am also going to need you to undertand
+that The Founding Fathers were not infallible demi-gods...hence the
+reason they specifically designed The Constitution to be modified as
+needed.
+
+
+
+
+

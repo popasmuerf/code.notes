@@ -1,0 +1,73 @@
+The Basic Scraping Equatin: UR^2IM
+====================================
+	*	url
+	*	request <----
+	*	response	|
+	*	items		|
+	*	more urls----
+
+
+Added Spider for scraping  https://krebsonsecurity.com/sitemap.html
+under spiders.base.code(the spider is based on scrapy, so I have no
+idea where they should actually go)
+    Krebs.py --> spider
+    KrebsIstems.py --> item class
+    settings.py --> settings
+    pipeline.py --> item pipeline settings
+
+
+
+
+$x('//ol[@class="commentlist"]')
+$x('//ol[@class="commentlist"]')
+$x('//ol[@class="commentlist"]/li[@id="li-comment-461003"]')
+$x('//ol[@class="commentlist"]/li[@id="li-comment-461003"]')
+
+Gold
+----------------
+reponse.xpath('//ol[@class="commentlist"]/li[contains(@id,"li-comment-")]/text()')
+
+
+Gold commenter name
+-------------------------------------------------------------------------------------------------------
+response.xpath('//ol[@class="commentlist"]/li[contains(@id,"li-comment-")]/div[contains(@id,"comment-")]/div[@class="commenthead"]/div[@class="comment-author vcard"]/cite[@class="fn"]/text()').extract()
+
+
+Gold actual comment
+-------------------------------------------------------------------------------------------------------
+response.xpath('//ol[@class="commentlist"]/li[contains(@id,"li-comment-")]/div[contains(@id,"comment-")]/div[@class="commentbody"]/p/text()').extract()
+
+
+li[re:test(@id, "item-\d$")]
+/li[matches(@id,"li-comment-\d+")]
+$x('//*/li[matches(@id,"li-comment-\d+")]')
+URL
+==========================
+It all starts here.
+$x([matches('li-comment-461003','li-comment-\d+')])
+
+
+response.xpath("//*[matches('li-comment-461003','li-comment-\d+')]")
+response.xpath('//li[contains(@id,"li-comment-")]/text()'')
+$x('//li[contains(@id,"li-comment-")]/text()')
+>scrapy shell -s 
+
+
+//*[@id="ad-title"]
+
+
+
+response.xpath('//itemprops="image"')
+response.xpath('//*[@itemtype="http://schema.org/ItemPage"]')
+
+
+In case anyone is wondering...
+I don't bother atttempting to reason with racists, anti-semites et al.
+I punch then in their fucking mouths and shame them
+for being terrible people.  This is how you deal with
+bullies.  Some ideas and posistions are not deserving 
+of conscideration.  The End.  #GoOnAndTryMe
+
+
+
+

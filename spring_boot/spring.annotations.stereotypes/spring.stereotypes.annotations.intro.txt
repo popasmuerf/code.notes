@@ -1,0 +1,509 @@
+url: http://therealdanvega.com/blog/2017/03/27/spring-stereotype-annotations
+
+Spring stereotype annotations
+=============================
+
+
+
+What are stereotype annotations and how do I use them in 
+the Spring Framework ?
+
+
+
+Stereotypes and Annotations defined
+========================================
+
+Stereotype:(noun)
+Something conforming to a fixed or general pattern;
+especially :
+	a standardized mental picture that is held in
+	common by memer of a group and that represents
+	an oversimplified opinion, prejudiced attude,
+	or uncritcal judgmnt
+
+
+^^^When applied to people...this is awful, stupid, and
+wrong....but in Spring...you should use this 
+whenever possible:
+
+	*	We know tht a controller's role in 
+		MVC pattern is to direct traffic and route
+		requests
+
+	*	We know that a service is a place where we 
+		can place all of our business logic
+
+	*	We know that a repository is a place for us to implement
+		data access layers for various persistence
+		stores.
+
+In a Spring MVC project, it is important for us to
+group classes based on their role in the 
+application
+
+
+
+Annotation:(noun)
+A note added (as to a statue) by way of commnt or explanation
+often furnising summaries of releveant court decisions
+
+
+^^^outside of the ethereal world of software development,
+we use the word annotation as a note or comment to describe
+something further.  In Java, we use them much as the same
+but there are some technical things going on 
+behind the scenes.  We describe a class in our project as
+being a controller by using the @Controller annotation.
+We know just by looking at that class that it is a
+Controller bu so does the framework which will do 
+some cool things to this class behind the scenes.
+
+
+
+
+Spring Stereotypes and how to use them
+===============================================
+Now that we understand what these words meant i might
+give us some insight as to what
+role they play in our Spring projects.  When
+a class is annotated with one of the following
+Stereotypes Spring will automatically
+register them in the application context.
+This makes the class available for dependency
+injecttion in othe rclasses and. this
+become vital to building out our applications.
+These classes can all be found under the  package
+
+org.springframework.stereotype
+
+
+Annotation 				Description
+---------------------------------------------
+@Component				Indicates that an annotated
+						class is a "component".
+						Annotated classes will be
+						pickuped as being part
+						of the class path
+						by Spring
+
+
+@Service 	 			Indicates that an annotated
+						class is a "Service",
+						originally defined by
+						Domain-Driven Design as
+						"an operation offred as an inteface
+						that stands alone in the model,
+						with no ecapsulated state".  Is 
+						basically the same as @Component
+						but has a different name
+						for logical designation of
+						purpose.  As a named attribute
+						option.
+
+
+
+@controller 			Indicates taht an annotated
+						class is a "Controller"
+
+
+@Repository 			Indicates that annotated class
+						is a "Repository", originally defined
+						by Domain-Driven Design as "a mechanism for
+						encapsulating storage, retrieval and 
+						search behavior which emulates a 
+						collection of objects". Has a named
+						attribute option
+
+
+*** Where's is @RestController ?  I left this out on purpose 
+as RestController is a "convienience" annotation that combines
+the attributes  of annotations @Controller and @ResponseBody
+
+
+
+@Component
+----------------------------------------
+@Component is a generic steretype annotation for
+any Spring-managed component.  This means that 
+if you want to register a class in the application context
+you can use @Component to do so.
+
+The other stereotypes(Controller, Service,Repository) are
+simpy specializations of the  @Component class.
+In fact if you look at their source code you will
+see they themselves
+
+
+So why not just annotate everything as a Component ?
+it helps other programmrs to classify a particular class.
+It also helps to know where our demarcations are when we
+get into AOP.
+
+
+Classes annotated with @Component essentially become
+registered beans with the framework...
+
+
+
+If we mark a class with @Component or one of 
+the othre Stereotype annotations these
+classes will be auto-dectected using
+classpath scanning. As long as these
+classes are in under our base package
+or Spring is aware of another package
+to scan, a new bean will be created
+for each of these classes.
+
+
+there's an implicit one-to-one mapping
+between the annotated class and the 
+bean (i.e. one bean per class).  Control
+of wiring is quite limited with this approach
+since it is purely declaratives
+
+
+
+
+@Bean
+-------------------------------------------------
+@Bean is used to explicityly declare a single bean,
+rather than letting Spring do it.
+Automatically like we did with @Controller.  It
+decouples the declaration of the bean from 
+the class definition nd lets you creat and configure
+beans exactly how you choose.
+
+
+@Bean isn't a class level annotation.
+It is used for methods that will be returning
+an instance of this bean...for example:
+
+
+public class User {
+ 
+    private String first;
+    private String last;
+ 
+    public User(String first, String last) {
+        this.first = first;
+        this.last = last;
+    }
+}
+
+
+ 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+ 
+@Configuration
+public class ApplicationConfig {
+ 
+    @Bean
+    public User superUser() {
+        return new User("Dan","Vega");
+    }
+ 
+}
+
+
+
+^^^^Typically, @Bean methods are declared within
+@Configuration clases.
+
+
+
+@Configuration
+-------------------------------------------------
+annotation tells the Spring IoC container
+to expect to find definitions of objects and how
+they wire together in this class
+
+@Bean
+------------------------------------------------------
+By default, a Spring bean is singleton scoped...
+meaning that once instantiated(once and only once
+by the IoC container)...any number of Spring
+components that depend on that particular bean,
+then they will all have access to the
+same instance in the memory, by default.
+
+Spring has the notion of scope...by default, a
+Spring bean is a singleton scoped.....
+
+A @Component is the integral of @Bean....
+so does this also apply to instances of @Component
+
+
+@Service
+--------------------------------------------------
+
+@Component
+-----------------------------------------------------
+Tells Spring to discover other beans
+in teh application context by scanning
+the current package( or below) and looking
+for all objects tagged with this annotation
+and all of it's derivatives....
+Spring percieves them on 
+components and creates a new 
+instance of the object on 
+which they are applied.  It calls 
+the "no-argument" constructor by 
+default, or it will call a
+constructor with parameters so 
+long as all the parameters themselves
+are satisfiable with referene to 
+other objects in 
+the application context.
+
+Spring provides a lot of services
+as opt-in annotations
+expected on  @Configuration classes
+
+
+
+@Controller
+--------------------------------------------------
+
+
+
+@Autowired injection
+--------------------------------------------------
+http://www.baeldung.com/spring-autowire
+
+
+
+
+
+
+Should we think of @Autowire as the method
+of injecting some already IoC container aware
+component into some instance of some class that the 
+IoC may or may not be aware of ?
+
+
+The annotation can be used directly on 
+properties, therefore eliminating
+the need for getters and setters
+
+@Component("fooFormatter")
+public class FooFormatter{
+	public String format(){
+		return "foo";
+	}
+}
+
+
+
+@Component
+public class FooService {
+	@Autowired
+	private FooFormatter fooFormatter; //an instance of FooMatter
+									   //is created and injected for
+									   //us whenever any instance of
+									   //FooService is instantiated
+}
+
+
+^^^ Here Spring looks for and injects 
+fooFormatter when FooService is created
+
+
+
+@Autowired on Setters
+------------------------------------------------
+The @Autowired annotation can be used on 
+setter methods.
+In the below example, when the 
+annotation isused on the setter method, the setter
+method is called with the instance of
+FooFormatter when FooService is created
+
+
+
+
+/**
+	So bascially if we annotate the setter method
+	with @AutoWired within this context....
+	it will execute the method and pass 
+	some available bean that has been annotated 
+	with or some derivative with of @Component 
+
+
+**/
+
+public class FooService{
+	private FooFormatter foomatter ; //an instance of FooMatter iscreated 
+									 //and injected for us whenever
+									 //an instance of FooService
+									 //is created for us
+	@Autowired
+	public void setFooFormatter(FooFormatter fooFormatter){
+		this.fooFormattter = fooFormattter; //this setter is called
+											//automatigically when the
+											//FooService is created
+	}
+
+}
+
+
+@Autowired and Optional Dependencies
+------------------------------------------------
+http://www.baeldung.com/spring-autowire
+
+
+Spring expects @Autowired dependencies to be
+available when the dependent bean 
+is being constructed.  If the framework cannot 
+resolve a bean for wiring, it will throw the 
+below-qouted exception and prevent the 
+Spring container from launching successfully:
+
+
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: 
+No qualifying bean of type [com.autowire.sample.FooDAO] found for dependency: 
+expected at least 1 bean which qualifies as autowire candidate for this dependency. 
+Dependency annotations: 
+{@org.springframework.beans.factory.annotation.Autowired(required=true)}
+
+
+
+
+
+public class FooService{
+	
+	@Autowired(required = false)
+	private FooFormatter fooFormatter ;
+}
+
+
+
+Autowiring by @Qualifier
+-----------------------------------------------------
+http://www.baeldung.com/spring-autowire
+The @Qualifier annotation can be used to 
+hint at an narrow down the required bean:
+
+Since there are two concrete implementations of 
+Formatter avaialble for the Spring
+container to inject, Spring will throw a 
+NoUniqueBeanDefinitionException
+when construction FooService
+
+
+This can be avoided by narrowing the
+implementation using the annotation
+@Qualifer with name of the specific
+implemenation and thus avoid any
+exception throwing ambiguities
+when Spring finds mulitple beans
+of the same type.
+
+
+
+@Component("fooFormatter")
+public class FooFormatter implements Formatter{
+	public String format(){
+		return "foo";
+	}
+}
+
+@Component("barFormatter")
+public class BarFormatter implements Formatter{
+	public String format(){
+		return "bar";
+	}
+}
+
+
+public class FooService{
+	@AutoWired
+	@Qualifer
+	private Formatter fooFormatter ;
+
+}
+
+
+
+
+
+@Autowiring by Custom Qualifier
+---------------------------------------------
+Spring allows us to create our own
+@Qualifier annotation.  To create a 
+custom Qualifier, define an annotation
+and provide the @Qaulifier annotation within
+the definition as below:
+
+
+
+@Qualifier
+@Target{
+	 ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER})
+	 @Retention(RetentionPolicy.RUNTIME)
+	 public @interface FormatterType{
+	 	Sring value() ;
+	 }
+}
+
+@FormatterType("Foo")
+@Component
+public class FooFormatter implements Formatter {
+ 
+    public String format() {
+        return "foo";
+    }
+}
+
+@FormatterType("Bar")
+@Component
+public class BarFormatter implements Formatter {
+ 
+    public String format() {
+        return "bar";
+    }
+}
+
+
+@Component
+public class FooService {
+     
+    @Autowired
+    @FormatterType("Foo")
+    private Formatter formatter;
+     
+}
+
+
+@Autowired on Constructors
+------------------------------------------------
+The @Autowired annotation can be used on 
+setter methods.
+In the below example, when the 
+annotation isused on a constructor, an instance of,
+FooFormatter is injected as an arguent
+to the contructor when FooService is created
+
+
+
+
+@PostConstruct
+------------------------------------------------
+@PostConstruct is run just after all services are initialized.
+Such starup init components can inject/autowire custom
+managed servies and use them for initializion.  This
+way we can, for example, injecting Spring Data repository
+and do some data intialization in our appliction.
+
+
+
+
+Spring AOP
+=========================================================
+If you are not familiar with Aspect Oriented Programming
+(AOP) don't worry at all.
+
+
+
+
+

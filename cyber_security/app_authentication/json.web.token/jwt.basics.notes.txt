@@ -1,0 +1,184 @@
+What is a JSON Web Token?
+======================================
+A json web token looks like this(new lines inserted for readaility):
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.
+TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
+
+
+
+While this looks like gibberish, it is actually a very 
+compact, printable representation of a serices
+of claims, along with a signature to verify 
+its authenticity.
+
+
+
+
+
+{
+	"alg" : "HS256"
+	"type" : "JWT"
+}
+{
+	"sub" :	"1234567890"
+	"name" : "Jon Snow"
+	"admin" : true
+}
+
+
+What are "claims"
+=========================================
+Claims are definitions or assertions made about 
+a certain party of object.  Some of these claims and
+their meaning are defined as part of the JWT
+spec.  Others are user defined.  The magic
+behind jwts is that they standardize certain claims that
+are useful in the context of some common
+operations.  For example one of thesse 
+common operations is establishing the 
+identity of a certain party.
+
+Another key aspect of jwts is the 
+possibility of signing them using
+JSON web signatures and or encrypting
+them using json web encryption.
+
+All these together (jws,jwe, jwt)
+provide a powerful, secure solution to 
+many different problems.
+
+
+
+Practical Applications
+=============================================
+
+
+
+Client-side/Stateless Sessions
+------------------------------------------
+
+Stateless sessions are in fact nothing
+more than client-side data.
+
+Key aspects:
+	1.	signing and or encryption to
+		prevent tampering with on the 
+		server side.
+
+	2.	jwts and by virtue of jws and jwe,
+		can provide various types of 
+		signatures and encryption.
+		Signatures are useful to validate
+		the data against tampering. 
+		Encryption is useful to protect
+		the data from being read by 
+		third parties.
+
+	3. Most of the time sessions need only be signed.
+	   In othr words, there is no security on 
+	   privacy concenr when dta is stored in them
+	   is read by third parties.  Acommon 
+	   example of a claim that
+	   can usually be safely read by third
+	   parities is the "sub-claim" or "subject"	
+
+
+
+Signature Stripping
+--------------------------------------------
+A common method for attacking a signed JWT is 
+to simply remove the signature.  Signed JWTs
+are constructed from 3 differen parts:
+	-	header
+	-	payload
+	-	signature
+
+All 3 are encoded seperately..so it's possible
+to strip the sig and then claim it's unsigned.
+
+
+
+Components of JSON Web Token(JWT)
+==============================================
+	-	header object
+	-	claims object
+	-	signature
+
+//signature
+	{
+		header:{
+			....
+		}
+
+		claims:{
+			....
+		}
+		signature:{
+			...
+		}
+	}
+
+
+
+JWT claims
+--------------------------------------------
+https://medium.com/@raul_11817/securing-golang-api-using-json-web-token-jwt-2dc363792a48
+
+	*	iss:
+		-	Is the issuer of the claim. Connect uses
+			it to identify the application making
+			the call.
+	*	iat:
+		-	Issued-at time.  Contains the UTC
+			Unix time at which this token was issued.
+			No standard around this claim or hard 
+			requirements around this claim but it 
+			does not make sense for it to be significantly
+			in the future.  Also, significantly old
+			issued0at times may indicate the 
+			replay of suspciously old tokens.
+	*	sub
+		-	The subject of this token.  This is the user 
+			associated with the relevant action, and may
+			not be present if there is no logged in user.
+
+Benefits of JWT
+-----------------------------------------------
+	*	Cross-domain / CORS:
+		-	cookies + CORS don't play well across
+			different domains.  A token-based approach
+			allows you to make AJAZ calls to any
+			server, on any domain because you use HTTP header
+			to transmit user information
+
+
+	*	Stateless
+		-	there is no need to keep a session store, the token is
+			a self contained entity that conveys all the
+			user information
+
+	*	CDN
+		-	you can serve all the assets of your app from a CDN
+			(e.g javascript, HTML, images, etc), and your
+			server side is just the API
+
+	*	Decoupling
+		-	you are not tied to a particular authentication
+			scheme.  The token might be generated anwhere, henceyour
+			API can be called from anywhere with a single 
+			way of authenticating those calls
+
+	*	Mobile ready:
+		-	when you start working on native platform(iOS,Android,etc), cookies
+			are not ideal when consuming a secure API. Adopting
+			a token-based approach simplifies this as you don't
+			have to deal with cookie containers...
+
+	*	CRSF:
+		-	since you are not relying on cookies, you don't
+			need to protect against cross site requests.
+
+
+			

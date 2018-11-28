@@ -1,0 +1,124 @@
+Extracting more URLs
+======================================
+Up to now, we have been working with a single
+URL that we set in the spider's:
+
+	*	start_urls
+
+properties. It's a tupl, we can
+hardcode multiple URLs, for example:
+
+
+	start_urls = (
+		'<url-0>',
+		'<url-1>',
+		'<url-2>',
+		'<url-3>',
+		'<url-N>',
+
+	)
+
+We can also use a file as the source of those
+URLs as follows:
+
+
+	start_urls = [i.strip() for i in open('todo.urls.txt').readlines()]
+
+
+What will happen more often than not is that a website of
+interst will have some index pages and some listing pages.
+For example
+
+
+
+Traversing the DOM
+============================================================
+	*	Horizontally:
+		-	from an index page to another
+	*	Vertically:
+		-	froma n index page to the listing pages to extract Items
+
+
+
+
+"yield" as opposed to "return"
+==========================================================
+
+	*	 yield:
+		-like "return" in the sense that it returns values to
+		the caller. However, in contrast to return, it doesn't 
+		exit the function, bu continues with any data routine instruction
+		that it may find itself encapsulated within.
+		"yield" is a bit of Python arcane magicks that allows for 
+		efficent routine writing.
+
+
+....
+
+class EasySpider(CrawlSpider):
+	name = 'easy'
+	allowed_domains = ['web']
+	start_urls = ['http://www.web/']
+	rules = (Rule(LinkExtractor(allow=r'Items/'),
+	callback='parse_item',
+	follow=True),
+	)
+	def parse_item(self, response):
+		...
+
+
+Link Extractors
+-----------------------
+What are they are ?
+Link extractors are objets whose only purpose is to extract
+links from web pages(scrapy.http.Response objects) which will
+be eventually followed.
+
+
+We will now set :
+
+	start_urls 
+
+to our first index page, and replace
+
+
+What if we don't set a callback in our Rule sets ?
+---------------------------------------------------------
+Unless a callback is set...a Rule will follow
+the extracted URLs, which means that it will
+scan target pages forextra links and follow them.
+If a callback is set, the Rule won't follow the links frm
+target pages.  If you would like it to follow links,
+you should either return/yield them from 
+your callback method, or the set the follow argument of :
+
+	Rule() --> true.
+
+
+
+
+Note  scrapy.http.Request and scrapy.http.Response
+===========================================================
+
+
+
+Extractor Architecture Documentation
+And summary 
+=============================================
+* components:
+	-	crawlee
+	-	OxPath
+	-	Extractor 
+
+
+* component communication
+	- down to container/execution level
+	- communication protocols
+	- message busses
+	- presistence components
+	- 
+
+
+
+
+

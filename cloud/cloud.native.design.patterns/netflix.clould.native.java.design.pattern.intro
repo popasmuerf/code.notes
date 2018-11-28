@@ -1,0 +1,397 @@
+
+
+
+
+
+
+/*CRUD operations*/
+----------------------------
+delete_spider:
+	/spiderFileList/{OSID}/{APPID}/{spiderid}'
+
+
+
+
+IaaS
+=========================================
+Providing management services to control
+virtualized computing infrastructure 
+is one of the primary concepts of cloud 
+computing, called 
+"Infrastructure as a Service" aka
+IaaS
+
+
+
+
+Declaritve formats for setup automation
+tht minimize time and cost for new developers
+joining the project
+===============================================
+
+maximum portability
+-------------------------------------------
+Have a clean contract with the underlying
+operating system, offereing maximum
+portability between execution enviorment
+
+
+
+
+
+suitable for deployment
+--------------------------------------------
+Are suitable for deployment on modern cloud
+platforms, obviating the need for servers
+and systems administreation
+
+
+Minimize divergence
+----------------------------------------------
+Minimize divergence between deveolopment and
+production, enabling continous deployment
+for maximum agility
+
+
+Scaling up
+-------------------------------------------------
+And can scale up without significant changes
+to tooling, architechture, or development practices
+
+
+
+
+The practices of a twelve-factor application
+====================================================
+
+Codebase
+-----------------------------------------------------
+One codebase tracked in revision
+control, many deploys
+
+
+Dependencies
+-----------------------------------------------------
+Explicitly declare and isolate dependencies
+
+Config
+-----------------------------------------------------
+Store config in the enviroment
+
+
+Backing services
+-----------------------------------------------------
+Treat backing services as attached 
+resources
+
+
+Build release, run
+-----------------------------------------------------
+Strictly separate build and run
+stages
+
+Processes
+-----------------------------------------------------
+Execute the app as one or more
+stateless processes
+
+
+Port binding
+-----------------------------------------------------
+Export services via port binding
+
+
+Concurrency
+-----------------------------------------------------
+Scale out via the process model
+
+
+Disposability
+-----------------------------------------------------
+Maximize robustness with fast startup and graceful
+shutdown
+
+
+Dev/prod parit
+-----------------------------------------------------
+Keep evelopment, staging and 
+production as similar as possible
+
+
+Admin processes
+-----------------------------------------------------
+Run admin/management tasks
+as one-off processes
+
+
+
+
+Codebase
+===============================
+One codebase tracked in revision
+control, many deploys
+
+	*	Souce code repos for an application
+		should contain a single application
+		with a manifest to its application
+		dependencies.  
+
+	*	There should be
+		no need to recompile or package an
+		application for different 
+		enviroments.	The code should 
+		be the same for:
+			-	Dev
+			-	Q/A
+			-	Staging
+			-	Production
+
+
+	*	Explicitly declare and isolate 
+		dependencies
+			-	Appliation dependencies
+				should be explicityly declared,
+				and any and all dependencies
+				should be avaiable from 
+				an artifact repository that can
+				be downloaded using a dependency
+				manager such as Apache Maven.
+
+			-	12-factor applications neer rely
+				on the existene of implicit 
+				systewide packages required as a dependency
+				to run the application. 
+
+			-	 All dependencies of
+				 an application are declared explicitly
+				 ina manifest file that cleanly
+				 delcares the detail of each
+				 reference.
+
+	*	Store config in the enviroment
+			-	Application code should 
+				be strictly seperated from
+				configuration of the appliation
+				should be driven by the enviroment.
+
+			-	Application settings such as connection
+				strings, credentials, or hostnames
+				of dependent web services should
+				be stored as enviroment variabes,
+				making them easy to change without
+				deploying configuration files
+
+
+	*	Backing Services
+			-	Treat backing services as attached
+				resources
+			-	Backing services are any service that
+				the application conusmes as a
+				part of its normal operation.  Examples
+				of backing services are:
+					*	databases
+					*	API driven RESTful web
+						services
+					*	SMTP server
+					*	FTP server
+			-	An application should be able
+				to swap out an embedded SQL 
+				database in a testing enviroment
+				with an external MySQL database
+				hosted in a staging enviroment
+				without making changes to 
+				the application code.
+
+
+
+
+
+
+
+
+	*	The things that are unique to each
+		enviroment should live external
+		to the code
+
+
+Build, Release, Run
+===============================
+	*	Strictly separate build and run 
+		stages
+
+		-	Build stage
+				*	The build stage takes the source
+					code for an applicaiton and 
+					either compiles or bundles it into
+					a package.  This package is 
+					known as a "build"
+
+		-	Release stage
+				*	The release stage takes a build
+					and combines it with its config.
+					The rlease that is created for the deploy is then
+					ready to be operated in an 
+					execution enviroment.  Each relase
+					should have a unique identifier,
+					either using semantic versioning
+					ora tmestamp.  Each release should be
+					added to a dicrectory that can 
+					be used by the rlease management took
+					to rollback to a previous release
+
+
+
+		-	Run stage
+				*	The run stage commonly referred to
+					as the "runtime", runs the application in
+					the execution enviroment for a selected
+					release.
+
+
+Processes
+================================================
+Execute the app as one or more stateless processes
+	*	12-factor apps are created to be stateless as 
+		in they share-nothing
+
+	*	The only persistence allowed is via a backing service.
+
+	*	Backing service examples:
+			-	database
+			-	object store
+	*	All resources to the app are attached as
+		backing servies at runtime
+
+	*	litmus test for a stateless app
+			-	can the app execution enviroment
+				be torn down and recreated without
+				any loss of data ?
+
+			-	apps do not save state on a local filesystem
+				in the execution enviroment
+
+
+
+
+Port Bindings
+============================================
+Export services via port binding
+
+	*	12-factor apps are completely self
+		contained, they do not require a 
+		webserver/container to be injected
+		into the the execution 
+		enviroment  at runtime in order
+		to create a web facing service.
+
+	*	Each application will expose 
+		access to itself over an 
+		HTTP port that is bound to
+		the application int he execution 
+		enviroment.
+
+	*	During deployment a routing layer
+		will handle incoming
+		requeests from a public hostname
+		by routing to the application's 
+		execution enviromeont and the bound
+		HTTP port
+
+	*	"Make jar not war...."--Josh Long
+
+
+
+
+Concurrency
+=============================================
+Scale out via the process model
+
+	*	Applications should be able to scale out
+		processes or threads for parallel
+		execution of work in an 
+		on-demand basis.
+
+	*	JVM applications are able to handle
+		in-process concurrency automatically
+		using multiplethreads
+
+	*	Most application frameworkds for the JVM
+		today have this built in.
+
+	*	Some scenarios that require data processing
+		jobs that are executed as long-running processes
+		should utilize executors that are able to 
+		asynchronously dispatch concurrent work to an
+		available pool of threads.
+
+	*	12-factor apps should also be able to scale
+		out horizontally and handle
+		requests load-balanced to multiple
+		identical running instances of an app.
+
+	*	By ensuring applications are designed to be stateless,
+		it becomes possible to handle heavier workloads
+		by scaling applications horizontally across
+		multiple nodes
+
+
+
+Disposablity
+===========================================
+	*	12 factor apps should be disposable..meaning
+		we should be able to stop them at any time
+		and gracefully handle the disposal of process
+
+	*	Reduced start and stop times improve
+		application availability during a
+		high volume traffic spike that is
+		capable of overloading all available 
+		healthy application instances.
+
+
+
+Dev/Prod Parity
+================================================
+Keep development, staging and production as
+similar as possible
+
+The 12-factor application should
+prevent divergence between
+development and production
+enviroments.  there are three
+types of gaps to be mindful of>
+
+
+	*	Time gap
+		-	Developrs should expect development
+			changes to be quickly
+			deployed into production
+
+	*	Personnel gap 
+		-	Devlopers who make a code change
+			are closely involved with its
+			deployment into production, and 
+			closely monitor the behavior of 
+			an application after making changes
+
+
+	*	Tools gap
+		-	Each enviroment should mirror
+			technology and framework choices in 
+			order to limit unexpected behavior
+			due to small inconsistencies
+
+
+Logs
+=========================================
+Treat logs as evernt streams
+
+	-	Tweleve-factor aps write logs as 
+
+
+
+
+
+
+
+

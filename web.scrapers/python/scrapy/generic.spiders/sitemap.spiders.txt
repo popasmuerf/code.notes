@@ -1,0 +1,73 @@
+Sitemap Spider
+==============================================
+class scrapy.spiders.SitemapSpider
+
+
+
+
+Sitemap Spidr allows you to crawl a site by discovering
+the URLs using sitemaps.
+
+
+
+It supports nested sitemaps and discovering sitemap
+urls form robots.txt
+
+
+sitemap_urls
+------------------------------------------
+A list of urls pointing to the sitemaps whose
+urls you want to crawl
+
+You can aso point to a robots.txt and it will be parsed
+to extract site map usrls from it.
+
+sitemap_urls = [https://krebsonsecurity.com/sitemap.xml]
+
+
+
+
+sitemap_rules
+-----------------------------------------------
+A list of tuples(regex,callback) where:
+
+	*	regex : is a regular expression to match urls extracted from
+		sitemaps
+
+	*	regex :	can be either a str or a compiled regex object
+
+	*	callback is the callback to use for processing the urls
+		that match the regular expression.  callback can be a string 
+		(indicating the name of a spider method) or callable.
+
+
+	sitemap_rules = [('/product0/','parse_product0'),
+					('/product1/','parse_product1'),
+					('/productN/','parse_productN')]
+
+
+
+	Rules are applied in order, and only the first one that
+	matches will be used.
+	If you omit this attribute, all urls found in sitemaps will
+	be processed with the parse() callback
+
+
+sitemap_follow
+---------------------------------------------------
+	A list of regexes of sitemap that should be followed.
+	This is only for sites that use Sitemap index files that 
+	point to othe sitemap files
+
+
+	
+
+
+
+
+
+
+
+
+
+

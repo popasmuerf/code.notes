@@ -1,0 +1,618 @@
+https://doc.akka.io/docs/akka/2.5/guide/tutorial_1.html
+
+Akka Architecture
+=============================
+
+
+
+The Akka actor hierarchy
+=================================
+	*	actors always belong to a parent
+	*	typcially an actor is created via
+		callying:
+
+			//code
+
+				getContext().actorOf()
+
+		Which instead of creating a 
+		"freestanding" actor, this injects
+		the new actor as a child into an
+		already existing tree:  The creator
+		actor becomes the parent of the newly
+		created child actor.  You might
+		ask then, who isthe the 
+		parent of the first actor you crate ?
+
+
+
+
+	*	New actor instances can be created under an actory using
+
+		//code
+
+			system.actorOf()
+
+	*	Creation of an actor returns a refernce that
+		is a valid URL.
+
+
+
+						/(root guardian)
+								|
+								|
+								|
+							   / \
+							  /   \	
+							 /     \
+							/ 	    \
+					/user 			 /system(system guardian)
+					(user guadian)		
+
+
+		^^^^^
+
+
+
+What we need to know about the internals of Akka for a minute
+==============================================================
+
+In fact, before you create an actor in your code, 
+Akka has already created three actors in the system.
+The names of these built-in actors contain "guardian"
+because they supervise every child actor in their path.
+
+What are the "guardian actors" ????
+
+
+*	"/" the so-called root guardian
+	-	This is the parent of all actors in the system
+		, and the last one to stop when the system itself
+		is terminated
+
+*	"/user" the guardian.
+
+	-	This is the parent actor for all user created
+		actors.  Don't let the name "user" confuse you
+		as it has nothing to do with end users, nor with 
+		user handling.
+
+	-	Every actor you create using the Akka library will
+		have the constant path "/user/" prepended to it
+
+
+
+*	"/system" the system guardian
+
+
+
+
+^^^In the Hello World example, we have already
+seen how :
+
+	system.actorOf()
+
+creates an actor directly under "/user".
+We call this a top level actor, even thopugh,
+in pracdtice it is only on the top of the user
+defined hierarchy.  
+
+You typically have on one (or very few) top
+level actors in your ActorSystem.  We
+create child, or non-top-level, actors by 
+invoking 
+
+	context.actorOf()
+
+
+from an existing actor.  The context.actorOf()
+method has a signarture identical to 
+system.actorOf(), it's top level 
+counterpart
+
+curl -X GET --header 'X-SECRET-KEY: 4430187d-e427-4ee4-90f9-1e0d6efe35a8' --header 'X-API-KEY: 44a15b05-2321-4767-a05b-b927fd599d48' http://extractor-service.fos/extractor/api/spiders/osidX/aptest
+
+
+
+package akka_actors;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+
+import static java.lang.System.out ;
+
+/**
+ * Created by mdb on 5/14/18.
+ */
+
+
+package akka_actors;
+
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+
+/**
+ * Created by mdb on 5/14/18.
+ */
+public class PrintMyActorRefActor extends AbstractActor {
+    @Override
+    public Receive createReceive() {
+        return receiveBuilder()
+                .matchEquals("first", p -> {ActorRef firstRef = getContext().actorOf(Props.empty(),"firstActor");
+                System.out.println("Second: " + firstRef);})
+                .matchEquals("second", p-> {ActorRef secRef = getContext().actorOf(Props.empty(),"secondActor");
+                    System.out.println("Second: " + secRef);})
+                .matchEquals("third", p-> {ActorRef thirdRef = getContext().actorOf(Props.empty(),"thirdActor");
+                    System.out.println("Second: " + thirdRef);})
+                .matchEquals("printit", p -> {
+                    ActorRef secondRef = getContext().actorOf(Props.empty(), "second-actor");
+                    System.out.println("Second: " + secondRef);
+                })
+                .build();}
+}
+
+
+
+public class ActorHierarchyExperiments {
+    public static void main(String args[])throws java.io.IOException{
+        ActorSystem system = ActorSystem.create("testSystem");
+        ActorRef firstRef = system.actorOf(Props.create(PrintMyActorRefActor.class),"firstActor") ;
+        ActorRef secRef = system.actorOf(Props.create(PrintMyActorRefActor.class),"secondActor") ;
+        ActorRef thirRef = system.actorOf(Props.create(PrintMyActorRefActor.class),"thirdActor") ;
+        firstRef.tell("first",ActorRef.noSender());
+        secRef.tell("second",ActorRef.noSender());
+        thirRef.tell("third",ActorRef.noSender());
+        System.out.println(">>> Press Enter to EXIT <<<");
+        try{
+            System.in.read();
+        }finally{
+            system.terminate();
+        }
+    }
+}
+
+
+Note the way a message asked the first actor to do its work.
+We sent the message by using 
+
+
+
+
+file:///Users/mdb/src10/java/cloud_native/demo/build/reports/tests/test/index.html
+
+
+Tyler's Questions
+=======================================================
+*	Do spiders have a definitive life cycle or do they run
+	indefinitely ?
+	-	Based on my experience with writing spiders using Scrapy;
+		the framework that Crawlee is a derivative off...no, spiders
+		do not run indefinitely, but I will get a definitive answer
+		from Micheal Meija later today.
+	
+*	Does a user have the option to schedule a spider before starting it?
+	-	Based on the API, a user can add a schedule that then can be used 
+		to configure a spider to run against.
+	-	Will confirm with Michael Meija
+
+*	Stop Spider Feature
+	-	Not currently implemented in either Extractor client
+		or REST API.  Spiders having a definitive life cycle
+		likely the reason(I believe) that this functionality
+		was removed.  It is being re-added
+	-	Will confirm with both Oliver Staats and Mike Meija
+
+*	Should users have the ability to 
+	-	I am going to re-draw the diagram to reflect our disussion today more 
+		accurately
+
+*	EXTR-388 Done
+	-	Allow multiple spiders to handle a single crawl (for faster crawls).
+
+*	EXTR-442 Done
+	-	Update /extractor/api/startSpiderCrawl to use the crawlee non-cluster mode crawl start api
+
+*	EXTR-437 Done
+	-	Advanced Querying of Crawlee crawls for scheduled runs
+
+*	EXTR-442 Done
+	-	Update /extractor/api/startSpiderCrawl to use the crawlee non-cluster mode crawl start api
+
+*	EXTR-450 In Progess
+	-	Spider crawl jobs sometimes run forever without processing any item in the queue
+
+
+*	EXTR-421
+	-	Extractor Service - Crawlee Integration
+		Configure Crawlee instance(s) to run as part of the Extractor service.
+		(Crawlee Extractor AP endpoints)
+
+*	Working on Crawlee documentation
+
+
+.parseMediaType("application/ hal + json; charset = UTF-8");
+
+Oliver Stats
+=======================================================
+*	Fixed problem with Extractor REST services time out 
+	errors
+
+*	Working on updating Extractor client
+
+*	Working on Extractor documentation
+
+* 	EXTR-457
+	-	Request Method Corrections
+	-	Some of the unsafe methods are marked as safe in the API. 
+		Additionally, some of the unsafe methods use the wrong type. (e.g. POST for DELETE operations)
+		https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
+
+
+*	EXTR-437
+	-	Working on reflecting these now extant features in Crawlee
+		in Extractor
+
+*	Working with  Chaitanya Pochampally on Extractor client deployment
+	issues.
+
+Michael Brown
+=======================================================
+*	Assigned EXTR-457 to Oliver after discussing
+	possible issues with incorrect HTTP methods used
+	for Extractor REST APIs
+	
+*	Met with Rutvik and Tyler for initial 
+	UI design FRACWEB-3403
+		-	Tyler beleives he has what he needs to get started
+		-	I "refactored" the use case diagram to reflect the 
+			workflow of the planned UI
+
+
+
+*	DevOps has not started work on new proxy architecture due to other
+	obligations
+
+
+
+
+
+
+
+
+
+
+Akka Life Cycle of an Actor
+========================================
+Actors pop into existence when created, then
+later, at user requests, they are stopped.
+Whenever an actor is stopped,
+all of its children are recursively stopped too.
+
+This behavior greatly simplifies resource
+cleanup and helps avoid resource leeks such
+as those caused by open sockets and files.
+
+In fact, a commonly overlooked
+difficulty when dealing with low-level mutli-threaded
+code is the lifeccle management of various concurrent
+resources
+
+*	Stopping an actor:
+	//code for an actor to stop
+	//itself
+
+	getContext.stop(getSelf())
+
+*	Post processing occurs right befor the 
+	actor stops
+
+	//code
+
+	postStop()
+
+
+
+
+
+*	Stopping another actor
+	//code for attempting to
+	//stop some random actor
+	//**bad practice***
+	//We should try to stop actors
+	//via sending them a kill-message
+	//where they can stop themselves
+
+	getContext.stop(actorRef)
+
+
+
+
+*	Prestart processing for an actor
+	after it has been instantiated, but
+	before it starts processing messagesscreenshots
+
+	//code in Java
+
+	class StartStopActor1 extends AbstractActor{
+		@Override
+		public void preStart(){
+			System.out.println("first started");
+			getContext().actorOf(Props.create(StartStopActor2.class),"second");
+		}
+
+		@Override
+		public void postStop(){
+			System.out.println("first stopped");
+		}
+
+		@Override
+		public Recieve createRecieve(){
+			return recieveBuilder()
+			.matchEquals("stop", s ->{
+				getContext.stop(getSelf());
+			})
+			.build();
+		}
+	}
+
+
+
+	class StartStopActor2 extends AbstractorActor{
+		@Override
+		public void preStart(){
+			System.out.println("second started");
+		}
+
+		@Override
+		public void postStop(){
+			System.out.println("second stopped");
+		}
+
+		//Actor.emptyBehavior is a useful placeholder
+		//when we don't want to handle
+		//any messages in the actor
+		@Override
+		public Recieve createRecieve(){
+			return receiveBuilder().build() ;
+		}
+
+	}
+
+
+
+
+
+	//code in Scala
+
+
+	class StartStopActor1 extends Actor{
+
+		override def preStart():Unit = {
+			println(("first started"))
+			context.actorOf(Props[StartStopActor2],"second")
+		}
+
+		override def postStop():Unit = {
+			println("first stopped")
+		}
+
+		override def recieve: Recieve = {
+			case "stop" =>  context.stop(self)
+		}
+	}
+
+
+
+
+	class StartStopActor2 extends Actor{
+
+		override def preStart():Unit = println("second started")
+		override def postStop():Unit = println("second stopped")
+
+		override def recieve: Recieve = Actor.emptyBehavior
+
+	}
+
+
+
+
+Falure handling
+====================================================
+
+	*	Parents and children are connected
+		thru their life cycles
+
+	*	When an actor fails(throws an exception
+		or an unhandled exception bubbles out
+		from recieve), it is temporarily suspended.
+
+	*	As mentioned earlier, the 
+		failure information is propagated
+		to the parent.
+
+	*	The parent decides what to do with 
+		the exception caused by the child actor.
+
+	*	Parents should act as supervisors
+		for their children.
+
+	*	The default supervisor strategy is to
+		stop and restart the child.
+		if you don't change the default strategy
+		all failures result in a restart
+
+
+
+Creating Actors
+===========================================================
+	*	We understand actor hierarchy and behavior
+	*	The remaining question s is how
+		to map the top-elvel components of
+		our IoT system to actors.
+
+	*	It is stempting to make the actors that
+		represent devices and dashboards at the tsop
+		level, we recommend creating an 
+		explicit compnent that represents the whole application.
+
+	*	We will have a single top-level actor in
+		our IoT system.  
+
+	*	The components that create and manage devices and dashboards
+		will be children of this actor.
+
+
+
+
+
+Designing "Device Actors"
+=============================================================
+	*	Define the interfaces
+	*	Define the messaging protocol
+
+
+our spec
+--------------------------------------------------------------
+	*	contains the current temperature
+		-or-
+	*	indicates that a temperature is not yet available
+
+
+
+	//Java 
+
+
+
+
+    public static final class ReadTemperature {
+    }
+
+    public static final class RespondTemperature {
+      final Optional<Double> value;
+
+      public RespondTemperature(Optional<Double> value) {
+        this.value = value;
+      }
+    }
+
+
+
+    //Scala
+
+
+   case object ReadTemperature
+
+   case class RespondTemperature(value:Option[Double])
+
+
+
+
+^^^ Some stuff we need to take into account here....
+---------------------------------------------------------
+
+these two messages seem to cover the required functionality.
+However, the approach we shoose must take into account the distributed
+nature of the application....
+
+While the basic mechanism is theame for communicating
+with an actor on the local JVM as with a remote actor...
+we need to keep the following in mind:
+
+
+
+	*	Latency issues that will be apparent more often
+		than you think...
+
+	*	Reliability is a concern because a remote message
+		send involves more steps, which means that more
+		can go wrong
+
+	*	We should write or actor always with the thought that they can
+		and will at least be periodically lost.
+
+
+
+
+But to futher understand  the need for flexibility
+in the protocol, we need to consider Akka message
+ordering and message delivery guarantees.
+Akka provides the following behavior for messae sends
+
+	*	At-most-once delivery, that is, no guarnateed
+		delivery.
+
+	*	Message ordring is maintained per sender, reciever pair.
+
+
+Message delivery
+==================================
+
+In an actor system, we need to 
+determine exact meanin gof a guarantee --
+at which point does th esystem consider the 
+delivery as 
+accomplished"
+
+	1.	When the message is sent out on the nework?
+	2.	When the message is recieved by the 
+		target actor's host ?
+ 	3. 	When the message is put into the target
+ 		actors' mailbox ?
+ 	4.	When the message target actor starts to 
+ 		process teh message ?
+ 	5.	When the target actor has successfully 
+ 		processed the message ?
+
+
+Mose frameworks and protocols that calim guaranteed
+delivery actully provide someting similar to 
+points #4 and #5
+
+	*	Actor A1 sends messages m1, m2, m3 --> A2
+
+	*	Actor A3 sends messages m4, m5, m6 --> A2
+
+	This means that, for Akka messages:
+
+	*	If m1 is delivered it must be delivered before
+		-	m2
+		-	m3
+
+	*	If m2 is delivereed it must be. delivered before
+		-	m3
+
+	*	If m4 is delivered it must be delivered before
+		-	m5
+		-	m6
+
+	*	If m5 is delivered it must be delivered before
+		-	m6
+
+Since there is not guaranteed delivery, and of the 
+messages may be dropped, i.e. not arrive at A2
+
+
+So basically A2 can discard messages as it sees fit
+based on it's protocal....
+we can drop messages that arrive before they 
+are supposed to....we can proceed with processing
+despite getting messages out of order....
+etc...
+
+The fact that we are not opperating on the 
+assumption of guarantees......
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,179 @@
+https://pythontips.com/2013/09/29/the-python-yield-keyword-explained/
+
+
+yield vs. return
+=========================================
+
+Yield is a keyword that is used like return,
+except the funtion will return a generator.
+
+
+
+To understand what yield does, you must 
+first understand what generators are.
+And before generators, come iterables....
+=========================================
+
+
+
+Iterables
+=========================================
+When you create a list, you can read its items one
+by one, and it's called iteration....
+
+#code
+
+mylist = [1,2,3]
+for i in mylist:
+	print(i)
+
+
+^^^ mylist[] is an iterable
+
+
+
+Everything you can for "for...in..." on is an iterable:
+	-lists
+	-strings
+	-files
+
+
+Ollie 
+====================
+- changing endpts
+	* proxies
+	* crawlee hosts
+ 	* making according documentation changes
+ 	* making client method changes accordingly(small changes)
+ 	* FracWeb will have to remove anything that mentiones
+ 	  osid
+ 	* DevOps methods will be added to the client as opposed
+ 	  to just letting DevOps use the devops endpts
+- for consistency
+- creating AppIds
+- everything is going thru the shards
+
+
+
+Mic
+===================
+EXTR-379 
+
+
+
+
+
+These iterables are handy because you can read them as much
+as you wish, but you store all th values in memory and it's not
+always what you want when you ave a lot o values.
+
+
+
+
+Generators
+===============================================
+Generators are iterators, but you can only itrate over them
+once.....again....let me repeat this....
+
+"Generators are iterators, but we can interte over them once "
+
+
+
+Why ?  They do not store their values in memory as opposed
+to generating them on th fly.
+
+#An example of a generator
+
+mygenerator = (x * x for x in range(3))
+for i in mygenerator:
+	print(i)
+
+^^^ this is exactly the same as  using an interator like
+some thing of type list save we used [] instead of ().
+You cannot perform for i in mygenerator a second time 
+since generators can only be used once:  They calculate
+0, then forget about it and calculate 1, and end 
+calculating 4, one by one 
+
+
+In [1]: range(3)
+Out[1]: [0, 1, 2]
+
+In [2]: mygenerator = (x * x for x in range(3))
+
+In [3]: for i in mygenerator:
+   ...:     print i
+   ...:     
+0
+1
+4
+
+
+
+Yield 
+==================================
+Yield is a keyword that is used like
+return...., except the function will return
+a generator
+
+
+#code
+
+
+
+In [5]: def createGenerator():
+   ...: ^Imylist = range(3)
+   ...: ^Ifor i in mylist:
+   ...: ^I^Iyield i*i
+   ...:   
+
+In [10]: for i in ll:
+    ...:     print i
+    ...:     
+0
+1
+4
+
+
+
+
+When is this not a useless idiom ?
+=====================================
+	*	when you know your function will
+		return a huge set of values that 
+		you will only need to read once.
+
+	*	To master yield, you must understand
+		that when you call the function,
+		the code you have written in function
+		body does not run.
+
+	*	Let's say this again...you must understand
+		thatn when you call the function, none
+		of the code you. have written in the
+		function does not run...it only 
+		returns the generator object....
+		this is a bit tricky because on the 
+		surface it doesn't make any fucking 
+		sense.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

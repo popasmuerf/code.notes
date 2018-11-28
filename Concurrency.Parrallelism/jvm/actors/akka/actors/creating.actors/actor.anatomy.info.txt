@@ -1,0 +1,197 @@
+Reactive system design
+=====================================
+Reactive platforms
+==========================
+1. Akka
+2. Gpars
+3. Quasar
+4. go routines
+
+
+Reactive Manifesto...
+=================================
+https://www.reactivemanifesto.org/
+
+
+What's the big deal ?
+===================================
+	*	flexibile
+	*	loosely-coupled
+	*	scalable
+	*	fault tolerant
+	*	Reponsive
+	*	elasticity
+	*	resiliency
+	*	event-driven design
+
+
+
+Responsive
+------------------------------------------
+	*	Our applications should respod to
+		requests as fast as possible
+	*	If data can only be aquired
+		in a serial manner, or in a parallel manner,
+		you should always chooose to get the ata in
+		parallel in order to gt a response
+		back to a user faster.
+	*	Requests for unrelated data can be 
+		made at the same time.
+	*	When requesting unrelated non-dependent
+		pics of data, we should evaluate
+		if it's possible to make those requests
+		at the same tiem.
+	*	errors shold be returned as a notification
+		immediately rather than having to wait for a timeout.
+
+
+
+Elastic
+---------------------------------------------
+	*	all applications should be able
+		to scale undr varying workloads(via
+		optimal logic and resources)
+	*	If we have an  in-memory database
+		running on a virtual machine, adding
+		a second machine node could split the 
+		quiries across th etwo servers, doubling
+		potential throughput.
+
+	*	adding a seconding in -memory database node
+		coudl double memory capacity by splitting
+		the data and moving half of oit to the 
+		new node.  Adding nodes shold expand 
+		capacity in a near-liniear manner.
+
+
+
+Eveent-driven/message-driven
+----------------------------------------------
+	*	resources are only used when they are needed.
+	*	messages delivered to remote
+		machines as well(location transparency).  As
+		messages are quied and elivered outside an actor,
+		it is possible to self-heal a failing
+		system via supervision.
+
+
+
+
+Akka Actor code stub :
+==========================================
+//code 
+
+public class PongActor extends AbstractActor {
+    
+    @Override
+    public AbstractActor.Receive createReceive() {
+        
+        return null;
+    }
+}
+
+
+Match
+------------------------------------------------
+thre are a few matchfunctions in the 
+recieve builder that are worth
+noting. We'll. show examples
+of how to match on ping with each:
+
+	*	match(class,function)
+		-	This describes behavior to
+			apply to any unmathed 
+			class instance.
+
+	*	match(String.class, s->{
+			if(s.equals("Ping")){
+				respondToPing(s);
+			}
+		})
+
+	*	match(class, predicate,function)
+		-	This describes behavior to 
+			apply to a message if it is the type
+			of cass and the predicate function is true.
+	*	match(String.class, s->{
+			s.equals("Ping"), s->{
+				respondToPing(s)
+			}
+		})
+
+	*	matchEquals(object,function)
+		-	This describes behavior to apply
+			if the call to equals is true for
+			the object supplied
+
+	*	matchEquals("Ping", s -> respondToPing(s))
+
+
+	*	matchAny(function)
+		-	this matches any unmatched messges.
+			It's geneerally a good proactice
+			to respond with a failure, or at
+			least log in to aid in troubleshiooting
+			during development
+
+
+
+Tell()
+=============================================
+	*	sender.tell()
+		- simple one way message pattern.
+	*	args:
+		-	message for a target actor(s)
+		-	sender the target actor will see
+		-	requires (in Java)  the sender of 
+			the message to be identified
+			*	ActorRef.noSender():
+					- is used to indicate there
+					  there is no reply address.
+
+    *	
+
+
+
+Creating an actor
+===============================================
+//Java
+	ActorRef actor = actorSystem.acteorOf(Props.create(
+	PongActor.class));
+
+//Scala
+	val actor:ActorRef = actorSystem.actorOf(Props(
+	classOf[ScalaPongActor])
+	)
+
+
+Creating an actor via factory method
+==================================================
+//Java
+
+class PongActor extends AbstractActor{
+	public static Props props(String response){
+		return Props.create(this.class, response);
+	}
+}
+
+.....
+	ActorRef actor = actorSystem
+	.actorOf(PongActor.props("PongFoo"))
+.......
+
+//Scala
+	
+	object ScalaPongActor{
+		def props(response:String):Props ={
+			Props(classOf[ScalaPongActor],response)
+		}
+	}
+.......
+	val actor = actorSsytem.actorOf(PongActor.props "PongFoo")
+......
+
+
+Michaels-MacBook-Pro:crawlee mdb$ find /mstr -name Makefile
+/mstr/dep/crawlee/__deps__/mdtsdb-client-python/docs/Makefile
+/mstr/dep/crawlee/Makefile

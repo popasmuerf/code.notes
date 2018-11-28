@@ -1,0 +1,252 @@
+https://www.journaldev.com/2394/java-dependency-injection-design-pattern-example-tutorial
+
+
+Java Dependency Injection
+=========================================================
+
+
+
+Without injection
+==============================================
+
+//Email service
+
+public class EmailService{
+	public void sendEmail(String message, String receiver){
+		//logic to send email
+		System.out.println("Email sent to "+receiver+ " with Message="+message);
+	}
+}
+
+
+
+
+//MyApplication
+
+public class MyApplication{
+	private EmailService email = new EmailService();
+	public void processMessages(String msg, String rec){
+		this.email.sendEmail(msg, rec);
+	}
+}
+
+
+
+//MyLegacyTest
+
+public class MyLegacyTest{
+	
+	public static void main(String[] args){
+		MyApplication app = new MyApplication() ;
+		app.processMessages("Hi Pankaj","pankaj@abc.com");
+	}
+}
+
+
+
+^^^^Above problems
+====================================================
+MyAplication calss is responsible for initializing the email servers
+and then use it.  This leads to hard coded 
+dependencys.  Switching to some other advanced
+email service in teh future will require code
+changes in MyApplication class.  This makes
+our application hard to extend and if email service
+is used in multiple classes then that would make
+it even harder to do.
+
+
+If we want to extend our application to provie
+addtional messaging feature, such as SMS or
+Facebook message then we would need to write another
+application for that.  This will involve code
+changes in application classes and in client classes
+too.
+
+
+Testing the application will bever difficult since our
+appliation is directly creating the email service
+instance.  There is not way we can mock these objects
+in our test classes.
+
+We could abstract away the details of the 
+email service via wrapping the details of 
+any particular email service into 
+an EmailService class .....but while we have 
+managed to obsuficate away the hard details
+of the email service....we are still holding
+the application accountable for instantiating
+it.
+
+
+
+There is a better way...
+
+
+Java Dependency Injection -- Service Components
+====================================================
+For our case, we can have MessageServcie that will declare
+the contract for service implementations.
+
+
+///Message Service
+
+
+public interface MessageService{
+	void sendMessage(String msg, String rec);
+}
+
+
+
+//Now let's say we have Email and SMS services that implement
+//above interface
+
+
+public class EmailServiceImpl implements MessageService{
+	@Override
+	public void sendMessage(String msg, String rec){
+		//logic to send email
+		System.out.println("Email sent to "+rec+ " with Message="+msg);
+	}
+}
+
+public class SMSServiceImpl implements MessageService{
+	@Override
+	public void sendMessage(String msg, String rec){
+		//logic to send SMS
+		System.out.println("SMS sent to "+rec+ " with Message="+msg);
+	}
+}
+
+
+/**
+Java Dependency Injection - Service Consumer
+---------------------------------------------
+We are not really required to have base interfaces
+for consumer classes but I will have a Consumer
+interface declaring constract for consumer classes
+**/
+
+
+public interface Consumer{
+	void processMessages(String msg, String rec);
+}
+
+
+
+public class MyDIAppliation implements Consumer{
+	private MessageService service ;
+	public MyDIAppliation(MessageService svc){
+		this.service = svc ;
+	}
+
+	@Override
+	public void processMessages(String msg, String rec){
+		//do some msg validation, manipulation logic etc
+		this.service.sendMessage(msg,rec);
+	}	
+}
+
+
+
+^^^Notice how the Consumer class doesn't need to know the 
+initialization details of the service...it's just passed the service
+and uses it.  This is a much better seperation of concerns...
+
+This allows for much better unit testing as we can simply "mock"
+MessageService and bind the services at runtime rather than compile time.
+
+
+
+Now we are ready to write the java dependendy injector lasses that
+will initialize the service and alwao the consumer classes.
+
+
+
+
+Java Dependency Injection -- Injectors Classes
+=============================================================
+Let's have an inerface --> "MessageServiceInjector"
+with a method declaration that returns the Consumer
+class
+
+
+
+public interface MessageServiceInjector{
+	public Consumer getConsumer() ;
+}
+
+
+public class EmailServiceInjector implements MessageServiceInjector{
+	@Override
+	public Consumer getConsumer(){
+		return new MyDIAapplication(new EmailServiceImpl());
+	}
+}
+
+public class SMSServiceInjector implements MessageServiceInjector{
+	@Override
+	public Consumer getConsumer(){
+		return new MyDIAapplication(new SMSServiceImpl());
+	}
+}
+
+
+
+
+Now let's see our client applications will sue the application with
+a simple program
+================================================================
+
+public class MyMessageDITest{
+	
+
+
+
+}
+
+
+
+
+
+
+-------------
+
+public class MyDIApplicationJUnitTest {
+
+	private MessageServiceInjector injector;
+	@Before
+	public void setUp(){
+		//mock the injector with anonymous class
+		injector = new MessageServiceInjector() {
+			
+			@Override
+			public Consumer getConsumer() {
+				//mock the message service
+				return new MyDIApplication(new MessageService() {
+					
+					@Override
+					public void sendMessage(String msg, String rec) {
+						System.out.println("Mock Message Service implementation");
+						
+					}
+				});
+			}
+		};
+	}
+	
+	@Test
+	public void test() {
+		Consumer consumer = injector.getConsumer();
+		consumer.processMessages("Hi Pankaj", "pankaj@abc.com");
+	}
+	
+	@After
+	public void tear(){
+		injector = null;
+	}
+
+}
+
+
+

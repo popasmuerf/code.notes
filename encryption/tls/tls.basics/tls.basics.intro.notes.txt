@@ -1,0 +1,1153 @@
+/a[contains(@href,"sitemap-pt-post")]/text()
+
+//*/div[contains(@class,"bredcrumb-div-2-column")]
+
+//*/div[contains(@id,"left-column-div")]
+
+
+//*/div[contains(@id,"left-column-div")]
+
+$x('//*/div[contains(@id,"left-column-div")]/div[contains(@class,"genTable")]')
+
+$x('//*/table[(@class="USMN_MarketIndices")]')
+
+$x('//*/table[(@class="USMN_MarketIndices")]/*/a[contains(@href,"selected=")]/text()')
+$x('//*/table[(@class="USMN_SectorIndices")]/*/a[contains(@href,"selected=")]/text()')
+
+https://www.nasdaq.com/markets/indices/major-indices.aspx
+
+
+
+.....or maybe...just maybe She continues to be smart enough
+to be able to spot a no account, shiftless
+
+
+indices
+==============================================================
+
+starting_url=N/A
+
+
+390 : Description
+403 : EPAFilesData --> missing from openmisc
+
+major indices
+=============================================================
+$x('//*/table[(@class="USMN_MarketIndices")]/tbody/tr/td/h3/a[contains(@href,"selected=")]/text()')
+
+
+sector indices
+==============================================================
+$x('//*/table[(@class="USMN_SectorIndices")]/tbody/tr/td/h3/a[contains(@href,"selected=")]/text()')
+
+$x('//*/table[(@class="USMN_SectorIndices")]/*/*/*/*/a[contains(@href,"selected=")]/text()')
+
+
+$x('//*/a[contains(@href,"selected=")]/text()')
+
+
+
+$x('//*[@id="OtherIndicesTable"]/tbody/tr[1]/td[2]/a/text()')
+
+
+
+
+
+app.crawlee
+mongo.crawlee
+redis.crawlee
+
+
+
+Natural Earth is a public domain map dataset
+available at 1:10m, 1:50m, and 1:110 million scales.
+Featuring tightly integrated vector and raster data,
+with Natural Earth you can make a variety of visually
+pleasing, well-crafted maps with cartography or GIS software.
+
+
+
+The Morbidity and Mortality Weekly Report (MMWR ) 
+series is prepared by the Centers for Disease Control and Prevention (CDC).
+
+Often called “the voice of CDC,” the MMWR  series
+is the agency’s primary vehicle for scientific 
+publication of timely, reliable, authoritative,
+accurate, objective, and useful public health 
+information and recommendations.
+
+
+
+The Natality online databases report counts
+of live births occurring within the United States
+to U.S. residents and non-residents. Counts can be
+obtained by state, county, child's gender and weight,
+mother's race, mother's age, mother's education, 
+gestation period, prenatal care, birth plurality,
+and mother's medical and tobacco use risk factors. 
+The data are derived from birth certificates.
+For more information, refer to Natality data description.
+
+
+
+Natural Earth is a public domain map dataset
+available at 1:10m, 1:50m, and 1:110 million scales.
+Featuring tightly integrated vector and raster data,
+with Natural Earth you can make a variety of visually
+pleasing, well-crafted maps with cartography or GIS software.
+
+
+Longitudinal Employer–Household Dynamics (LEHD) data 
+are the result of a partnership between the Census Bureau
+and U.S. states to provide high quality local labor
+market information and to improve the
+Census Bureau's economic and demographic data programs.
+LEHD data are based on different administrative sources,
+primarily Unemployment Insurance (UI) earnings data and
+the Quarterly Census of Employment and Wages (QCEW),
+and censuses and surveys. Firm and worker information
+are combined to create job level quarterly earnings
+history data, data on where workers live and work,
+and data on firm characteristics, such as industry.
+Access to these data will only be granted to qualified
+researchers on approved projects with authorization 
+to use specific data sets. All researcher access to
+restricted–use data occurs at one of the secure 
+Federal Statistical Research Data Centers (RDCs).
+The table below lists person, job and establishment
+based data available at the RDCs.
+
+
+
+
+The OSTM/Jason-2 satellite launched 20 June 2008
+and is the latest in a series of ocean altimeter 
+missions designed to observe ocean circulation, 
+sea level rise, and wave heights. Earlier altimeter 
+missions include Geosat and Geosat Follow-On satellites,
+which flew in 1985-1989 and 1998-2008, respectively, 
+and the TOPEX/Poseidon (1992-2005) and Jason-1 (2001-present)
+missions, which were launched into the same orbit now
+occupied by OSTM/Jason-2. Jason-3 is a follow-on mission
+to OSTM/Jason-2, which was launched on January 17, 2016.
+Jaosn-3 will secure the continuity of high quality ocean
+altimetry measurements in support of climate monitoring,
+operational oceanography and seasonal forecasting.
+
+
+Job-to-Job Flows (J2J) is a beta release from
+the U.S. Census Bureau of new national statistics
+on job mobility in the United States. The data
+include new statistics on: (1) the job-to-job
+transition rate, (2) hires and separations
+to and from employment, and (3) characteristics
+of origin and destination jobs for job-to-job
+transitions. These statistics are available 
+nationally and at the state level, by industry 
+and worker characteristics. More information 
+about the data and how they are generated is
+available in the documentation links provided
+on this page. More detailed tabulations are
+planned in later releases. 
+
+
+
+The linked birth and infant death data set is a
+valuable tool for monitoring and exploring the 
+complex inter-relationships between infant death 
+and risk factors present at birth. In the linked 
+birth and infant death data set the information 
+from the death certificate is linked to the 
+information from the birth certificate for 
+each infant under 1 year of age who dies in
+the United States, Puerto Rico, The Virgin Islands,
+and Guam. The purpose of the linkage is to use the
+many additional variables available from the birth
+certificate to conduct more detailed analyses of
+infant mortality patterns. The linked files include
+information from the birth certificate such as age,
+race, and Hispanic origin of the parents, birth weight,
+period of gestation, plurality, prenatal care usage,
+maternal education, live birth order, marital status,
+and maternal smoking, linked to information from the 
+death certificate such as age at death and underlying 
+and multiple cause of death.
+
+All LIHTC data including 2014 data are available 
+through the interactive system for
+accessing the LIHTC Database
+
+
+
+A daily GeoNames database dump can be downloaded in
+the form of a large worldwide text file (allCountries.zip).
+Additional country files are available for convenience.
+You find the files on our download server.
+Read the readme.txt for details. A Premium Data
+Subscription variant is available for professional users.
+
+
+Supported by Google Jigsaw, the GDELT Project monitors
+the world's broadcast, print, and web news from nearly
+every corner of every country in over 100 languages and
+identifies the people, locations, organizations, themes,
+sources, emotions, counts, quotes, images and events
+driving our global society every second of every day,
+creating a free open platform for computing on the entire
+world.
+
+
+
+Each year thousands of banks and other financial institutions
+report data about mortgages to the public as part of the 
+Home Mortgage Disclosure Act (HMDA). This data is important
+because:
+
+    It helps show whether lenders are serving the housing
+    needs of their communities; It gives public officials 
+    insight that helps them make informed decisions about
+    policies; and It sheds light on lending patterns that
+    could be discriminatory
+
+The CFPB provides every year of the Loan Application 
+Register (LAR) data since 2007. That adds up to about
+15 to 20 million records every year, and we think that you
+could build something really cool with it.
+
+
+
+The Community Reinvestment Act (CRA), enacted by Congress
+in 1977 (12 U.S.C. 2901) and implemented by 
+Regulations 12 CFR parts 25, 228, 345, and 195,
+is intended to encourage depository institutions to help
+meet the credit needs of the communities in which they operate. 
+In this section of the web site, you can find out more about the
+regulation and its interpretation and information on CRA examinations. 
+
+
+This page lists our data that is available in multiple 
+formats, including machine readable, static datasets,
+RSS feeds, and more.  FEMA offers some of its public 
+data in machine readable format via an Application 
+Programming Interface (API).
+
+
+
+starting_url=
+            https://www.epa.gov/enviro/geospatial-data-download-service,
+            https://www.epa.gov/enviro/epa-regional-kml-download,
+            https://www.epa.gov/enviro/epa-frs-facilities-state-single-file-csv-download,
+            https://www.epa.gov/enviro/epa-state-combined-csv-download-files,
+            https://www.epa.gov/toxics-release-inventory-tri-program/tri-basic-data-files-calendar-years-1987-2015,
+            https://www.epa.gov/toxics-release-inventory-tri-program/2015-preliminary-dataset-basic-data-files,
+            https://www.epa.gov/toxics-release-inventory-tri-program/tri-basic-plus-data-files-calendar-years-1987-2015,
+            https://www.epa.gov/toxics-release-inventory-tri-program/2015-tri-preliminary-dataset-basic-plus-files,
+            https://www.epa.gov/toxics-release-inventory-tri-program/tri-dioxin-and-dioxin-compounds-and-teq-data-files-calendar,
+            https://www.epa.gov/toxics-release-inventory-tri-program/2015-tri-preliminary-dataset-teq-data-files,
+            https://echo.epa.gov/tools/data-downloads,
+            https://iaspub.epa.gov/triexplorer/release_chem?trilib=TRIQ1&TABBED=YES&p_view=USCH&TAB_RPT=1&sort=_VIEW_&FLD=RELLBY&FLD=TSFDSP&SORT_FMT=1&industry=ALL&STATE=All+states&COUNTY=All+counties&chemical=All+chemicals&year=2015&report=&BGCOLOR=%23D0E0FF&FOREGCOLOR=black&FONT_FACE=arial&FONT_SIZE=10+pt&FONT_WIDTH=normal&FONT_STYLE=roman&FONT_WEIGHT=bold&pOutput=CSV&pOutput=Download
+
+
+
+
+ The environmental data available on CDC WONDER are county-level
+ daily measures of air temperature (degree days), heat index,
+ land surface temperature, outdoor air quality (fine particulate matter)
+ and sunlight (insolation or solar irradiation). Data are available by 
+ place (combined 48 conterminous United States, region,
+ division, state, county), time (year, month, day) and
+ specified measure value. This work was part of a collaborative
+ study funded by the NASA Applied Sciences Program/Public Health 
+ Program (grant# NNX09AV81G).
+
+For more focus on environmental health and environmental exposure data, please see the National Environmental Public Health Tracking Network. 
+
+
+
+Data provided by Snort decribing emerging IT security threats
+
+
+The U.S. Energy Information Administration is 
+committed to enhancing the value of its free and open data
+by making it available through an Application Programming Interface
+(API) and open data tools to better serve our customers. 
+The data in the API is also available in bulk file, 
+in Excel via the add-in,  in Google Sheets via an add-on, 
+and via widgets that embed interactive data vizualizations of
+EIA data on any website. By making EIA data available in 
+machine-readable formats, the creativity in the private, 
+the non-profit, and the public sectors can be harnessed to 
+find new ways to innovate and create value-added services
+powered by public data. 
+
+
+A collection of public data sets for testing out
+visualization methods.  These data sets are at various
+stages of preparation, some are just raw data, some are
+CSV files, and some are exposed as AMD modules. 
+This collection is messy, but with some digging you 
+may find hidden gems.
+
+
+
+The CDFI Fund produces annual research reports and 
+periodic research briefs. They are based on the analysis
+of primary source data derived from reporting required by
+the CDFI Fund's awardees and allocatees to the data 
+collection system, known as the Community Investment
+Impact System or CIIS.
+
+In addition, the CDFI Fund periodically commissions
+original research reports by independent researchers 
+and consultants on strategic issues and topics confronting
+the community development finance sectors. Furthermore, 
+the CDFI Fund commissions periodic external program 
+evaluations of its major programs to assess the 
+effectiveness of the programs in meeting their 
+objectives and to measure the financial, economic
+and social impacts on communities, target markets
+and underserved populations.
+
+
+
+
+The United States Cancer Statistics (USCS) are the
+official federal statistics on cancer incidence
+from registries having high-quality data and
+cancer mortality statistics for 50 states and 
+the District of Columbia. USCS are produced 
+by the Centers for Disease Control and Prevention (CDC)
+and the National Cancer Institute (NCI). For a list of
+all USCS contributors and partners, visit USCS Contributors. 
+
+
+Bridged-Race Population Estimates 
+        
+
+A curated list of awesome Threat Intelligence resources
+
+A concise definition of Threat Intelligence: 
+evidence-based knowledge,
+including context, 
+mechanisms,
+indicators,
+implications,
+actionable advice,
+about an existing or emerging menace or hazard to assets 
+that can be used to inform decisions regarding the subject’s
+response to that menace or hazard.
+
+
+
+
+AIRS data is distributed by the NASA Goddard Earth Sciences
+Data Information and Services Center (GESDISC). At the GESDISC
+you will find information and tools designed to help you find
+the AIRS data you need.
+
+
+The Peace Research Institute Oslo (PRIO) conducts research on
+the conditions for peaceful relations between states, groups 
+and people.
+
+
+
+start_url=
+            http://gis.charleston-sc.gov/arcgis/rest/services?f=json
+            http://maps.lacity.org/arcgis/rest/services?f=json
+            http://mapview.memphistn.gov/arcgis/rest/services?f=json
+            http://maps.alexandriava.gov/alexmaps/rest/services?f=json
+            http://gis.arlingtonva.us/arlgis/rest/services?f=json
+            http://maps.cityofboston.gov/ArcGIS/rest/services?f=json
+            http://services2.arcgis.com/HsXtOCMp1Nis1Ogr/ArcGIS/rest/services?f=json
+            https://services.nationalmap.gov/arcgis/rest/services?f=json
+        
+
+
+Current HIV/AIDS data and statistics are available from
+the National Center for HIV/AIDS, Viral Hepatitis, STD,
+and TB Prevention (NCHHSTP) in the NCHHSTP Atlas.
+
+
+
+starting_urls=
+    https://www.epa.gov/enviro/geospatial-data-download-service,
+    https://www.epa.gov/enviro/epa-regional-kml-download,
+    https://www.epa.gov/enviro/epa-frs-facilities-state-single-file-csv-download,
+    https://www.epa.gov/enviro/epa-state-combined-csv-download-files,
+    https://www.epa.gov/toxics-release-inventory-tri-program/tri-basic-data-files-calendar-years-1987-2015,
+    https://www.epa.gov/toxics-release-inventory-tri-program/2015-preliminary-dataset-basic-data-files,
+    https://www.epa.gov/toxics-release-inventory-tri-program/tri-basic-plus-data-files-calendar-years-1987-2015,
+    https://www.epa.gov/toxics-release-inventory-tri-program/2015-tri-preliminary-dataset-basic-plus-files,
+    https://www.epa.gov/toxics-release-inventory-tri-program/tri-dioxin-and-dioxin-compounds-and-teq-data-files-calendar,
+    https://www.epa.gov/toxics-release-inventory-tri-program/2015-tri-preliminary-dataset-teq-data-files,
+    https://echo.epa.gov/tools/data-downloads,
+    https://iaspub.epa.gov/triexplorer/release_chem?trilib=TRIQ1&TABBED=YES&p_view=USCH&TAB_RPT=1&sort=_VIEW_&FLD=RELLBY&FLD=TSFDSP&SORT_FMT=1&industry=ALL&STATE=All+states&COUNTY=All+counties&chemical=All+chemicals&year=2015&report=&BGCOLOR=%23D0E0FF&FOREGCOLOR=black&FONT_FACE=arial&FONT_SIZE=10+pt&FONT_WIDTH=normal&FONT_STYLE=roman&FONT_WEIGHT=bold&pOutput=CSV&pOutput=Download,
+
+
+
+start_url=https://www.fema.gov/news-releases?field_related_fema_regions_tid=All&items_per_page=100#
+
+
+starting_url=http://geonames.nga.mil/gns/html/namefiles.html
+
+Complete Files of Geographic Names for Geopolitical Areas 
+from GNS (ISO/IEC 10646 [Unicode UTF-8] Compliant as of 18 July 2002)
+
+
+
+start_url=https://wonder.cdc.gov/nndss/nndss_weekly_tables_menu.asp
+
+
+National Notifiable Infectious Diseases: Weekly Tables
+(Weekly data are available from Week 01, 1996 through Week 14, 2018)
+
+
+start_url=https://www.nesdis.noaa.gov/jason-3/
+
+Jason-3 is a four-agency international partnership 
+consisting of NOAA, NASA, Centre National d’Etudes Spatiales,
+France’s space agency, and the European Organization for the 
+Exploitation of Meteorological Satellites. Thales Alenia of
+France built the spacecraft.
+
+
+start_url=http://www.ndbc.noaa.gov/
+
+
+
+start_url=https://www.fema.gov/data-feeds
+
+
+
+start_url=https://openphish.com/phishing_feeds.html
+
+
+Phishing Intelligence Feeds
+
+
+start_url=https://www.phishtank.com/
+
+
+PhishTank is a collaborative clearing house for
+data and information about phishing on the Internet.
+Also, PhishTank provides an open API for developers
+and researchers to integrate anti-phishing data into
+their applications at no charge.
+
+
+
+start_url=https://www.ffiec.gov/hmdaadwebreport/aggwelcome.aspx
+
+HMDA data provide information regarding home mortgage lending activity.
+
+PMIC data contain the same variables as the HMDA data, but are voluntarily reported by private mortgage insurance companies. PMIC Aggregate & Disclosure data is available through 2012 only. PMIC Flat Files are available through 2013 only.
+
+HMDA data generally become available by September
+of the year following the calendar year (CY) of the data. 
+The data and reports can be used along with the
+Census demographic information for data analysis purposes.
+
+
+start_url=https://www.ffiec.gov/hmdaadwebreport/NatAggWelcome.aspx
+
+HMDA data provide information regarding home mortgage lending activity.
+
+PMIC data contain the same variables as the HMDA data, but are voluntarily reported by private mortgage insurance companies. PMIC Aggregate & Disclosure data is available through 2012 only. PMIC Flat Files are available through 2013 only.
+
+HMDA data generally become available by September
+of the year following the calendar year (CY) of the data. 
+The data and reports can be used along with the
+Census demographic information for data analysis purposes.
+
+start_url=http://ucdp.uu.se/downloads/
+
+
+
+The Uppsala Conflict Data Program (UCDP) is the world’s
+main provider of data on organized violence and the oldest
+ongoing data collection project for civil war, with a history 
+of almost 40 years. Its definition of armed conflict has become
+the global standard of how conflicts are systematically defined 
+and studied
+
+
+
+Precipitation Hourly LandingPage US Hourly PrecipitationData
+
+
+https://data.nodc.noaa.gov/cgi-bin/iso?id=gov.noaa.ncdc:C00313
+
+
+start_url=https://data.nodc.noaa.gov/cgi-bin/iso?id=gov.noaa.ncdc:C00313
+
+
+Hourly Precipitation Data (HPD) is digital data set DSI-3240,
+archived at the National Climatic Data Center (NCDC)
+
+
+
+start_url=https://raw.githubusercontent.com/rOpenGov/psData/master/R/Getters.R
+
+
+start_url=https://www.bls.gov/cew/data.htm
+Quarterly Census of Employment and Wages
+
+
+start_url=https://download.bls.gov/pub/time.series/
+
+
+
+start_url=https://www.bls.gov/emp/ep_table_201.htm
+Employment by major industry sector
+
+
+start_url=https://www.bls.gov/bdm/bdmfirmsize.htm
+
+National Business Employment Dynamics Data by Firm Size Class
+
+
+
+start_url=https://lehd.ces.census.gov/data/
+
+LEHD makes available several data products
+that may be used to research and characterize
+workforce dynamics for specific groups. 
+These data products include online applications,
+public-use data, and restricted-use microdata. 
+The Quarterly Workforce Indicators (QWI) and 
+LEHD Origin-Destination Employment Statistics 
+(LODES) data are available online for public use.
+Confidential microdata are available to qualified
+researchers with approved projects through restricted
+access use in Census Research Data Centers. 
+
+
+
+start_url=http://doc.emergingthreats.net/bin/view/Main/RussianBusinessNetwork
+
+"Call these hosts what you like, we see a large amount of
+ hostile activity from these nets, and get little to no abuse
+ response for takedown. Do what you will with this information."
+  - Matt Jonkman 
+
+
+
+start_url=https://wonder.cdc.gov/wonder/sci_data/sci_data.asp
+
+The CDC Scientific Data Repository (also known as the
+Scientific Data Archives) provides storage and access
+to archive CDC data sets and documentation. Customer
+service is available to provide assistance with data
+access and analysis of public-use data, for public health
+research. Many of these data sets, and additional data that
+are not included here, are also directly available to the 
+general public from the National Center for Health Statistics. 
+
+start_url=https://wonder.cdc.gov/stdmArchives.html
+
+Please refer to STD Morbidity Data to access current data.
+Archived STD morbidity data are maintained solely to allow
+CDC WONDER users the ability to replicate queries performed
+in the past. 
+
+
+start_url=http://www.sailwx.info/shiptrack/
+
+
+We primarily use data reported via the 
+World Meteorological Organization's Voluntary Observing Ship (VOS)
+program to provide a snapshot of current weather conditions at sea,
+worldwide. This data can also be used to track the progress of 
+ships at sea. Many ships do not report their weather observations
+to WMO, or report only sporadically; these ships will not have
+records in our database.Ships with masked callsigns in the GTS 
+are not displayed. Ships within range of several AIS receiver 
+networks are shown when their positions are available. Additional 
+information comes from the YOTREPS network of cruising yachts;
+YOTREPS positions are updated only once per day.
+
+
+start_url=https://nycopendata.socrata.com/browse/embed?limitTo=datasets
+
+Where can you find public Wi-Fi in your neighborhood?
+What kind of tree is in front of your office? Learn
+about where you live, work, eat, shop and play using
+NYC Open Data.
+
+
+start_url=https://nycopendata.socrata.com/browse/embed?limitTo=blob
+
+Where can you find public Wi-Fi in your neighborhood?
+What kind of tree is in front of your office? Learn
+about where you live, work, eat, shop and play using
+NYC Open Data.
+
+start_url=https://nycopendata.socrata.com/browse/embed?limitTo=maps
+
+Where can you find public Wi-Fi in your neighborhood?
+What kind of tree is in front of your office? Learn
+about where you live, work, eat, shop and play using
+NYC Open Data.
+
+
+start_url=https://www.irs.gov/statistics/soi-tax-stats-statistics-of-income
+
+Welcome to the IRS’s Statistics of Income (SOI) program,
+where you can find out about what we do, the services 
+and products we offer, and how you can work with us.
+You'll also find links to other useful 
+Federal Government statistics resources here.
+
+
+start_url=https://sslbl.abuse.ch/
+
+SSL Blacklist (SSLBL) is a project maintained by abuse.ch.
+The goal is to provide a list of "bad" SSL certificates
+identified by abuse.ch to be associated with malware or
+botnet activities. SSLBL relies on SHA1 fingerprints 
+of malicious SSL certificates and offers various 
+blacklists that can found in the SSL Blacklist section.
+
+
+start_url=http://efele.net/maps/tz/
+
+In general, the shapefiles have a geometry column
+made of polygons, an a tzid column which contains 
+the name of the TZ timezone for that area or the
+values uninhabited (when TZ describes so) or unknown
+(when TZ does not describe the timezone for that area).
+
+
+start_url=http://www.nyc.gov/html/tlc/html/archive/archive.shtml
+
+View all historically relevant notices, information and data.
+We encourage all visitors to this section to enjoy
+its expansive scope, whether for a research project,
+or simply for the stroll down memory lane it provides.
+
+
+http://www.nyc.gov/html/tlc/downloads/
+
+View all historically relevant notices, information and data.
+We encourage all visitors to this section to enjoy
+its expansive scope, whether for a research project,
+or simply for the stroll down memory lane it provides.
+
+
+start_url=https://cloud.google.com/storage/docs/apis
+
+Google Cloud Storage  APIs & Reference 
+
+
+start_url=https://datamarket.com/data/list/?q=provider:tsdl
+
+The Time Series Data Library (TSDL) was created by 
+Rob Hyndman, Professor of Statistics at Monash University,
+Australia.
+
+
+start_ur=http://archive.ics.uci.edu/ml/machine-learning-databases/
+
+We currently maintain 427 data sets as a service to the
+machine learning community. You may view all data sets
+through our searchable interface. Our old web site is 
+still available, for those who prefer the old format.
+For a general overview of the Repository, please visit our About page. For information about citing data sets in publications, please read our citation policy. If you wish to donate a data set, please consult our donation policy. For any other questions, feel free to contact the Repository librarians. We have also set up a mirror site for the Repository. 
+
+
+
+start_url=http://users.stat.ufl.edu/~winner/data/
+
+Larry Winner
+Department of Statistics
+University of Florida
+
+
+
+start_url=http://users.stat.ufl.edu/~winner/datasets.html
+
+Department of Statistics
+University of Florida
+Data Sets
+
+
+start_url=https://api.usaspending.gov/docs/endpoints
+
+
+This page is intended for users who are already familiar with APIs. If you're not sure what endpoint means, and what GET and POST requests are, you may find the introductory tutorial more useful to start.
+
+Endpoints do not currently require any authorization.
+
+
+
+start_url=https://www.rma.usda.gov/
+
+The Risk Management Agency (RMA) was created in 
+1996 by the Federal Agriculture Improvement and 
+Reform Act of 1996 to operate and manage the 
+Federal Crop Insurance Corporation (FCIC).
+
+
+
+
+https://github.com/jalbertbowden/us-data
+
+us-data
+
+Data sets of the United States
+
+
+
+start_url=https://www.usfa.fema.gov/data/statistics/
+
+The U.S. Fire Administration (USFA) collects data from
+a variety of sources to provide information and analyses 
+on the status and scope of the fire problem in the 
+United States. Armed with this data, the fire service 
+can use it to:
+
+    Create a baseline for evaluating programs.
+    Increase awareness.
+    Motivate corrective actions.
+    Set priorities.
+    Target public education programs.
+
+
+
+start_url=https://wonder.cdc.gov/controller/datarequest/D8
+
+VAERS staff at CDC and the Food and Drug Administration (FDA) follow up on all serious adverse event reports to obtain additional medical, laboratory, and/or autopsy records to help understand the circumstances. However, VAERS public data do not generally change based on the information obtained during the follow-up process. There are limitations to VAERS data. A report to VAERS does not mean that the vaccine caused the adverse event, only that the adverse event occurred sometime after vaccination. Read more about interpreting VAERS data: More information.
+
+
+
+start_url=https://github.com/vz-risk/VCDB
+
+The VERIS Community Database
+
+Information sharing is a complex and challenging undertaking. If done correctly, everyone involved benefits from the collective intelligence. If done poorly, it may mislead participants or create a learning opportunity for our adversaries. The Verizon RISK Team supports and participates in a variety of information sharing initiatives and research efforts. We continue to drive the publication of the Verizon Data Breach Investigations Report (DBIR) annually, where we have an unprecedented number of new data-sharing partners, and we are committed to keeping the report publicly available and free to download. We regularly receive inquiries about our dataset, and our ability to share further, but we are limited in what data we can share in raw format due to agreements with our partners and customers.
+
+
+
+start_url=https://coast.noaa.gov/dataservices/MarineCadastre/getAISData?f=json
+
+Coastal management refers to actions taken to
+keep residents safe, the economy sound, and 
+natural resources functioning. This is accomplished 
+with federal and state partnership programs. Federal 
+legislation provides the overarching mandates; 
+NOAA's Office for Coastal Management oversees implementation
+and provides technical assistance; federally approved state
+programs provide day-to-day implementation.
+
+
+
+start_url=https://wonder.cdc.gov/data2010/
+
+What is DATA2010?
+DATA2010 is an interactive database system developed
+by staff of the Division of Health Promotion Statistics 
+at the National Center for Health Statistics, and contains
+the most recent monitoring data for tracking Healthy
+People 2010.  Data are included for all the objectives 
+and subgroups identified in the Healthy People 2010: Objectives
+for Improving Health.  DATA2010 contains primarily
+national data.  However, state-based data are provided
+as available.  All data in DATA2010 are the most recent
+available and may include revisions or corrections. Therefore,
+some data may differ from data previously shown.
+
+DATA2010 was updated quarterly until the end of the decade.
+Updates include new data years, and possibly revisions
+to baseline data. 
+
+
+
+https://alas.aws.amazon.com/
+
+
+Bulletins for security or privacy events pertaining to the Amazon Linux AMI. You can also subscribe to our RSS feed.
+
+
+
+start_urls=
+        http://feeds.feedblitz.com/alienvault-blogs&x=1
+        http://feeds.feedblitz.com/alienvaultotx&x=1
+        http://feeds.feedblitz.com/alienvault-security-essentials&x=1
+
+
+To give our customers the very best threat detection and
+response, our unified platform – AlienVault® Unified Security Management®
+(USM) – combines key security capabilities with expert threat intelligence
+that is updated every 30 minutes with data from 
+the Open Threat Exchange® (OTX™) that has been analyzed and classified
+ by our AlienVault Labs team.
+
+
+
+start_url=https://amtrckr.info/
+
+Android Malware Tracker
+Hi!
+
+This is Android Malware tracker. Its main purpose is
+to keep track of the Android malware HTTP C&Cs 
+(and probably telephone numbers in the future). 
+All of the links are verified manually and are live
+when they are added. However, I do not guarantee that 
+the links are in way suitable for the purpose that you 
+have in mind. In other words: you are using it AS IS 
+and you are responsible for anything that may happen. 
+
+
+start_url=https://stucco.github.io/data/
+
+news for nerds
+URL: www.slashdot.org
+
+
+
+
+
+Anouncements for patches, updates and security news
+for Apple products.
+URL: http://rss.lists.apple.com/security-announce.rss
+
+
+start_url=https://stucco.github.io/data/
+
+The lates virus alerts published by Sophos.
+URL: http://www.sophos.com/en-us/rss/threats/latest-viruses.xml
+
+
+
+start_url=http://nsidc.org/
+
+NSIDC manages and distributes scientific data, creates 
+tools for data access, supports data users, performs 
+scientific research, and educates the public about 
+the cryosphere.
+
+
+Security Bulletins Service
+
+AusCERT Security Bulletins contain information about threats,
+vulnerabilities, patches and workarounds of an IT security 
+nature that AusCERT believes would be of interest to our 
+members (and the public). AusCERT provides up-to-date 
+information on a range of software and hardware products,
+published in a standardised format with a consistent 
+approach to classifications of vulnerabilities, 
+impacts and related operating systems.
+
+Malicious URL Feed
+
+On a daily basis, AusCERT encounters numerous phishing, 
+malware, malware logging or mule recruitment web sites, 
+particularly those directed at Australian users. 
+The feed can be added to your firewall blacklist 
+to prevent inadvertent compromise to client computers 
+on your network.
+
+
+
+
+start_url=https://www.badips.com/info
+
+About www.badips.com
+Share
+Facebook
+Twitter
+Google+
+Reddit
+Hacker News
+
+www.badips.com is an abuse tracker with a simple API to report and
+consume blocklists.
+NO WARRANTY OR LIABILITY
+
+BY USING A badips.com BLACKLIST, OR ANY INFORMATION CONTAINED
+ON THE badips.com WEBSITE, YOU ACKNOWLEDGE AND AGREE THAT THE
+BLACKLIST IS PROVIDED "AS IS", badips.com DOES NOT GUARANTEE
+THE EFFECTIVENESS OR RESULTS OF THE BLACKLIST OR ANY OTHER SERVICE
+OR PRODUCT PROVIDED BY badips.com, AND ANY AND ALL WARRANTIES,
+IMPLIED OR OTHERWISE, ARE EXPRESSLY EXCLUDED. IN NO EVENT SHALL
+badips.com BE LIABLE TO YOU OR ANY THIRD PARTY FOR ANY DIRECT, 
+INDIRECT, SPECIAL, INCIDENTAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES
+OF ANY KIND ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE
+BLACKLIST OR THE badips.com WEBSITE, HOWEVER CAUSED AND ON ANY 
+THEORY OF LIABILITY.
+
+
+
+
+
+
+start_url=https://virbl.bit.nl/
+
+
+ Virbl was a project of which the idea was
+born during the RIPE-48 meeting in May 2004. 
+The plan was to get reports of virusscanning
+mailservers and put the IP-addresses that were 
+reported to send viruses on a blacklist. Since 
+the start, a number of trusted notifiers 
+participated and over the next 10 years Virbl 
+was a great addition to fighting back virus 
+mails on the internet.
+
+
+USCERTSystemBulletins
+
+
+
+UndeservedAreasData
+
+Alerts warn about vulnerabilities, incidents, and other security issues that pose a significant risk.
+URL: https://www.us-cert.gov/channels/techalerts.atom
+
+USCERTSystemCurrentActivity
+
+start_url=https://stucco.github.io/data/
+
+Current Activity provides timely information 
+on security risks to help you better protect 
+your systems from malware campaigns and mitigate 
+against new software vulnerabilities.
+URL: https://www.us-cert.gov/channels/current.atom
+
+start_url=http://www.prh.noaa.gov/cphc/tc_graphics/
+
+malware analysis blog, includes many samples, pcaps, and other info. 
+Includes much information about exploit packs.
+URL: http://contagiodump.blogspot.com/
+
+USAARSWaterDataBase
+CPE provides:
+
+    A standard machine-readable format for 
+    encoding names of IT products and platforms.
+    A set of procedures for comparing names.
+    A language for constructing "applicability statements"
+    that combine CPE names with simple logical operators.
+    A standard notion of a CPE Dictionary.
+
+
+start_urls=
+            https://www.ncua.gov/analysis/Pages/call-report-data/quarterly-data.aspx
+            https://www.ncua.gov/analysis/Pages/call-report-data/quarterly-summary.aspx
+            https://www.ncua.gov/analysis/Pages/call-report-data/corporate/call-report-form-archives.aspx
+            https://www.ncua.gov/analysis/Pages/call-report-data/aggregate-financial-performance-reports.aspx
+            https://www.ncua.gov/analysis/Pages/call-report-data/financial-performance.aspx
+
+
+
+start_urls= 
+			'https://www.ncua.gov/analysis/Pages/call-report-data/quarterly-data.aspx',
+            'https://www.ncua.gov/analysis/Pages/call-report-data/quarterly-summary.aspx',
+            'https://www.ncua.gov/analysis/Pages/call-report-data/corporate/call-report-form-archives.aspx',
+            'https://www.ncua.gov/analysis/Pages/call-report-data/aggregate-financial-performance-reports.aspx',
+            'https://www.ncua.gov/analysis/Pages/call-report-data/financial-performance.aspx',
+
+
+start_url=https://stucco.github.io/data/
+
+Blog with detailed analysis of many 
+vulnerabilities
+URL: http://xorl.wordpress.com/feed/
+
+
+start_url=https://leg.colorado.gov/
+
+
+The Colorado State Legislature
+This web site is the place to track bills, 
+locate and contact your legislators (session) 
+(interim), and access 
+
+
+Hickory Hall 
+
+1. I can pin it on the GOP because we have demonstrable, falsifiable
+evidence that they are in fact 100% responsible for the switch when they
+knew full well that the water was teaming with water born pathogens
+and laced with nuerological destructive heavy metals like lead....
+Now you can try and play this game where it was just a "cost saving"
+manuever, and they had no idea what the state of that river was despite
+everyone from the street to the state house being aware for decades how
+utterly toxic the water from that river is...but somehow they also 
+at the same time saw fit to provide GM Motors(you know...the guys whom
+destroyed the river in the first place) with a clean water supply outside
+of the river...pure "conincidence"...Im sure
+
+
+2. What is it about the simple concept of "the Dems had no control over what
+happened as full controll had been transferred to Snyder and his people" are
+you having trouble comprehending ?  Let's assume that this easily dimissed
+lie you keep repeating was true....the final say of whether or not the 
+water supply is switched was up to Snyder...after being briefed on the impact
+by both state and federal enviromental agencies....so now you basically have
+a choice between Synder and his gaggle of Republican clowns being sociopathic
+racist, liars whom litterally poisoned an entire town of black and poor white
+people to provide tax breaks for already rich white people, or they are a bunch
+of incomptent, reckless morons to the point of having commited manslaughter
+with depraved indifference who could not be bothered to know whaat the possible
+consequences where of switching a town's water supply to what ammounts to a river
+of sewage so he could give a tax break to already rich white people.
+So which one is it ?
+
+
+3. No...No...No...the goddamned water supply was never supposed to be switched
+in the first place...do you understand ?  I cannot tell if you honestly cannot
+process this simple fact or you know that there is no logical out for you here
+so you have to try and change the subject.
+
+
+
+
+
+
+World Health Organization
+
+
+start_urls=
+        https://zeustracker.abuse.ch/rss.php
+        https://zeustracker.abuse.ch/removals.php?show=rss
+        https://zeustracker.abuse.ch/monitor.php?urlfeed=configs
+        https://zeustracker.abuse.ch/monitor.php?urlfeed=binaries
+        https://zeustracker.abuse.ch/monitor.php?urlfeed=dropzones
+    
+ ZeuS Tracker tracks ZeuS Command&Control servers
+(hosts) around the world and provides you a domain- 
+and a IP-blocklist. 
+
+
+start_url=https://zeustracker.abuse.ch/blocklist.php
+
+
+
+
+Credit Union Recently Updated Filings 
+
+
+National Credit Union Administration financial analysis
+
+Common vulnerability data cataloged by both NIST and MITRE
+
+The Longitudinal Employer-Household Dynamics (LEHD) 
+program is part of the Center for 
+Economic Studies at the U.S. Census Bureau. 
+The LEHD program produces new, cost effective, 
+public-use information combining federal, state 
+and Census Bureau data on employers and employees 
+under the Local Employment Dynamics (LED) Partnership. 
+State and local authorities increasingly need detailed
+local information about their economies to make informed
+decisions. The LED Partnership works to fill critical 
+data gaps and provide indicators needed by state and 
+local authorities. 
+
+
+start_url=https://waterservices.usgs.gov/rest/DV-Service.html
+
+
+This is a REST-friendly service, which means it
+is URL accessible and can be run from a browser
+The service can return daily values for one or
+more sites in one request Data for historical, 
+as well as currently active sites are available.
+
+
+start_urls=http://data.europa.eu/euodp/data/dataset
+
+The EU Open Data Portal
+
+The EU ODP was set up in 2012, following 
+European Commission Decision 2011/833/EU 
+on the reuse of Commission documents.
+
+All EU institutions are invited to make their 
+data publicly available whenever possible. 
+This means data can be reused free of charge 
+and without any copyright restrictions.
+
+
+
+ddosattacks.net
+
+
+start_urls=http://danger.rulez.sk/projects/
+
+Projects list for danger.rulez
+
+To learn the tools, tactics and motives involved in computer and network attacks, and share the lessons learned.
+URL: www.honeynet.org
+
+
+
+start_urls=http://www.naturalearthdata.com/downloads/
+           http://ydn.zenfs.com/site/geo/geoplanet_data_7.6.0.zip
+           http://www.flickr.com/services/shapefiles/2.0/
+
+
+Earth topography updates
+
+
+
+
+start_url=https://www.epa.gov/toxics-release-inventory-tri-program/tri-basic-data-files-calendar-years-1987-2016
+
+EPA has been collecting TRI data since 1987. 
+Files are available here in .csv format. 
+See the TRI Basic Data File Documentation for 
+detailed descriptions of the data fields contained 
+in these files. Note: Quantities of dioxin and 
+dioxin-like compounds are reported in grams; all 
+other chemicals are reported in pounds.
+
+
+start_url=http://www.toolswatch.org/
+
+File archives for netresec
+
+
+
+
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.UnsupportedEncodingException
+
+
+val bufferReader:BufferedReader = new BufferedReader(
+		   new InputStreamReader(
+                      new FileInputStream(fileDir), "UTF8"));
+
+
+
+
+About Find open data
+
+Since 2010 data.gov.uk has been helping people to
+find and use open government data, and supporting
+government publishers to maintain data. In March 2018,
+we re-designed the site and launched the Find open data
+service.
+
+
+
+start_url=http://fsgeodata.net/RSAC/L0/(Defunct)
+
+Fire information for Resource Management
+System.  NASA Earth Data
+
+ Buera of Transportation Statistics
+
+
+Traffic Trace Info
+
+
+
+USDAFireDataActiveFiremaps

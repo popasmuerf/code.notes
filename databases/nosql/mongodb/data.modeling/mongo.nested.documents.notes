@@ -1,0 +1,189 @@
+https://docs.mongodb.com/manual/core/data-modeling-introduction/
+
+
+
+Flexible Schema
+===============================================
+Unlike SQL databases, where you must determine and declare
+a table's schema before inserting data, 
+MongoDB's collections, by default, does not
+require its documents to have the same
+schema.
+
+
+
+
+
+
+*	The documents in a single collection do not need
+	to have the same set of fields and thedata type
+	for a field can differen across documents within
+	a collction
+
+
+*	To change th structure of the documents, in a collection
+	
+
+
+{
+	_id: <ObjectId>,
+	region:{
+				north_america:{
+					north_east:{
+						conneticut:{}
+						maine:{}
+						massachusets:{}
+						pennsylvania:{}
+						new_jersey:{
+							li240-88:{
+								iaas_provider:'https://www.linode.com/'
+								host_name:'li240-88.members.linode.com'
+								public_ip:'173.255.230.88'
+								vpn_ip_range:'10.0.2.0/24'
+								port:'1196'
+								zip_code:'07175'
+							}
+						}
+						new_york:{}
+						rhode_island:{}
+						vermont:{}
+					}
+					midwest:{}
+					west:{}
+					south:{
+						south_atlantic:{
+							georgia:{
+								li169-245:{
+								iaas_provider:'https://www.linode.com/'
+								host_name:'li169-245.members.linode.com'
+								public_ip:'173.230.129.245'
+								vpn_ip_range:'10.0.2.0/24'
+								vpn_port:'1196'
+								user_port:[3120,]
+								zip_code:'3030'
+							}
+							
+							florida:{}
+							maryland:{}
+							north_carolina:{}
+							south_carolina:{}
+							virginia:{}
+							west_virginia:{}
+						}
+					}
+				}
+				central_america:{
+					belize:{}
+					columbia:{}
+					costa_rica:{}
+					guatemala:{}
+					honduras:{}
+				}
+				south_america:{
+					argentina:{}
+					brazil:{}
+					columbia:{}
+					uruguay:{}
+					peru:{}
+				}	
+			}
+}
+
+
+
+Michael Meija
+===========================================
+*	EXTR-484
+	-	Updating crawlee crawls api to use iso date and include status, tags and notes
+	
+*	EXTR-481
+	-	Updating crawlee to prevent user from modifying the spiderid via
+		refactoring the source code of a spider
+
+	-	
+
+Rutvik
+============================================
+*	Currently working on crawl history portion of UI
+
+
+
+Oliver Staats
+============================================
+*	EXTR-471 
+	-	Working on exposing an endpoint that returns
+		Extractor health metrics
+	-	Using akka-http-healthcheck library
+
+
+*	EXTR-484
+	-	Updating crawlee crawls api to use iso date and include status, tags and notes
+	
+	
+*	EXTR-480
+	-  Investigating why the state of a cluster node is monitored by the rest node. That state is not always reflecting what the cluster reality is.
+
+
+*	EXTR-485
+	-	Refactoring Extractor to use library that integrates Quartz scheduler and MongoDB
+
+Mike Brown
+=============================================
+*	Updating documentation
+*	Posted documention regarding proposed data model for storage of 
+	proxy information in Crawlee's instance of MongoDB(after discussion with
+	Mic and Oliver, it was decided to store the information in MongoDB instead
+	of Redis)
+
+
+DONE - linode8212138	Linode 4096	173.255.230.88 Newark,NJ USA
+	dev:
+		172.27.0.2
+	beta:
+		172.26.0.2
+
+
+DONE - linode8223493	Linode 4096	173.230.129.245 Atlanta,GA USA
+	dev:
+		172.27.0.3
+	beta:
+		172.26.0.3
+
+
+DONE - linode8485351	Linode 4096	198.58.105.51  Dallas,TX USA
+	dev:
+		172.27.0.4
+	beta:
+		172.26.0.4
+
+
+DONE - linode8485635	Linode 4096	45.33.59.227  Fremont,CA USA
+	dev:
+		172.27.0.5
+	beta:
+		172.26.0.5
+
+
+DONE - linode8486038	Linode 4096	45.56.108.225  Newark,NJ USA
+	dev:
+		172.27.0.6
+	beta:
+		172.26.0.6
+
+
+DONE - linode8486134	Linode 4096	173.230.130.107  Atlanta,GA USA
+	dev:
+		172.27.0.3
+	beta:
+		172.26.0.3
+
+
+DONE - linode8486206	Linode 4096	198.58.103.83  Dallas,TX USA:
+	dev:
+		172.27.0.8
+	beta:
+		172.26.0.8
+
+
+
+

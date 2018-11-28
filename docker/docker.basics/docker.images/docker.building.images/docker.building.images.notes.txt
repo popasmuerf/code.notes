@@ -1,0 +1,230 @@
+https://docs.docker.com/samples/
+
+
+Building images
+=============================================
+
+
+create a docker file(nginx on ubuntu in this example)
+===============================================
+
+FROM ubuntu
+MAINTAINER michaelbrown172@gmail.com
+
+RUN apt-get update
+RUN apt-get install -y nginx
+CMD ["echo","Ubuntu NGINX Image created"]
+
+
+
+
+
+Build image
+==============================================
+#Syntax
+> docker build -t <image_name>:<tag> <target dir>
+
+
+#examples
+> sudo docker build -t myimage:0.1
+
+> sudo docker build -t nginx_server:nginx_server ./
+
+> docker image list | egrep nginx
+
+nginx_srv                                          1.0                 1a6395d80a17        7 minutes ago       181MB
+ubuntu_nginx                                       ubuntu_nginx        1a6395d80a17        7 minutes ago       181MB
+Michaels-MacBook-Pro:nginx mdb$ 
+
+
+
+> sudo docker build -t ssh_srv:1.0 ./
+
+> docker image list | egrep ssh
+ssh_srv                                            1.0                 7d6a3f15a1f3        2 minutes ago       239MB
+
+
+#docker build -t eg_sshd .
+
+>  docker build -t eg_sshd .
+
+> docker run -d -P --name test_sshd eg_sshd
+
+> docker ps
+CONTAINER ID        IMAGE               COMMAND               CREATED             STATUS              PORTS                   NAMES
+ac0412fd9665        eg_sshd             "/usr/sbin/sshd -D"   16 seconds ago      Up 14 seconds       0.0.0.0:32768->22/tcp   test_sshd
+Michaels-MacBook-Pro:ssh mdb$ docker port test_sshd 22
+0.0.0.0:32768
+
+
+#Clean up
+> docker container stop test_sshd
+> docker container rm test_sshd
+> docker image rm eg_sshd
+
+
+/usr/local/etc/my.cnf
+/usr/local/Cellar/mysql/8.0.12/.bottle/etc/my.cnf
+
+
+CREATE USER 'popasmuerf'@'localhost' IDENTIFIED BY 'r3dbl@ck';
+GRANT ALL PRIVILEGES ON * . * TO 'popasmuerf'@'localhost';
+
+ALTER USER 'popasmuerf'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'r3dbl@ck';
+
+
+ALTER USER 'popasmuerf'@'localhost' IDENTIFIED WITH mysql_native_password BY 'r3dbl@ck';
+
+
+
+
+https://rationemllc.atlassian.net/wiki/s/211448943/6452/d4b3d48cd314cbb30ebc0ba44a7ffde437bcb1c3/_/images/icons/emoticons/check.png
+
+bridging the love gap
+
+Oliver Staats
+==================================================
+	*	EXTR-491/EXTR-490
+	*	-	Releasing latest version of extractor client
+		-	Provides a full set of proxies stored in 
+			the extractor-service
+		-	Accepts a subset of proxies selected for any particular
+			spider
+
+	*	Will start working on EXTR-488
+		-	Provide API in Extractor for generating and returning an AppID
+
+
+	*	Common Crawl
+		-	storing about 1 peta per year compressed
+		-	100 terabytes per year in wad files(request response)
+		-	What are these urls are used for ?  
+		-	Common Crawl provides for free 
+		-	Problems:
+			*	Runs slow
+			*	gunzip and wap format
+			*	data wharehousing issue
+			*	Extractor problem or a data wharehousing problem ?
+			*	Why are we doing this?  Value could be a lot cheaper 
+			*	We could store on AWS ?
+			*	There is a storage issue
+			*	
+
+	*	Extractor-Service maintencance trouble-shooting
+
+
+Mic Miejia
+===================================================
+	*	EXTR-214
+		-	Monitor and collect all data sets from 
+			http://www.secrepo.com/
+		-	Running into issues scraping this 
+			site due to site encoding--> Working
+
+Rutvik
+===================================================
+	*	Currently working another project(AMM)
+
+
+Michael Brown
+===================================================
+	*	EXTR-182
+		-	Split this issue into multiple tickets
+			after determining that it would be best
+			that the root url is more or less a catalog
+			of seperate sites to be crawled by its own
+			associated spider
+
+	*	Udpated spider matrix for news spiders that 
+			are port of epic EXTR-182
+
+	*	Met with Nahn to gather initial requirements for 
+		the automation of data extraction using Bethoven
+
+
+	*	EXTR-499
+		-	Android Malware Tracker
+		-	Working
+
+	*	EXTR-500
+		-	BadIPs.com an IP based abuse tracker
+		-	Working
+
+
+mkdir -p /Users/mdb/src20/spring_bootlab/sqldemo/src/main/java/repos
+
+
+
+
+application-production.properties
+
+
+Yeah...google is awesome....how many minutes did you spend furiously looking up the term ?  For those just tunning in..here is a quick summary of the shit-show this sub-thread has become
+
+me: "yadda yadda yadda....I really want to look smart"
+rand: "..well you don't look smart..."
+me(trying to make nice): "don't be that way Rand"
+rand(insisting on being an asswipe): "well you tried to be smart and failed"
+me(losing my patience with rand's out of line ass): "Ok then..let's play..."
+
+
+
+
+ERROR] Failed to execute goal on project oxpath-ast-parser: 
+
+Could not resolve dependencies for project com.fractal:oxpath-ast-parser:jar:0.1-SNAPSHOT: The following artifacts could not be resolved: 
+
+org.oxpath:oxpath:pom:2.0.2,
+org.oxpath:oxpath-cli:pom:1.0.0: 
+	Failure to find :
+		org.oxpath:oxpath:pom:2.0.2 in 
+			https://artifactory.fractalindustries.com/artifactory/Fractal-Dev/ was cached in the local repository, resolution will not be reattempted until the update interval of artifactory has elapsed or updates are forced -> [Help 1]
+
+
+
+Guide to Working with Multiple Modules
+===========================================
+
+As seen in the intorduction to the POM, Maven supports 
+
+
+The Reactor
+===================================================
+The mechanism in Maven that handles multi-module projects
+is referred to as the "reactor".  This part of the
+Maven core does the following:
+
+	*	Collects all the available modules to buid
+	*	Sorts the projects into the correct build order
+	*	Builds the selected projects in order
+
+
+Reactor Sorting
+==================================================
+Because modules within a multi-module build can
+depend on each other, it is important that 
+reactor sorts all the projects in a way
+that guarnatees any project is built before it is
+required.
+
+
+
+The following relationships are honoured when sorting projects:
+-----------------------------------------------------------------
+
+	*	a project dependency on another module in the build
+	*	a plugin declaration where the plugin is another module inthe build
+	*	a plugin dependency on another module in the build
+	*	a build extension declaration on another module in the build
+	*	the order declared in the <modules> element
+
+
+dnsl_pttrn = "\w+\.list"
+re.findall(self.dnsl_pttrn,body)
+
+
+
+
+
+
+

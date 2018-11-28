@@ -1,0 +1,47 @@
+https://medium.com/@vrypan/explaining-public-key-cryptography-to-non-geeks-f0994b3c2d5
+
+
+
+
+
+Public Key cryptography
+==================================================
+
+
+
+Symmetric cryptography
+------------------------------------------------
+*	John has a box with a lock
+*	John has the key to that lock
+*	Anyone with a copy of John's key can open the box
+
+
+
+Asymmetric cryptography
+------------------------------------------------
+*	Anna has a box with a  special lock
+*	The lock as 3 states:
+	-	State-A : Locked
+	-	State-B : Unlocked
+	-	State-C	: Locked
+
+*	Anna picks the first one of the keys and keeps it
+	to herself.  This is Anna's private key
+
+*	Anna picks a second key.  This is Anna's public key.
+	Anna may make any numbeer of copies of it to pass
+	out to her friends and family.
+
+*	Anna's private key can turn the lock from states
+	A, to B, to C.  
+
+*	All the public keys can turn the lock from states
+	C, to B, to A
+
+*	If you want store something in Anna's box with a public
+	key...then you turn the lock with your key until it
+	reaches B, store whatever you like...and then turn it
+	to A to lock it.  The public key cannot be used again
+	to unlock....
+
+*	Anna can unlock and retrive her item by 

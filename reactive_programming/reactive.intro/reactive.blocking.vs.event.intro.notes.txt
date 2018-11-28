@@ -1,0 +1,271 @@
+Blocking versus event-driven APIIs
+===================================
+
+Blocking code is familiar to almost any
+developere.  It's where we start when
+we begin IO.   When we make a call to 
+a synchronous API, the calling method
+does not return immediately-- the application
+waits for execution to complete.  
+Code that waits for IO to complete is called blocking
+as a thread sits and waits-- it is blocked form 
+doing any other work until the IO
+is complete.
+
+//Blocking code:
+
+
+stmt = cnn.createStatement() ;
+String sql = "select name from users where id ='123'";
+ResultSet rs = stmt .executeQuery(sql);
+rs.next() 
+String name = rs.getString("name");
+
+^^^ Some things about this "simp"
+
+	*	Latency:
+		-	It takes time to go over the network
+			to get the result
+	*	Failure
+		-	The request can fail if, for 
+			example, the remote service is 
+			unavailable.  An exception might
+			be thrown for any number of reasons.
+
+
+When executeQuery() is called the trhead that
+is executing this code has to wait for the 
+DB query to complete.  In a web applications,
+where there will be many concurrent requests, the finite
+limit of the thrad pool can be 
+reached.  If all the threads are waiting on IO,
+you can't put any more traffic through the 
+server even if you have free compute resources
+as there are no thereads available to use those
+resources.
+
+If you've done any peformance tuning on blocking
+Servlet-based web applications, you may have witenessed
+the limitations of threadpool.  Usually the CPU
+will be under-utilized when the server is at
+capacity because all of the threads are just waiting.
+
+
+Quick summary of the problems with using many
+threads to handle blocking IO:
+
+	*	Code does not obviously express
+		failure in the response type
+	*	Code does not obviously express
+		latency in the response type
+	*	Blocking models hae throughput
+		limitations due to fixed threadpool
+		sizes
+	*	Creating and using many threads has a
+		performance overhead duet to context-switching
+
+
+
+A non-blocking asynch event-driven system can run with 
+only a handful of threads and will not bock those
+threads, only using them when computation is
+needed.  This gives the system better
+responsiveness at scale and can allow better system
+resourece utilization.  
+
+...and depending on the implemenation, there can also
+be a benefit in making effects such as :
+
+	*	failure
+	*	lantency
+sudo nsenter –m –u –n –p –i –t 9244 /bin/bash
+
+//**
+*	First liets look at a very smple call
+*	to a database using blocking IO.
+***//
+
+//Java
+
+String username = getUsernameFromDatabase(userId);
+System.out.println(username);
+
+//scala
+val username = getUsernameFromDatabase(userId)
+println(username)
+
+
+If we are debugging, you could step into
+the method with the thread and see each line
+of the method:
+
+	*	getUsernameFromDatabase  method 
+		called.  o
+
+Event driven model
+==================================================
+This will look differe as w have to describe what
+happens when the completion even occurs, and that code
+is executed in a different context.
+
+To turn our previous blocking code into event driven
+code, the code needs to express the proint
+statment as something hat happens when the 
+result comes back for the data base.  It may take
+some time to adjust to this model but we only
+have to learn it once.
+
+
+
+To move to an event dirven model we have
+to express the result in code dffernetly.
+We have to use placeholders for values that
+will eventually be there --- a "future".  Thep printing 
+of the result is registered as something to 
+do when the completion event occurs.  We
+egister some code that we want to be invoked
+when the value of the placeholder represents
+bcomes available.  The term "event-driven"
+describes the way that we express  code to 
+execute on certain events:
+
+
+//Java
+CompletableFuture<String> usernameFuture = getUsernameFromDBAsync(userid);
+usernameFuture.thenRun(username -> //execute somwhere else
+	System.outprintln(username)
+);
+
+//Scala
+
+val future = getUsernameFromDBAsync(userId)
+future.onComplete(username =>
+	//executed somewhere else
+	println(username)
+)
+
+
+
+
+From the thread's perspective, the code will
+call the method and go into the method, and
+then return with a Future/Completable Future almost immediately.
+The result is only a placeholder of the value that wil  eventually be
+there
+
+
+We won't look at the method invocation itself
+in too much detail, you should
+understand that the method will
+return immmediately
+and the database call and result will
+happne somewhere else, on another theread.  
+there exists an ExecutionContext that represents
+the threads where the other work is done, which 
+we will look at later n this book.
+
+In akka, we will see a dispatcher in the ActorySystem, which is
+an ExecutionContext implmentation..
+
+
+
+IMPORTANT NOTE:
+======================================================
+the code below looks procedural....it isn't tho.
+The compiler is not going to execute the code following
+the "Future"/"Promise"/"Async"/Whatever until the
+Future has been fufilled.
+
+
+//Java
+
+CompletableFuture<String> usernameFuture = getUsernameFromDBAsync(userid);
+usernameFuture.thenRun(username -> aMethodOrSomething()//execute somwhere else
+);
+
+
+
+
+Non-Blocking IO
+------------------------
+Method called
+to call DB  -----------> Method Returns------> Register callback 
+						 Placeholder
+
+	|
+	|
+	|
+	V
+Call to database-------query executing(no thread waits)----->call to db completes--->place holder  
+begins 																				fufilled and call
+asynchronously																		back triggered
+
+
+
+
+It's important to highlight again--the print statment
+will not run on the thread that rgisters the event,
+It will run somwhere else, on another thread via the 
+ExecutionContext.  Futures are always created with
+ExecutionContext, so you can shoose 
+where to run them.
+
+
+Scope
+==============================
+All of the variables in scope are available to the
+lambda registered.  Methods, howver should 
+be invoked with speical care, or should not be invoked
+at all within the closures, as they wont be invoked in the same
+lexical scope(this isa gotcha)
+
+
+Futures can fail
+===============================
+...they should always be bounded by 
+time outs so they will not be hanging out 
+forever and consuming resources..
+
+
+Notes on Akka and Futures
+============================
+The java and scala apis are ususally
+one to one...however it should be noted
+that there are exceptions.....such is the case
+in Akka where all asynchronous methods that rueturn a 
+future will return :
+
+	scala.concurrent.Future
+
+Java and scala Futures are not the same...
+and as such we need to convert Scala futures to
+Java 8's CompletableFuture.
+
+
+be sure to include this in your gradle file:
+
+
+	org.scala-lang.modules: scala-java8-compat
+
+Note:  Futures are nothing new....infact they are nothing more than
+a more convienient way to call a thread and off load block work to it.
+You are writing async code every time you create threaded code....
+The Future is no thing more than a reference to the threaded out code
+you wrote....
+
+
+package ActorTesting;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+import scala.compat.java8.FutureConverters ;
+/**
+ * Created by mdb on 3/20/18.
+ */
+public class PongActorTest {
+    ActorSystem system = 
+            ActorSystem.create();
+    //ActorRef actorRef = system.actorOf(Props.create(PongActor.class));
+}
+
+....

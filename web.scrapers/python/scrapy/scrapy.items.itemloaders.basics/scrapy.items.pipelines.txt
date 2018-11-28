@@ -1,0 +1,130 @@
+Description
+==================================
+Item objects are the regular dicts of Python.
+We can use the following syntax to 
+access the attributes of the class --
+
+
+item = DmozItem()
+item['title'] = 'sample title'
+item ['title']
+'sample title'
+
+#?????
+item = BadIpItem
+item['pmap'] = pmap
+#?????
+
+
+
+import scrapy 
+from tutorial.items import DmozItem
+
+class ProjectSpider(scrapy.Spider):
+	name = "project"
+	allowed_domains = ["dmoz.org"]
+
+	start_urls = [
+      "http://www.dmoz.org/Computers/Programming/Languages/Python/Books/",
+      "http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/"
+   ]
+
+   def parse(self, response):
+       for sel in response.xpath('//ul/li')
+           item = DmozItem
+           item['title'] = sel.xpath('a/text()').extract()
+           item['link'] = sel.xpath('a/@href').extract()
+           item['desc'] = sel.xpath('text()').extract()
+           yield item
+
+
+#^^^^ Output
+
+
+A project groups Items and spiders.  If you have many websites
+from which you extract the same type of Items
+
+
+
+
+Declaring Item Loaders
+========================================
+Item loaders provide a convenient way to fill the items
+that are scraped from websites
+
+
+Declaring Item Loaders
+-----------------------------------------
+The declaration of Item loaders is like Items
+
+
+from scrapy.loader import ItemLoader
+from scrapy.loader.processors import TakeFirst,MapCompose, Join
+
+class DemoLoader(ItemLoader):
+	default_output_processor = TakeFirst()
+	title_in = MapCompose(unicode.title)
+	title_out = Join()
+	size_in = MapCompose(unicode.strip)
+	#you can continue scraping here
+
+
+#^^^What's going on here ?
+
+In the above code, you can see 
+that input and outpu processors are declared
+using the suffices respectively:
+
+	_in
+
+	_out
+
+The attributes:
+
+	Itemloader.default_input_processor
+
+	Itemloader.default_output_processor
+
+are used to decalre default input/output processors
+
+
+Using Item Loaders to Populate Items
+---------------------------------------------------
+To use Item Loader, first instantiate with dict-like
+object or without one where the item uses Item
+class specified in 
+
+
+
+Description of Item Pipelines
+=============================================
+
+
+Item Pipelines are a method where the scrapped
+items are processed.  When an item is ent to the Item Pipeline,
+it is scrape by a spider and processed using several components, which are 
+executed sequentially.
+
+
+
+Whenever an item is recieved, it decides either of the 
+following action --
+
+	*	Keep porocessing the item.
+	*	Drop it from pipeline
+	*	Stop processing the item
+
+
+Item pipelines are generally used for the following
+purposes --
+	*	Storing scraped items in a database
+	*	If the recieved item is repeated, then
+		then it will drop the repeated item
+	*	It will check whether the item is with 
+		targeted fields.
+	*	 Clearing HTML data
+
+
+
+
+

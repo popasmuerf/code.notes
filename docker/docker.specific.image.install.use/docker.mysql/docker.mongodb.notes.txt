@@ -1,0 +1,279 @@
+https://dzone.com/articles/docker-for-mac-mysql-setup
+https://severalnines.com/blog/mysql-docker-containers-understanding-basics
+https://www.tutorialspoint.com/docker/configuring_docker.htm
+
+
+
+Notes:
+========================================
+Apparently...I need to build my own
+contianer...really customize it to run 
+the shit that I want.....for instance I 
+cannot assume that I can run a standard
+CentOS image then be able to run 
+yum to install sshd...and it will work.
+
+I guess this is what they mean by 
+Docker images  often being composed
+of a layer of images...
+
+
+Notes
+========================================
+options
+-----------------------------------------
+https://www.tutorialspoint.com/docker/docker_setting_mongodb.htm
+*	-it
+	+	interfactive mode
+	+	will die the momement your
+		host shell dies or you interrupt
+		the running app on the host command
+		shell
+
+*	-d
+	+	daemon monde
+	+	you will need to open up a docker shell
+		to work with interactively
+
+*	rmi && rm -f
+	+	rmi <--- remove an image
+	+	rm <--- remove container
+
+
+*	docker stop
+	+	stops container
+
+*	docker stats
+	+	stats of a running container
+
+*	docker attach
+	+	attaches console to running containter
+
+*	docker pause
+	+	 pauses running container
+
+*	docker upause
+	+	unpauses paused running container
+
+*	docker kill 
+	+	kills the containerId for which you need to
+		kill processes for
+
+
+*	service docker start | stop
+	+	stopping and starting docker daemon
+
+We can run an instance of an image as both ?
+---------------------------------------------
+
+> docker run -it -d mongo
+> docker ps 
+
+Michaels-MacBook-Pro:code.notes mdb$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+b75b365a8ad8        mongo               "docker-entrypoint.s…"   4 minutes ago       Up 4 minutes        27017/tcp           nostalgic_lewin
+
+
+
+
+
+Linking up containers
+---------------------------------------------
+
+> sudo docker run -it -link=nostalgic_lewin:mongo mongo/bin/bash
+
+
+Rules
+========================
+1. install image/run container
+
+>docker pull mongo
+
+>docker run -it -d mongo
+
+>docker run -p 3306:3306 -d --name mysql -e MYSQL_ROOT_PASSWORD=password mysql/mysql-server
+
+>docker run --name=<container name> --env="MYSQL_ROOT_PASSWORD=<mypassword>" mysql
+
+>docker run -p 3306:3306 -d --name=mysql_instance04 --env="MYSQL_ROOT_PASSWORD=r3dbl@ck" mysql
+
+>docker run --name=testsql -e MYSQL_ROOT_PASSWORD=r3dbl@ck -d mysql 
+
+>docker run --detach --name=test-mysql --env="MYSQL_ROOT_PASSWORD=r3db@ck" mysql
+
+>sudo docker run --detach --name=test-mysql --env="MYSQL_ROOT_PASSWORD=r3dbl@ck" --publish 3306:3306 mysql
+
+2. Verify that container is running
+
+>docker ps
+>docker ps -a
+>docker logs testsql
+>docker inspect testsql
+
+
+3. Log in to the app running in the container
+
+> docker exec -it mysql bash
+bash-4.2# mysql -uroot -pr3dbl@ck
+
+
+>mysql
+
+
+4. check that mysql is listening on port 3306
+
+> lsof -nP -iTCP:3306 | grep LISTEN
+com.docke 84629  mdb   18u  IPv4 0x6041ec4119bb0e5d      0t0  TCP *:3306 (LISTEN)
+com.docke 84629  mdb   19u  IPv6 0x6041ec40e5641eb5      0t0  TCP [::1]:3306 (LISTEN)
+
+
+>docker-machine ip default
+
+>mysql -uroot -pr3dbl@ck -h 172.17.0.2 -P 3306
+
+5. creat a new user
+
+mysql>CREATE USER 'popasmuerf'@'%' IDENTIFIED BY 'r3dbl@ck';
+
+mysql>GRANT ALL PRIVILEGES ON * . * TO 'popasmuerf'@'%';
+
+mysql>CREATE USER 'mdb'@'%' IDENTIFIED BY 'r3dbl@ck';
+
+mysql>CREATE USER 'popasmuerf'@'%' IDENTIFIED BY 'r3dbl@ck';
+
+
+
+6. inspect an image
+> docker inspect mongo
+
+ docker inspect mongo
+[
+    {
+        "Id": "sha256:1e2b5a85319bcc8cbda7dc7540048baabe040aeea303edec6d8374a813f6f9a5",
+        "RepoTags": [
+            "mongo:latest"
+        ],
+        "RepoDigests": [
+            "mongo@sha256:31e5b22fa85586a34a917d87aea2990f6bc46d87cd208cf7f249a852b09ff673"
+        ],
+        "Parent": "",
+        "Comment": "",
+        "Created": "2018-07-26T23:44:56.452271847Z",
+        "Container": "6ba20d75df8f21557deff7ab28d72e7cfe267044f3893809706e18d4f586a03e",
+        "ContainerConfig": {
+            "Hostname": "6ba20d75df8f",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "27017/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.10",
+                "JSYAML_VERSION=3.10.0",
+                "GPG_KEYS=9DA31620334BD75D9DCB49F368818C72E52529D4",
+                "MONGO_PACKAGE=mongodb-org",
+                "MONGO_REPO=repo.mongodb.org",
+                "MONGO_MAJOR=4.0",
+                "MONGO_VERSION=4.0.0"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "#(nop) ",
+                "CMD [\"mongod\"]"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:8341c1140162f34513e8a8c7398c4f625d9e9ae7d99e763aa9c8c41c9f8ed1dd",
+            "Volumes": {
+                "/data/configdb": {},
+                "/data/db": {}
+            },
+            "WorkingDir": "",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": [],
+            "Labels": {}
+        },
+        "DockerVersion": "17.06.2-ce",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "27017/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.10",
+                "JSYAML_VERSION=3.10.0",
+                "GPG_KEYS=9DA31620334BD75D9DCB49F368818C72E52529D4",
+                "MONGO_PACKAGE=mongodb-org",
+                "MONGO_REPO=repo.mongodb.org",
+                "MONGO_MAJOR=4.0",
+                "MONGO_VERSION=4.0.0"
+            ],
+            "Cmd": [
+                "mongod"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:8341c1140162f34513e8a8c7398c4f625d9e9ae7d99e763aa9c8c41c9f8ed1dd",
+            "Volumes": {
+                "/data/configdb": {},
+                "/data/db": {}
+            },
+            "WorkingDir": "",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": [],
+            "Labels": null
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 379353410,
+        "VirtualSize": 379353410,
+        "GraphDriver": {
+            "Data": null,
+            "Name": "aufs"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:0a42ee6ceccb1b90de2a3badec7c74cc452ce61e7ef20a80bb7f20ea53f2825e",
+                "sha256:c2af38e6b250a39e0e7b9665687385c75fdf7bab5ea856a2eec4fd6b74adda95",
+                "sha256:5e95929b27983df137a6cff59695739f69f6571e70fa68eb6a7abe3b74e402d2",
+                "sha256:2166dba7c95bfbc84b38b7a6c7d96d323d16239aeff2f2292c61821002df2dfb",
+                "sha256:bcff331e13e35a0beb71d43b4f6b859327f18587f084a1036a603e64a990e44d",
+                "sha256:299fcb8d0378526cb013ed77c87829dc12e33a32414848f1c04ae17f5b13ee75",
+                "sha256:a8a21dc191b66395242e2b4e3485ba2b1ce088e582b525184b56eb115b79e757",
+                "sha256:f6cd17cd3abead6b400d99dd32c9772654297a268d696c48c6830647497d06f6",
+                "sha256:ea0b65a9d6eb491af45c94be2af612f15dcaee615d00042cb5caa44f6705098b",
+                "sha256:9bffe7f7da13b971e694a958cac4d3d8878aff6310605bcdee5207c7a4bfeed3",
+                "sha256:a240a44aae67329361eb926b4a7664521fe1eca8849403b2d1d584e19bfed176",
+                "sha256:7d56f4c2f53cb235c0294006987a9ff44535189100103f6a59283ef8b30c43fc",
+                "sha256:1d1cfb168091e58b741f071061c1449164b78cdf75e083a371e7e198e903c827",
+                "sha256:69486ecad4d0d7f901db89ce9b715ad770b8e6a5886506803bf15d4df204aafc"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
+        }
+    }
+]
+
+

@@ -1,0 +1,204 @@
+https://docs.mesosphere.com/1.11/tutorials/dcos-101/service-discovery/
+
+
+Tutorial -- Connecting Apps/Service Discovery
+====================================================
+
+
+
+Service Discovery
+====================================================
+Service discovery.  enables addressing of applications
+independently of where they are running in the
+cluster, which is partiualarly useful in cases
+where appliations may fail and be restarted on
+a different host.
+
+
+
+DC/OS provides two options for service discovery:
+
+1. Mesos-DNS
+2. Named Virtual IPs
+
+
+
+SSH into the Mesos master node in your cluster to see how these
+different service discovery methods
+work:
+
+> dcos node ssh --master-porxy --leader
+
+
+Mesos-DNS
+====================================================
+https://docs.mesosphere.com/1.11/tutorials/dcos-101/service-discovery/
+
+assigns DNS entries for every task, which are resolvable from
+any node in the cluster.
+
+
+The default scheduler for jobs is Marathon, so the Mesos-DNS name
+for your service is(let's just say it's Redis):
+
+	redis.marathon.mesos
+
+
+Let's use the dig command to retrieve the address record
+also known as an A-record.  Dig is a DNS quierying application.
+
+
+
+Named Virtual IPs
+==============================================================
+Named VIPs allow you to assign name/port pairs to yoru
+apps, which means with a predictable port.  They also
+provide built-in load balancing  when using 
+multiple instances of an application;
+
+
+"VIP_0": "/redis:6379"
+
+
+^^^
+A full name is then generated using the following schema:
+
+vip-name.scheduler.14lb.thisdcos.directory:vip-port
+
+
+Messos-DNS
+=============================================================
+Mesos-DNS is a simple solution to finding 
+applications inside the cluster.  While DNS is 
+supported by many applications, Mesos-DNS has the following drawbacks:
+
+
+*	DNS caching: Applications somethis cache DNS entries for 
+	efficiency and therefore might not have updated
+	address information(e.g, after a task failure)
+
+*	You need to use SRV DNS records to retrieve information
+	about the allocated ports.  While applications
+	commonly understand DNS A records, not all SRV records.
+
+Named VIPs
+====================================
+Named VIPs load balance the IP adress/port pari using an 
+intelligent algorithm to ensure optimal 
+routing of the traffic in relation to the original 
+requestor,and also provide a local caching layer
+for high performance.  They also allow you to give your
+apps meaningful names an dselect a
+specific port.  Because of these
+advantages over Mesos-DNS, we suggest using 
+Named VIPs as the default service discovery
+method in DC/OS
+
+
+
+
+DC/OS Service Discovery and Balancing by Example
+=========================================================
+1. Let's create a servie
+
+
+/Users/mdb/src10/jvm/lab/code_lab/jcode_lab/src/main/java/java_core/oop/_abstract
+
+mkdir src/main/java/java_core/oop/_interface
+
+
+
+
+
+1. Is this feature (displaying spider files) the only
+   feature broken when using the old client ?
+
+2. Does this feature prevent the execution of the following features? :
+	*	creation of a spider
+	*	displaying a spider
+	*	starting a spider crawl
+	*	displaying spider(overall) status
+	*	stopping a spider
+	*	deleting a spider 
+
+	answer:
+		*	Cannot list spiders
+		*	Cannot peform spider file operations
+
+3. Are you still working on the design of the tenative persistence solution,
+   or are you in the middle of implementing the decided upon solution ?
+
+
+
+DC/OS Service Disoery and Load 
+Balancing by Example 
+===============================================================
+DC/OS Service Discovery and Load Balancing by Example
+
+1. Create a service
+	*	ID
+	*	CPUs
+	*	Memory
+	*	Disk Spacke
+	*	Instances
+	*	Image(nginx)
+	*	Network(Bridged)
+
+
+^^^ The image could be just a simple web server(nginx)
+that shows the hostname of the server;
+this will be convenient for our experiment.
+
+In the network tab, set the container port to '80',
+switch to json mode, and add "hostPort":2000'
+
+This maps port 80 in the container to port 
+2000 on the host 
+
+
+
+What is bridging(networking)
+============================================================
+A network bridge is a computer networking device
+that creates a single aggregate
+network from multiple communication networks or network 
+segments.
+
+Bridging is distinct from routing.  Routing allows
+multiple networks to communciate independently and yet 
+remain separate, wheras briding connects
+two spearte netowerks as if they were a single 
+network.
+
+Bridging is a layer-2 tech
+
+
+
+So in summar:
+	1.  Each Extractor node will be configured with a VIP
+	2.  Each node will be configured with a dynamically
+		alloted port(or not?) 
+	3.  Each extractor container site behind the VIP
+
+	4. DC/OS marathon has a DNS service that does
+	   neat shit like service A and SRV records.
+
+
+
+
+insert into team
+(id, name)
+values
+(1, 'Spring Boot Badgers');
+
+insert into teammate
+(id, first_name, last_name, position, team_id) values
+(1, 'Greg', 'Turnquist', '2nd base', 1);
+
+insert into teammate (id, first_name,
+last_name, position, team_id) values
+(2, 'Roy', 'Clarkson', '1st base', 1);
+
+insert into teammate
+(id, first_name, last_name, position, team_id) values
+(3, 'Phil', 'Webb', 'pitcher', 1);

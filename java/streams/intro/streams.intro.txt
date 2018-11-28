@@ -1,0 +1,115 @@
+Stream is anew abstratct layer introduced in Java 8 .
+Using stream, you can process data in a declarative way
+similar to SQL statements. For example, consider the following
+SQL statement:
+
+
+SELECT MAX(salary), employee_id, employee_name FROM Employee
+
+
+The above SQL expression automatically returns the maximum
+slaried employee's details,without doing any computation
+
+
+Using collections framework in Java, a deveoper has
+a developer has to use loops and make repeated checks.
+
+Another concern is effiiency as multi-core processors are available
+at ease, a Java developer has to write parrallel code
+processing thatg can be pretty eerror-prone
+
+
+Streams allows programmers to process data declaratively
+and leverage multicore archtitecture without the need to
+write
+any specific 
+
+
+
+What is a Stream ?
+=================================================
+
+Stream represents a sequenc of objects from a source,
+whch suports aggregate operations. Folloing
+are characteristics of a Stream --
+
+
+*	Sequence of elements -- A stream provides a set of
+	elements specific type in a sequential manner.
+	A stream gets/computes elements on demand. It never
+	stores the elements 
+
+*	Soure -- Stream takes Colletions, Arrays, or I/O
+	resources as input source
+
+*	Aggregate operations -- Stream supports aggregate
+	opertions like filter, map, limit, reduce, find, 
+	match and so on.
+
+*	Pipelining -- Most of the stream operations return
+	stream itslef so that their result can be pipelined.
+	These operations are colled intermediate operatins
+	and their function is to take inut, process them,
+	and return output to the target.
+
+	collect() method is a terminal operation which
+	is normally present at the end of the 
+	pipelining operstion to mark the end of the 
+	stream.
+
+*	Automatic iternations -- Stream operations do the 
+	iterrations internally over the soure elements 
+	rovided, in contrast to collections whre explicit
+	iteration is required.
+
+
+with Java 8, collection interface has two methods to 
+generate a Stream:
+
+	stream() -- returns a sequential stream considering
+	collection as its soure
+
+	parallelStream() -- Returns a parallel stream considering
+	collection as its soure.
+
+
+	//code 
+	List<String> strings = Arrays.asList("abc","","bc","efg") ;
+	List<String> filtered = strings.stream()
+	.filter(string -> !string.isEmpty())
+	.collect(Collectors.toList());
+
+
+
+
+Running Docker container interactively out the gate
+====================================================
+> docker run ubuntu /bin/sh 
+
+
+Running Docker conatiner via id and then via id and giving it a persistant name
+==========================================================================
+> docker run 123768 ubuntu /bin/sh
+
+> docker run 123768 --name ubuntu0 ubuntu /bin/sh
+
+
+Starting and stopping docker container
+=================================================
+> docker start ubuntu0
+
+> docker stop ubuntu0
+
+Running docker containers as "daemons"
+=============================================================
+> docker run --name d0 -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1 ; done" 
+> docker run --name d1 -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1 ; done"
+> docker run --name d2 -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1 ; done"
+
+
+Viewing the activity of docker containers
+============================================================
+> docker logs d0
+> docker logs d1
+> docker logs d3
+

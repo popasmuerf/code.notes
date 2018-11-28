@@ -1,0 +1,272 @@
+https://doc.rust-lang.org/book/second-edition/ch04-01-what-is-ownership.html
+
+Rust and Ownership
+===========================
+let x = 5;
+let y = x;
+
+
+Multiple variables can interact with the same
+data in different ways in Rust.
+
+We can probably guess what this is doing based on our
+experience with other languages: "Bind the
+value 5 to x ; then make a copy of the value
+in x and bind it to y."  We now have tow
+varaibles, x and y, and both equal 5.  this is
+indeed what is happening because integers
+are simple values with a known,
+fixed size, and these two 5 values are pushed onto 
+the stack.
+
+
+
+Now let's look at the string version:
+
+let s1 = String::from("hello");
+let s2 = s1
+
+this looks very similar to the previous code,
+so we might assume that the way if towrks would be th 
+same: that is, the second line would make a copy of the value in 
+s1 and bind to s2, but that isn't 
+what quite happens:
+
+A "String" is made up of three parts:
+	1. a ptr on the stack pointing to the
+	first element in of the String...which
+	is really just an array of chars
+	2. The actual String is stored on the 
+	heap
+
+This could be a problem, whens2 and s1 go out
+of scope, they will both try to free the
+same memory.   This is known as a double free
+error and is on of the memory safety bugs that
+Rust tries to do away with.  Freeing memory twice
+may lead to memory corruptions, which can lead
+to security vulnerabilities.
+
+
+To ensure memory safety, there's one more detail to
+what happens in this situation in Rust.  Instead
+of trying to copy the allocated memory, Rust considers
+s1 to no longer be valid and therefore, Rust
+doesn't need to free anything when s1 goes out of 
+scope.  checkout what happens when we attempt this 
+and try to compile...
+
+let s1 = String::from("Hello");
+let s2 = s1
+
+println!("{}, world!", s1);
+
+///code 
+
+fn main() {
+   let s1 = String::from("hello");
+   let s2 = s1;
+   println!("{} world!!", s1)
+}
+
+>
+   Compiling playground v0.0.1 (file:///playground)
+warning: unused variable: `s2`
+ --> src/main.rs:3:8
+  |
+3 |    let s2 = s1;
+  |        ^^ help: consider using `_s2` instead
+  |
+  = note: #[warn(unused_variables)] on by default
+
+error[E0382]: use of moved value: `s1`
+ --> src/main.rs:4:27
+
+
+
+ If you’ve heard the terms “shallow copy” and “deep copy” while working with other languages, the concept of copying the pointer, length, and capacity without copying the data probably sounds like a shallow copy. But because Rust also invalidates the first variable, instead of calling this a shallow copy, it’s known as a move. Here we would read this by saying that s1 was moved into s2. So what actually happens is shown in Figure 4-4.
+
+
+
+So variable s1 goes out of scope somehow....and we try to use
+variable s2...then the compiler will hammer us for it...
+
+
+
+
+Stack-Only Data:Copy
+=============================================
+There's another wrinkle we haven't talked
+about yet.  this is shown below:
+
+
+let x = 5 ;
+let y = x ; 
+
+println!("x = {}, y = {} ",x,y);
+
+^^^Does this code seem to contradict what we just
+learned ?   we don't  have to call to
+clone() but x is valid and wasn't moved into y
+
+
+The reason is that types like lintegers
+that have a known size at compile time
+are stored entirely in th stack, so 
+copies of the actual values are quikck
+to make.  That means there's no
+reason we want to prevent x from being valid 
+after we create the variable y.  In other
+words 
+there is a dffierence
+between deep and shallow copying and we can
+leave it out.
+
+
+Rust has a special annotation called the 
+"Copy" trait that we can place on
+types like integers that are stored
+on the stack
+
+If a type has the "Trait", an older
+variable is still usable after assignment.
+
+Rust wont let us annotate a type with the 
+"Copy" trait if the type, or any of
+its parts, has implemented the
+"Drop" trait.
+
+So...if we are going to get into
+the deep of it all with respect to ownership
+of types....then we need to dive into
+the documentation:
+
+	*	All the integer types, like u32
+	*	The Boolean type, bool, with values ture, and false
+	*	The characer type, char
+	*	All the floating point types, like f64
+	*	Tuples, but only if they contain types that are also
+		"Copy". (i32, i32) is "Copy", but
+		(i32,String) is not
+
+
+/**
+	The heap is where we perform 
+	dynamic computing w/r to allocation
+	of new memory.  This type of computing 
+	will always be slower than computing
+	off the stack because the stack
+	will always be O(n=1).  Java(at least
+	initially)
+**/
+
+
+Owndership and Functions
+================================================
+the semantics for passing a value to a 
+function are similar to assigning a value to
+
+Passing a varaible to a function will move or copy
+just like assignment. 
+a variable to a function will move or
+copy, just like assgnment.  Below is 
+an example with some annotations showing where variables go into
+and out of scope
+
+//code --> src/main.rs
+
+
+fn main(){
+	let s = String::from("hello"); //s comes into scope
+	takes_ownership(s);
+	let x = 5 ;
+ 	makes_copy(x);
+}
+
+
+
+fn takes_ownershp(some_string:String){
+	println!("{}", some_string);
+	//Here some_string goes out of  scoope
+	//and `drop` is called.  The backing
+	//memory is freed
+}
+
+
+fn makes_copy(some_integer:i32){
+	println!("{}", some_integer)
+	//Here, some_integer goes out of
+	//scope.  Nothing special
+	//happens
+}
+
+
+
+Returning Values and Scope
+=================================================
+
+Returning values can also transfer ownership
+// src/main.rs
+
+fn main(){
+	let s = String::from("hello"); //s comes into scope
+	takes_ownership(s);
+	let x = 5 ;
+ 	makes_copy(x);
+}
+
+
+fn gives_ownership() -> String{
+	let s1 = gives_ownership() ;
+	let s2 = String::from("hello");
+	let s3 = takes_and_gives_back(s2);
+}
+
+fn takes_ownership(some_string:String){
+	println!("{}", some_string);
+	//Here some_string goes out of  scoope
+	//and `drop` is called.  The backing
+	//memory is freed
+}
+
+
+fn makes_copy(some_integer:i32){
+	println!("{}", some_integer)
+	//Here, some_integer goes out of
+	//scope.  Nothing special
+	//happens
+}
+
+fn gives_ownersip -> String{
+	let some_string = String::from("hello");
+	some_string
+}
+
+fn takes_and_gives_back(a_string:String)->String{
+	a_string
+}
+
+
+
+Taking ownership and then returning ownsership
+with every function is a bit tdious.  What if 
+we want to let a function use a value but not take ownersip?
+It's quite annoying that anything we
+pass in also needs to be passed back 
+if we want to use it again, in addtion to any data resulting
+from teh body of the function that we might want
+to return as well.
+
+// src/main.rs
+
+fn main(){
+	let s1 = String::from("hello");
+	let (s2, len) = calculate_length(s1);
+	println!("The length of '{}' is {}.", s2, len)l
+}
+
+
+fn calculate_length(s:String) -> (String, usize){
+	let length = s.len();
+	(s, length)
+}

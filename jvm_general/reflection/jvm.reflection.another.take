@@ -1,0 +1,96 @@
+https://www.journaldev.com/1789/java-reflection-example-tutorial
+
+Refelction in Java
+====================================
+Reflection in Java is very a very powerful concept and
+it's of little use in normal programming but it
+it is the backbone for most of the Java frameworks.
+Some of the frameworks that use reflection are:
+
+
+	*	Junit:
+		-	Usese refletion to parse @Test annotation
+			to get the test methods and then invoke 
+			them.
+	*	Spring
+		-	dependency injection 	
+	*	Tomcat
+		-	web container to forware request to correct module by
+			parsing their web.xml files and request URI
+	*	Eclipse:
+			auto completion of method names
+	*	Struts:
+
+	*	Hibernate:
+
+
+The list is endless and they all use java refelction
+because all these frameworks have no knowledge and
+access of user defined classes, interfaces their methods, etc
+
+
+"but if you have never studied kata beyond the surface, then you would not know that"
+^^^LOLz...what rubbish.  If you are unable to discern what your kata is doing "on the 
+surface"...then either you are unfamiliar with your own martial art, or you are looking
+for someting that isn't there in the first place.
+
+0f6e695fac49fcd8463908d3e42a64ad08598865 
+
+current commit
+
+""
+1. "I saw it in a street fight" 
+Funny how these things always tend to happen when there is 
+no one around with actual ring experience to seem or 
+no at least one person with a video recording device...
+
+2. "Do you know any Judo Kata"
+Sure do....it's a requirement for promotion from
+Shodan on up...
+
+3. "The reason kata are done the way they are done is to train a lot more than just one situation"
+This is what randori is for.  Kata is nothing more than an ecyclopedia of prearranged techniques.
+Proficiency in application of these techniques is achieved via dynamic pressure testing(randori/sparring)....something of which is required of Judoka from ryoku to shodan and beyond...
+this is how I know what you demonstrated won't work. It's called actual experience trying to 
+toss people of comparable skill who not only are not interested in allowing me to do so...
+but whom are also trying to take my head off likewise and succeeding at it...without chopping them in the neck.
+
+When should we not use reflection
+===============================================
+We shouldn't be using reflection in normal programming where we
+
+
+Started by user Michael Brown
+hudson.plugins.git.GitException: Command "git fetch --tags --progress origin +refs/heads/artifactory:refs/remotes/origin/artifactory --prune" returned status code 128:
+stdout: 
+stderr: fatal: Couldn't find remote ref refs/heads/artifactory
+fatal: The remote end hung up unexpectedly
+already have access to the classes and interfaces because
+of the following drawbacks:
+
+*	Poor Performance:
+	-	dymanic resolution of types involves processing lise
+		scanning the classpath to find the clas to load,
+		causing slow peformance
+
+*	Security Restrictiosn:
+	-	Reflection requires runtime permissims that might not
+		be available for  system running under security manager.
+		this can cause you applicaiton to fail at runtime
+		because of the security manager
+
+*	Security issues:
+	-	Using refelction we can access par of code that we are not supposed
+		to access.  For example, we can access private fields
+		of a class and change it's value.  this can be 
+		be a serious security thera and cause our application to 
+		behave abnormally
+
+*	High Maintenance:
+	-	Reflection code is hard to understand and debug, also any
+		also, any issues iwth the code can't be found at compile time because
+		the classes might not be available, making it less flexible
+		and hard to maintain.
+
+
+
