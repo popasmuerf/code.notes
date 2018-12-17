@@ -1,0 +1,75 @@
+https://en.wikipedia.org/wiki/Java_Management_Extensions
+
+Java Management Extensions
+==================================
+Java Management Extensions(JMX) is a Java technology that
+supplies tools for managing and monitoring
+	*	applications
+	*	system objects
+	*	devices(such as printers)
+	*	service-oriented networks
+
+
+^^^ These resources are represented by objects
+called "MBeans"(for Managed Bean).  In
+the API, classes can dynamically loaded and instantiated.
+
+Managing and monitoring applications can be
+designed and developed using the 
+
+Java Dynamic Management Kit.
+
+
+JMX architecture
+===================================
+
+
+1. Probe Level:
+	-	Also called the Instrumention level
+		contains the probes(called MBeans)
+		instrumenting the resources
+
+2. Agent level/MBeanServer
+	-	Core of JMX
+	-	Acts as an intermediary between
+		the MBean and teh applications
+
+3.	The Remote Management level enables remote
+	applications to access the MBeanServer through 
+	connectors and adaptors.
+
+		-	enables remote apps to access
+			MBean server via connectors/adapters
+
+		-	A connector provides full remote access
+			to the MBeanServer API using various
+			protocals
+			*	RMI
+			*	IIOP,
+			*	JMS
+
+		-	Adapters  adapts the API to another 
+			protocol
+			*	HTML/HTTP
+			*	WML/HTTP....
+
+
+Managed beans
+====================================
+A managed bean...often refereed to as
+an MBean - is a tpe of JavaBean, created
+with dependency ijection.  Managed
+Beans are particularly used in 
+the Java Management Extensions technology
+
+
+MBeans represents a resource running int
+the Java virtual machine, such as an appliction 
+or a JEE technical service 
+	-	Java application
+	-	JEE technical service(monitors, JDBC driver,etc)
+	-	Can be used for collectin stats
+		*	performance
+		*	resource usage
+		*	problems(pull)
+		*	getting and setting configs(push pull)
