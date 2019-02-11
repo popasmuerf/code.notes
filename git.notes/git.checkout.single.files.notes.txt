@@ -339,7 +339,9 @@ For Hugh
 
 11. Within the right-most pane labled "Info", locate the "spider crawl"
 	button.  Select a date range and then select and click the "search" button.
-	Depending on whthe
+	Here the "Crawling History" of your spider should be displayed(you shouldn't
+	see anything listed just yet, because your spider has not ran at any point
+	yet)
 
 12. Within the right-most pane labled "Info", locate the "spider schedule"
 	button.  You should notice a button for adding a "rule".  Click this button
@@ -359,6 +361,17 @@ For Hugh
 	Once you are done, click the "Save button" within this option box.  You will
 	be redirected to the "Extractor Manage" page with your spider selected with it's
 	corresponding right-most pane labled "Info".
+
+
+13.	Within the right-most pane labled "Info", click the 
+	"Start spider" button.  Your spider should have started
+	running in the background.  Click on the "spider crawl"
+	button to verify that you spider has started running.  Select
+	a date starting from the day you started the spider to any arbitrary
+	date into the future.  Your spider should be listed within "Crawl History" 
+	now.  Click the "Back" button once you have verified that your spider has/is 
+	ran/running.
+
 
 
 

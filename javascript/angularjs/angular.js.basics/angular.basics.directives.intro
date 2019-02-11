@@ -1,0 +1,193 @@
+url=https://www.tutorialspoint.com/angularjs/angularjs_mvc_architecture.htm
+
+
+Core Features
+=====================================
+*	Data-binding
+	-	It is the automatic synchronization of data
+		between the model and the view
+
+*	Scope
+	-	Objects that refer to the model.  The "glue"
+		betwen controller and the view
+
+*	Controller
+	-	These are js functions bound to a a
+		particular scope
+
+
+*	Services
+	-	built in Angular services for example $http
+		All services are singletons
+		*	$http
+			-	used for XMLHttpRequests
+
+
+*	Filters
+	-	Selection of subset of items from an array and returns a new array
+
+
+*	Directives
+	-	markers on DOM elecments such as elements, attributes,
+		css, and more.  These can be used to create custom HTML
+		tags that serve as new custom widgets.  AngularJS
+		has built-in directives such as
+		*	ngBind
+		*	ngBind
+		*	ngModel
+		*	reminder --> Services != Directives
+
+	-	ng-app
+		*	defines and links an AngularJS application to HTML
+	-	ng-model
+		*	binds the values of AngularJS application to data
+			input contorls
+	-	ng-bind
+		*	This directive binds the AngularJS application data to 
+			HTML tags
+
+
+*	Templates
+	-	these are the rendered view with inforamtion from the contorller
+	-	these can be a single file(suck as index.html) or multiple views
+		in one page using partials
+
+
+*	Routing
+	-	It is concept of switching views		
+
+
+*	Moel View Whatever -- MVW 
+	-	design pattern for dividing an application into
+		different parts call Model, View, and Controller, 
+		each with distinct responsiblities.
+
+	-	Angular does not implement MVC in the traditional sense,
+		but rather something closer to MVVM(Model-View-ViewModel)
+
+*	Deep Linking
+	-	Deep linking allows to encode the state of 
+		application in the URL so it can be bookmarked.
+		The aplication can then be restored from the RL to the
+		same state.
+
+
+*	Dependency Injection:
+	-	Angular has a built-in dependency injection subsystem
+		that helps the developer to create, undertand, and test the applications easily
+
+
+
+
+
+
+
+Example
+====================================
+
+
+Point to the AngularJS app
+------------------------------------
+
+<body> ng-app = "myapp">
+</body>
+
+^^^
+Tell angular which part of the html actually contains
+your app.
+
+
+
+
+View
+----------------------------------------
+<div ng-controller = "HelloController" >
+   <h2>Welcome {{helloTo.title}} to the world of Tutorialspoint!</h2>
+</div>
+
+^^^ 
+ng-controller tells AngularJS which controller to use with this view.
+helloTo.title tells AngularJS to write the model
+value named helloTo.title.title in HTML at this location.
+
+
+
+
+Controller
+----------------------------------------
+<script>
+   angular.module("myapp", [])
+   
+   .controller("HelloController", function($scope) {
+      $scope.helloTo = {};
+      $scope.helloTo.title = "AngularJS";
+   });
+</script>
+
+
+^^^ 
+Here we register a controller function name HelloController in teh 
+angular module named "myapp"
+
+The $scop parameter model is passed to the contrller function.
+The controller function adds a helloTo
+js object, and in that object it adds a title field.
+
+
+
+
+
+
+AngularJS deirectives are used to extend HTML
+===============================================
+They are special attributes starting with ng-prefix.
+
+*	ng-app
+	-	starts the application
+	-	designates the root element for the app
+	-	loads various AJS modules in an AJS app
+
+	<div ng-app = "">
+		...
+		...
+		...
+	</div>
+
+*	ng-init
+	-	initializes AJS application data
+	-	used to assign values to the variables
+	-	here we intialize a list of countries...
+
+	<div ng-app="" ng-init = " countries=[{local:'en-US',name:'United States'},
+										{local:'uk-BR',name:'England'},
+										{local:'prc',name:'Hong Kong'}]">
+
+		...
+		...
+		...
+	</div>
+
+*	ng-model
+	-	defines the model that is vaiable to be used in the AJ app
+	-	Below , we define a model named "name"
+
+	<div ng-app="" 
+		....
+		<p>Enter your Name : <input type = "text" ng-model = "name"></p>
+		....
+	</div>
+
+
+*	ng-repeat
+	-	repeates HTML elements for each item in a colleciton
+
+	<div ng-app="">
+
+		<p> List of Countries with locale: </p>
+		<ol>
+			<li ng-repeate = "country in countries"
+				{{'Country: ' + country.name + ', Locale: ' + country.locale}}
+			</li>
+		</ol>
+
+	</div>

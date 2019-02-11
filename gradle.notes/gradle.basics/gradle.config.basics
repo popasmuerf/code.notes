@@ -1,0 +1,61 @@
+Gradle files
+================================
+*	build.gradle
+*	settings.gradle
+
+
+Commonly used Project API Properties and Methods
+==================================================
+*	name
+	-	Name of the project
+	-	Can be changed using the file
+		"settings.gradle"
+	-	By default, the project
+		directory name
+
+*	description
+	-	typically set in "build.gradle"
+
+
+*	version
+	-	Project's version
+
+*	parent
+	-	Returns the parent project(if exists)
+
+*	group
+	-	User-defined identifier indicating group
+		or organization responsible for the project.
+	-	For example
+		*	org.hibernate
+		*	org.springframework
+
+*	task
+	-	Overloaded method to create a new task
+
+*	dependencies
+	-	Configures dependencies for a project
+
+*	repositories
+	-	Cofigures repoitories for a project
+
+
+*	defaultTasks
+	-	Configures the names of the default tasks
+		to run for a project
+
+
+Note:  build files
+===========================
+You are not restricted to the name of the build
+file  (default : build.gradle).  You can use any 
+file by any name....but you have to use the -b flag:
+
+	> gradle -b <build_file.gradle>
+
+
+//Example of project build....
+
+
+project.description = "Hello World Project"
+println "Project Description ${project.description}"

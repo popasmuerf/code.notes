@@ -1,0 +1,114 @@
+SEMMA Methodology
+=====================================
+SEMMA is another methodology developed by SAS for
+data mining modeling:
+
+	Sample, Explore, Modify, Model, Assess
+
+	*	Sample
+		-	data sampling
+		-	selecting dataset for modeling
+		-	Data set should be large enough
+			to contain sufficent information
+			to retrieve
+		-	Small enough to be used efficiently.
+		-	Data partitioning
+
+	*	Explore
+		-	Understanding the data
+		-	Discover anticipated relationships
+		-	Discover unaticipated relationships
+		-	Discover abnormalities
+		-	Data visualizations
+	*	Modify
+		-	Methods to select, create, transform
+			varables in preparation for data modeling
+	*	Model
+		-	In the Model phase, the focus is on applying 
+			various modeling (data mining) techniques on the
+			prepared variables in 
+	*	Assess
+		-	The evalutation of the modeling results shows
+			the reliability and usefulness of the created
+			models
+
+
+
+Big Data Life Cycle
+==========================================
+In today's big data context, the prevoius approaches
+are either incomplete or suboptimal.  For example, the 
+SEMMA methodology disregards completely data collection
+preprocessing of different data sources.  These stages
+normally constitute most of the work in a succesful big
+data project.
+
+	*	Define Business Probem
+	*	Research
+	*	Human Resources Assessment
+	*	Data Aquisistion
+	*	Data Munging
+	*	Data storage
+	*	Exploratory Data Analysis
+	*	Data preparation for Modeling and Assesment
+	*	Model
+	*	Implementation
+
+
+
+
+
+Core Deliverables
+========================================
+The data products that result from 
+developing a big data product 
+are in most of the cases some of the
+following:
+
+	*	Machine learning implementation models
+		-	classification
+		-	regression
+		-	sementation 
+
+	*	Recommender system
+		-	recommends choices based
+			on user behavior
+			*	ratings
+			*	user recomendations
+			*	most viewed genres
+
+	*	Dashboard
+		-	Business normally needs tools to 
+			visualize aggregated data.  A dashboard
+			is a graphical mechanism to make this 
+			data accessible
+
+	*	Ad-Hoc analysis 
+		-	Normally business areas have questions
+			, hypotheses or myths that can be answered
+			doing ad-hoc analysis with data
+
+
+Note:...most "Big Data" problems can be categorized in the
+following ways:
+
+	*	Supervised classification
+	*	Supervised regression
+	*	Unsupervised learning
+	*	Learning to rank
+
+Common skillsets for DS' to normally have...
+
+	*	Programming in a statistical package such as:
+		-	R
+		-	Python
+		-	SAS
+		-	SPSS
+		-	Julia
+
+	*	ETL
+
+	*	Research, design, and implementation of statistical models
+
+	*	Deep statistical, mathematical, and computer science
+		knowledge
