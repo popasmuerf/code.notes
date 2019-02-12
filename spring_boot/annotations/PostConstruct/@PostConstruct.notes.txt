@@ -1,0 +1,58 @@
+@PostConstruct:
+	*	After all Spring bans are initialized in the application
+		context, any methods with this annotation are invoked
+		automatically.
+
+@Configuration:
+	*	indicates that this class is a source
+		of beans that need to be added to the application context
+
+
+@Autowired
+//This provides the Application class with a a copy
+of the class  tagged with @Autowired 
+
+
+
+@ComponentScan
+// Tells spring to look for classes tagged with:
+	@Component
+	@Configuration
+	@Repository
+	@Service
+	@Controller
+
+^^^@Component scann tells spring to search the package for classes
+to designate as:
+	*services
+	*components
+	*services
+	*configuratiosn
+
+^^^ and wire them into the app context as beans.
+By default it scans for classes found underneath the package where
+the annotation is declared
+
+
+
+@EnableAutoconfiguration
+//This turns on Boot's auto-configuration behavior.
+
+
+cp     /home/mikeyb/src5/mvnlab/target/mvnlab-1.0.0.jar   repo/io/thirdplanet/mvnlab/1.0.0/
+
+
+mvn deploy:deploy-file -Durl=file:////home/mikeyb/src5/jlabmvn/repo/ -Dfile=/home/mikeyb/libs/jvm/mvnlab-1.0.0.jar -DgroupId=io.thirdplanet -DartifactId=mvnlab -Dpackaging=jar -Dversion=1.0.0
+
+
+
+
+RTL8821AE 802.11ac // wireless
+
+RTL8111/8168/8411  //ethernet
+
+
+echo "options iwlwifi 11n_disable=1" | sudo tee /etc/modprobe.d/iwlwifi.conf
+sudo modprobe -rfv iwldvm
+sudo modprobe -rfv iwlwifi
+sudo modprobe-v iwlwifi

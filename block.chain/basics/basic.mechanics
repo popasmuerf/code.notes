@@ -1,0 +1,24 @@
+
+* Add new transactions
+* Compile and shorten the ledger
+* Stamp it with the time and block ID
+
+
+Adding Transactions
+==============================================
+
+
+
+
+1. Building a block is gathering and adding all the current transactions to
+the block's ledger.  When a user creates a new transaction, they broadcast tht transaction to the entire network.  As a verifier, your computer's job is to review the transaction to make 
+sure it is valid.
+
+Since blockchain currencies are nothing more than a serices of transactions, our first step to verify a transaction  is to look at where the sender says they originally got their fundss...
+
+
+Verifiers keep a complete history of the entire blockchain, back to the very first block.
+They have a record of every transaction that has ever happened on the network.
+
+
+As a verifier, you review the history of the blockchain to find the block and transaction where the sender recieved the funds.

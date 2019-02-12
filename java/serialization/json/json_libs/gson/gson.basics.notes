@@ -49,9 +49,29 @@ is analogous to Stax parser for XML
 	It converts JSON to and from POJO (Plain Old Java Object) using 
 	property accessor.  Gson r/w JSON using data type adapters.
 	It is analogous to JAXB parser for XML
+
+
+
+
+
+Steps to Remember:
+============================================================
+
+Step 1:  
 	
 
 
+Output
+============================================
+
+/calculation/sqrt
+/calculation/power
 
 
+200 OK  application/json
 
+{
+	"function":"sqrt",
+	"input":["144"],
+	"output":["12.0"]
+}

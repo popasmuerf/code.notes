@@ -1,0 +1,29 @@
+@Autowired
+//This provides the Application class with a a copy
+of the class  tagged with @Autowired 
+
+
+
+@ComponentScan
+// Tells spring to look for classes tagged with:
+	@Component
+	@Configuration
+	@Repository
+	@Service
+	@Controller
+
+^^^@Component scann tells spring to search the package for classes
+to designate as:
+	*services
+	*components
+	*services
+	*configuratiosn
+
+^^^ and wire them into the app context as beans.
+By default it scans for classes found underneath the package where
+the annotation is declared
+
+
+
+@EnableAutoconfiguration
+//This turns on Boot's auto-configuration behavior.
