@@ -1,0 +1,144 @@
+Entities or Relationship ?
+=====================================
+An easy way to decide whether an object should be
+an entity or a relationship is to map
+nouns in the requirments to entities, and to map
+the verbs to relations.
+
+Requirements
+-------------------------
+nouns ---> entities
+verbs ---> relations
+
+
+Example:
+
+"A degree program is made up of one or more courses"
+
+--------------				 ----------
+|degree program| (1) ----->(M)|courses |
+--------------				 ----------
+
+
+--------------				 --------------   			-------
+|degree program| (M) ----->(N)|course req | (N) <---(M)|courses|
+--------------				 --------------             ---------
+
+
+
+
+
+
+
+
+Intermediate Enitities
+=========================================
+*	it is often possible to conceptually
+	simplify 
+	-	many-to-many relationships by replacing
+		many-to-many relationshps with 
+		a new intermediate entities
+	-	Intermediate entities are also known
+		as assoicate entities
+
+	-	intermediate entities are used to connect
+		entities through a many-to-one and one-to-many
+		relation ship.
+		--------		 -------		    ----------
+		|flight| ---M--->|Bookings|<---N----|passenger|
+		--------		 ---------          ------------
+
+	-	Any given flight can have many passenger
+	-	Any given passenger can have bookings on many flights
+
+
+	-	We can actually consider the many-to-many relatioshi 
+		to be in fact two one-to-many relationships, one each 
+		This points us to the existence of a hidden intermediate
+		entity, the booking, between the flight and
+		the passenger entities.
+
+
+		"A passenger can make a booking for a seat on a fligh"
+
+Weak and String Entities
+================================
+*	Context is very important in daily interactions
+*	Context allows us to determine the extend of
+	our explicitness
+*	Where ambiguity exists, we add further
+	information such as the surname to clarify
+	or intent.
+*	In database design, we can omit some key
+	information for entities that are dependent on 
+	other entities
+
+*	Weak entities posess an indentyfying relatiionship
+	with strong entities
+
+
+*	In the ER diagram, we show weak entities
+	and identifying relationhips with
+	-	double line 
+	-	partial key
+	-	dashed underline
+	-	weak entities are uniquely
+		identified in the contex of its
+		regular(or strong) entitry
+
+
+Commonly used Project API Properties and Methods
+==================================================
+*	name
+	-	Name of the project
+	-	Can be changed using the file
+		"settings.gradle"
+	-	By default, the project
+		directory name
+
+*	description
+	-	typically set in "build.gradle"
+
+
+*	version
+	-	Project's version
+
+*	parent
+	-	Returns the parent project(if exists)
+
+*	group
+	-	User-defined identifier indicating group
+		or organization responsible for the project.
+	-	For example
+		*	org.hibernate
+		*	org.springframework
+
+*	task
+	-	Overloaded method to create a new task
+
+*	dependencies
+	-	Configures dependencies for a project
+
+*	repositories
+	-	Cofigures repoitories for a project
+
+
+*	defaultTasks
+	-	Configures the names of the default tasks
+		to run for a project
+
+
+Note:  build files
+===========================
+You are not restricted to the name of the build
+file  (default : build.gradle).  You can use any 
+file by any name....but you have to use the -b flag:
+
+	> gradle -b <build_file.gradle>
+
+
+//Example of project build....
+
+
+project.description = "Hello World Project"
+println "Project Description ${project.description}"

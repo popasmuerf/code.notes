@@ -1,0 +1,42 @@
+Create a base image
+====================================
+Most Dockerfies start from a parent image.
+If you need to completely control the 
+contents of your image, you might need
+to create a base image instead.
+
+
+	*	A parent image is the image that your images
+		is basedon.  It refers to the 
+		contents of the "FROM" directive in 
+		the Dockerfile.  Each subsequent declaration in the
+		Dockerfile modifies this parent image.
+
+	*	Most DockerFiles start from a parent image,
+		rather than a base image.  However keep in 
+		mind the terms are sometimes usd interahcangeably
+
+
+	*	A base image either has no FROM line in its
+		Dockerfile, or has FROM fromt he strt.
+
+
+How do we creat a full image using tar ?
+=========================================
+
+In general, we can start with working machine that is 
+running the distribution your'd like to package as
+a parent image, though that is not required for osme
+tools like Debian's "Debootstrap", which you can us to 
+build Ubuntu images
+
+
+
+> sudo debootstrap xenial xenial > /dev/null
+> sudo tar -C xenial -c . | docker import - xenial
+
+> docker run xenail cat /etclsb-release
+
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=16.04
+DISTRIB_DESCRIPTION="Ubuntu 16.04 LTS"

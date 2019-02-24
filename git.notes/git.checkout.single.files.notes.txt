@@ -1,0 +1,377 @@
+A fun metaphor is to think of Git as a timeline
+management utility.  commits are snapshots of
+a point in time or points of interest along
+the timeline ofa ap project's history.
+Addtionally, multiple timeline can be managed through the use
+of branches.  When 'undoing' in Git, you are usualy
+moving back in time, or to another timeline where mistakes
+didn't happen.
+
+
+
+Get the concise commit history
+==================================
+> git log --oneline
+    Michaels-MacBook-Pro:ownership_lab mdb$ git log --oneline
+    8d65654 (HEAD -> master) first commit
+
+
+Get the concis commit history of all branches
+=================================
+> git log --banches=*
+    commit 8d65654816d41164cbfe354692db2c24c446259f (HEAD -> master)
+    Author: popasmuerf <MichaelBrown172@Gmail.com>
+    Date:   Sat Dec 8 11:25:02 2018 -0500
+
+
+Get the concise histor of a particular branch
+=================================
+> git log <branch>
+
+
+
+
+Checking out a commit later in the time line
+of a branch
+=================================
+> git checkout <hash of past commit>
+
+^^^Git chekcou is an easy way to "load" any
+of these saved past snapshots onto your development 
+kmachine.  During the normal course of development,
+the HEAD usually points to master or some other 
+local branch....but when you check out a previousl commit, HEAD no longer
+points to a branch---it points directly to a commit.  This is known
+as a "detached HEAD" stage.
+
+You can checkout an individual file without moving the 
+HEAD pointer to that specific commit in history.  You can
+then commit the old version of the file ina new snapshot as you would any
+other change.  So, in effect, this usage of
+
+    >git checkout
+on a file, serves as a way to revert back to an
+old version of an individual file.
+
+
+
+Viewing a snapshot in history
+==============================================
+Imagine that we started developing a crazy experiment, 
+but we are not sure if we want to keep it or not.
+To help us decide, we want to take a look at the state of the
+project before we started our experiment.  First we need to
+find the ID of the revision we want to see....
+
+
+    Michaels-MacBook-Pro:ownership_lab mdb$ git log --oneline
+    0e8bd3a (HEAD -> master) Added code for deep copy of heap data...
+    8d65654 first commit
+
+
+We can use
+
+    > git checkout
+
+to view our first commit using the following command:
+
+    > git checkout 8d65654
+
+This makes your working directory match the exact state of the
+8d65654 commit....we can look at files, compile the project, run
+tests, and even edit file without worrying about losing the
+current state of the project....and NOTHING we do here will be
+saved to our repo....
+
+
+to get back to our current moment in time:
+
+    > git checkout <master|name of branch you are on>
+
+
+
+Undoing a committed snapshot
+============================================
+There are technically several different strategies to 'undo'
+a commit.  
+
+How to undo  a commit with git checkout
+-------------------------------------
+Using the git checkout command we can
+checkout the previous commit [insert commit hash here]
+Check out a specfic commit will put the repo in a 
+"detached HEAD" state.  This means you are no longer
+working on any branch.  In a detached state,
+any new commits you make will be orphaned when you chang e
+branches back to an established branch.  Orphaned commits
+are up for deletion by Git's gabage collector.  The 
+garbage collector runs on a configured interval 
+and permantly destroys orphaned commits.  To prevent 
+orphaned commits from being garbage collecge, we
+need to ensure we are on a branch.
+
+
+
+From the detached HeAD state, we can execute 
+
+    279d9c8 (HEAD -> master) Added description of what goes on during the copy/move of values into functions depending on whether or not the
+    value is a scalar(on the stack_ or a custom type that is dynamically allocated from the heap because it's size is not known at compile ti
+    me....
+    c1b4e42 Added code regarding function ownership...
+    f79d8f8 Added info about the Copy trait
+    2117dab More stack vs. heap stuff...
+    0e8bd3a Added code for deep copy of heap data...
+    8d65654 first commit
+
+    >git checkout -b "branch from this past commit"
+
+This will create a new branch named "branch from this past commit"
+.  the repois now on a new history timeline in which the 
+the former <insert the latest commit pointed to by HEAD > will now
+no longer exists and will be considered "undone".
+
+Unfortunately, if you need to the prevsious branch, maybe it was your 
+master branch(OH SHIT!!!) this undo strategy is  not apporpiate.
+Let's look at some other 'undo' strategies...
+
+
+How to undo a public commit with git revert
+=================================================
+
+
+
+
+How to undo a public commit with git revert
+=================================================
+f81a17f (HEAD -> adding_numbers)  Added another addition expression....
+d011f90 Adding shit
+b0b6223 (master) Added info on how using git checkout for undoing shit isn't that smart..because you lose the time line you are branching
+ off of....and if this is master....you are FUCKED
+279d9c8 Added description of what goes on during the copy/move of values into functions depending on whether or not the value is a scalar
+(on the stack_ or a custom type that is dynamically allocated from the heap because it's size is not known at compile time....
+c1b4e42 Added code regarding function ownership...
+f79d8f8 Added info about the Copy trait
+2117dab More stack vs. heap stuff...
+0e8bd3a Added code for deep copy of heap data...
+8d65654 first commit
+
+
+
+The history on branch "adding_numbers" includes d01190
+commit. This time...let's try to revert 'undo'.  If we execute
+
+
+	> git revert HEAD
+
+git will create a new commit withthe inverse of the last commit.
+This adds a new commit to the current branch history and now 
+makes it look like:
+
+
+1fbe8d6 (HEAD -> adding_numbers) Revert " Added another addition expression...."
+f81a17f  Added another addition expression....
+d011f90 Adding shit
+b0b6223 (master) Added info on how using git checkout for undoing shit isn't that smart..because you lose the time line you are branching off of....and if this is master....you are FUCKED
+279d9c8 Added description of what goes on during the copy/move of values into functions depending on whether or not the value is a scalar(on the stack_ or a custom type that is dynamically allocated from the heap because it's size is not known at compile time....
+c1b4e42 Added code regarding function ownership...
+f79d8f8 Added info about the Copy trait
+2117dab More stack vs. heap stuff...
+0e8bd3a Added code for deep copy of heap data...
+8d65654 first commit
+
+
+This is pretty awesome....basically we created a new commit that 
+is the 'inverse' of the last commit(basically a commit that undoes the
+changes for the previous commit.....) with that commit still existing
+withing our time line.
+
+
+this is the prefered method of undoing shit while working on a public 
+shared repo....if your have requirements of keeping a curated and minimal git hsitory,
+this strategy may not be satisfactory....
+
+
+
+How to undo a commit with git reset
+=======================================
+For this undo strategy we will continue with
+our working example. 
+
+git reset is an extensive command with multiple
+uses and functions.  if we invoke
+
+	> git reset --hard <commit hash>
+
+the commit history is reset to that specified commit in
+time.  
+
+	
+	1fbe8d6 (HEAD -> adding_numbers) Revert " Added another addition expression...."
+	f81a17f  Added another addition expression....
+	d011f90 Adding shit
+	b0b6223 (master) Added info on how using git checkout for undoing shit isn't that smart..because you lose the time line you are branching off of....and if this is master....you are FUCKED
+	279d9c8 Added description of what goes on during the copy/move of values into functions depending on whether or not the value is a scalar(on the stack_ or a custom type that is dynamically allocated from the heap because it's size is not known at compile time....
+	c1b4e42 Added code regarding function ownership...
+	f79d8f8 Added info about the Copy trait
+	2117dab More stack vs. heap stuff...
+	0e8bd3a Added code for deep copy of heap data...
+	8d65654 first commit
+
+
+
+
+	Michaels-MacBook-Pro:ownership_lab mdb$ git reset --hard f81a17f
+	HEAD is now at f81a17f  Added another addition expression....
+	Michaels-MacBook-Pro:ownership_lab mdb$ git log --oneline
+	f81a17f (HEAD -> adding_numbers)  Added another addition expression....
+	d011f90 Adding shit
+	b0b6223 (master) Added info on how using git checkout for undoing shit isn't that smart..because you lose the time line you are branching off of....and if this is master....you are FUCKED
+	279d9c8 Added description of what goes on during the copy/move of values into functions depending on whether or not the value is a scalar(on the stack_ or a custom type that is dynamically allocated from the heap because it's size is not known at compile time....
+	c1b4e42 Added code regarding function ownership...
+	f79d8f8 Added info about the Copy trait
+	2117dab More stack vs. heap stuff...
+	0e8bd3a Added code for deep copy of heap data...
+	8d65654 first commit
+	Michaels-MacBook-Pro:ownership_lab mdb$
+
+
+
+^^^ in our new reality....the events of 1fbe8d6 no longer exists...as 
+if it never happened....
+
+
+but take care.....this works just fine on a local repo....but if you are
+working on a shared repo...and try to push to remote....git will throw
+and error because you are trying to push events to what is more or less
+now an entirely different reality. 
+
+
+
+Undoing the last commit :
+================================
+So far we have the following methods of undoing
+commits:
+#obliterating entire time lines
+#in order to start new ones...
+>   git checkout <commit hash>
+>   git checkout -b new_universe
+
+
+#Reverting to the last commit but keeping all commits
+#within our timeline...the best method of reverting changes
+#when dealing with open projects...(inversing of last commit)
+
+>   git revert HEAD
+
+
+#Reseting your time line...such that what just happened...didn't
+#...works great for personal, closed projects....but is awful
+#for open projects...because now your local reality is no longer 
+#the same reality
+
+>   git reset -hard <commit hash>
+
+
+
+
+Git: checkout a singl file froma specific commit
+====================================================
+Some times we mess arond with a file nd then there is a desire to
+have a particular state of this file back to the workspace
+
+How do we do that ?
+
+	>	git checkout <commit hash> <path>
+
+
+Example 
+
+	>	git checlut 678ujki89786 /home/mikeyb/src/project/bean.java
+
+
+
+
+
+
+
+
+For Hugh
+=================================================
+
+1. Log into FracWeb
+2. While in Dashboard, look to the listing of services
+   in the left most column
+3. Select "Extractors" and you will then be redirected to
+   the "Extractor Manage" page.
+4. Within the "Extractor Manage" page, you will notice a listing
+   of existing spiders.  Above that list you will see a button labled:
+   "Create Spider".  Click on this button. You will then be redirected
+   to the "Spider Create" page.
+
+5. Within the "Spider Create" page, provide a name and mode
+   for your  spider.  Once you are done, click the "back" button
+   to be redirected back to the "Extractor Manage" page.
+
+6. You should now see that your new spider is included at the bottom
+   of the list of existing spiders.  Each spider in this table exists
+   in a row that includes the spider's name, the template it is based off
+   of, and an "info"(it looks like a little hand icon) and "delete" buttons. 
+
+7. Click on the "info" button, and to the right of the spider list, 
+   there should appear an "info" pane that includes 4 buttons: "start spider"
+   , "stop spider", "spider crawls", "spider schedules".  Below these buttons 
+   should be listings for "Change Log", "Group", "Type",
+   "Modes", "Files()"
+
+8. Under the "Files()" listing, you should see a table listing for the spider related
+   files.  The files listed exist in rows that also incldue a button for
+   editing and deleting the files(resembling a scratchpad and "x" respectively)
+
+9. Locate the "spider.py" file within the Spider "Files()" table listing and click on 
+   it.
+
+10. You should not be presented with a pop up window displaying the contents of the file
+   "spider.py".   Edit the spider, inserting code for the target website url to be
+   "scraped", along with the "business" logic for extracting and processing scraped
+   site data. Once you are done, click the "save" button int he bottom left, and you will
+   be redirected back to the "Extractor Management" page with your new spider still selected
+   along with it's accompanying  "info" pane to the right.
+
+11. Within the right-most pane labled "Info", locate the "spider crawl"
+	button.  Select a date range and then select and click the "search" button.
+	Here the "Crawling History" of your spider should be displayed(you shouldn't
+	see anything listed just yet, because your spider has not ran at any point
+	yet)
+
+12. Within the right-most pane labled "Info", locate the "spider schedule"
+	button.  You should notice a button for adding a "rule".  Click this button
+	You will then be presented with an option box presenting you with configuration
+	options for:
+		Mode(drop down menu)
+		Crown expression(text field)
+	In order to set a schedule for you new spider, you will need to convert
+	the times of the day/week you want your spider to run automatically into
+	a "cron" expression.  Here, I am using the website cronmaker.com to build
+	these cron expressions.  This will change to a more human readable format
+	later.
+
+	Insert your new cron expression into the the "Cron expression" text field
+	Select the crawl mode within the "Mode" drop down menu.
+
+	Once you are done, click the "Save button" within this option box.  You will
+	be redirected to the "Extractor Manage" page with your spider selected with it's
+	corresponding right-most pane labled "Info".
+
+
+13.	Within the right-most pane labled "Info", click the 
+	"Start spider" button.  Your spider should have started
+	running in the background.  Click on the "spider crawl"
+	button to verify that you spider has started running.  Select
+	a date starting from the day you started the spider to any arbitrary
+	date into the future.  Your spider should be listed within "Crawl History" 
+	now.  Click the "Back" button once you have verified that your spider has/is 
+	ran/running.
+
+
+
+

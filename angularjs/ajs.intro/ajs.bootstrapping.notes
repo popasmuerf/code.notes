@@ -1,0 +1,38 @@
+Bootstrap Phase
+=====================
+The bootstrap phase is the first phase of the 
+AngularjSlife cycle and occurs when the
+AngularJS JavaScript library is downloaded to the 
+cloient's browser.  Once the JavaScript
+library is downloaded, AngularJS initializes
+its own components and initializes the applications's
+module, which the ng-app directive points to.
+The static DOM in this phase is loaded into the browser.
+
+
+
+
+
+Compilation Phase
+==================
+The HTML compilation stage is the second
+phase in the AngularJS life cycle. In this phase, 
+the loaded static DOM is replaced with the
+dynamic DOM to represent the AngularJS view.
+
+Then these DOMs get linked to the appropiate
+JavaScript function from the AngularJS built-in 
+
+library or custom directive code
+
+
+Runtime DataBinding Phase
+=========================
+This is the final stage of the AngularJS life
+cycle, which exists as long as the user does not
+reload or navigage awway from a web page.
+In this phase, any changes made to the scope reflect
+in the view and vice versa
+
+
+
