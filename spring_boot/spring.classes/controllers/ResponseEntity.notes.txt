@@ -1,0 +1,53 @@
+{
+  id: 10002,
+  from: "EUR",
+  to: "INR",
+  conversionMultiple: 75,
+  quantity: 10000,
+  totalCalculatedAmount: 750000,
+  port: 8000,
+}
+
+Class ResponseEntity<T>
+
+
+
+What is ResponseEntity<T> ?
+==================================================
+ResponseEntity extends HttpEntity<T>
+that adds a HttpStatus status code.
+Used in RestTemplate as well @Controller methods.
+
+
+In RestTemplate, this class(ResponseEntity) is returned by 
+getForEntity() and exchange():
+
+
+	ResponseEntity<String> entity = template.getForEntity("http://example.com",String.class);
+	String body = entity.getBody();
+	MediaType contenType = entity.getHeaders().getContentType() ;
+	HttpStatus statusCode = entity.getStatusCode() ;
+
+
+
+getForEntity()
+-----------------------------------------------------
+public <T> ResponseEntity<T> getForEntity(java.lang.String url,
+										  java.lang.Class<T> responseType,
+										  java.util.Map<java.lang.String,?> uriVariables)
+										  throws RestClientException
+
+
+Description copied from interface:RestOperations
+................................................
+Retrieve a represetnation by doing a GET on the URI template. The response is 
+converted and stored in an ResponseEntity.
+
+URI Tmeplate variables are expanded using the given map.
+
+
+public <T> ResponseEntity<T> getForEntity(java.net.URI url,
+										  java.lang.Class<T> responseType)
+										  throws RestClientException
+Retrieve a represetnation by doing a GET on the URL. The response is 
+converted and stored in an ResponseEntity.
