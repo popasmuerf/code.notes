@@ -1,0 +1,108 @@
+HTTP is stateless.
+All the requests are stateless
+Situations arise where we need to keep state
+	-	shopping carts
+	-	last page visited
+	-	etc
+
+We maintain state via sessions or tokens
+
+
+Session Based Authentication
+
+In the session based authenication, the server will create a session 
+for the user after the user logs in.  The session id is then
+stored on a cookie on the user's browser
+
+The session id is then stored on a cookie on the 
+user's browser.  While the user stays logged in, th ecookie would be
+sent along with every subsequent request.  The server cna then 
+compare the session id stored on the cookie against the session 
+information stored oin the memory to verify user's indentify and
+sends response with the coresponding state!
+
+cookie{sessionid}
+
+
+Browser
+  |
+  |--------------POST /user/login---------------->|
+  |						  |
+  |						  |
+  |<-------------RESP cookie{sessionid}-----------|
+  |                                               |
+  |						  |
+  |--------------GET/POST/PUT cookie{sessionid}-->|
+  |                                               |
+  |                                               |
+  |<-------------RESP-----------------------------|
+  |                                               |
+
+
+
+
+
+Token Based Authentication 
+
+Many web applications use JSON Web Token(JWT) instead of session for
+authentication. In the token based application.  In the token
+based appliation, the server creates JWT with a secret
+and sends the JWT to the client.  The client stores the JWT 
+(usually in local storage) and includes JWT in the header 
+with every request.  The server would hten validate
+the JWT with every request from the client and sends a
+response.
+
+
+
+
+
+Browser
+  |
+  |--------------POST /user/login---------------->|
+  |						  |
+  |						  |
+  |<-------------RESP JWT-------------------------|
+  |                                               |
+  |						  |
+  |--------------GET/POST/PUT JWT signed Header-->|
+  |                                               |
+  |                                               |
+  |<-------------RESP-----------------------------|
+  |                                               |
+
+
+
+
+The major difference between sessions and jwt is that the user's
+state is not stored on the server....the server just needs to know 
+that you who you say you are....nothing more....this scales quite nicely.
+
+
+
+JWTs also allow for work across multible domains....as..once again...
+the server has no concept of the requesters' state.
+So you could hypothetically maintain the same state simultaneously 
+on multiple devices accessing the same resources(I do this all the time using
+YouTube and Amazon)....you can't do this with session based authentication..
+because differing state would have to be mitigated on the server side.
+
+
+JWTs tend to be larger than cookies as they usually contain more information:
+
+	header
+	payload
+	sig
+
+JWTs should not contain any sensitive inforamtion to avoid XSS attacks.
+
+
+JWTs allow us to pass authentication to other applications.
+
+
+
+
+
+
+
+
