@@ -1,3 +1,7 @@
+url: https://www.youtube.com/watch?v=bBC-nXj3Ng4
+
+
+
 
 * Add new transactions
 * Compile and shorten the ledger
@@ -22,3 +26,41 @@ They have a record of every transaction that has ever happened on the network.
 
 
 As a verifier, you review the history of the blockchain to find the block and transaction where the sender recieved the funds.
+
+About Cryptograhpy
+==========================================================
+	*	Most basic and general explanation: cryptography is all about number theory.
+	*	All integers except 0 and 1 are made up of primes(so primes come up a lot 
+		in math)
+	*	Important crypto algorithms such as RSA critically depend on prime
+		factorization of large numbers takes a very long time and is
+		resource heavy.
+	*	You have a public key consisting of a product of
+		two large primes used to encrypt the message.
+	*	You have a secrect key consisting of those two primes
+		used to decrypt the message.
+	*	Any one can use the public key to encyrpt messages sent to you...
+	*	
+
+	*	If you multiply two large prime numbers, you get a huge non-prime with 
+		only two large prime factors.
+	*	The product of two prime numbers can be used as a public key,
+		whilethe primes themselves as a private key. Any operation done to data
+		that can only be undone by knowing one of the tow factors will be
+		non-trivial to unencrypt
+	* 	Example...two primes... 3 and 5.
+	*	3 and 5 are my secret keys.
+	*	3 * 5 = 15 is public key.
+	*	my secrtet key is 3, I recieve a message from you encrypted by your 
+		secret key.
+	*	15/3 = 5.
+	*	I will use your "5" key to decrypt your message....
+
+
+Ledger security
+==========================================================
+	*	public/private key encyrption
+	*	sign(message,secret-key) = signature
+	*	verify(signaure, public-key) = True || False
+
+	* 	Every signature will be different
