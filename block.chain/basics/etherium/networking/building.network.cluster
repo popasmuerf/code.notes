@@ -1,0 +1,89 @@
+Private Networking Tutorial go-thereum
+====================================================
+url=https://github.com/ethereumproject/go-ethereum/wiki/Private-Networking-Tutorial
+
+
+Private network
+===================================================
+An ethereum network is a private network if the nodes are
+not conneted to the main network nodes.  In the context private only
+means reserved or isolated, rath than proted or secure.
+
+
+
+Since connections etween nodes are valid only if peers hae identical protocol
+version and network id, you can effectively isolate your network by 
+setting either of these to a non-default value.  You can accomplish this by using 
+the flag :
+  --network-id=VALUE
+
+
+or by setting :
+
+	"network": VALUE
+
+in an extenral :
+
+	chain.json
+
+
+
+An external chain configuration file is recommended in order to 
+ensure,persist and resuse consistent node configuration.
+
+
+Note:  We are using Gotherium...:
+	https://github.com/ethereumproject/go-ethereum/wiki#Developers
+
+
+
+Using Building a local Ethereum network with Docker and Geth
+==============================================================
+url : https://medium.com/@javahippie/building-a-local-ethereum-network-with-docker-and-geth-5b9326b85f37
+
+
+Why ?
+----------------------------------------------------------------
+There are several test networks that can already be used by developers,
+working withthem is not always easy:
+	*	You need to sync state
+	*	You need participate in mining
+	*	If not mining...then you have to 
+		get yourself some ether.
+	*	You need a constant network connection.
+
+
+
+bootNode
+--------------------------------------------------------------------
+When we set up a new network, we need to make to make sure that the nodes
+will be able to find each other.  Theorectically, the nodes should be 
+able to discover each other, if they are on teh same network.
+
+As we need our network to be instantly ready when we want to use it,
+we are implementing a mechanism to support the nodes findig its
+peers faster.
+
+One way to acheive this is to define a fixed set of 
+static nodes which we pass to the nodes.  I decided to use
+a different approach and defined a boot node in the network.
+
+
+This type of node is not part of the normal Geth install package but shipped
+with the geth Tools.  Boot nodes do not keep any state of the blockchain, 
+they help other nodes in the the network to find each other. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

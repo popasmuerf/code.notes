@@ -1,0 +1,112 @@
+Ethereum Development Tutorial
+===============================================
+url: https://github.com/ethereum/wiki/wiki/Ethereum-Development-Tutorial
+
+
+white paper : https://github.com/ethereum/wiki/wiki/White-Paper
+
+yello paper : http://gavwood.com/Paper.pdf
+
+Introduction
+----------------------------------------------------
+
+	*	produce contracts
+	*	decentralized applications
+	*	huge, denctralized computer containing millions
+		of objects, called "accounts", which have the 
+		ability to maintain an internal database,
+		execute code and talk to each other
+
+
+Types of accounts
+-------------------------------------------------------
+1. Externally owned account (EOAs):
+	*	An account controlled by a private key
+		and if you own the private key associated with the EOA
+		you have the ability to send ether and messages from 
+		it.	
+2. Contract:
+	*	An account that has its own code, and is controlled by code.
+	
+
+By default, the Ethereum execution enviroment is lifeless;  nothing
+happens and the state of every account remains the same.
+
+HOwever, any user can trigger an action by sending
+a transaction from an externally owned account, setting 
+Ethereum's wheels in motion.
+
+If the the setination of the transaction is another EOA, then 
+the transaction may transfer some ether but otherwise does nothing.  HOwever,
+if the destination is a contract, then the cotract in turn activates, 
+and  and automatically runs code.
+
+
+
+
+The code has the ability to :
+
+	*	r/w to internal storage (32-bit keys/values)
+	*	read the storage of recieved messages
+	*	send message to other contracts
+	*	execution of logic basic on recieved messages
+
+
+Contracts generally serve four purposes:
+	*	Maintain data store representing something of use
+		to either other contracts or to the oustide world
+	*	Serve as a sort of externally owned acccount with a ore 
+		complicated access policy
+	*	Managing ongoing contract relationships between multiple users.
+
+	*	Provided function to other contracts; essentially 
+		serving as a sofware library.
+
+Contracts iinteract with each other through an activity that is alternately called:
+	*	"calling"
+	*	"sending"
+
+A "message" is an object containing some quantity of ether(internal Ethereum currency)
+, a bte-array of data of any size...so A message is an Object that:
+
+	*	Contains some ether
+	*	a byte array of data
+	*	Addresses of a sender 
+	*	Address of the recipient
+	*	
+
+
+
+Contracts interact with each other through an activity that is alternately
+called either :
+	calling 
+	messaging.
+
+A message is an object containing some quantity f
+ether, a byte array of data and sender/reciever addresses.
+
+When a contract recieves a message it has the option of returning
+some data, which the orignal sender of the message can then immediately use.
+In this way, sending a message is exactly like calling a function.
+
+
+Because contracts can play such different roles, we expect that contracts will
+beinteracting witheach other.  
+
+If Bob and Alice are betting 100 GavCoin that the temperature in San Francisco will
+not exceed 35 Celsius at any point in the next year......
+
+Alice is security-conscious, and as her primary accunt uses a forwarding contract which only sends messages with the approval of tow out of three private keys.	
+
+
+
+Bob is paranoid about quantum cryptography so he uses a fowarding contract which
+passes along only messages that have been
+signed with Lamport signatures alongside tradtional ECDSA(but because he's old fasioned,
+he prefers touse a version of Lamport sigs based on SHA256, which is not supported
+in Ethereum today
+
+
+The betting contracti itself nees to fetch data about the SF weather from 
+some other contract and it also needs to talke to the gavCon contract when it wants
+to actually send the GavCoin to eiether Alice or Bob(or more preciesly, Alice's or Bob's fowarding contract).

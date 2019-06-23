@@ -1,0 +1,36 @@
+url = https://github.com/ethereumproject/go-ethereum/wiki#Developers
+
+
+Gotherium , Geth?
+
+
+Developers
+==========================================================
+
+
+
+get set up:
+---------------------------------------------------
+	> go get github.com/ethereumproject/go-ethereum/...
+
+	# Go get it! (get it? ;-)
+	go get github.com/ethereumproject/go-ethereum/...
+
+	# Install binary 'geth' to $GOPATH/bin:
+	# Note: You can run this command from $cwd.
+	# Note: Ensure $GOPATH/bin is added to your $PATH.
+	go install github.com/ethereumproject/go-ethereum/cmd/geth
+	# Or, install all executables, including geth:
+	go install github.com/ethereumproject/go-ethereum/cmd/...
+
+	# check it out!
+	geth --help
+
+testing
+-----------------------------------------------------
+
+
+Logging 
+---------------------------------------------------
+
+
