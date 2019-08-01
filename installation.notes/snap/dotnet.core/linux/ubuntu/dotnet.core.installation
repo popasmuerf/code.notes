@@ -1,0 +1,4 @@
+installation 
+=================================
+> sudo snap install dotnet-sdki --classic
+> sudo snap alias dotnet-sdk.dotnet dotnet

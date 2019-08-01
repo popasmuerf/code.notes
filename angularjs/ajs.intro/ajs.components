@@ -1,0 +1,122 @@
+url: https://programmingwithmosh.com/angular/angular-4-tutorial/
+
+
+
+The most fundamental building block in an Angular application is a 
+component.  We may think of a component as a view component.   It
+represents a view or part of a view(what the user sees.  A component
+consist of three pieces:
+
+	-	HTML:
+			renders the view
+	-	State:
+			the data to display on the view
+	-	Behavior:
+			the logic behind the view.  For example, what
+			should happen when the user clicks a button
+
+
+
+A component may contain other components.  For example, let's imagine
+ou are going to build a web app like Twitter using Angular.
+In our implementation, you many have a tree of compnent likes this:
+
+	-	App
+		*	NavBar
+		*	SideBar
+		*	ContentArea
+		*	Tweets
+			-	Tweet
+				*	Like
+
+Benefits of Component-based Architecture
+======================================================
+	- Increased organization
+	- Incresed maintainability
+	- Increased modularity: We can use/reuse these components anywhere
+
+
+
+An Angular Componnt in Action
+======================================================
+Now, let's inspect a real component in action.
+
+Back to our project,opwn up the src/ap folder.  INside this
+folder, you should see the following files:
+
+	* app.component.css
+	* app.component.html
+	* app.compnent.spect.ts
+	* app.component.ts
+	* app.module.ts
+
+These files represent AppComponent, which is the root
+component for our application.  In this particular case, all
+these files are inside the app folder.  but when we generate a new 
+component using Angular CLI, all the files that make up 
+a compnent will be grouped by a folder.
+
+
+
+Creating a Component
+=====================================================
+Requirements
+--------------------------
+	* e-commerce application
+	* display list of products on home page
+	* below each product there will be a button for adding product to the cart
+	* 
+
+Create a new project named "ecommerce"
+and cd into the new project directory
+and then create  new component named 
+"product"
+-------------------------------------
+> ng new ecommerce
+> cd ecommerce 
+> ng g c product
+
+
+produced code....
+------------------------------------
+
+    product.component.css
+    product.component.html
+    product.component.spec.ts
+    product.component.ts
+
+
+
+
+Open product.compnent.ts
+-------------------------------------
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.css']
+})
+export class ProductComponent implements OnInit {
+  constructor() { }
+
+  ngOnInit() { 
+  }
+
+
+
+^^^^
+NOte the value of the selector property.
+It's "app-product".  This iss a CSS selector.  So ap-product
+represtens an element by this name.  With this, we can extend the 
+HTML vocabulary.  Anywhere we add this app-product element,
+Anuglar will render the HTML markeup of ProductComponent inside that element.
+
+
+
+
+
+
+
+
