@@ -1,0 +1,261 @@
+https://issart.com/blog/how-to-use-criteria-api-with-spring-boot/
+
+
+
+
+Brief summary
+===================================================================
+You often need to create queries with changeable conditions, for example, 
+a query for a list with filtering by columns on the side of the database.  In this case, 
+a good slution will be to use Criteria API (th API of JPA 2.0 specification).  You can
+use JPQL queries, but this will lead to rather complicated code and the impossibility
+of checking the queries during the time of compiliation.
+
+
+Spring Data provides ready implementations to create the DAO, they are called 
+"Repository".  Spring Data Repositories allow writing fewer queries, it is 
+even possible to write just method signatures and Spring will make quieries
+for them by itself...
+
+
+
+Creating database queries
+
+The Java persistence API introduced two ne methods for creating
+database queries: 
+	-Java Persistence Query Language(JPQL) 
+		and the 
+	-Criteria API
+
+
+The quieries written by using these technologies do  not deal directly
+with the database tables.  Instead, queries are written over the entities of the application
+and their persistent state.  This ensures, in theory, that the created queries are portable
+and not tied to a specific database schema or database provider.
+
+
+It is also possible to use SQL queries, but this ties the application to a specific
+database schema(Right....all DBs are different and haven't quite settled on a standard
+query format)
+
+
+
+sample dbase table:
+----------------------------------
+|    contact  |    contacts        
+|--------------------------------
+|    Michael  |    first_name 
+|
+
+
+
+Genral SQL query statement:
+
+
+//Obtain an instance of the entity manager
+
+EntityManager em = ... 
+
+
+//Build the SQL query string with a query paramater
+String getByFirstName = "select * from contacts _c where c.first_name =?1";
+
+//Create query instance
+Query query = em.createNativeQuery(getByFirstName,Contact.class) ;
+
+//Set the value of the query parameter
+query.setParameter(1,"John") ;
+
+
+//Get the lit of results 
+List contacts = query.getResultList() ;
+
+
+
+^^^^Notes:
+
+	-	We don't have to learn a new query language using JPA
+	-	The created query is not type safe
+	-	We have to run the application before we can verify our
+		query for spelling or syntatctical errors.  This increases
+		the length of the dev feedback loop and decreases productivity.
+
+
+SQL queries are always tied to a specific schema.  We should use them when we really
+have no other reasonable choice.
+
+
+
+
+
+
+Java Persistence Query Language
+========================================================
+JPQL is a string -based query language with a syntac resembling
+that of SQL.
+
+
+
+EntityManager em = ...;
+string getByFirstName = "select c from Contact c where c.firstName = :FirstName" ;
+
+
+TypedQuery<Contact> query = em.createQuery(getByFirstName, Contact.class);
+
+query.setParamter("firstName","John");
+
+List<contact> contacts = query.getResultList();
+
+
+
+This example tells us three things..
+	-	the created query is type safe
+	-	the JPQL query strings are very reaable and easy to interpret
+	-	the created query strings cannot be3 verified during compliation.  The only
+		way to verify our query strings for speling or syntactical errors is to run our
+		application.  Unfortunately, this means that the lenght of the developer feedback
+		loop is increased, which decreases productivity.
+
+
+JPQL is better and good for static queries...but still kind of trash...
+this is where the Criteria API comes into focus...
+
+The Criteria API
+===================================================
+the Criteria API was introduced to address teh problems found whiel usin g
+JPQL an dto statndarize the criteria efforts of third party ORM frameworks.
+It is used to consturct query defintion objects , which are transformed to the 
+executed SQL query.
+
+
+//Obtain an instance of entity manager
+EntityManager em = ...
+
+//Get criteria builder
+Citeriabuilder cb = em.getCriteriaBuilder() ;
+
+//create criteria query
+CriteriaQuery<Contact> query = cb.createQuery(Contact.class) ;
+
+
+//create query root
+Root<Contact> root = query.from(Contact.class) ;
+
+
+//create condition for the first name by using static meta model
+//You can also use "firstName" here
+Predicate firstNameIs = cb.equal(root.get(Contact_.firstName, "John");
+
+
+//Specify the where condition of query
+query.where(firstNameIs) ;
+
+
+//Crate typed query and get results
+TypedQuery<Contact> q = em.createQuery(query);
+List<Contact> contacts = q.getResultList() ;
+
+
+
+	-	it's type safe(the query)
+	-	the code is not as readable as the previous examples...
+	-	since we are dealing with the Java API, the Java compiler ensures that it is 
+		not possible to create syntactically incorrect quieries....
+	-	is the best solution for creating dynamic quieries
+
+
+
+
+Criteria and Hibernate
+===============================================================
+
+Criteria queries are a programmatic, type-safe way to express a query.
+They are type-safe in terms of using interfaces and classes
+to represent various structural parts of a query such as
+the query itself, or t5he select clause, or an order-by, ec.
+
+They can also be type-safe in terms of referencing attributes as we will 
+see in a bit.
+
+
+Criteria queries are essentially an object graph, where qch part of the 
+graph represents an increasingly(as we navigate the graph) more atomic
+part of the query.
+
+
+Criteria quieries as such require a graph to be built before a an actual
+query to take place.
+
+
+To start we need to get a hold of an instance of :
+
+	javax.persistence.EntityManagerFactory
+
+	1. CriteriaBuilder builder = entityManagerFactory.getCriteriaBuilder() ;
+	2. CriteriaQuery<T> createQuery(Class<T>)
+	3. CriteriaQuery<Tuple> createTubleQuery()
+	4. CriteraQuery<Object> createyQuery ()
+
+
+
+
+
+
+
+Typed critera Queries
+=========================================================
+CriteriaQuery<T> createQuery(Class<T>)
+
+The tyype of the criteria query(aka the <T>) indicates the expected types in the query
+result.  this might be an:
+	entity
+	Integer
+	Object
+
+
+
+Selecting an entity
+=========================================================
+The most used form of query in Hibernate Query Language(HQL) and Hibernate Criteria
+Queries.  You ahve an entity and you want to select one or more  of that entity
+based upon some condition.
+
+
+
+CriteriaQuery<Person> criteria = builder.createQuery(Person.class) ;
+Root<Person> personRoot = criteria.from(Person.class);
+criteria.select(personRoot) ;
+criteria.where(builder.equal(personRoot.get(Person_.eyeColor), "brown"));
+List<Person> people = em.createQuery(criteria).getResultList() ;
+for(Person person : people){....}
+
+
+
+Selecting a value
+=======================================================
+The simplest for of selecting a value is selecting a particular attribute
+from an entity.  but this might also be an aggregation, mathematical operatio, etc.
+
+
+CriteriaQuery<Integer> criteria = builder.createQuery(Integer.class) ;
+Root<Person> personRoot = criteria.from(Person.class) ;
+criteria.select(personRoot.get(Person_.age) ) ;
+critera.where(builder.equal(personRoot.get(Person_.eyecolor),"brown"));
+List<Integer> ages = em.createQuery(criteria).getResultList() ;
+for(Integer age: ages){.....}
+
+#SQL query equivilant
+select age from person where eyecolor = "brown"  ;
+
+
+Selecting an expression
+========================================================
+CriteriaQuery<Integer> criteria = builder.createQuery(Integer.class) ;
+Root<Person> personRoot = criteria.from(Person.class) ;
+criteria.select(builder.max(personRoot.get(Person_.age)));
+criteria.where(builder.equal(personRoot.get(Person_.eyeColor),"brown")) ;
+Interger maxAge = em.createQuery(criteria).getSingleResult() ;
+
+
+
+

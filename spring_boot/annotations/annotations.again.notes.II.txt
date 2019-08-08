@@ -1,0 +1,31 @@
+Difference between @Bean -and- @Component
+
+
+Spring stereoytps and how to use them.
+
+
+@Bean:
+	In spring, the objects that form the backbone of your application
+	and that are managed by the Spring IoC are called beans.  A bean
+	is an object that is instantiated, assembled, and otherwise
+	managed by a Spring IoC container
+
+
+@Component:
+	Indicates that an annotated class is a "component"
+
+@Controller:
+	Indicates that an annotated class is a "Service",
+	originally defined by Domain-Driven Design(Evans, 2003)
+	as "an operation offered as an interface that stands
+	alone in the model, with no encapsulated state"
+
+
+@Reposiotry:
+	Indicates that an annotated class is a "Repository", originally
+	defined by Domain-Driven as "a mechanism for encapsulatiing storage,
+	retreival, and search behavior which emulates a collection of objects".
+
+
+
+

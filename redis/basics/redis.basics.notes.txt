@@ -1,0 +1,42 @@
+Redis  is an in-memory data stor that keeps its entire data set in a memory
+and uses disk space only as a secondary persistent storage.
+
+Therefore, Redis can provide very fast read adn write operations.
+
+
+The catch is that Redis can only scale a database to the amount of memory on
+whatever computer that is hosting it....
+
+
+
+The other features of Redis include:
+
+
+*	Support for complex data types
+*	Multiple persistence mechanisms
+*	Master-slave replication
+*	Implementation of the publish/subscribe messaging pattern
+
+
+
+
+Supported data types:
+
+*	String
+*	List
+*	Set
+*	Sorted set
+
+
+Persistence(it supports two types of persistence mechanisms)
+
+*	RDB
+	-	takes snapshots from in-memory
+	-	stores snapshots on disk
+	-	
+*	Append ONly File(AOF)
+
+
+Publish/subscribe messaging pattern
+
+
