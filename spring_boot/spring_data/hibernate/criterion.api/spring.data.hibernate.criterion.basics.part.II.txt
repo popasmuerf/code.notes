@@ -1,0 +1,309 @@
+url : https://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-four-jpa-criteria-queries/
+
+
+
+Creating The JPA static Metamodel Classes
+=======================================================
+A static metamodel consists of classes that describe the entity 
+and embeddable classes that describe the entity and embeddable classes found from our
+domain model.  These metamodel classes because they give us the possibilituy to create 
+type-safe criteria querires; there are facilities/plugins that will allow us to
+do this without the manual labor asssociated with it.
+
+
+
+our static metamodel via the AW501 entity class:
+
+
+
+/*  Entity Model   */
+@Entity
+@Table(...)
+public class Aw501{
+	@Id
+	Long objectId ;
+	@Column(..)
+	String stateId ;
+	@Column(..)
+	String communityId ;
+	@Column(..)
+	String htmlText ;
+	@Column(..)
+	byte[] binaryText ;
+	
+	/*Getters and Setters */
+}
+
+
+/*  Static MetaModel   */
+
+
+
+import java.time.ZonedDateTime;
+import javax.annotation.Generated;
+import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.StaticMetamodel;
+
+
+
+@Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
+@StaticMetamodel(Aw501.class)
+public abstract class Aw501_ {
+
+	public static volatile SingularAttribute<Aw501, Long> objectId;
+    	public static volatile SingularAttribute<Aw501, String> stateId;
+    	public static volatile SingularAttribute<Aw501, String> communityId;
+	public static volatile SingularAttribute<Aw501, String> htmlText;
+	public static volatile SingularAttribute<Aw501, byte[]> binaryText;
+}
+
+
+
+/**
+
+	What are my queries that I want to create
+
+*/
+
+	#Select * from 
+	#Select * from aw501_test where  objectId = "..."
+	#Select * from aw501_test where  stateId = "..."
+
+
+
+
+/****
+	We need to modify our corresponding repo interface....
+***/
+
+
+	/* our original repo interface for Aw501  */
+
+	import org.springframework.data
+
+	interface  Aw501Repository extends JpaRepository<Aw501, Long> {
+		/**
+			void deleteAllInBatch()  ;
+
+			void deleteInBatch(Iterable<T> entities) ;
+
+			List<Aw501>	findAll() ;
+
+			....
+			....
+			....
+
+			Aw501 getOne(Long id) ;
+			
+		*/
+	
+	}
+
+
+	/*our new repository */
+
+	import org.springframework.data.jpa.repository.JpaSpecificationExecutor ;
+	import org.springframework.data.repository.Repository ;
+	interface Aw501Repository extends JpaRepository<Aw501, Long> , JpaSpecificationExecutor<Todo>{
+
+		/**
+			After we have extened the JpaSpecificationExecutor interface, the 
+			clases that use our reporsitory interface get acess to the the 
+			following methods....
+
+
+			long count(Specification<Aw501> specification) ;
+
+			List<Aw501> findAll(Specification<Aw501> specification) ;
+
+			Aw501 findOne(Specification<Aw501> specification) ;
+
+		*/
+	}
+
+
+
+
+^^^
+The JpaSpecificationExecutor<T> interface declares also two other methods that are used to sort and paginate objects that fulfil the conditions specified by the Specification<T> object. We will talk more about these methods when we learn to sort and paginate our query results.
+
+for more info regarding this....
+
+
+url : https://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-six-sorting/
+
+url : https://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-seven-pagination/
+
+
+
+
+Specifying the Conditions of the Invoked Database Query
+==================================================================
+We can specify the condigtion of the invoked databawse query by followin gthese steps:
+
+	1. Create a new Specification<T>
+	2. Set the type of the quiered entity as the value of the type parameter (T)
+	3. Specify the conditions by implementing the method
+
+
+
+Example 1:
+
+If we have to create a criteria query that returns Aw501 objects, we have to create the following
+specification.....
+
+
+//code
+
+
+	new Specification<Aw501>(){
+		@Override
+		public Predicate toPredicate(Root<Aw501> root, 
+					     CriteriaQuery<?> query,
+					     CriteriaBuilder cb){
+
+			//Create the query busing the JPA Criteria API
+
+		}
+	}
+
+
+
+
+
+Where should we create the Specification<T> objects ?
+===================================================================
+
+Anywhere we like, however to keep things organzed and clea, we should 
+place our Spec code within specification builder classes.
+
+
+
+/**
+	The source code of the Aw501Specifications class might look like this...
+*/
+
+import javax.persistence.criteria.CriteriaBuilder ;
+import javax.persistence.criteria.CriteriaQuery ;
+import javax.persistence.criteria.Predicate ;
+import javax.persistence.criteria.Root ;
+
+
+final class Aw501Specifications{
+
+	private Aw501Specifications() {} 
+
+	static Specification<Aw501> byStateId(String stateId){
+		return new Specification<Aw501>(){
+		@Override
+			public Predicate toPredicate(Root<Aw501> root,
+						     CriteriaQuery<?> query,
+						     CriteriaBuilder cb){
+				//create the query here			
+			}
+		}
+	}
+
+}
+
+
+/**
+	The source code of the Aw501Specifications class might look like this...
+	with the use of Java 8 lambda experessions....
+*/
+
+import javax.persistence.criteria.CriteriaBuilder ;
+import javax.persistence.criteria.CriteriaQuery ;
+import javax.persistence.criteria.Predicate ;
+import javax.persistence.criteria.Root ;
+
+
+final class Aw501Specifications{
+
+	private Aw501Specifications() {} 
+
+	static Specification<Aw501> byStateId(String stateId){
+	
+		return (root,query,cb) ->{
+			//create query here.....
+		}	
+
+	}
+
+}
+
+
+
+Invoking the created database Query
+===============================================================================
+
+
+After we have specified the conditions of the invoked database query by 
+creating a new  Specification<T> object, we can invoke the database 
+query by using the methos that are provided by the JpaSpecificationExecutor<T>
+interface...
+
+
+Example 1:
+We we  want to get the number of Aw501 objects that are associated with the State
+of maryland.....we have to create an invoke our database query by using the following 
+code:
+
+//code 
+	Specification<Aw501> spec = Aw501Specifications.getAllByStateId(String stateId) ;
+	long count = aw501Repository.count(spec) ;
+
+
+Example 2: 
+What if we want to get a list of Aw501 objects that are associated with the state of Maryland?
+
+//code 
+
+	Specification<Aw501> spec Aw501Specifications.getAllByStateId(String stateId) ;
+	List<Aw501> listOfReports = aw501.findAll(spec) ;
+
+
+Example 3:
+What if we want to get the AW501 object whom are assoicate with a specific.... 
+
+
+
+Example 4:
+
+If we have specifications A and B, an we want to create a atabase query that reutrns 
+Aw501 objects which fulfill the specification A and the specification B, we can combine
+thee specifications by using the following code:
+
+
+
+Specification<Aw501> specA = ....
+Specification<Aw501> specB = ....
+
+List<Aw501> aw501EntriesFoo = aw501Repository.findAll(Specifications.where(specA).and(specB))  ;
+
+
+
+List<Aw501> aw501EntriesFoo = aw501Repository.findAll(Specifications.where(specA).or(specB))  ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
