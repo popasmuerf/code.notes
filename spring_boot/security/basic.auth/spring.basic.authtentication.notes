@@ -1,0 +1,48 @@
+Enabling Basic Authentication in Spring Security...
+================================================
+
+
+
+Basic Authentication via Spring Security Refresher
+============================================================
+
+Enabling Basic Authentication in Spring
+---------------------------------------------------
+
+*	include Spring Boot starter Security dependency in build file
+*	//Code
+
+@Configuration
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+public class SpringSecurityConfiguration_InMemory extends WebSecurityConfigurerAdapter{
+
+	@Autowired
+	protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+		auth.inMemoryAuthentication()
+		.withUser("admin")
+		.password("password")
+		.roles("USER","ADMIN")
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		
+		http.Basic()
+		.realmName("userRegisteration System")
+		.and()
+		.authorizeRequests()
+		.antMatchers(HttpMethod.GET,"/api/user/")
+		.hasRole("USER")
+		.antMatchers(HttpMethod.POST,"/api/user/")
+		.hasRole("USER")
+		.antMatchers(HttpMethod.PUT,"/api/user/**")
+		.hasRole("USER")
+		.antMatchers(HttpMethod.DELETE,"/api/user/**")
+		.hasRole("ADMIN")
+		.and()
+		.csrf()
+		.disable() ;
+
+	}
+
+}
