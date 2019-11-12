@@ -6,7 +6,7 @@ https://www.baeldung.com/spring-security-csrf
 In this tutorial, we will discuss Cross-Site Request Forgery CSRF attacks and how to prevent
 them using Spring Security
 
-
+2FFvv
 2. GET Examples
 
 Let's consider the following GET rquest used by logged in users to transfer money to 

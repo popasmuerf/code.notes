@@ -20,6 +20,19 @@ Spring Security provides a special CsrfTokenRepository
 		-	CSRF protection
 
 	*	After log out, the values of the cookies change.
+	*	Spring expects the token sent to it in a header called:
+		X-CSRF
+
+	*	The value of the cookie is the token ?
+
+	*	Angular has built-in support for CSRF(called XSRF
+		Based on cookes.
+
+	*	Angular wants the cookie name to be XSRF-TOKEN
+
+
+
+
 
 
 
