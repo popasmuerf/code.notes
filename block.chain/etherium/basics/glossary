@@ -1,0 +1,36 @@
+
+
+DAPP
+=============================
+Distributed application 
+
+
+Solidity
+=============================
+An OOP language used for contract development
+on Etherium.
+
+-	Has traits of C++, Python, JS, but for the most part it is an ALGOL family language
+-	Compiles into Etherium bytecode
+-	ByteCode runs on the Etherium VM(EVM)
+
+
+Remix
+=============================
+An open source IDE for developing
+and testing contracts
+
+https://remix.ethereum.org
+
+
+Ganache
+=============================
+Used for deploying already tested
+contracts to external Blockshins
+
+
+
+MyEtherWallet
+==============================
+Used as a client for interaction with
+contracts.
