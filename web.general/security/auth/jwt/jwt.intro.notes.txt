@@ -1,0 +1,194 @@
+JWT (javascript web token)
+
+What is a JWT ?
+======================================
+	*	Open standard based on (RFC 7519)
+		that defines a compact and self-contained 
+		way of "securely transmitting" information between 
+		parties as a JSON objects
+
+	*	The veracity of the information supplied between parties 
+		is guaranteed via digitially signing
+
+	*	JWTs can be signed using a secret with a choice of 
+		public/private key pair algorithm
+		-	HMAC
+		-	RSA
+		-	ECDSA
+
+	*	JWTs may also be encrypted like any other communication between
+		parties.
+
+
+
+When shold w use JSON Web Tokens ?
+=========================================
+	*	Authorization
+		-	Most common scenario
+		-	Post login, each and every
+			request made by a client will include 
+			a JWT allowing for(granted your token provides such access) :
+			*	route access
+			*	services
+			*	resoures
+			*	Single sign on
+
+
+	*	Information Exchange:
+		-	secure transmission of information between parties
+		-	JWTs can be signed..this again can serve something 
+			like a gpg key
+
+
+Example of a JWT header:
+=============================================================
+(remember all this stuff will be encoded to  base64Url)
+
+	{
+		"alg": "HS256",
+		"typ": "JWT"  
+	}
+
+JWT Structure
+========================================
+
+	-	header
+	-	payload
+	-	signature
+
+
+*************
+*Header
+*************
+
+Header
+----------------------------------------------------------
+	-	typically consistes of 
+		*	tokey type
+		*	signature algorithm
+
+Example of a JWT header:
+(remember all this stuff will be encoded to  base64Url)
+
+	{
+		"alg": "HS256",
+		"typ": "JWT"  
+	}
+
+
+	/*
+		psuedo code for generating and encrypting a header.
+	
+	*/
+
+	string headerEncoded = encode.base64Url(header) ;
+
+
+****************
+*Payload
+****************
+----------------------------------------------------------
+The second par of the token is the payload, which contains the claims.
+Claims are statements about an entity(typically, that of the user) and additional data.
+There are three types of claims:
+	
+	*	public claims
+	*	private claims
+	*	registered claims
+		-	Predefined
+		-	not manatory
+		-	interoperable
+		*	Examples of registered claims
+			-	iss(issuer)
+			-	exp(expiration time)
+			-	sub(subject)
+			-	aud(audience)
+
+
+
+
+
+
+
+Public claims
+------------------------------------------------------------
+These can be defined at will by those using JWTs.  But to avoid
+collisions, they shoul be defined in the IANA JSON Web Token Registry or be
+defined as a URI that contains a collision resistant namespace
+
+
+
+
+Private claims
+-------------------------------------------------------
+Private claims are custom claims created to share information between parties
+that argee on using them and are neither registered or 
+public claims 
+
+
+Example of data in payload (of course this like the header will be encoded in base64Url)
+
+	{
+		"sub": "1234567890",
+		"name": "John Doe" ,
+		"admin": true 
+	}
+
+
+	/*
+		psuedo code for generating and encrypting the payload .
+	
+	*/
+
+	string payloadEncoded = encode.base64Url(payload) ;
+
+
+
+****************
+*Signature
+****************
+To create the signature the following is required:
+	*	encoded header
+	*	encoded payload
+	*	secret
+	*	algorithm specified in the header 
+
+
+for example, if we want tuse the HMAC SHA256 algorithm, the signature will be created in the
+following way:
+
+	/*
+		psuedo code for generating and encrypting a signature.
+	
+	*/
+
+	string headerEncoded = encode.base64Url(header) ;
+	string payloadEncoded = encode.base64Url(payload) ;
+	string secret = "secret"  ;
+	
+	string sig = headerEncoded.concat(".").concate(payloadEncoded).concat(secret) ;
+
+	string encryptedSig = HMACSHA256(sig) ;
+	  
+
+
+
+*************************
+*Putting it all together
+*************************
+
+
+The output is three Base64 strings sperated by dots that can easily be passed in
+HTML and HTTP enviroments, whiel teh being more compact when compared to 
+XML-based standards such as SAM....in other words...it's much more manageable to pass
+this string in a http request header.
+
+
+The following shows a JWT that has the previous header and payload encoded, and it si
+signed with a secret.
+
+
+If you want to play with JWT and put these concepts into practice, you can use jwt.io Debugger to decode, verify, and generate JWTs : https://jwt.io/
+
+
+
