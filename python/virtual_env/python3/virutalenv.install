@@ -1,0 +1,27 @@
+url : https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
+
+Install virtualenv
+==========================================================================
+
+$ python3 -m pip install --user virtualenv
+Requirement already satisfied: virtualenv in /home/mikeyb/.local/lib/python3.5/site-packages (16.7.9)
+
+
+Creating a virtual  enviroment
+===================================================
+$ python3 -m venv <new dir>
+
+
+Activating a virutal enviroment
+===================================================
+$ cd <new dir>
+$ source ./bin/activate
+
+
+
+deactivateing a virtual enviroment
+=======================================
+$ cd <new dir>
+$ deactivate
+
+-H pip install -U pip setuptools

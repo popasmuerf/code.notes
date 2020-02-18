@@ -1,0 +1,88 @@
+
+url: https://www.baeldung.com/spring-cloud-data-flow-etl
+
+
+
+
+Factory pattern 
+============================
+1. Most commonly used pattern in Java(save for singleton)
+	- Hides details of creating instances of a "general object" type
+
+
+
+Abstract Factory pattern
+===============================
+2. Is sort of a superfactory that creates other factories.
+	- factory of factories
+
+
+
+ETL =====> extract, transform and load
+====================================================
+	*	was comonly referred to as a process that batch-loads
+		data from several databases and systems into a common data warehouse.
+	*	In this data warehouse, it is possible to do heavy data analysis processing
+		without compromising the overall performance of the system.
+
+
+
+	*	New trends are changing the way how this is done..tho ETL still has
+		a role in transferring data to data warehouses and data lakes
+
+	*	These days thiss can be done with:
+		-	Streams
+		-	Event-stream architecture
+
+
+
+
+JAX-RS 
+============================================================
+	* is nothing more than a specification....
+		- a set of interfaaces
+		- as set of annotations
+		- all offerd by Java EE
+			*	Java EE is the standard specification
+			*	Spring is where shit happens and then get's incorparated into
+				Java EE...which no one bothers with...cause...why ?
+
+Spring Data Flow
+==============================================
+Microservice based Streaming and Bstch data proces for Cloud Foundry and Kubernetes.
+----------------------------------------------------------------------------------------
+	*	Streaming
+	*	Batch processingB
+	*	supports Cloud Foundry
+	*	Kubernetes
+
+Spring Cloud Data Flow provides tools to create complex topologies for streaming and batch data
+pipeline.
+---------------------------------------------------------------------------------------------------
+	-	ETL
+	-	Import/Export
+	-	Streaming
+
+
+Spring Cloud Features
+--------------------------------------------------------------------------------------------------
+	- deploy data pipelines mad of Spring Clous Stream
+	- deploy Spring Cloud Task applications onto modern platforms suh as Cloud Foundry
+	  and Kubernetes
+
+
+	- Steam pipline DSL makes it easy to specify which apps to deploy and how to connect 
+	  outpus and inputs
+
+
+Getting Started
+---------------------------------------------------------------------------------------------------
+	-Figure out you requirements
+		*	Local install
+		*	Cloud Foundry Install
+		*	Kubernetes installation
+
+
+
+
+
