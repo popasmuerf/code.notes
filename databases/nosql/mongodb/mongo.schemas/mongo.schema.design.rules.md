@@ -70,3 +70,17 @@ Each part would have its own document....
 }
 
 
+> db.products.findOne()
+{
+    name : 'left-handed smoke shifter',
+    manufacturer : 'Acme Corp',
+    catalog_number: 1234,
+    parts : [     // array of references to Part documents
+        ObjectID('AAAA'),    // reference to the #4 grommet above
+        ObjectID('F17C'),    // reference to a different Part
+        ObjectID('D2AA'),
+        // etc
+    ]
+}
+> product = db.products.findOne({catalog_number:1234}) ;
+> product_parts = db.parts.find({_id: {$in:product.parts}}).toArray() ;
