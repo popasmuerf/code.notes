@@ -84,3 +84,15 @@ Each part would have its own document....
 }
 > product = db.products.findOne({catalog_number:1234}) ;
 > product_parts = db.parts.find({_id: {$in:product.parts}}).toArray() ;
+
+
+
+In the above code, we would then use an "application-level join"....
+meaning that we would peform the join at the application level programatically...
+as there isn't a concept of relational joins in a non-relational DB...(duh!)
+
+for efficient operation, we need to have an index on 
+
+	products.catalog_number
+
+(the part _id WILL ALWAYS BE INDEXED)
