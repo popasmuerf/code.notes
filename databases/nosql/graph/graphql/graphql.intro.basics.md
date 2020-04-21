@@ -1,3 +1,33 @@
+What is GraphQL ?
+
+GraphQL is an open-source data query and manipulation language for
+APIs and a runtime for fulfilling quieries with exsiting data.
+
+GraphQL is an alternative to REST, GraphQL is quickly gaining popularity as
+a toll for building APIs.
+
+
+What is GraphQL ?
+===================================================
+url: https://dzone.com/refcardz/an-overview-of-graphql?chapter=1
+Despite what the name seems to imply, GraphQL is not per
+se a query language for graph databases --- it is instead a query language
+and runtime for buidling APIs.
+
+The "graph" component of the name comes from the data model that GraphQL
+uses to work with application domain data, making the observation that your 
+application data is a graph.   Connected entities is the natural way that we 
+intuitively think of our data, and GraphQL allows us to expres our data
+in the same way we think about it, as a graph..
+
+GraphQL itself is simply a specification, and there are many great tools
+and libraries availbable for building GraphQL APIs  in amlst ever language,
+as well as clients to simplify the process of efficiently querying GraphQL
+services.  The graphql-js reference implementation is the 
+standard GraphQL service implementation...
+
+
+
 Why GrapQL
 ========================================
 RESTful APIs follow clear and well-structured resource-oriented approach.
@@ -148,3 +178,36 @@ have requested for as shown below....
 
 Describe what's possible with a type system
 ====================================================
+GraphQL is strongly typed and the queries are based on fields and ther associated data types.
+If there is a type mismatch in a graphQL query, server applications return clear and helpful error messages.  This helps in smooth debugging  and easy detecton bugs by client applications.  GraphQL also procides a client side liberaries
+
+
+
+An example of the Student and ollege data types is given below...
+
+type Query{
+    students:[Student]
+}
+
+type Student{
+    id:ID!
+    firstName:String
+    lastName:String
+    fullName:String
+    college:College
+}
+
+type College {
+   id:ID!
+   name:String
+   location:String
+   rating:Float
+   students:[Student]
+}
+
+
+
+
+
+
+
