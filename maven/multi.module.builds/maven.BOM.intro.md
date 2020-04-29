@@ -440,6 +440,172 @@ as in the following example
 
 
 
+If you ahve ever weorked on a maven project for dependency management, then you
+must have faced one prolbem at least once or may be more than that.  And the problem
+is VERSION MISMATCH.  It generally happens when you got some dependencies with different
+version numbersalready, they can face undesired results in compile time
+as well as runtime also.
+
+
+Ideally to avoid above issue you need to explicitly exclude the related dependency,
+but it is quite possible that you can forget to do so.
+
+
+To solve version mismatch issue, you can use the concpt of a "bill of materials" (BOM) 
+dependency.  A BOM dpendency keep track of version numbers and ensure that
+all depenendcies(both direct and transitive) are at the same version.
+
+
+
+How to add a maven BOM dependnecy
+===========================================
+Maven provides a tag :
+
+	<dependencyManagement>
+	...
+	...
+	...
+	</dependencyManagement>
+
+
+for this purpose.  Youneed to add the maven bom 
+information in this tag as follows...
+
+<dependencyManagement>
+	<dependencies>
+	    <dependency>
+		<groupId>org.spring.framework</groupId>
+		<artifactId>spring-framework-bom</artifactId>
+                <version>4.0.1.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+	</dependencies>
+
+</dependencyManagement>
+
+
+
+An added benefit of using the BOM is that you no longer need to specify the version attribute when depending on Spring framework artificats.  So i will work perfectlyf ine.
+as depicted  in the below....
+
+<dependencies>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+    </dependency>
+<dependencies>
+
+
+Each project has it's own maven bom file
+=====================================================
+Please note that there is no common or univeal bom file.
+Each project(if support this feature) provides its own bom 
+file and manages versions of it's related dependencies....
+
+A few examples of various bom files are below:
+
+
+
+1) RESTEasy Maven BOM dependency
+
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-bom</artifactId>
+            <version>3.0.6.Final</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+
+
+2) JBOSS Maven BOM dependnecy
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.bom</groupId>
+            <artifactId>jboss-javaee-6.0-with-tools</artifactId>
+            <version>${some.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement> 
+
+3) Spring Maven BOM dependency
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-framework-bom</artifactId>
+            <version>4.0.1.RELEASE</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+
+
+4) Jersey Maven BOM dependency
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.glassfish.jersey</groupId>
+            <artifactId>jersey-bom</artifactId>
+            <version>${jersey.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+
+
+It's suggested that I try this feature....and I shall....
+
+
+
+Maven BOM vs POM
+==================================================
+First of all, BOMs are ordinary pom.xml files....
+let me repeat...BOMs are actually just POM files...
+
+They do not contain any source code(you mean the project in which they exist..right?)
+and their only purpose is to declare their bundled modules.  It defines the the versions of all the artifacts that will be created in the library.
+
+Other projects that wish to use the library should import this pom into the 
+dependencyManagement section of their pom.
+
+
+POM files are more than just dependnecies   For example..organization and licenses,
+the URL of where the project lives, the project's dependencies, plugins prorfiles
+and many such things...It also controls the completes build processes 
+of the project....
+
+
+
+A note about Manual Dependency Installation...
+===================================================
+Ideally we will want to pull dependencines into our projects
+from public repositories or from our enterprise repo manager.
+HOwever there will be times when we will need an archive available in
+our local repo so that we can continue our development.
+
+
+
+
+
+
+
+
+
+
 
 
 
