@@ -1,0 +1,86 @@
+Templates, Directives, and data Binding
+===================================
+
+
+
+Templates
+-----------------------------------------------------
+
+	*	Templates combines HTMl with Angular markup that can modify HTML elements
+		in a manner that allows the dynamic modification of the Document Object Model
+		before a view is rendered by the browser
+
+	*	Template directives provide progamatic logic within a template
+			-	ngForm
+			-	ngBind
+	*	Data Binding(Two types)
+			-	Event Binding
+				*	Let's your app respond to user
+					input in the target enviroment  by updating
+					your application data
+			-	Property Binding
+				*	Allows for the interolation of values that are computed 
+					from your application data into HTML
+
+	*	Angular is written in TypeScript.  It implments core and optinal functionality
+		as a set of TypeScript libraries that you import into your apps
+
+
+	*	The architectur of an Angular application relies on certain fundamental concepts.
+
+		-	The basic building blocs  are NgModules.
+		-	NgModules provide a compilation context for components.
+		-	NgModules collect related code into functional sets;
+			an Angular app is defined by a set of NgModules.
+		-	an Application always has at least a root module that enables
+			bootstrapping, and typically has many more
+			feature modules
+
+
+
+Routing
+-------------------------------------------------------------
+The Angular Router NgModule provides a service that lets you define a naigation path
+among differnt applicaton states and view hierarcies in your app.
+
+
+	*	It is modeled on the familar browser navigation conventions
+
+	*	Click links on the page and the browser navigates to a new page
+
+	*	 Click the browser's back and forward buttons and the browser naviagest backaward
+		 and forward through the history of pages you hae een
+
+
+
+
+	// code for routing in the root/boostraping ngModule
+
+
+
+	@NgModel(
+		imports:[BrowserModule,FormsModule,RouterModule.forRoot([
+			{path:"/foo",component:HeroComponent},
+			{path:"/bar",component:barComponent}
+			{path:"/",component:DashBoardComponent},
+                        {path:"", redirectTo:DashBoardComponent, pathMatch:"full"],
+		]),
+
+		declarations:[AppComponent,
+			HeroDetailComponent,
+			HeroesComponent,
+			DashBoardComponent]
+
+		,
+		providers:[HeroService]
+		
+		export class AppModule{
+
+		}		
+
+	)
+ 
+
+
+		 
+

@@ -1,0 +1,71 @@
+NgModule
+===================================
+
+	*	Angular is a platform and frame work that specializes in single page 
+		applications  in HTML and TypeScript.
+
+	*	Angular is written in TypeScript.  It implments core and optinal functionality
+		as a set of TypeScript libraries that you import into your apps
+
+	*	Modules in angular 
+		-	declares a compliation context for a set of components.
+		-	Compilation contexts are 
+
+	*	The architectur of an Angular application relies on certain fundamental concepts.
+
+		-	The basic building blocs  are NgModules.
+		-	NgModules provide a compilation context for components.
+		-	NgModules collect related code into functional sets;
+			an Angular app is defined by a set of NgModules.
+		-	an Application always has at least a root module that enables
+			bootstrapping, and typically has many more
+			feature modules
+		 
+
+
+
+components
+===================================
+* Components define views
+	-	Views are sets of screen of elements
+	-	Angular chooses amoung various sets of screen elements of a view
+		to dispaly based on associated business logic and or data
+	-	A component is just a class replete with the "decorator" @Component
+	-	Decorators provide the frame work with meta-data associated with the purpose
+		of the component
+
+	-	Component files :
+		*	template
+		*	component class
+		*	component module(also a class) 
+
+
+	//sample code for an Angular Component
+
+	import{Component,OnInit} from '@angular/core' ;
+
+	@Component({selector:'app-product-foo',
+		   templateUrl:'foo.html'
+		   styleUrls:['./foo.css']})
+
+	export class Foo implements OnInit{
+		constructor(){}
+		ngOnInit(){}
+	}
+
+
+
+
+
+* Components use Servies
+	-	Services provide specfic functionality not directly related to views.
+	-	Services may be injected inot components as dependence, making your code 
+		more modular
+	-	A service is just a class replete with the "decorator" @Service
+	-	A 
+
+
+
+M
+
+	

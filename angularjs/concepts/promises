@@ -1,0 +1,73 @@
+Promises
+===================================
+
+
+What is a "Promise ?"
+--------------------------------------------------
+	1. When you xecute a task synchronously, you wati for it to finish
+	   before moving to the next line of code.
+
+	2. When you execute a task asynchronously, the promgram moves
+	   tothe next line of code before the task finishes.
+
+
+	3. Synchronous programming is like waiting in line
+
+	4. Asynchronous programming is like taking a ticket.
+		-	When you take a ticket you can go do other things
+		-	You will be notified when your seats are ready....
+
+	5. We can achieve asynch programming in two ways
+		-	Pass a call back to a function that will 
+			execute when the block of code it has been passed to 
+			finishes 
+
+		-	using the promise API
+
+
+	6. Promise API 
+		-	Introduced in ES6
+
+		-	Promises are placeholders for a future value.
+
+		-	I can go do other things while periodically checking on the
+			value encapsulated by the Promise....
+
+		-	Promises the exact same function as callbacks but has nicer syntaxk
+
+
+		-	Are easier to debug than callbacks...
+
+
+	//code for Promise....(TypeScript)
+
+	/**Since we are defining the function we can call these
+	   arguments whatever we want but the convention is to call 
+           them resolve and reject. resolve and reject are in fact functions themselves.
+        **/
+
+	var promise = new Promise((resolve,reject) => {}) ;
+
+
+	/**Since we are defining the function we can call these
+	   arguments whatever we want but the convention is to call 
+           them resolve and reject. resolve and reject are in fact functions themselves.
+        **/
+
+ 	
+	var promise = new Promise( (resolve,reject) =>{
+		setTimeOut( () => {
+		console.log("Asynch Work Complete") ;
+		resolve() ;
+	},1000) ;
+       }) ;
+
+
+	7. If in error...we retrun the "reject function"
+
+
+
+
+Note: Everytime you use a Promise, you ar using Ajax.  Ajax is simply a set ofweb 
+development techniques using many web technolocies on the client side to create asyn web applications.   Ajax decoples the data inerchange from the presentation layer
+
