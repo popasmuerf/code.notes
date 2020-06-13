@@ -301,7 +301,30 @@ values of the parameter to FactorialCallableTask
 
 
 
-}
+Bill is Correct:
+1. Yup..this was a masterfully played advertisment for GJJ
+2. They picked their opponents.
+
+
+
+Where Bill is flat out wrong:
+1. Both Sumo and Shoot fighting are primarily grappling disciplines.....
+Sumo is much more than just pushing someone out of a circle...it's a discipline
+where the conditioning and competition is grueling...Shoot fighting basically was the
+precursor to what is now known as "MMA"....and Shamrock was no joke...the inclusion of
+both of these fighters on the roster throws water on the whole idea that they where excluding skilled grapplers from the competition.
+
+2. Bjj competitors wheren't forced to learn striking in later UFCs via pressure
+from strikers...they where forced to learn striking in later competitions by other
+grapplers who also where skilled in striking.  The most effecitve method of learning
+how to counter the techniques of a discipline is to emerse yourself in learning and being subject to the techinques of that discpline...i.e...you don't go to learn how to counter
+a double/single leg from a Karate instructor.
+
+3. Shamrock tapped out to Sode Gurume(wheel choke), not via having a belt wrapped around his neck
+
+4. Excluding wrestling from the Olympics would have little overall effect on the practice
+of greco and freestyle wrestling as a whole.
+
 
 
 	
