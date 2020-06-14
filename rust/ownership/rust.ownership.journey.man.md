@@ -241,5 +241,36 @@ and very copy operation expensive...
 This could be a problem....
 
 
+If you have heard the terms "shallow copy" and "deep copy" while working with
+other languages, the concept of copying the pointer, length , and capacity
+without copying the data probably sounds like making a shallow copy...but
+because Rust also invalidates the first variable, instead of being called a
+shallow copy, it is known as a "move".  In this example, we would say that 
+s1 was moved into s2.
+
+Only s2 in this scenario is is valid as s1 as far as the compiler is concerned
+is now out of scope in a manner of speaking as it is not valid...but the 
+drop() funciton is not called on s1....does this mean that I can do things like
+switch up owneship of a ptr at will ?
+
+In additin, there's a design choice that is implied by this:  Rust will never
+automatically create "deep" copies of your data.  Therefore, any automatic
+copying can be assumed to be inexpensive in terms of runtime performance.
+
+
+
+Ways Variables and Data Interact: Clone
+------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 
