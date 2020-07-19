@@ -1,0 +1,100 @@
+url: https://dzone.com/articles/global-exception-handling-with-controlleradvice
+
+
+@ControllerAdvice
+===============================================================
+
+@ControllerAdvice is an annotation provided by Spring
+allowing you to write global code that can be applied to a 
+wide range of controllers --- varying
+from all controllers to a chosen package or even a specific
+annotation.  IN this brief tutorial, we will focus on handling exceptions
+using 
+
+@ControllerAdvice
+@ExceptionHandler(@InitBinder and @ModalAttribute can also be used with @ControllerAdvice).
+
+
+
+I will be making use of the VndErrors calass in this post 
+nad therefore the required dependencies will refelct that
+
+
+
+
+
+By default, @ControllerAdvice will apply to all
+classes that use the @Controller annotation(which extends to
+calsses using @RestController).
+
+
+
+
+We can reduce the applicable classes down by package,
+you simply need to add the name of the package to the
+annotation.  When a package is chosen, it will be
+enabled for classes inside that package as well as sub-packages
+
+Multiple packages can also be chosen by the following
+the same process, but using an array instead of a singular
+string(all properties in @ControllerAdvice can be singular or
+multiple).
+
+	@ControllerAdvice("io.thirdplanet.package1)
+	@ControllerAdvice(value = "io.thirdplanet.package1")
+	@ControllerAdvice(basePackages = "io.thirdplanet.package1")
+
+
+Another way to specify a package is via the basePackageClasses
+property, which will enable @ControllerAdvice to all controllers
+inside th package that the class (or interface) lives in
+
+
+@ControllerAdvie(basePackageClasses = MyClass.class)
+
+
+To apply to specific classes use assignableTypes.
+
+
+	@ControllerAdvice(annotations =RestController.class)
+
+
+
+
+
+@ExceptionHandler
+==============================================================================
+allows you define a method that, as the name
+suggests, handles exceptions.  If you wre not
+using @ControllerAdvice, the code for handling these
+exceptions would be in the controllers themselves, which 
+could add quite a bit of duplication and clutter to the 
+class and leading to it not being as "clean".
+
+
+You could move the @ExceptionHandler methods into a base class
+that the controller extends to seperate the code.  This method is not
+perfect and omes with the issue that every controller where you need this global exception
+handling will now need to extend the base controller.
+
+
+
+	@ControllerAdvice @RequestMapping(produces = "application/vnd.error+json") 
+        public class PersonControllerAdvice {
+
+	    @ExceptionHandler(PersonNotFoundException.class) 
+            public ResponseEntity < VndErrors > notFoundException(final PersonNotFoundException e) {
+	        return error(e, HttpStatus.NOT_FOUND, e.getId().toString());
+	    }
+
+	    private ResponseEntity < VndErrors > error(final Exception exception, final HttpStatus httpStatus, final String logRef) {
+	        final String message = Optional.of(exception.getMessage()).orElse(exception.getClass().getSimpleName());
+	        return new ResponseEntity < > (new VndErrors(logRef, message), httpStatus);
+	    }
+
+	    @ExceptionHandler(IllegalArgumentException.class) 
+            public ResponseEntity < VndErrors > assertionException(final IllegalArgumentException e) {
+	        return error(e, HttpStatus.NOT_FOUND, e.getLocalizedMessage());
+	    }
+
+	}
