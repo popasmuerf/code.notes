@@ -141,6 +141,12 @@ in the two vectors so that we can add tohse and return the result.
 
 We create the channel, which returns handles to the sending and the recieving ends
 
+
+
+ 315.205 - x   = 261.795
+
+x = 53.41
+
 Later, we join all the threads.  Before we loop over the recieving end and print the 
 results, we need to explicityly drop the reference to the original handle to the sending
 end so that all senders are destroyed before we start recieving (the cloned
