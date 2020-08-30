@@ -168,4 +168,9 @@ What actually worked
     ./mvnw spring-boot:run -D"spring-boot.run.profiles"=local
 
     >./mvnw spring-boot:run -D"spring-boot.run.profiles"=foobar
+    
+    > mvn clean spring-boot:run -Dspring-boot.run.profiles=local
+    
+    > mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=beta"
+
 
