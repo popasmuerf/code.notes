@@ -172,5 +172,114 @@ What actually worked
     > mvn clean spring-boot:run -Dspring-boot.run.profiles=local
     
     > mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=beta"
+    
+    > ./mvnw spring-boot:run -Dspring-boot.run.profiles=beta -Dspring-boot.run.arguments="--secret=BETA_SECRET --random=BETA_RANDOM"
+
+    
+    
+    
+So basically Maven/Gradle profiles and Spring profiles are not the same thing.
+==========================================================================
+https://dzone.com/articles/spring-profiles-or-maven
+
+
+
+
+
+
+Maven Profiles
+--------------------------------------------------------------------------
+    *Provides a build-time solution
+    *Build-time is a 100% compile time affair.
+     No code is running at this time.  This excludes
+     tests of course.
+    *Spring profiles are only apply at runtime.
+    *Is it possible to write values to spring profile config files
+     during the build ?
+    * Maven profiles allow for different artifacts to be built but 
+      have no bearing on how those artifacts will behave at runtime....
+    * This is why using Maven CLI parameters during artifact run-time fails
+    * If you want to a certain spring app to run with a certain config at runtime,
+      then you must at a minimum pass Spring specific spring profile configuration
+      paramters to the the jar Maven/Gradle/Ant/Scons/etc just built.
+    
+    
+With the Maven build system, change between configuration is acheived through so-called
+profiles at build time.  Roughly, a Maven profile is a portion of a POM that
+can be enabled(or not) .  For example, the following profile snippet
+replaces Maven's standard resource directory with 
+a dedicated one:
+
+    <profiles>
+        <profile>
+          <id>dev</id>
+          <build>
+            <resources>
+              <resource>
+                <directory>profile/dev</directory>
+                <includes>
+                  <include>**/*</include>
+                </includes>
+              </resource>
+            </resources>
+          </build>
+        </profile>
+    </profiles>
+    
+ 
+Activating a single or different profile is as easy as using
+the **-P** switch with their id on the command-line when invokng Maven.
+The following command will activate he **dev** profile provided it is 
+set in the POM
+
+
+        > mvn package -Pdev
+        
+Fun fact about settins.xml....and Maven
+------------------------------------------------------------------
+Profiles can even be set in Maven **settings.xml** files.
+Seems to go to be true ?  Well, very seasoned Maven users know that as
+soon as single profile is explicitly activated, the default profile is deactivated.
+
+
+
+
+Come Spring profiles....
+----------------------------------------------------------------------
+As opposed to Maven profiles, Spring profiles
+are activated at runtime.  I am not sure whether this
+is a good or a bad thing, but the implementation makes it
+possible for real default configs, with the help of @Conditional
+cannotations
+
+
+        @Configuration
+        public class MyConfiguration {
+         
+            @Bean
+            @Profile("dev")
+            public DataSource dataSource() throws Exception {
+                org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource();
+                dataSource.setDriverClassName("org.h2.Driver");
+                dataSource.setUrl("jdbc:h2:file:~/conditional");
+                dataSource.setUsername("sa");
+                return dataSource;
+            }
+         
+            @Bean
+            @ConditionalOnMissingBean(DataSource.class)
+            public DataSource fakeDataSource() {
+                JndiDataSourceLookup dataSourceLookup = new JndiDataSourceLookup();
+                return dataSourceLookup.getDataSource("java:comp/env/jdbc/conditional");
+            }
+        }
+
+
+
+
+
+ 
+
+
 
 
