@@ -3,12 +3,15 @@
 
 Begining notes...
 ====================================================================
-"The history of AI research, which can be traced back 58 years
-to a conference at Dartmouth College in New Hampshire where the 
-phrase was coined, has been littered with false dawns.  If the latest
-hopes also fall short, it won't be because of a lack of ambition or
-effort"
---Richard Waters
+"In the past, Google has used teams ofhumans to 'read' its street
+address images - in essence, to render images into actionable data.
+But using neural network technology, the company has trained computers
+to extract that data automatically - and with a level of accuracy that that
+meets or beats human operators"
+--Jonh Battelle
+
+
+For
 
 
 Weights and Biases
