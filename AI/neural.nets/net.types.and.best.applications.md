@@ -11,85 +11,143 @@ meets or beats human operators"
 --Jonh Battelle
 
 
-For
 
 
-Weights and Biases
+Feedfoward Neural Network
 =========================================================================
-Weights are a value representation of how strong the 
-connection between one node is with another.  They establish
-a score based on relevance.  
+    *   Input is from left to right
+    *   Inforamation in these networks pass information from
+        layer to layer.
+    *   Nodes don't form a cycle in this system.
+    *   This sytem is tyically illustrated from left to right
+    *   Feedforward networks are forward moving with no back propagation
+    *   Feedforward nets can be applied in speech reconginition and 
+        and image processing.
+        
 
-How relevant is is information "A, " to information "B" ?
-
-Their degree of relevance is the weighted value.
-This is graphically portrayed as a line connecting two nodes.
-In more detailed illustrations, you will see these lines represented
-by different shades in the grayscale specture or even shades of color.
-
-
-How are weights represented ?
+Recurrent Neural Network(RNN)
 ==============================================================================
-As with the layers of a neural network, we will aalso express
-our weighted values in a matrix.  At this point since we know that
-weighted values are multiplied by activation values, we begin to see
-just why a neural network is only a matter of solving a detailed matrices
-is only a matter of solving a detailed matrices 
-multiplication operation.
+    *   The principle distinction with a recurrent neural network
+        is as the name implies, information recurs.
+    *   Features a structure similar to Feedforward nets.
+    
+    *   Information travles one direction down direction down the network
+        until it reaches the output layer.
+        
+    *   The data from the output layer is then re-fed into the sytem, aand teh
+        cycle repeats.  Since each output is looped back around to the input
+        layer, recurrent neural networks are helful in creating tools that can
+        do things like predict the next word of a sentence.
+        
+    *   Smartphone keyboards/autocorrect are a great example of this.
 
+    *   RNNs can also be used to analyze video, which lends them
+        the ability to apply toward driverless car systems to NVidia emplys
+        a convolutional net to power their self-driving system.
 
-Value of weights will change over the course of the training process.
+Convolutional Neural Network(CNN)
 =========================================================================
-    *   This is an adjustment that the network makes to itself
-    *   One parameter that is left to manual adjustment is the "Learning Rate"
-        -   Learning rate defines a speed at which we
-            would like the network to learn.
-        -   However it is more of a threashold indicating
-            how much the network is allowed to adjust it's
-            weights each time it is exposed to information or training data.
-        -   The higher the LR is set, the more information get's lost
-            concerning how to work out the problem.
-            It is a loss of the finer details.
-        -   It is possible that setting the learning rate high
-            will render your network useless altogeter.
-        -   Setting a high learning rate is analogus to attempting to learn Mandarin
-            or Software Engineering in a few days or months.....
-        -   Missing the finer details matter....as they give a broader scope of
-            understanding.
-        -   Smaller learning rate values increases the resoluteion of the learning process.
-        -   High resolution means longer processing times.  Many hyperparamerters are
-            a matter of fine-tunning.
+    *   Introduced in 1998
+    *   Similar to FFNs and as such they excel at tasks
+        involving calssification.
+    *   Convoluttional networks examine the elements of 
+        their input in small portions.
+        
+    *   They are great at detecting edges and corners in imagers in order
+        to distingush one classification fromanother.
+        
+    *   Convolutional netowerks contain the typical input, output,
+        and fully connected hidden layers however...
+        -   they additionally feature especially hidden layers known as pooling
+            and convolution layers
+    *   As indicated in the name, convolution layers wor by convlving
+        an inmage.
+        -   in each layer, our network examines portioned features of an image
+            to create a map of data relating to the fetures contained in the
+            image.
+        -   These maps are called "feature maps"
+        -   Pooling layers's roll is to compress the resoltion of feture maps
+            created by the conconvolution layer.  this is analogus of
+            an operation as a network creating an abbreviated version of the 
+            feature map to allow it to be more easily processed along the rest
+            of the network.
+        -   If there was a CNN for months of the year, then it's pooling layer would 
+            process incoming data such "January" as "Jan"...which would be much easier
+            to process by sucessive layers yet still containing enough data to be
+            processed as "January".
+            
+     *  CNNs are known for ahving what is referred to as sparse inerations.
+        Since all layers are not necessarily fully connected layers, there tends to be less
+        irrelvant neural activity generated.  Less needless activity 
+        makes for a more efficient netowrk that is less costly to run.
+        
+     *  Often used in speech recognition software.
 
 
-A quick and easy to digest example of weights and learning
+Restricted Boltzman Machine (RBM)
 ===============================================================================
-Say the outuput of some net is peforming well at your job.
-Initially setting your alarm so you could get up ealier and thus be 
-at least on time for your shift are the inputs of your input layer for this net....
-and as such the weights in these nodes are configured to prioritize to be 
-pretty high....as when weights are given relatively low values,  that means the
-region of the net these weights are located are rate as having relatively low
-relevance....in other words..the connected inforation in this region of the net
-are not particularly important to the outcome as others might be...but after the 20th
-time being late with no reprimand....the weight difference shifted from the area of the 
-net concerned with getting up earlier and over to "settling in", getting caught up
-with non-work-related matters, and getting a good cup of coffee...
+    *   Invented by Geoffrey Hinton
+    *   is best suited to feature detection and classification in machine learning
+        
+    *   These networks have a simple structure consisting of only two types:
+        -   visible layer
+        -   hiddenlayer
+        -   both of these layers are fully connected such that every node from
+            one layer is connected with every node in another.
+        -   RBMs do not require lable data for training, and as such may be
+            categoraized as a type of unsupervised learning.
+        
+    *   They are great at detecting edges and corners in imagers in order
+        to distingush one classification fromanother.
+        
+    *   Convolutional netowerks contain the typical input, output,
+        and fully connected hidden layers however...
+        -   they additionally feature especially hidden layers known as pooling
+            and convolution layers
+    *   As indicated in the name, convolution layers wor by convlving
+        an inmage.
+        -   in each layer, our network examines portioned features of an image
+            to create a map of data relating to the fetures contained in the
+            image.
+        -   These maps are called "feature maps"
+        -   Pooling layers's roll is to compress the resoltion of feture maps
+            created by the conconvolution layer.  this is analogus of
+            an operation as a network creating an abbreviated version of the 
+            feature map to allow it to be more easily processed along the rest
+            of the network.
+        -   If there was a CNN for months of the year, then it's pooling layer would 
+            process incoming data such "January" as "Jan"...which would be much easier
+            to process by sucessive layers yet still containing enough data to be
+            processed as "January".
+            
 
-BTW...this is also an example of Reinforced Learning(RL).
 
-Biases....What are they ?
+Recursive Neural Tensor Network (RNTN)
 ====================================================================
 
-    *   A bias in a n-network is an additional device used to 
-        help prioritize data being passed along.
-    *   As with the other components, biases are a number
-    *   They can be any number of the variables a network adjusts as it trains itself.
-    *   A bias for a net that determines who is and isn't a suitable caller for a woman
-        might be "Must be tall....must have a beard"....so lets think about this....
-        Input-A could run through the net and produce a output-layer node with a score of
-        70% but garners a terrible bias score and Input-B could produce a node with the score
-        of 40% but still win out during training due to to ba
-    *   Biases are added to data before it leaves as output from a node.
+    *   Recursive Neural Tensor Netowrks are used to explore
+        hierarchical structure in data.
+        
+    *   A popular application is stence sentiment analysis:
+        -   determines whether or not words comprising sentences are 
+            positive or negatie
+        -   Examines the order in which words are encountered.
+    *   RNTNs features a unique structure with its neuraons
+        grouped into distinct structures:
+            -   Parent group
+            -   child group that extends from the parent group
+            -   child groups are not connected to one another
+            -   This structure is in the form of a binary tree
+    *   The number of neurons featured in these groups correlates to the comolexity of the data
+        we wish for out netowrk to solve.
+    *   Data om tjese metwprls are processed in a recursive manner.
+    *   In the case of sentence sentiment analysis:
+        -   Each wor of the sentence is placed on a particular node in the 
+            child group.  The Parent group is able to assign both a classifier
+            and score each of the input workds
+    *   Backwards propagation is used to train RNTNs.  Scores are derived
+        fromt he contrast between the correct sentence structure and
+        the structure of the sentence output by th enet.
 
    
     
