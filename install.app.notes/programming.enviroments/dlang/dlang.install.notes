@@ -1,0 +1,19 @@
+mrblack@pop-os:~/utils$ curl -fsS https://dlang.org/install.sh | bash -s ldc
+Downloading https://dlang.org/d-keyring.gpg
+######################################################################## 100.0%
+Downloading https://dlang.org/install.sh
+######################################################################## 100.0%
+gpg: keybox '/home/mrblack/.gnupg/pubring.kbx' created
+gpg: /home/mrblack/.gnupg/trustdb.gpg: trustdb created
+The latest version of this script was installed as ~/dlang/install.sh.
+It can be used it to install further D compilers.
+Run `~/dlang/install.sh --help` for usage information.
+
+Downloading and unpacking https://github.com/ldc-developers/ldc/releases/download/v1.23.0/ldc2-1.23.0-linux-x86_64.tar.xz
+######################################################################## 100.0%######################################################################### 100.0%
+Using dub 1.22.0 shipped with ldc-1.23.0
+
+Run `source ~/dlang/ldc-1.23.0/activate` in your shell to use ldc-1.23.0.
+This will setup PATH, LIBRARY_PATH, LD_LIBRARY_PATH, DMD, DC, and PS1.
+Run `deactivate` later on to restore your environment.
+
