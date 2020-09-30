@@ -224,38 +224,187 @@ this is a consciderable security risk.
 
 
 
-# 8. Handshake Failure Scenarios
+# 9. Handshake Failure Scenarios
 
-Now that we have a general idea of how SSL handshakes work,
-and the two different version of the handshake...we sort of now
-have a better idea of what might be going on should these handshakes
-ever fail.....
+### 9.1 Missing Server Certificate
 
-**Typical steps in an SSL handshake are :**
+**Recieved fatal alert: handshake_failure**
 
-1.   Client provides a list of possible SSL version and cipher suites to use
+1.   Now, this indicates something went wrong.  The SSLHandshakeException
+    above, in an abstract manner **is stating that the client when
+    connecting to the sever did not recieve any certificate.
     
-2.   Server agrees on a particular SSL version and cipher suite.  Server sends
-     Client it's certifcate
+    **Possible Solution ?**
+    
+    To address this issue, we will use the keystore we generated
+    earlier by passing them as sytem as system properties to the server
+    
+            -Djavax.net.ssl.keyStore=clientkeystore.jks
+            -Djavax.net.ssl.keyStorePassword=password
+    
+### 9.2 Unstrusted Server Certificate
 
-3.   Client recieves certifcate from the Server.  The Client extracts the
-     public key fromt he certificate.  The Client sends the Server it's 
-     encrypted "pre-master key"
-     
-4.   The Server recieves the encrypted pre-master-key from the Client that the
-     Client generated using the public key it extracted from the Server's certificate
-     The Server decrypts the pre-master-key" using it's private key.
-     
-5.   The Client and the Server both compute a "shared secret" using the 
-     exchanged "pre-master key"
-     
-6.   Client and Server exchange messages confirming the successful encyrption
-     and decryption using the "shared secret"
-     
-     
-The above steps describes the general steps taken to establish an SSL connetion
-between two hosts....but there is more than one kind of SSL Handshake....and
-this is a consciderable security risk.
+**Recieved fatal alert: handshake_failure**
+
+        Exception in thread "main" javax.net.ssl.SSLHandshakeException: 
+	          sun.security.validator.ValidatorException: 
+	          PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: 
+	          unable to find valid certification path to requested target
+
+1.   More than likely what is going on here is that the our server is
+    using a self-signed certificate which is not signed by a certificate authority
+    (CA)
+    
+    **We will see this failure everytime the cert is signed by something
+      other than what is in the default trustore, we will see this error**
+      
+      The default trustore in JDK typically ships with information about common
+      CAs in use.
+      
+    **Possible Solution ?**
+    
+    We need to force our client to trust the certificate presented by our Server.
+    Let's use the truststore we genereated by passing them as system properties to 
+    the client
+    
+            -Djavax.net.ssl.trustStore=clienttruststore.jks
+            -Djavax.net.ssl.trustSTorePassword=password
+            
+            
+### 9.3 Missing Client Certificate
+
+**Recieved fatal alert: handshake_failure**
+
+        Exception in thread "main" java.net.SocketException: 
+	          Software caused connection abort: recv failed
+
+1.  The SocketException tells us that that the server could not
+    turst the client.  This is because we have set up to 
+    setu up two-way SSL(likely on the server)
+    
+    **We will see this failure everytime the cert is signed by something
+      other than what is in the default trustore, we will see this error**
+      
+      The default trustore in JDK typically ships with information about common
+      CAs in use.
+      
+      
+
+### 9.4 Incorrect Certificates
+
+**Recieved fatal alert: handshake_failure**
+
+ 
+1.  Apart from the above errors, a handshake can fail due to a variety
+    of reasons related to how we have created the certificates.  One
+    common error is related to an incorrect CN.  Let's explore the
+    details of the server keystore we created previoiusly.....
+    
+        >keytool -v -list -keystore serverkeystore.jks
+        
+    When we run this command, we can see the details fo the 
+    keystore, specifically the owner:
+    
+            ...
+	        Owner: CN=localhost, OU=technology, O=baeldung, L=city, ST=state, C=xx
+	        ...
+	        
+	The CN of the owner of this certificate is set to localhost.  The CN
+	of the owner must exactly match the host of the sever....If there is any
+	mismatch, it will result in an SSLHandshakeException.
+	
+	
+	
+	
+### 9.4 Incorrect Certificates
+
+**Recieved fatal alert: handshake_failure**
+
+ 
+1.  Apart from the above errors, a handshake can fail due to a variety
+    of reasons related to how we have created the certificates.  One
+    common error is related to an incorrect CN.  Let's explore the
+    details of the server keystore we created previoiusly.....
+    
+        >keytool -v -list -keystore serverkeystore.jks
+        
+    When we run this command, we can see the details fo the 
+    keystore, specifically the owner:
+    
+            ...
+	        Owner: CN=localhost, OU=technology, O=baeldung, L=city, ST=state, C=xx
+	        ...
+	        
+	The CN of the owner of this certificate is set to localhost.  The CN
+	of the owner must exactly match the host of the sever....If there is any
+	mismatch, it will result in an SSLHandshakeException.
+	
+	**Please NOTE**  that **JSSE does not mandate hostname verficaton by default**.
+    We have to ensure this on the side of the client that we wish
+    to mandate hostname verification.....
+    
+            SSLParameters sslParams = new SSLParameters();
+	        sslParams.setEndpointIdentificationAlgorithm("HTTPS");
+	        ((SSLSocket) connection).setSSLParameters(sslParams);
+	        
+	        
+	Hostname verfication is a common cause of failure and in general and
+	should alsways be enforeced for better security.  See this artical for
+	more https://tersesystems.com/blog/2014/03/23/fixing-hostname-verification/
+	
+	
+	
+	
+	
+### 9.5 Incompatible SSL Version
+
+**Recieved fatal alert: handshake_failure**
+
+ 
+1.  Apart from the above errors, a handshake can fail due to a variety
+    of reasons related to how we have created the certificates.  One
+    common error is related to an incorrect CN.  Let's explore the
+    details of the server keystore we created previoiusly.....
+    
+        >keytool -v -list -keystore serverkeystore.jks
+        
+    When we run this command, we can see the details fo the 
+    keystore, specifically the owner:
+    
+            ...
+	        Owner: CN=localhost, OU=technology, O=baeldung, L=city, ST=state, C=xx
+	        ...
+	        
+	The CN of the owner of this certificate is set to localhost.  The CN
+	of the owner must exactly match the host of the sever....If there is any
+	mismatch, it will result in an SSLHandshakeException.
+	
+	**Please NOTE**  that **JSSE does not mandate hostname verficaton by default**.
+    We have to ensure this on the side of the client that we wish
+    to mandate hostname verification.....
+    
+            SSLParameters sslParams = new SSLParameters();
+	        sslParams.setEndpointIdentificationAlgorithm("HTTPS");
+	        ((SSLSocket) connection).setSSLParameters(sslParams);
+	        
+	        
+	Hostname verfication is a common cause of failure and in general and
+	should alsways be enforeced for better security.  See this artical for
+	more https://tersesystems.com/blog/2014/03/23/fixing-hostname-verification/
+	
+    
+	
+	
+	
+	
+	
+	
+    
+    
+      
+
+
+
 
 
 
