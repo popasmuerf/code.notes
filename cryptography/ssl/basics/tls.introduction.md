@@ -14,17 +14,371 @@ Certificate and CA Certificate Chain works
 
 
 
-##Keytool command examples Java - add
-##view ssl certificates in 
-##keyStore trustStore
+##What is TLS ?
 =========================================   
 
-The keytool cammon in Java is a tool for
-managing certificates into **keyStore** and
-**trustStore** which is used to store certificates
-and requires during SSL handshake process.  By using
-the **keytool command** you can do many things
-but some of the most common operations
-    *   Viewing certificates storedin keystore
-    *   Deleting certificates stored in keystore
-    *
+TLS is based on SSL and was developed
+as a replacement in response to known 
+vulnerabilities in SSLv3
+
+##Security Provided
+=========================================   
+
+SSL/TLS provides data encryption, data integrity
+and authentication.
+
+
+This means that when using SSL/TLS you can be
+confidient that
+
+
+    *   No one has read your message
+    *   No one has changed your message
+    *   You are communication with the intended person (Server)
+
+SSL is the term commonly used(incorrectly) for TLS.
+
+
+##The issue that TLS solves
+=============================================
+    *   How do you know that no one has read the message ?
+        -   Encryption:
+            *   This makes the content unreaable so that to anyone
+                viewing the message it is just nonsense
+        -   Sing it
+            *   This allows the recipient to be confident that it was
+                you who sent the message, and that the message 
+                hasn't change.
+
+    *   We achieve the solutions above via the use of **keys**
+        -   Keys are simply, at least 128 bit numbers that are combined
+            the message using a particular algorithm(usually RSA) to either encrypt or sign the message
+            
+    *   How do you know that no one has changed the message ?
+
+
+
+##Symettrical Keys and Public and Private Keys
+=============================================
+    *   How do you know that no one has read the message ?
+        -   Encryption:
+            *   This makes the content unreaable so that to anyone
+                viewing the message it is just nonsense
+        -   Sing it
+            *   This allows the recipient to be confident that it was
+                you who sent the message, and that the message 
+                hasn't change.
+
+    *   We achieve the solutions above via the use of **keys**
+        -   Keys are simply, at least 128 bit numbers that are combined
+            the message using a particular algorithm(usually RSA) to either encrypt or sign the message
+            
+    *   Almost all encryption methods in use today employ public and
+        and private keys.
+
+    *   Public and private keys encyrption is considered much more
+        considered more secure than the old symmetical key arrangement
+
+    *   Symmetical key encryption involves using the same key to both
+        encrypt and or sign the message, and then to also decrypt the 
+        message.
+
+    *   Symmetrical key encryption is analogus to using the same key
+        to open your door or care in everyday life
+
+    *   The problem with Sym-key encryption is that once someone gets a
+        hold of your key, anyone can then open your doors.
+
+    *   Public/Private key pair encryption differs from Sym-key
+        encryption.  Both your public and private key are "mathematically related" but are in fact different from
+        one another
+
+    *   Public/Private key encryption encrypts messages with a public
+        key and then decrypts it using a private key.
+
+    *   If this type of key arrangement were used with your car, then
+        you cold lock the car, and leave the key in the lock
+        as the same key cannot unlock the car
+
+
+
+##Keys and SSL Certificates
+=============================================
+    *   Public Keys?
+        -   Can be made availble to anyone, hence the term "public key"
+        -   It's public...so how can we trust it ?
+            *   How do we know that a particular public key belongs
+                to the person/entity that it claims ?
+            *   We ensure that a public key is legit via the use
+                of **digital certificates**
+            *   A cert serves the same purpose as a passport does when
+                you purchase a flight outside your nation of origin.
+            *   A passport establishes a link between a photo and a
+                person, and that link has been verified by a trusted
+                authority (Dept of State)
+            *   A digital cert provides a link between a public key and
+                an entity(the party you are communicating with or yourself) that has been verfied(signed) by a trusted 
+                third party (a certificate authority)
+            *   digital certificates providesa convienient way of 
+                distributing  trusted public encryption keys.
+            *   These days web browser by default will prevent you from
+                navigating to a site that is not using a verified signed public key.
+
+##Obtaining a Digital Certificate
+=============================================
+    *   Where do we get a digital cert ?
+        -   We can either generate a self signed cert or go 
+            and get a cert signed by a trusted thrid party
+        -   Trusted Third Party cert issuers are known as **Certificate
+            Authorities (CA)**
+        -   A CA is analogus with the State Department who issues you 
+            a passport that verifies that you are who you say you are
+            when traveling abroad
+        -   What is the procedure for getting a cert from a CA ?
+            *   Fill out the required  forms
+            *   Add your public keys (they are just number...remember)
+            *   Send your forms and keys to the CA
+            *   This is known as a **certificate request**
+                The CA does some pretty rigorous checks(you hope), and
+                then sneds you back the keys enclosed in a certificate.
+            *   The certificate is signed by the Issuing Certificate
+                authority, and this is what guarantees the keys.
+            *   Now, when somenoe wants your public key, you sent the
+                certificate, they verify the signature on the certificate, and if it verifies then you can trust 
+                your keys.
+
+##Example Usage(Browser using SSL/TLS)
+=============================================
+    1.   Browser connects to server using SSL(https)
+    2.   Server responds with server certificate containing the public
+         key of the web server.
+    3.   Browser verfies the cert by checking the signature of the CA.
+         To do this the CA cert needs to be in the browser's trused store(for example, my microservice verifies the DB cert
+         against the CA signature  avaiable to the microservice that is stored in the microservices trustedStore).
+    4.   The Broswer now statisfied uses this public key to obtain
+         a **session key** with the server
+    5.   The browser and the server now encrypt data over the
+         connection using the **session key**
+    *   
+        -   We can either generate a self signed cert or go 
+            and get a cert signed by a trusted thrid party
+        -   Trusted Third Party cert issuers are known as **Certificate
+            Authorities (CA)**
+        -   A CA is analogus with the State Department who issues you 
+            a passport that verifies that you are who you say you are
+            when traveling abroad
+        -   What is the procedure for getting a cert from a CA ?
+            *   Fill out the required  forms
+            *   Add your public keys (they are just number...remember)
+            *   Send your forms and keys to the CA
+            *   This is known as a **certificate request**
+                The CA does some pretty rigorous checks(you hope), and
+                then sneds you back the keys enclosed in a certificate.
+            *   The certificate is signed by the Issuing Certificate
+                authority, and this is what guarantees the keys.
+            *   Now, when somenoe wants your public key, you sent the
+                certificate, they verify the signature on the certificate, and if it verifies then you can trust 
+                your keys.
+
+
+##Digital Certificate Types
+=============================================
+    1.   If you are tyring to purchase a certificate for a website
+         or to use for encrypting MQTT you will encounter two main types
+            *   Domain Validated Certificates (DVC)
+            *   Extended validation Certificate(EVC)
+            *   The difference between the two typs is the
+                degree of trust in the cert which comes with more
+                rigorous validation.
+            *   The level of encryption they provide is identical
+            *   DVC isan x.509 digital cert typically used 
+                for TLS where the identy of the application has
+                been validated by proving some control over a 
+                DNS domain
+            *   DVC process is fully automated and as a result is
+                normally the cheapest form of certificate.
+            *   DVC is ideal for use on websites that provide mostly
+                content and does not use sensitive data....
+
+            *   An Extended Validation Certification(EV) is a 
+                certificate used for HTTPs websites and software that
+                proves the legal entity controlling the website or software package.  Obtaining an **EV certificate**
+                requires verification of teh requestin entity's
+                identity by a certificate authority (CA)
+            *   EVs are more expensive to aquire than DVCs as they 
+                involve a much more rigorous and manual verification process
+
+
+##Certificate Usage Restrictions -- Wildcards and SANS
+=============================================================
+    0.   Generally, a certificate is valid for use on a single
+         fully qualified domain name (FQDN)
+    1.   A cert purchased for used on **www.mydomain.com** 
+         cannot be used on **mail.mydomain.com** or 
+         **www.otherdomain.com**
+    2.   A wildcared cert covers all subdomains of a domain. 
+    3.   For example a wildcard certificate for *.mydomain.com can
+         be used on:
+
+            *   mail.mydomain.com
+            *   www.mydomain.com
+            *   ftp.mydomain.com
+            *   etc
+            *   It can not be used to secure both
+                **mydomain.com** and **myotherdomain.com**
+
+    4.   For example a wildcard certificate for *.mydomain.com can
+         be used on:
+
+            *   mail.mydomain.com
+            *   www.mydomain.com
+            *   ftp.mydomain.com
+            *   etc
+            *   It can not be used to secure both
+                **mydomain.com** and **myotherdomain.com**
+
+    5.  To cover several different domain names in a single certificate
+        you must purchase a certificate with **SAN(Subject Alternative)**
+
+    6.  Under a SAN cert, you may secure the following domai names in
+        addition to the main domain name
+        *   www.mydomain.com
+        *   www.mydomain.org
+        *   www.mydomain.net
+        *   www.mydoman.co
+        *   www.mydomnain.co.uk
+
+
+
+##Why use Commercial Certificates?
+============================================================
+It is very easy to create you own SSL certificates and encryption keys using free software tools.
+
+These keys and certificates are just as secure as commercial ones, and can in most cases be considered even more secure.
+
+    ***Commercial certificates are necessary when you need widespread support for your certificate***
+
+This is because support for the major commercial certificate authorities is built into most web browsers, and operating systems.
+
+If I installed my own self generated certificate on this site when you visited you would see a message like the one below telling you that the site is not trusted.
+
+
+##Certificate Encodings and Files Extensions?
+============================================================
+Certificates can be encoded as:
+
+*   Binary files.
+*   ASCII(base64)files
+
+
+Common file extentions in use are:
+*   .DER
+*   .PEM
+*   .CRT
+*   .CERT
+
+
+There is no real correlation between teh file extension and
+encoding.  That means **.crt** file can either be
+a **.der** encoded file or **.pem** encoded file.
+
+
+We can use openssl tools to determin all kinds of things about 
+our cert files....
+
+
+
+
+##Root CA Bundle and Hashed Certificates?
+============================================================
+Although root certs exist as single files they can
+also be combined into a bundle....
+
+
+On Debian based Linux systems these root certificates are stored
+in **/etc/ssl/certs** folder along with a file called
+**ca-certificates.crt**
+
+this file is a bundle of all the root certs on the system.
+
+It is created by the sysystem and can be updated if new certificates  
+command.
+
+
+
+*   Binary files.
+*   ASCII(base64)files
+
+
+Common file extentions in use are:
+*   .DER
+*   .PEM
+*   .CRT
+*   .CERT
+
+
+There is no real correlation between teh file extension and
+encoding.  That means **.crt** file can either be
+a **.der** encoded file or **.pem** encoded file.
+
+
+We can use openssl tools to determin all kinds of things about 
+our cert files....
+
+
+
+        cat /etc/ssl/certs/ca-certificates.crt 
+        -----BEGIN CERTIFICATE-----
+        fedgegegegegegegewgewgwegwemhbnghthrtrehererheereererhehehehehegheher
+        hderberregwregwgwgw43g4w3g43g423
+        .......
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        dgegewgwgbey54lrtrehererheereererhehehehehegheherkrthwetgw34t45kli56u3g23r23ytri56ui56utij5j54j4j54y54y54
+        ......
+        -----END CERTIFICATE-----
+
+
+
+This cert folder in **/etc/ssl/certs** folder along with a file called
+**ca-certificates.crt**
+
+
+The certs fofld also contains each individual certificate or a symbolic
+link to the certificate anlong with a hash.
+
+
+The certs folder also contains each individual certificate or a symbolic link to the certificate along with a hash.
+
+The hash files are created by the c_rehash command and are used when a directory is specified, and not a file.For example the mosquitto_pub tool can be run as:
+
+
+        mosquitto_pub --cafile /etc/ssl/certs/ca-certificates.crt
+
+        or
+
+        mosquitto_pub --capath /etc/ssl/certs/
+
+
+##Root Certificates, Intermediate Certificates and Certificate
+##Chains and Bundles
+===============================================================
+A certificate authority can create subordinate certificate
+authorities that are responsible for issuing certificates to
+clients
+
+
+For a client to verify the authenticity of the certificate
+it needs to be able to verify the signatures of all the CAs in the
+the chain this means that the client needs access to the
+certificates of allt he CAs int he cain.
+
+The client may already have the root certificate installed, but
+probably not the certificates of the intermediate CAs
+
+
+Therefore certificates are often provided as part of a certificate bundle.
+
+This bundle would consist of all fo the CA certificates in teh chain in a single file, usually called **CA-Bundle.crt**
+
+If you certificates are sent individually you can create your own bundle by following the steps here.
