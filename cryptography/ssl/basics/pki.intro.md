@@ -69,5 +69,27 @@ Note: Quick review...a Cert:
     *   Root:
         -   When a PKI is created, the first cert authority installed is known as
             the root CA.
-
+            
+         
+##Certification Authorities--------------------------------------------------
+    *   Private CA:
+        - A private CA has the responsiblity of issuing certificates only for members
+          and is likewise trusted only by members of its own organization.
+          
+    *   Public CA:  
+        - Example of public CAs are Verisign or Thawte, has teh responsibility of
+          issuing certificates for any member of the pubic and must be trusted by the public
+          
+ 
+ 
+ ##Certification Hierarchies--------------------------------------------------
+    *   Private CA:
+        - A private CA has the responsiblity of issuing certificates only for members
+          and is likewise trusted only by members of its own organization.
+          
+    *   Public CA:  
+        - Example of public CAs are Verisign or Thawte, has teh responsibility of
+          issuing certificates for any member of the pubic and must be trusted by the public
+          
+          
 
