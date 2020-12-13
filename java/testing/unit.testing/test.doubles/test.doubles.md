@@ -207,11 +207,68 @@ very useful for legacy code .
 
 Mock
 ============================================================
+Mock objects have expectations;
+
+    -   a test expects a value from a mock object
+    -   during execution a mock object returns the
+        expected result.
+    -   Mock objects can keeop track of the invocation count,
+        which is the number of times a method on a mock
+        object is invoked.
+        
+
+The following example is a continuation of the ATM example with a mock version.
+In the previous example, we stubbed the dispense method of the Dispenser interface to tho
+trows aan exception;  here, we will use a mock object to replicate the 
+same behavior.  
 
 
 
 
+        public interface Dispenser{
+            void dispense(BigDecimal amount) throws DispenserFailed ;
+        }
+
+        /* Don't bother implementing this class....
+           When we can just mock it instead.... */
+        public class Always FailingDispenserStub implements Dispenser{
+            void dispense(BigDecimal amount) throws DispenserFailed{
+                (ErrorType.HARDWARE,"not responding") ;
+            }
+        }
 
 
+        public class ATMTest {
+
+            @Mock 
+            Dispenser failing Dispenser ;
+            
+            @Before public void setUp() throws Exception{
+                MockitoAnnotations.initMocks(this) ;
+            }
+            
+            @Test public void transaction_rollback_test() throws DispenserFailed{
+                Acount myAccount - new Account(2000.00,"John") ;
+                TransactionManager txMrg = TransactionManager.forAccount(myAccount) ;
+                txMgr.registerMoneyDispenser(failingDispenser) ;
+                
+                doThrow(new DispenserFailed())
+                .when(failingDispenser)
+                .dispense(isA(BigDecimal.class));
+                
+                txMgr.withdraw(500);
+                assertEquals(2000.00, myAccount.getRemainingBalance());
+                verify(failingDispenser, new Times(1))
+                .dispense(isA(BigDecimal.class));   
+            }
+        }   
+
+
+The preceding code is the mock (Mockito) version of the 
+ATM test.  The same object can be used in different tests;
+just the expectation needs to be set.  Here,
+
+**doThrow()** reasises an error whenever the mock object is called
+with an BigDecimal value.
 
 
