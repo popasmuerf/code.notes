@@ -117,12 +117,96 @@ public class Always FailingDispenserStub implements Dispenser{
 
           
 
-In the preceding code snippet, a dummy member was created and passed 
-to a book object to test if a book can report the nunber of times it
-was issued.  Here, a member object is not used anywhere but it is needed to issue 
-a book
+In the preceding code snippet
+
+        AlwaysFailingDispenserStub
+        
+raises an error whenever the **dispense()** method is invoked.
+It allwos us to test the transactional behavior when the
+hardware is not present.
 
 
+Mockito allows us to mock interfaces and concrete classes....
+One mo'  'gain..... Mockito allows us to mock both interfaces and 
+concrete classes
+
+Using  Mockito we can actually  the methods of the interfaces we are mocking like
+
+        public interface Dispenser{
+            void dispense(BigDecimal amount) throws DispenserFailed ;
+        }
+
+        public class Always FailingDispenserStub implements Dispenser{
+            void dispense(BigDecimal amount) throws DispenserFailed{
+                (ErrorType.HARDWARE,"not responding") ;
+            }
+        }
+
+
+Fake 
+==========================================================
+Fake objects  are working implementations; mostly the fake class
+extens the original clas but it usually hacks the performance, which
+makes it unsuitable for production. The following example demonstrates the
+fake object:
+
+public class AddressDao extends SimpleJdbcDaoSupport{
+    public void  batchInsertOrUpdate(List<AddressDTO> addressList, User user){
+        List<AddressDTO> insertList = buildListWhereLastChangeTimeMissing(addressList);
+        int rowCount = 0 ;
+        if(!insertList.isEmpty()){
+            rowCount = getSimpleJdbcTemplate().batchUpdate(INSERT_SQL,....) ;
+        }
+        
+        if(!updateList.isEmpty)){
+            rowCount += getSimpleJdbcTemplate().atchUpdate(UPDATE_SQL,...) ;
+        }
+        
+        if(addressList.size() != rowCount) {
+            raiseErrorForDataInconsistency(...) ;
+        }
+    }   
+    
+}
+
+
+AddrssDAO extends from a Spring framework class and provides an API for mass update
+and provides an API for mass update.  The same method is ued to create a new address
+and update an existed one; if the count doesn't match, then an error is raised.
+
+
+AddressDAO extends from a Spring framework class and provides an API for mass update.
+The same method is used to crete a new address and update an existing one, if the count doesn't match, then
+an error is raised.  this class cannot be tested directly, and it needs 
+
+        getSipleJdbcTemplate()
+
+So, to test this class, we need to bypass the JDBC collaborator ; we can
+do this by extending the orginal DAO class but by  overriding the collaborator; 
+we can do this extending the orginal DAO class but is a fake implementation of 
+AddressDao 
+
+
+public class FakeAddressDao extends AddressDao{
+    @Override
+    public SimpleJdbcTemplate(){
+        return jdbcTemplate ;
+    }
+
+} 
+
+
+FakeAddressDao extends AddressDao but only overrides getSimpleJdbcTemplate() and returns
+a JDBC templage stub.  We can use Mockito to create a mock version of the JdbcTemplate
+and return it from the fake implementation.   This class cannot be
+used in production as it uses a mock JdbcTemplate; however, the fake class inherits all
+functionalities of the DAO, so this can be used for testing.  The fake classes are
+very useful for legacy code .
+
+
+
+Mock
+============================================================
 
 
 
