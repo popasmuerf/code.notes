@@ -120,5 +120,15 @@ there are no threads involved at all in the execution of the actual task.....**D
 execution...especially if it is doing something CPU intensive....if it is a network operation
 then it definitely by definition will be seperate processes of execution. 
  
+ 
+ 
+ 
+ A method can return before it's work is complete.  That is the essense of asynch.
+ A method returns, it returns a staks that means "thsi work is in progress"; tell 
+ me what to do when it is complete".  The work oof the method is not done, even though it 
+ has returned.
+ 
+ 
+ 
    
   

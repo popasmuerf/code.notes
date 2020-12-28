@@ -391,4 +391,28 @@ using the method
         Mockito.thenReturn() ;
         
         
+##UnnecessaryStubbingException
 
+### Strict Stubbing
+With version 1.x of Mockito, it was possible to configure and 
+interact with mocks with no kind of restriction   This meant that,
+over time, tests would often become overcoplicated and at times harder to 
+debug
+
+Since version 2.+ , Mockito has been introductin new features that nudge the ramework
+towards "strictness".  the main goals behind this are:
+
+1.  Detect unused stubs in the test code
+2.  Reduce test code duplication and unneessary test code
+3.  promote cleaner tets by removing "dead" code
+4.  Help improve debuggability and productivity
+
+
+##Configuring Strict Stubs
+Since Mockito 2.+, strict stubbing is used bhy default when initializing
+our mocks using either of  :
+
+    MockJUnitRunner
+    MockitoJUnit.rule() ;
+
+##One last important point to make is that in Mockito 3.0, all stubbings will be “strict” and validated by default.
