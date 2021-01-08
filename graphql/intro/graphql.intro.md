@@ -1,5 +1,6 @@
 url: https://www.baeldung.com/spring-graphql
 url: https://dzone.com/articles/graphql-with-springboot
+url: https://dzone.com/articles/your-guide-to-graphql-tutorials-and-articles
 
 Why GraphQL
 =======================
