@@ -319,6 +319,22 @@ now cannot use Eureka to lookup services we must specify a url for the book serv
 
 
 ##Adding Filters....
+----------------------------------------------------------
+Now you can see how to filter requests through your proxy service.
+Zuul has four standard filter types:
 
+-pre
+    -Filters run before the request is routed
 
+-route
+    -Filters can handle the actual routing of the request
+
+-post
+    -Filters run if an an error occurs in the course of handling the request.
+    
+    
+    
+    
+
+-error
 
