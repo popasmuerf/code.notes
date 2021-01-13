@@ -314,7 +314,9 @@ and adding
         import org.springframework.web.bind.annotation.RequestMapping ;
         import org.springframework.web.bind.annotation.RequestMethod ;
 
-        //(1)
+        //(1) can be leveraged. In this post, we give examples of how Spring Boot can be used (along with Zuul and Eureka) to create a simple discovery service.
+
+There are other components that can be added for things like a configuration server to pull all application.properties files from a common location that is updatable in real time, or cir
         @FeignClient("greetings-service")
         public interface GreetingClient {
             //(2)
