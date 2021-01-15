@@ -232,5 +232,3 @@ Using OCSP, an application makes a connection to an OCSP responder and requests 
 6. The encrypted information is sent to the web server. The web server decrypts and obtains the symmetric key (session key). The web server uses the symmetric key to encrypt information between the client and the server.
 
 
-
-
