@@ -195,6 +195,103 @@ posess some subtle problems
  
  -  All their issues aside...text formats of data exchange are usually good enough.
     for most purposes....
+    
+    
+    
+    
+##Binary Encoding
+
+For data that is used only internally..within your organization, there is less pressure to use lowest common-denominator encoding format.  For example, you 
+could choose a format that is more compact or faster to parse.
+
+For a small dataset, the gains are negligible, but once you get into the
+terabtyes; the choice of data format can have big impact.
+
+JSON is less verbose than XML, but both still use a lot
+of space compared to binary formats.  This observation led
+to the development of profusino of binary encoding for JSON:
+    -   BSON
+    -   MessagePack,
+    -   BJSON
+    -   UBJSON
+    -   BISON
+    -   Smile
+    -   etc.
+    
+Binary encoding for  XML
+    -   WBXL
+    -   Fast Infoset
+    
+Binary encoding of XML and JSON definitely have their niches....but
+are no where near as popular as text version of JSON and XML
+
+Some of these formats extend the set of of datatypes distinguishing
+    -   integers
+    -   floating-point numbers
+    -   adding support for binary strings 
+    
+    
+    
+Snce they don't prescribe a schema, they need to include all the object field
+names within the encoded data.
+
+Example 4-1.  example record which we ill encode in 
+Severyal binary formats this chapter...
+
+
+        {
+            "userName": "Martin",
+            "favoriteNumber": 1337,
+            "interests":["daydreaming", "hacking"]
+
+        }
+    
+    
+###MessagePack(Binary encoding for JSON)
+
+MessagePack binary encoding for JSON displying the byte
+sequence that you get if you encode the JSON document
+
+1. First byte, 0x83, indicates that what follows
+is an object with three fields
+    -   top four bits = 0x80 (this is an object)
+    -   bottom four bitsh = 0x03 (this object has 3 fields if this
+        object has 15 fields...then 0x15)
+2.  The second byte, 0xa8, indicates that what follows is 
+    a string (top four bits = 0xa0) that is eight bytes
+    long (bottom four bits = 0x08).
+    
+3.  The next eight bytes are the field name userName in ASCII.
+    Since the length was indicated preiously, there's no 
+    no need for any marker to tell us where the string ends
+    (or any escapting).
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
  
  
  
