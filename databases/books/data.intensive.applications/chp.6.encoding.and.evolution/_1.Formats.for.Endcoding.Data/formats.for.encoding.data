@@ -1,0 +1,343 @@
+"Everything changes and nothing stands stills" --- Heraclitus of Ephesus, as
+qouted by Plato in Cratylus 360 BCE
+
+
+Applications inevitably change over time.  Features are added
+or modified as new products are launched, user
+requirements become better understood, or business
+circumstances change.   We should always endeavor 
+to build systems that make it relatively trivial to 
+adapt to change.
+
+
+In most cases a change to an application's features
+alos requires a change to data that it stores: perhaps
+a new field or record type needs to be cauptured, or
+perhaps existing data needs to be presented in a new way.
+
+
+-Relational databases generally assume that all data in the
+database conforms to one schema
+    --  Shcemas can be changed
+    --  Only one schema may be in force at any given time
+-Schema on Read(schemaless) databaes don't enforce
+a schema so the databse can contain a mixture of older 
+and newer data formats written at different times
+
+
+Changes in data format or schema often brings with it a change
+in the business logic associated with this data.
+
+
+-   Server-side applications
+    --  Rolling upgrades(also known as staged roll-outs)
+        ; deploying the new version to a few nodes
+        at a time, checking whether the new version is
+        running smoothly, and gradually working
+        your way through all the nodes.
+    --  Reduces or elminates system downtme, and thus
+        encourages more frequent releases and better
+        evolvability
+        
+-   Client-side applications
+    --  method of updating is up to what is acceptable to the particular
+        user experience, meaning that the upgrade must accure to the user
+        as if it never happened in the first place.
+    --  users may not install the update for some time.....
+    
+    
+
+##Formats for Encoding Data
+Programs usually work with data in (at least) two different
+representations:
+
+1.  In memory
+    -   data is kept in
+        --  objects
+        --  structs
+        --  lists
+        --  arrays
+        --  hash tables
+        --  trees
+        --  etc
+2.  When weiting data to a file or sedning it
+    over the network you have to encode it
+    as some kind of self-contained sequence of bytes
+    ...for example...these sequence of bytes can take
+    the form of JSON.  If there is no agreed upon format..
+    a popular option is to transmit the sequene of bytes
+    encoded as Base64.
+    
+3. Since pointers wouldn't make much sense to any other process, the
+   sequence-of-bytes to any other process, this
+   sequence-of-bytes representations(obj, stuct, array, etc) looks
+   quite different from the data structures that are normally
+   used in memory.
+    -   We need some kind of translation between
+        the two represetnations.
+    -   The translation from memory representation to byte sequence
+        is called encoding(also know as serialization or marshalling)
+    -   Marshalling is the reverse of decoding(parsing, deseraializaing,
+        unmarshalling)
+    
+    
+##Language-Specific Formats
+
+Many programming languages come with built in support
+for encoding in-memory objects into byte sequences.
+
+-   Java
+    --  java.io.Serializable
+-   Ruby
+    --  Marshal
+-   Python
+    -- Pickle
+    
+-   3rd Party
+    --  Kyro
+    
+    
+    
+These built in encoding support is convienient as they
+reduce the amount of logic written on the programmer's behalf
+to achieve the encoding of in memory data....
+However there are some drawbacks...
+
+-   The encoding is often propritary to that particular 
+    programming language, and reading this encoded data 
+    in another programming language is difficult.  Progamming
+    languages often tend to be their own platform in a sense.
+    Commiting yourself to a language specific progr
+    
+-   In order to restore data in the same object types,
+    the decoding process needs to be able to instantiate
+    arbitrary classes.  This is frequently the soures
+    of security problems.  If an attacker can get your 
+    application to decode an arbitrary byte sequence, they can 
+    instantiate aribtrary classes, which in turn allows them to
+    do terrible things such as remotely execute arbitrary code.
+    
+-   Versioning data is often an afterthought for these libraries
+
+-   Efficiency (CPU time taken to encode or decode, and the 
+    size of the encoded structure) is also often an afterthought.
+    Java's built-in serialization is notorious for its bad performance
+    and bloated encoded
+    
+    
+    
+###Text based alternatives
+-   JSON
+    - Popularity is mainly due to it's built-in support
+        in wb browsers via virture of being a subset of
+        JavaScript.
+-   XML
+    -   Critisized for being too verbose and needlessly
+        complicated.
+-   CSV
+    -   another popular platform independent format, 
+        though less powerful than either JSON or XML
+        
+All of these text formats are somewhat human readable....but also
+posess some subtle problems
+
+-   Ambiguity around the encoding of numbers.
+-   In XML and CSV, there is no distinguishment between
+    what is meant to be a number or a string that happens
+    to be composed of digits...save for referring to an external
+    schema.
+-   JSON natively distinguishes between strings and numbers, but
+    not between integers and floating-point numbers, nor percision.
+    This is a problem when dealing with numbers with a large amount
+    of digits.  For example, integers greter than 2^53 cannot
+    be exactly represented in an IEEE 754 double-precision 
+    floating-point number, so wuch numbers become inaccurate when
+    parsed in a language that uses floating point numbers suha as JavScript
+    
+    
+    
+    An example of numbers larger than 2^253 occurs on Twitter, which
+    uses a 64-bit number to identify each tweet.  The JSON returned
+    by Twitter's API indluces tweet IDs twice, one as a 
+    JSON number and once as a decimal string, to work around
+    the fact that numbers are not correctly parsed by JavaScript 
+    applicatons.
+    
+    
+ -  JSON and XML have good support for Unicode character strings
+    i.e., human -readable text), but 
+    they don't support binary strings sequences of bytes without
+    character encoding). Binary strings are a useful feature,
+    so people get around this limitation by encoding the binary
+    data as text using Base64.  The chema is then used to indicate
+    the value should be interpreted as Base64-encoded.  This works, but
+    it is somewhat of a hack and crases the data size by 33%...thus
+    enacting both a storage and performance hit.
+    
+    
+ -  Schema support for both JSON and XML are optional; schemas are
+    powerful in this context and are diffilute to learn and implement.
+    Use of XML schemas is fairly widespread, but many SJON-based tools do't
+    bother using schemas.
+    
+ -  Since the correct interpretation of data depends on information in 
+    the schema, applications that don't use XML/JSON schemas need to 
+    potentially hardcode the appropiate encoding/decoding logic
+    instad.
+    
+ -  CSV does not have any schema, so it is up tothe application to 
+    define the meaning of each row and cloumn.  If an application
+    change addes a new row or column, you have to handle that change manually.
+    CSV is also a quite vauge format(what happens if a value contains a comma or
+    a newline character?).  Although its escaping rules have
+    been formally specified, not all parsers implement them correctly.
+ 
+ 
+ -  All their issues aside...text formats of data exchange are usually good enough.
+    for most purposes....
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
