@@ -484,28 +484,276 @@ They have a number of nice properties:
 
 
 
+#Modes of Dataflow
+==============================================
+Whenever we want to send some data to another process with 
+which we dont' share memory --- for example, whenver 
+we want to send dta over the network or write it to a file...
+we need to encode it as a sequence of bytes.  We then discussed a variety
+of different encodings for doing this.
+
+
+
+
+#Dataflow through databases
+==================================================
+In a datbase,  the process that writes to the database encodes the 
+data, and the process that reads from the database decodes  it.
+
+Thre may just be a single process accessing the database,
+in which case the reader is simply a later version of the same 
+process --- in that case you can think of storing someting in the 
+database as sending a message to your future self.
+
+
+Backward compatibility is clearly necessary here; owtherwise  your future self
+wont' be able to decode what your previously wrote.
+
+
+
+
+ 
+ 
+                                                    Person person = db.read(...);
+                                                   person.setFavoriteNumber(42);
+                    +------------------------------------+  db.write(person.toJSON());
+                    |   public class Person{             |
+                    |   private String userName;         |
+Read and      +---->+   private Long favoariteNumer;     +----------+
+decode object |     |   private List<String> interests;  |          |
+from DB       |     |   }                                |          |
+              |     +------------------------------------+          |
+              |          Old version of                             |
+              |          code (does not know     +------------------v---+
+              |          about photoURL field)   |{                     |
+              |                                  |userName:Martin,      |
+              |                                  |favoriteNumber:1337,  |   Update, reencode and write
+              |                                  |interests:[hacking],  |   back
+             ++----------------------+           |photoURL:http://....  |
+             | {                     |           |}                     |
+             | userName:Martin,      |           |                      |
+             | favoriteNumber:1337,  |           +----------------------+
+             | interests:[hacking],  |                Value of photoURL field is lost
+             | photoURL:http://....  |
+             | }                     |
+             +-----------------------+
+               Data written by new version
+               of code(including
+               photoURL field
+
+ 
+ 
+ 
+
+##Different values written at different times
+-------------------------------------------------------------
+A database generally allows any value to be updated at any time.
+This means that within a single database you may have some val;ues that
+were written five millisenconds ago, and some values that were written
+five years ago.
+
+Old data no matter how many DB updates will still have the same encoding unless
+it has been explicityly re-written sence the update.
+
+Data often outlives code.   Rewriting(migrating) data into a new schema is 
+possible, but it is an expensive thing to do on a large dataset, so most
+databases avoid it if possible.
+
+Most RDBs allow simple schema changes, such as adding a new column with a null default
+value without rewriting existing data.  When an old rochristopher plummer villianw is read, the 
+database fills in nulls for any colunmns that are missing fro the encoded data on
+disk.
+
+LinkedIn's document database Espresso uses Avro for storage, allowing it to 
+use Avro's schema evolution rules.
+
+
+Schema evolution thus allows the entire dtabase to appear as if it was encoded
+with a single  schema, enven though th eunderlying storage may conatin records
+encoded with various historical ersion oft the shema
+
+
+##Archival Storage
+-----------------------------------------------------------------------
+Perhaps you take a snapshot of yor database from time to time, say for back up
+purposes or for loadking int a data warehouse.  In this case the data dump will typically be encoded
+using the latest schema, enve if th eoriginal encoding in the 
+source databaase contaned a mixture of schema versions  from different eras.
+
+Since we are copying data anyway, we might as well encode the copy of the data 
+consistently.
+
+As the data dump is written in one go and is thereafter immutable, formats like
+Avro object contianer files are a good fit.  This is also a good
+opprotunity to encode the data in an analytics-friendly column-oritented format such as Parquet.
 
  
  
  
  
  
+ ##Dataflow Through Services: REST and RPC
+ ----------------------------------------------------------------------------------
+ When you have processes that need to communicate over a network, there are
+ a few differnet ways of arranging that communiction.  The most common
+ arrangement is to have two roles:
+ -  clients
+ -  servers
+ 
+ 
+ The servers expose an API over the network, and the clients can connect to 
+ the servers to make requests to that API, exposed by the server is known as 
+ a **service**
  
  
  
  
  
+ ###Web services
+ When Http is used as the ynderlying protocol for talking to the 
+ service, it is called a **web service**.  This is perhaps a slight misnomer,
+ because web services are ont only used on the web, but in sveral different contexts.  For
+ example:
+ 
+ 1. A client application running on a user's device
+    makeing requests to a service over HTTP.
+    
+ 2. One service making rquests to another service owned by the same
+    organization, often located within the same datacenter, as part of 
+    a service-oriented/microservices architecture(software that supports
+    this kind of use case is sometimes called middleware)
+    
+ 3. One service maing rquests to a service owned by a different organization,
+ usually via the internet.This is used for data exchange between diffrent
+ organizations backend systems.  This category includes public APIs 
+ provided yb online dervices, such as credit card processing systems, or
+ OAuth for shared access to user5 data.
+ 
+ 4. REST APIs tend to favor simple approaches, typically involving less code
+    generate and automated tooling.  A definition format such as OpenAPI, also
+    known as Swagger can be used to describe the RESTful APIs and produce
+    documentation.
+ 
+ 4. The two most popular approaches to web services : REST and SOAP
+    both are diametrically opposed to one another in philosiphy
+    
+    -   REST is NOT a protocol., but rather a design philosophy that builds
+        that builds upon the principles of HTTP.  It emphasizes simple
+        data formats, using URLs for indentify resources using
+        HTTP features for cache control, authentication, and content 
+        type negotiation.  REST has been gaining popularity 
+        compared to SOAP, at least in the 
+        context of cross-organizational sercie integreation and is often
+        associated with microservices.  An API design according
+        to the prenciples of REST is called RESTful.
+        
+    -   SOAP is an XML-based protocol for making netowrk API requests.
+        Although it is most commonly used over HTTP, ti aims to be
+        independent from HTTP and avoids using most HTTP features.
+        Insteand, it comes with a sprawling and complex multitude of related
+        standards(the web service framework, known as WS-*) that add
+        various features
+        
+   -    The API of a SOAP web service is described using an XML-based 
+        language called the Web Sevices Description Language (WSDL)
+        that enables code generation so that a client can access aremote service
+        using local clases and method calls(which are encoded to XML
+        messages and ecoded again by the framework)
+        
+   -    As always...schemas such as WSDLs are much more useful when using
+        statically typed languages than they are when using dynamically typed
+        languages.
+        
+   -    WSDLs were not dessigned to be human readable....and SOAP messages
+        are often too complex to construct manually, users of SOAP rely 
+        heavily on tool support, code generateion and IDES...
+        
+   -    For users of languages that are not supported by SOAP vendors, integration
+        with SOAP services is difficult.
+        
+   -    Despite SOAP and it's various extensions are ostensibly standards....
+        interoperability between different vendor's implemenations often 
+        causes problems.
+        
+   -    SOAP is still in use...mostly as legacy and for good reason.
+   
+   
+##The problems with RPC
+Web services are merely the latest incarnation of a long line of technologies for
+making API requests over a network, many of which recieved a lot of hype but 
+have serioius problems.
+
+    1. EJB
+        - Enterprise Java Beans
+        - Java proprietary
+    2. RMI
+        - Remote Method Invocation
+        - Java properietary
+    3. DCOM
+        -   Distributed  Component Object Model
+        -   Is limited to Microsoft platforms
+       
+    4. CORBA
+        -   Common Object Request Broker Architecture
+        -   Excessively complex 
+        -   Does not provide backward or forward
+            compatibility.
+ 
+RPC models try to make a request to a remote network service
+appear the same as calling a function or method in any particular
+programming language, within the same process(this abstraction is called location
+transparency).
+
+RPC seems convenient at first..but there are some glaring flaws....
+
+1. local function calls are predictable.  Network calls are not.
+   Local function calls speed of execution are largly dependent on speed of context
+   switching.  Network calls are subject to speed of network connection, network
+   congestion, network signal attenuation, network lag, availability of expected
+   network hosts...etc.
+   
+2. Network calls are much slower than native network calls.
+
+3. Network calss may simply not return do to timeouts.,..
+
+4. RPC clients and services may be implemented in different programming
+   languages, so the RPC framework must translate dtatypes from one 
+   language into another.  This can get real ugly real quick.
+   Not all langauges have the same types...or even if they do, certain
+   types don't scale exactly.  JavaScript for example doesn't have a
+   any deliniation between types of numbers, and even then has pretty shit
+   percision(limited to numbers no greater than 2^53).  REST doesn't try to hide
+   the fact that it is a design philosopy based on a network protocol (http).
  
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
+##Current directions for RPC
+Sepsite all these problems RPC is still very much a thing.
+Various RPC frameworks have been built on top of all the 
+encodings mentioned previously....
+
+1.  Thrift and Avro come with RPC support included.
+2.  Rest.ki uses JsON over HTTP.
+3.  The new generation of RPC frawmeworks is more exlplicit about 
+    the fact that remote requests are different than local function calls
+        -   Finagle and Rest.li use futures(promises) to encapsulate
+            asynchronous actions that may fail 
+        -   Futures also simplofy situations where you need to make requests
+            to mutliple sercies in parallel, and combine their results.
+        -   gRPC supports streams, where ac all consists of not jsut one
+            request and one response, but a series of requests and 
+            responses over time.
+4. Some of these frameworks also provide service discovery -- that is, allowing
+   alcient to find otu which IP address and ort number it can find a particular service.
+   
+5. Customer RPC protocols with binary encoding format can achieve better performance
+   than something generic like JSON over REST.  However a RESTful API has
+   other significant advantages
+    -   good for experimentation and debugging
+    -   supported by most programming languages
+    -   vast ecosystem of tools
+6.  REST is better for public APIs, while RPC frameworks offer better performance on inter
+    host communicaton owned by the same organization, typicaly within the same datacenter.
+             
  
  
  
