@@ -38,7 +38,7 @@ could include it in your configuration file application.properties:
 
 or specify on the command line using the switch
 
-	mvn spring-boot:run --spring.profiles.active=dev,hsqldb
+	mvn spring-boot:run -Dspring.profiles.active=dev,hsqldb
 
 
 
@@ -253,7 +253,7 @@ application start-up
  #VM properties.....
  -Dspring.profiles.active=dev 
 
-
+mvn spring-boot:run -Dspring.profiles.active=dev 
 
 Maven Profile
 ----------------------------------------------------------------------

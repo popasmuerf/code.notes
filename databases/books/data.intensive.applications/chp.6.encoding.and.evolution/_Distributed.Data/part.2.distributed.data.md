@@ -1,13 +1,192 @@
-"Everything changes and nothing stands stills" --- Heraclitus of Ephesus, as
-qouted by Plato in Cratylus 360 BCE
+"For successfully technology, reality must take precedence
+over public relations, for nature cannot be fooled"
+ --- Richard Feynman, Rogers Commission Report(1986)
 
 
-Applications inevitably change over time.  Features are added
-or modified as new products are launched, user
-requirements become better understood, or business
-circumstances change.   We should always endeavor 
-to build systems that make it relatively trivial to 
-adapt to change.
+In Part I of this book, we discusse3d aspects of data systems thaty aply
+when data is stored on a single machine.....now in Part II we move up a level and
+ask:  "What happens if multiple machines are involed
+in storage and retrieval of data ?"
+
+
+There are various reasons why you might want to distribute a database
+across multple machines:
+
+***Scalability***
+    If your data volume, read load, or write load grows bigger than
+    a single machine can handle, you can potentially sprad the load
+    across mutilple machines.
+    
+***Fault tolerance/high availability***
+    If your appliation needs to continue working even if one machine
+    (or several machines , or the netowrk, or an entire datacenter) goes
+    down, you can use multiple machines to give you redundancy.  When one 
+    fails, another one can take over.
+    
+***Latency***
+    If you have users around the world, you might want to have servers at
+    various loations worldwide so that each user can be served from a 
+    datacenter that is geographically close to them.  That avoids
+    the users having to wait for network packets to travel
+    halfway around the world.
+    
+    
+***Drawbacks***
+
+While distributed shared-nothing architecture has many advantages,
+it usually also incurs additional complexity for application and
+sometimes limits the expressiveness of the data models you can use.
+
+In many cases, a simple single-threaded program can peform significantly better thaqn
+a cluster with oover 100 CPU cores.  On the other hand, shared-nothing systems can
+be very powerful...
+    
+    
+    
+##Replication Versus Partitioning
+There are two common ways data is distributed across multiple nodes:
+
+    -   Replication
+        Keeping a copy of the same data on several differnet nodes,
+        pontentially in different locations.  Replication provides
+        redundancy:  If some nodes are unavailable, th edata can still
+        be served from the remaining nodes.
+        Replication can also help improve peformance.  
+        
+    -   Partitioning
+        Splitting a big database into smaller subsets called partitions
+        so that different partitions can be assigned to different nodes
+        AKA as **sharding**.
+        
+
+┌──────────────────────────────────────────────┐
+│Partion 1, Replica 1                          │
+│                                              │
+│136-->            211-->           377-->     │
+│Four score        Johanes          Whereas    │
+│and seven         Dei gracia       recognition│
+│years ago         Rex Anglie,      of the     │
+│our fathers       Dominus          inherent   │
+└──────────────────────────────────┬────▲──────┘   copy of the
+                                   │    │          same data
+                                   │    │
+┌──────────────────────────────────▼────┴────────┐
+│Partion 1, Replica 2                            │
+│                                                │
+│136-->            211-->            377-->      │
+│Four score        Johanes           Whereas     │
+│and seven         Dei gracia        recongnition│
+│years ago         Rex Anglie,       of the      │
+│our fathers       Dominus           inherent    │
+└────────────────────────────────────────────────┘
+
+
+
+
+
+
+ ┌──────────────────────────────────────────────┐
+ │Partion 2, Replica 1                          │
+ │                                              │
+ │629-->            696-->           858-->     │
+ │DierWurdee        Whereas          Weehold    │
+ │des Menschen      the Lordsa       thesentruth│
+ │schen ist         Spirituale,      to beeself │
+ │unamtastbar       andiTempo        evidentt   │
+ └──────────────────────────────────┬────▲──────┘   copy of the
+                                    │    │          same data
+                                    │    │
+ ┌──────────────────────────────────▼────┴────────┐
+ │Partion 2, Replica 2                            │
+ │                                                │
+ │629-->            696-->            858-->      │
+ │DierWurdee        Whereas           Whereas     │
+ │des Menschen      the Lordsa        recongnition│
+ │schen ist         Spirituale,       of the      │
+ │unamtastbar       andiTempo         inherent    │
+ └────────────────────────────────────────────────┘
+
+    
+    
+In a large macine, although any CPU can access any part of
+memory, some bansk of memory are closer to one CPU than others
+(this is called nonuniform memory access, or NUMA). To make
+efficient use of this architecture, the processing needs
+to be broken down so that each CPU mmostly accesses memory that
+is nearby, meaning that pasrtitioning is still required, even when
+ostensibly running on one machine
+    
+        
+
+
+
+If all you need is to scale to higher load, the simplest approach is to 
+buy a more powerful machine(AKA as vertical scaling up).  Many CPUs,
+many RAM chips, and many disks can be joined together under one operating
+system, and a fast interconnect allows any CPU to access any part of the memory
+or disk.
+
+
+The problem with shared-memory approach is that the cost grows faster than
+linearly:  a machine with twice as many CPUs, twice as much
+RAM, and twice as much disk capacity asanother typically costs
+significantly more than twice tas much.....also due to bottlnecks, a
+machine twice the size cannot necersarily handle twice the load.
+
+
+##Shared-Nothing Architectures
+Another approache is the shared-disk architecture, which uses several machines
+with indepenent CPUs and RAM, but stores data on an array of
+disks that is shared between the machines, which are connected via a 
+fast network.   This architecture is used for some data warehousing workloads,
+but contention and the overhead of locking limit the scalability of the
+shared-disk approach.
+
+##Shared-Nothing Architectures
+....have gained a lot of popularityh....
+This approach has each machine or virtual machine running the database sofware
+on a **node**.  Eeach node uses it's CPUs, RAM , and disks indempendently.
+Any coordination between nodes is done at the sofware level, using a 
+convential network.
+
+    -   No special hardware is required by a shared-nothing system so 
+        So whatever manchines have the best price/performance ration will do
+        -   x86
+        -   ARM
+        -   Apple Silicon
+        -   RISC
+        -   laptop
+        -   It don't matter
+        
+You can potentialy distribute data across multiple geographic
+regions,and thus reduce latency for users and potentialy be ale to 
+survive the loss of an entire datacenter.
+
+
+While a distributed shared-nothing architecutre has many advantages, it 
+usually also incurs additional complexity
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 In most cases a change to an application's features
@@ -45,7 +224,8 @@ in the business logic associated with this data.
         as if it never happened in the first place.
     --  users may not install the update for some time.....
     
-    
+
+
 
 ##Formats for Encoding Data
 Programs usually work with data in (at least) two different
@@ -79,6 +259,8 @@ representations:
         is called encoding(also know as serialization or marshalling)
     -   Marshalling is the reverse of decoding(parsing, deseraializaing,
         unmarshalling)
+        
+ 
     
     
 ##Language-Specific Formats
