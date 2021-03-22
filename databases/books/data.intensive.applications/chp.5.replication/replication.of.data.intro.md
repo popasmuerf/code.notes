@@ -1,13 +1,21 @@
-"For successfully technology, reality must take precedence
-over public relations, for nature cannot be fooled"
- --- Richard Feynman, Rogers Commission Report(1986)
+"The major difference between a thing that might go wrong
+and a thing that cannot possibly go wrong is taht when a thing
+that cannot possibly go wrong goes wrong it usually turns
+out to be impossible to get at or repair."
+ --- Douglas Adams, Mostly Harmless (1992)
 
+Replication means keeping a copy of the same data on multile machines
+that are connected via a network.  As discussed in the introduction to 
+to PartII, there are several reasons why you might want to replicate
+data:
 
-In Part I of this book, we discusse3d aspects of data systems thaty aply
-when data is stored on a single machine.....now in Part II we move up a level and
-ask:  "What happens if multiple machines are involed
-in storage and retrieval of data ?"
+-   To keep data geographically close to your users (and thus reduce latency)
 
+-   To allow the system to continue working even if some of its parts
+    have failed (and thus increasing availability)
+    
+-   To scale out the number of machines that can serve read queries
+    and thus increase erad throughput)
 
 There are various reasons why you might want to distribute a database
 across multple machines:
@@ -41,7 +49,10 @@ In many cases, a simple single-threaded program can peform significantly better 
 a cluster with oover 100 CPU cores.  On the other hand, shared-nothing systems can
 be very powerful...
     
-    
+ 
+ 
+ In this chapter we will assume that our dataset is so small that each machine
+ can hold a copy of the entire dta   
     
 ##Replication Versus Partitioning
 There are two common ways data is distributed across multiple nodes:
@@ -108,91 +119,6 @@ There are two common ways data is distributed across multiple nodes:
 
     
     
-    
-## Leaders and Followers
-
-Each node that stores a copy of th edatabase is 
-called a **replica**.  With multiple
-replicas, a question inevitably arises: how do 
-we ensure that all the data ends up on 
-all the replicas?
-
-Every write to a database needs to be processed
-by every replica; otherwise, the
-replicas would no longer contain the 
-same data.  The most common solution to this
-is leader-based replication(also known as 
-active/passive or master-slave replication_)
-
-###Leader based replication
-1. A replica node is designated as 
-   the leader/master/primary.
-   
-   When clients want to write to the
-   database, they must send 
-   their to the leader, which first writes the new data to
-   its logical storage.
-   
-   
-2. the other replicas are known as followers(read replicas, slaves, secondaries
-   or hot standybs).
-   Whenever the leader write4s new dta to it's local storage, it
-   also sends the data change to all of its followers as
-   part of a replcation log or change stream.
-   
-   Each follower takes the log from the leader and
-   updates it's local copy of the database 
-   accordingly by apply all writes in the same order
-   as they were processed on the leader
-   
-3. When a client wants to read from the database, it can
-   query either the leader or any   of the followers.
-   However, writes are only accepted on the
-   leader(all slaves are read only from the client's p)
-   
-
-                                                                                 Slave
-                                                                                 Replica
-User 1234                             Leader                Replication
-configures picture                    Replica               Streams              ┌──────┐
-                                     ┌────────┐             ┌───────────────────►│      │
-  Read-write queries────────────────►│        │             │                    │      │
-                                     │        │             │                    │      │
-                                     │        ├─────────────┘                    └──────┘
-update users                         │        │
-set picture_url='me-new.jpg'         │        │
-where user_id = 1234                 └────┬───┘                                  Slave
-                                          │                                      Replica
-                                          │
-                                          │                                     ┌────────┐
-                                          │                                     │        │
-                                          └─────────────────────────────────────►        │
-                                                                                │        │
-                                                                                │        │
-                                                                                └────────┘
-                                                                                     ▲
-master slave data replication                                                        │
-                                                                                     │
-                                                                                     │
-                                                                  User2345      select * from
-                                                                                users where
-     
-     
-                                                                                user_id = 1234
-
-
-
-
-This mode of replication is built-in feature of many relational
-databasaes, such as PostgreSQL(since version 9.0), MySQL, 
-Oracle DAta Guard, and Microsoft SQL server's AlwaysOn Availability
-Groups.  It is also used in some 
-nonrelational databaes including MongoDB, RethinkDB, and
-Espresso.
-
-
-
-
 In a large macine, although any CPU can access any part of
 memory, some bansk of memory are closer to one CPU than others
 (this is called nonuniform memory access, or NUMA). To make
@@ -200,12 +126,6 @@ efficient use of this architecture, the processing needs
 to be broken down so that each CPU mmostly accesses memory that
 is nearby, meaning that pasrtitioning is still required, even when
 ostensibly running on one machine
-
-
-
-##Synchronous Versus Asynchronous Replication
-
-
     
         
 
