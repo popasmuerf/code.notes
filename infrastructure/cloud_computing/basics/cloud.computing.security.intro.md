@@ -72,9 +72,11 @@ When th eclient issues reuest to access data:
 -   the borker returns the data to the proxy
 -  finally the proxy sends the data to the client
 
+<img src="https://www.tutorialspoint.com/cloud_computing/images/cloud_computing-brokered_cloud_storage_access.jpg">
 
-
-
+##Encryption 
+Encryption helps us to protect data from being compromised.  It protects data that is beign transferred as well as data stored in the cloud.  Although encryption
+helps to protect data from any unauthorized acces, it does not prevent data loss.
 
 
 
