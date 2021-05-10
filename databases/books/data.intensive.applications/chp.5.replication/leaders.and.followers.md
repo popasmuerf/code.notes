@@ -53,6 +53,12 @@ be very powerful...
  
  In this chapter we will assume that our dataset is so small that each machine
  can hold a copy of the entire dta   
+
+
+##Leaders and Followers
+Each node that stores a copy ofthe database is called a replica 
+
+
     
 ##Replication Versus Partitioning
 There are two common ways data is distributed across multiple nodes:
