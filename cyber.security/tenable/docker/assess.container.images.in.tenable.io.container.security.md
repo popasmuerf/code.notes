@@ -1,4 +1,4 @@
-#Assess Container Images in Tenable.io Container Security
+# Assess Container Images in Tenable.io Container Security
 (source)[https://www.youtube.com/watch?v=XotX4m3lCz4]
 
 
@@ -24,7 +24,7 @@ How do we get that observability ?
 
 
 
-#Docker Integration
+# Docker Integration
 (source)[https://www.youtube.com/watch?v=_ZwbAYbHKM8]
 # first login to docker  using your api key
 docker login -u -p  registry.cloud.tenable.com 
@@ -43,7 +43,7 @@ docker push registry.cloud.tenable.com/mongo
 
 
 
-#Discovring Running Containers with Tenable.io Container Security
+# Discovring Running Containers with Tenable.io Container Security
 
 With the rise of Docker orgs struggle with understanding if Docker is being
 used in their enviroment and where it is being used in their enviroment....

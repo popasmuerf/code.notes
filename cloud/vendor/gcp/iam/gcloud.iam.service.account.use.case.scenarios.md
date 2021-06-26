@@ -1,0 +1,14 @@
+
+## Service Account Use case Scenarios
+
+| Scenario                                                                                                | Solution                                                                                                                                                |
+|---------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Application on a VM wants to talk to a Cloud Storage                                                    | Configure the VM to use Service Account with right permissions                                                                                          |
+| Application on a VM wants to put a message on a Pub Sub Topic                                           | Cloud storage -Archive                                                                                                                                  |
+| Is Service Account an indentity or a resource                                                           | It is both.  You can attach roles with Service Accounts.  You can let other members access a SA by granting them a role on the Service Account(resource |
+| VM instance with default service account in Project A needs to access Cloud storage bucket in Project B | In Project B, add the service account from Project A and assign Storage Object Viewer Permission on the bucket                                          |
+|                                                                                                         |                                                                                                                                                         |
+|                                                                                                         |                                                                                                                                                         |
+|                                                                                                         |                                                                                                                                                         |
+|                                                                                                         |                                                                                                                                                         |
+|                                                                                                         |                                                                                                                                                         |

@@ -1,0 +1,13 @@
+### Achieving RTO and RPo -Failover Examples
+
+| Scenario                                                                                                | Solution                                                                                                                        |
+|---------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| Very small data loss(RPO - 1 minute) Very smalle downtime(RTO - 5 minutes)                              | Hot standby - Automatically synchronize data have standby ready to pickup load  Use automatic failover from master to standby   |
+| Very small data loss(RPO -1 minute) downtimes <= 15 allowed(RTO 15 minutes)                             | Warm Standby - Automatically synchronize data Have a standby with minimum infrastructure Scale it up when a failure happens     |
+| Data is critical(RPO - 1 minute) downtimes <= 3 hours(RTO few hours)                                    | Create regular data snapshots and transaction logs.  Create database fromsnapshots and transactions logs when a failure happens |
+| VM instance with default service account in Project A needs to access Cloud storage bucket in Project B | In Project B, add the service account from Project A and assign Storage Object Viewer Permission on the bucket                  |
+| Data loss is of no real concern                                                                         | Failover to completely new server.                                                                                              |
+|                                                                                                         |                                                                                                                                 |
+|                                                                                                         |                                                                                                                                 |
+|                                                                                                         |                                                                                                                                 |
+|                                                                                                         |                                                                                                                                 |

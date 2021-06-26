@@ -1,0 +1,176 @@
+(Searching resources samples)[https://cloud.google.com/asset-inventory/docs/searching-resources-samples] 
+ 
+ 
+  gcloud asset search-all-resources \
+  --scope=organizations/123456 \
+  --page-size=50 \
+  --format='table(assetType.basename(), name.basename(), name.scope(projects).segment(0):label=PROJECT_ID, labels)'
+  
+  
+  
+  
+  gcloud asset search-all-resources \
+  --scope=projects/adjunct-black \
+  --page-size=50 \
+  --format='table(assetType.basename(), name.basename(), name.scope(projects).segment(0):label=PROJECT_ID, labels)'
+
+
+
+
+#Get Compute Instances
+  gcloud asset search-all-resources \
+  --scope=projects/adjunct-black \
+  --asset-types='compute.googleapis.com/Instance'
+
+
+#Get Compute Instances that are acove
+ gcloud asset search-all-resources \
+ --query='NOT state:active' \
+ --scope=projects/adjunct-black \
+ --asset-types='compute.googleapis.com/Instance' \
+ --page-size=50 \
+ --format='table(name, assetType, state)'
+
+#List compute instances that are located in the US
+ gcloud asset search-all-resources \
+ --query='location:us-*' \
+ --scope=projects/adjunct-black
+ --asset-types='compute.googleapis.com/Instance' \
+ --page-size=50 \
+ --format='table(name, assetType, location)'
+
+
+additionalAttributes:
+  gatewayAddress: 10.150.0.1
+assetType: compute.googleapis.com/Subnetwork
+createTime: '2021-04-12T18:12:46Z'
+displayName: default
+location: us-east4
+name: //compute.googleapis.com/projects/adjunct-black/regions/us-east4/subnetworks/default
+parentAssetType: cloudresourcemanager.googleapis.com/Project
+parentFullResourceName: //cloudresourcemanager.googleapis.com/projects/adjunct-black
+project: projects/434151827321
+
+
+#List compute instances that are located in the US
+ gcloud asset search-all-resources \
+ --query='NOT state:active' \
+ --scope=projects/adjunct-black \
+ --asset-types='compute.googleapis.com/Instance' \
+ --page-size=50 \
+ --format='json(gatewayAddress, assetType, createTime,displayName,location,name,parentAssetType,parentFullResourceName,project)'
+
+
+#List compute instances that are located in the US
+ gcloud asset search-all-resources \
+ --query='NOT state:active' \
+ --scope=projects/adjunct-black \
+ --asset-types='compute.googleapis.com/Instance' \
+ --page-size=50 \
+ --format='json(gatewayAddress, assetType, createTime,displayName,location,name,parentAssetType,parentFullResourceName,project)'
+
+
+  gcloud asset search-all-resources \
+  --scope=projects/adjunct-black \
+  --page-size=50 \
+
+
+
+#List Cloud Functions
+ gcloud asset search-all-resources \
+ --scope=projects/adjunct-black \
+ --asset-types='cloudfunctions.googleapis.com/CloudFunction' \
+ --page-size=50 \
+ --format='json(gatewayAddress, assetType, createTime,displayName,location,name,parentAssetType,parentFullResourceName,project)'
+ --output-path=:gs://assets-inventory-general-bucket/assets.json
+
+
+
+#List Cloud Functions
+ gcloud asset search-all-resources export \
+ --scope=projects/adjunct-black \
+ --asset-types='cloudfunctions.googleapis.com/CloudFunction' \
+ --page-size=50 \
+ --format='json(gatewayAddress, assetType, createTime,displayName,location,name,parentAssetType,parentFullResourceName,project)'
+
+
+#Exporting an asset snaptshot for a project
+
+gcloud asset export \
+   --organization ORGANIZATION_ID \
+   --output-path "gs://YOUR_BUCKET/NEW_FILE"
+
+gcloud asset export \
+  --organization adjunct-black\
+   --output-path "gs://assets-inventory-general-bucket/project_adjunct-black_assets.json"
+
+gcloud asset export \
+  --project adjunct-black\
+   --output-path "gs://assets-inventory-general-bucket/project_adjunct-black_assets.json"
+
+
+
+
+##Logging http.....
+dev-network-http-bucket
+
+
+gcloud --log-http asset export \
+--output-path=gs://dev-network-http-bucket/assets.json \
+--project=adjunct-black \
+
+#Use Case: List compute instances with description instance-prod, but not instance-prod-1, INSTANCE-PROD, etc.
+
+ gcloud asset search-all-resources \
+ --query='description=instance-prod' \
+ --scope=organizations/123456 \
+ --asset-types='compute.googleapis.com/Instance' \
+ --page-size=50 \
+ --format='table(name, assetType, location)'
+ 
+ 
+##Use Case: Count all the Cloud resources by asset type and location 
+ 
+  gcloud asset search-all-resources \
+ --scope=projects/adjunct-black \
+ --page-size=500 \
+ --format='csv(assetType,location)' \
+ | sed 1d | sort | uniq -c
+
+
+  gcloud asset search-all-resources \
+ --scope=projects/adjunct-black \
+ --page-size=500 \
+ --format='json(assetType,location)'
+
+
+###Use case List computes instances that are in a suspended state
+ gcloud asset search-all-resources \
+ --query='state=SUSPENDED' \
+ --scope=projects/adjunct-black \
+ --asset-types='compute.googleapis.com/Instance' \
+ --page-size=50 \
+ --format='table(name, assetType, location)'
+ 
+ 
+ [Google Cloud Asset Inventory – Reverse Engineering an API](https://www.jhanley.com/google-cloud-asset-inventory-reverse-engineering-an-api/)
+ [Listing assets](https://cloud.google.com/asset-inventory/docs/listing-assets)
+## List the assets in a project, including all resource metadata:
+    ```
+    NOW=$(TZ=GMT date +"%Y-%m-%dT%H:%M:%SZ")
+    gcloud beta asset list --project='adjunct-black' \
+      --billing-project='adjunct-black' \
+      --asset-types='compute.googleapis.com/Instance' \
+      --snapshot-time=$NOW \
+      --content-type='resource'
+    ```
+## List the assets in a project, without resource metadata:
+    ```
+    NOW=$(TZ=GMT date +"%Y-%m-%dT%H:%M:%SZ")
+    gcloud beta asset list --project='adjunct-black' \
+      --billing-project='adjunct-black' \
+      --asset-types='compute.googleapis.com/Instance' \
+      --snapshot-time=$NOW \
+    ```
+    
+

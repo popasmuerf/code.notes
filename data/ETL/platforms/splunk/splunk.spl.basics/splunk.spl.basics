@@ -1,0 +1,79 @@
+##  Splunk Processing Language
+
+-   is the core of how well your alerts will add value
+
+
+
+## Overview of SPL
+
+
+SPL stands for Splunk Processing Language; a language with greate capabilities
+and gives power to ask ANY questiosn to ANY data.
+
+
+
+### Sample Example:
+    -   Find list of IP address and country locations of all failed SSH 
+        authentication attempts.
+        
+        source="secure.log" action=failed | ipaddressof city, Country
+        
+    -   Compare that list of IP with IP sets in access.log and see what
+        activities they performed.
+        
+SPL provides around 140 commands that allow us to search, co-relate, analyaze and
+even visualize data.
+
+
+
+
+## Basic Structure of SPL
+
+```
+search and filter | munge | report | clean up
+
+
+source=access.log 
+
+| eval KB=bytes/1024
+
+| stats sum(KB) dc(clientip)
+
+| rename sum(KB) as "TotalKilobytes" dc(clientip) as "Unique
+
+
+
+
+source="secure.log" action=failure | iplocation src | geostats count by City, Country
+
+
+source="access.log" clientip=182.236.164.11 | eval KB=bytes/1024 | stats sum(KB) | rename sum(KB) as "Fuck and Suck"
+
+```
+
+### Note:  Wait...dafuck is "data munging"
+Not to be confused with "data wrangling" , data munging is the initi9al
+process of refining raw data into content or formats better suited for
+consumption by downstream systems and users.
+
+### The data munging process: An overview
+
+With the wide variety of verticals, use-cases, types of users, and systems utilizing enterprise data today, the specifics of munging can take on myriad forms. 
+
+    Data exploration: Munging usually begins with data exploration. Whether an analyst is merely peeking at completely new data in initial data analysis (IDA), or a data scientist begins the search for novel associations in existing records in exploratory data analysis (EDA), munging always begins with some degree of data discovery. 
+    Data transformation: Once a sense of the raw data’s contents and structure have been established, it must be transformed to new formats appropriate for downstream processing. This step involves the pure restructuring of data, for example un-nesting hierarchical JSON data, denormalizing disparate tables so relevant information can be accessed from one place, or reshaping and aggregating time series data to the dimensions and spans of interest. 
+    Data enrichment: Optionally, once data is ready for consumption, data mungers might choose to perform additional enrichment steps. This involves finding external sources of information to expand the scope or content of existing records. For example, using an open-source weather data set to add daily temperature to an ice-cream shop’s sales figures. 
+    Data validation: The final, perhaps most important, munging step is validation. At this point, the data is ready to be used, but certain common-sense or sanity checks are critical if one wishes to trust the processed data. This step allows users to discover typos, incorrect mappings, problems with transformation steps, even the rare corruption caused by computational failure or error.
+    
+
+
+
+
+
+
+
+
+
+        
+        
+    
