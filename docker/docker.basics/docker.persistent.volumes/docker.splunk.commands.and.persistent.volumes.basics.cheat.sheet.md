@@ -1,6 +1,8 @@
  
  [source](https://www.splunk.com/en_us/blog/tips-and-tricks/hands-on-lab-sandboxing-with-splunk-with-docker.html)
  
+ [source](https://www.tekstream.com/containerization-and-splunk-how-docker-and-splunk-work-together/)
+ 
  ## Pulling/Running an instance
  
  > docker run -d -p 8000:8000  \
@@ -67,4 +69,8 @@ cd /var/lib/docker/volumes
  docker rm -vf 1f34fcbbe085
  
  
- 
+ (base) mrblack@pop-os:~$ docker container stop splunk-mount
+splunk-mount
+(base) mrblack@pop-os:~$ docker container rm  splunk-mount
+splunk-mount
+

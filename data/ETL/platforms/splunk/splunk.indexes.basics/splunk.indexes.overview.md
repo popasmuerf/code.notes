@@ -26,4 +26,18 @@ These files resides in set of directories organized by age
 
     
     
+    
+## Default Set of Indexes
+
+Splunk Enterprise comes with a number of pre-configured indexes, including:
+
+| main      | This is the default index.   All data gets stored here unless specified.                         |
+|-----------|--------------------------------------------------------------------------------------------------|
+| _internal | Stores Splunk's internal logs                                                                    |
+| _audit    | Contains events related to user search history, file system change monitor and auditing specific |
+|           |                                                                                                  |
+
+
+
+
 
