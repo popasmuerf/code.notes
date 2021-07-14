@@ -46,7 +46,6 @@ send all the windows events and Active Directive logs.....
 
 
 
-
 ##  Splunk actually has a forwarder management feature
 
 192* - /var/log/secure
