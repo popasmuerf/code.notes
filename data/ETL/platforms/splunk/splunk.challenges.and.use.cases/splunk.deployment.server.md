@@ -1,4 +1,22 @@
-## Challenges with Forwarder Management
+## Overview of Deployment Server
+
+[source](https://docs.splunk.com/Documentation/Splunk/8.2.1/Updating/Aboutdeploymentserver?ref=hk)
+
+Deployment Server is a tool for distributing configuration,
+apps and content updates to group of splunk enterprise instances
+like universal forwarders, search heads and others.
+
+
+
+
+
+** Forwarder Management ** is GUI built on top of deployment server
+that provides an easy way to configure the deployment server
+and monitor the status of deployment
+
+
+
+
 
 
 
