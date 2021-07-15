@@ -1,6 +1,24 @@
+##  Splunk Bucket Basics
+
+[source](https://docs.splunk.com/Splexicon:Bucket)
+
+**noun**
+
+A file system directory containing a portion of a 
+Splunk Enterprise **index**
+
+Note: The bucket search command is not related to the index buckets described here. Its purpose is to put continuous numerical values into discrete sets or bins. The bucket command is actually an alias for the bin command. See the bin command in the Search Reference. 
+
+
+
+
+Note: The bucket search command is not real
+
+
 ##  Splunk Managing Indexes
 
-[source](https://www.learnsplunk.com/splunk-indexer-configuration.html)
+
+
 
 Indexing is a mechanism to speed up the search 
 process by giving numeric addresses to the 
