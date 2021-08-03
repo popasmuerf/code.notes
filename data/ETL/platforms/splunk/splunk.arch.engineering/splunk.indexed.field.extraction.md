@@ -1,0 +1,1 @@
+[About indexed field extraction ](https://docs.splunk.com/Documentation/Splunk/8.2.1/Data/Aboutindexedfieldextraction)

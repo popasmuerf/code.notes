@@ -6,7 +6,7 @@ Indexing is a mechanism to speed up the search
 process by giving numeric addresses to the 
 piece of data being searched.
 
-Splunk indexing is similar to the conectp of indexing in
+Splunk indexing is similar to the concept of indexing in
 databases.   The installation of Splunk
 creates three default indexes as follows:
 
