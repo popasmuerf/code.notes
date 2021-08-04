@@ -94,6 +94,62 @@ For some users...knowing that data is logged is not enough to provide accountabi
 that sanctions may result from violation of policy.
 
 
+## Nonrepudiation
+
+Nonrepudiation means a user cannot deny(repudiate)
+havingpeformed a transaction.  It combines authentication
+and integrity;  nonrepudiation authenticates the indentity of a user who peforms a transaction and ensures theintegrity of that traansactin.  You must have both authentication and integrity to have nonrepudiation; for example, proving you signed a contract to buy a car (authenticating your identity as the purchaser) is not useful if the car dealer can change the price from 20k to 40k(violate the integrity of the contract).  For example, immutable or signed data would be an example of integrity and identification would be your login id and password...
+
+
+## Least Privilege and need to know
+Self explanitory
+
+
+## Subjects and Objects
+A subject is an active entity on a data system.  Most examples of subjects involve people acceing data files.
+However , computer programs can be subjects as well.  A DLL or a Perl script that updates a database file with new information is also a subect
+
+An object is any passive data within the system.  Objects can range from documents on physical paper to database tables to text files.
+
+The important thing to remember about objects is that are passive whein the system;  They do not change the state of other objects.....what is and is not either a subject or object is contextual
+
+
+## Defense in Depth
+
+
+Defense in depth(also called layed defense) applies
+multiple safeguards(also called controls,which are measures taken to recuce risk) to protect an asset.  Any single security control may fail; by deploying multiple controls, you improve the confidentiality, integrity
+and availability of your data.
+
+
+
+
+## Legal and Reulatory Issues
+Though general understanding of major legal systems
+and types of law is important, it is critical that
+information security professionals understand the
+concepts described in the next section.  With the
+ubiquity of information systems, data, and applications
+comes a host of legal issues that require attention.
+
+## compliance with Laws and Regulations
+Complying with laws and regulations is a priority
+for top information security management, bot in the
+real world and the CISSP exam.  An organization must be
+in compliance with all laws and regulations that 
+apply to it.  Ignorance of the law is never a valid excuse for breaking the.
+
+
+## Major Legal Systems
+In order to begin to appreciate common legal concepts
+at awork in today's global economy,an understanding of the major legal systems is required.  These legal systems
+provide the framework that determines how a country develops laws pertaining to information systems in the first place.  The three major systems of law are
+-   civil
+-   common
+-   religious
+
+
+
 
 
 
