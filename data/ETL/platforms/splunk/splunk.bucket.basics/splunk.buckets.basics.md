@@ -37,8 +37,7 @@ creates three default indexes as follows:
         -   This index contains events related to the file
             system change monitor, auditing and all user history
 
-The splunk indexers create and maintain the indexes.  when you 
-add data to Splunk, the indexer processes it and stores it in
+The splunk indexers create and maintain the indexes.  when you add data to Splunk, the indexer processes it and stores it in
 a designated index (either by default in the main index or in the one that you identify)
 
 
@@ -47,6 +46,19 @@ a designated index (either by default in the main index or in the one that you i
 Splunk indexer is the most important splunk component.  
 Fundamentally the Splunk indexer is the the database of
 splunk where all logs are collected...but in a "smart way".
+
+
+### Where are Splunk's Bucket's located?
+
+
+
+Splunk indexed data is located in database directories, divided into subdirectors called **buckets**
+
+As time goes by, Splunk performs storage tiering, moving data through several types of buckets, which represent the following tiers:
+    -   hot
+    -   warm
+    -   cold
+    -   frozen
 
 The indexer collects logs sent by the splunk forwarders that are resident on target clients; and proecesses those for creating indices and raw data.  Same as any book index...it creates an index for all collectedlogs from your enviroment.  Splunk indexer stores all data in an "index"(a directory splunk stores keywords from logs that are then linked to raw-data/full logs) so that it can search logs with superb speed.
 
