@@ -153,3 +153,275 @@ Investigations are a critical way in which information  security professionals c
     -   Applicable computer crime laws vary throughout the world, according to jurisdiction.  However, regardless of region, some generalities exist.
 
     -   Computer crimes can be based upon the way in which computer systems relate to the wrongdoing.  For example, computer systems can be used as targets they can be used as the tools used in perpetrating the crime
+        -   Leveraging computers to steal data
+        -   Using computers to conduct unauthorized reconnaissance for
+            -   espionage
+            -   harrassment
+            -   in the commision of any crime
+        -   Grey areas
+            -   port scanning
+
+## Intellectual Property
+As opposed to physical or tangible property, intellectual propety refers to intangible property that is created as the result of a creative act.  The following intellectual proerty concepts effectively create an exclusive monopoly on their use.
+
+#### Trademark
+Trademarks are associated with marketing.  A trademark allows for the creation of a brand in order to 
+distinguish the source of products or
+services.
+    -   names
+    -   logo
+    -   symbol
+    -   images
+..are all common trademarked items.
+In the US there are two different symbolsthat are used by an individual or organization in order to protect
+distinctive marks.  The supescript
+**TM** symbol can be used freely to indicate an unregistered mark.  The cricle R symbol is used with marks that
+are formally registered as a tradmark with the US Patent and Trademark Office
+
+#### Patent
+
+Patents provide a monopoly to the patent holder rgarding the right to use, make, or sell an  invention for a period of time in exchange for the patent holder's promise to make the 
+invention public.  Thru the life of the patent the holder may enforce the
+exclusion of everyone from the use of the ivention via litigation.  The validity of the patent depends on
+    -   region
+    -   patent term
+    -   type of invention 
+
+For example...patents in the US and Europe can last for a term of 20 years
+
+#### Copyright
+Copyhright represents a tyhpe of intellectual property that projects the form of expression in artisitic,
+musical, or literay works and is typically denoted by the circled C-symbol.  The purpose of copyright is to preclude unauthorized duplication, distribution, 
+or modification of a creative work.
+Note:  that is is the form of expression that is protected, not the subject matter or ideas represented.
+
+#### Licenses
+Software licenses are a contract between a provider of software and 
+the consumer.  Though there are licenses that provide explicit permission for the consumer to do virtually anything with the software, 
+including modifying it for use in another commercial product, most commercial software provides specifici
+limits on the use and distribution of the sofware.  EULAs(End users licence aggreements), are an unusual form of contract because using the software typically consitutes contractual agreement tho very few users actually read the the EULA
+
+
+#### Trade Secrets
+Trade secrets are business-proprietary information that is important to an organization's ability to compete.  The organization must execrcise due care and due in the protection of their trade secrets.  Noncompete and nondisclosure agreements are two of the most common protection methods used.
+
+
+#### Privacy 
+
+Privacy is the protection of the confidentially of personal information.  Many organizations
+host users' PPII such as 
+    -   Social Security Number
+    -   Financial information
+    -   heal care information
+    -   Insurance information
+
+This data must have it's confidentiaiality assured
+
+
+#### European union privacy
+The European Union has taken an aggressizve properivacy stance while balancing hte needs of business.  Commerce would be impacted if member nations had different regulations regarding the collection and use of PII.  The EU Data Protection Directive allows for the free flow of information while stillmaintaining consistent protection of citizen data in each member nation.
+
+**Fast Facts**
+The principles of the EU Data Protection Directive are:
+    -   Notifying individuals how their personal data is collected and used
+    -   Allowing individuals to opt out of sharing their personal data withi third parties
+    -   Granting individuals the right to choose to opt into sharing the most sensitive personal data as opposed to being opted in authomati8cally.
+    -   Providing reasonable protections for personal data
+
+#### OECD privacy guidelines
+The Organisation for Economic Co-operation and Development(OECD), though often considered exclusively European, consists of 30 member  nations from around the world. The OECD provides a forum in which contries
+can focus on issues that impact the global economy.
+The OECD will routinesly issues consensus recommendations that can serve as an impetus to change current policies and legislation in the OECD member countries and beyond....
+    - Members
+      - US
+      - Australia
+      - Mexico
+      - Japan
+      - Czech Republic
+
+
+
+
+#### Privacy
+
+
+#### Policies vs Procedures
+What should be done(at a high level)
+-vs-
+How to do it at a low level
+
+#### Standards
+A state at which some object must meet as a
+baseline
+
+#### Baseline
+Uniform way of implementing a standard
+For example
+https://benchmarks.cisecurity.org
+Baseline are discretionary(?)  
+As long as the target system meets the hardening
+standard with or without the CIS benchmarks,that 
+should suffice
+
+#### Guidelines
+Discretionary recommendats.
+
+
+#### Summary of Security Documentation
+
+| Document  | Mandatory or Discretionary                                                                     | Mandatory or Discretionary ? |
+|-----------|------------------------------------------------------------------------------------------------|------------------------------|
+| Policy    | Protect the CIA of PII by hardening the operating system                                       | Mandatory                    |
+| Procedure | Step 1: Install prehardened OS Image. Step 2: Download patches from update server Step 3: .... | Mandatory                    |
+| Standard  | Use Nexus-6 laptop hardware                                                                    | Mandatory                    |
+| Guideline | Patch installation may be automated via the use of an installer script                         | Discretionary                |
+| Baslines  | Use the CIS Security Benchmarks Windows Benchmarks                                             | Discretionary                |
+
+
+
+
+
+## Personal Security
+Users can pose the biggest security risk to an
+organization.  Background checks should be
+performed, contractors need to be securely
+managed, and users must be properly trained and made
+aware of security risk.
+    -   Security Awareness training
+    -   Background checks
+    -   Employee termination
+    -   Vendor, consultant, and contractor security
+    -   Outsourcing and offshoring
+
+
+## Access Control Defensive Categories and Types
+Six tyhpe of access control types:
+    -   preventative
+        -   Drug screenings
+        -   SSBI
+    -   Detective
+        -   IDS
+        -   Data monitoring systems(Splunk, ELK)
+        -   Cameras
+        -   Building alarms systems
+    -   Corrective
+        -   Antivirus software
+        -   clustering software
+        -   Redundant, load balanced, services
+    -   Recovery
+        -   Redundant, load balanced, services
+        -   Copies of System state(disk imaging)
+        -   Data replication 
+        -   Data restore
+    -   Deterrent
+        -   Beware of Dog signs
+        -   Authorized personel signs
+        -   Fines
+        -   Prison time
+    -   Compensating
+        -   Controls that compensate for gaps in other controls
+
+
+**Fast Facts**
+These access control types can fall into one of three
+categories:
+    -   Administrative created via
+        -   Organizational policies
+        -   Organizational procedures
+        -   Organizational regulation
+    -   Technical created via
+        -   Software
+        -   firmware
+        -   firewalls
+        -   routers
+    -   Physical created via
+        -   Locks
+        -   Fences
+        -   gates
+        -   security guards
+
+
+
+
+## Risk Analysis
+
+#### Assets
+Assets are valuable resources that require protection.
+Assets can be:
+    -   Data
+    -   people
+    -   buildings
+    -   property
+    -   etc
+
+The value of the asset will determine the safe guards you employ
+
+
+### Threats and Vulnerabilities
+-   Threat = potentially harmful occurence
+-   Vulnerability = weakness that allows for a threat to occur
+  
+#### Risk = Threat * Vulnerability
+-   Ranges for values is arbitrary
+-   We can use a range of 1 - 5
+-   Be sure to use the same range accross your assessments...as it will help maintain consistency
+
+
+### Impact
+    - Risk = Threat * Vulnerability * impact
+    - Impact is the consequences of you being found lacking
+    - Impact is sometimes expressed in dollars 
+    - Some risks are tolerable....some aren't...such as the loss of human life.
+
+
+### Quantitative and Qualitative Risk Analysis:
+Two methods of risk analysis often used in conjuction:
+    -Quantitative
+        -objective
+        -often expressed in dollar amounts
+    -Qualitative;
+        -subjective
+        -approximate values
+    -   Important terms
+        -   ALE (Annual Loss Expectancy)
+        -   TCO (Total Cost of ownership)
+        -   ROI (Return on Investment)
+        -   ARO(Annual rate of occurence)
+
+### Risk Management Process
+    -   NIST Special Publication 800-30
+    -   Nine step process
+        -   System Characterization
+        -   Threat Identification
+        -   Vulnerability Identification
+        -   Control Analysis
+        -   Likelihood Determination
+        -   Impact Analysis
+        -   Risk Determination
+        -   Control Recommendations
+        -   Resulst Documentation
+
+### Types of Attackers
+    -   Hackers
+    -   Outsiders Unauthorized
+    -   Insiders Authorized/Unauthorized
+    -   Bots/BotNets
+    -   Phishers and Spear Phishers
+
+
+20K per week
+12 * 4 * 20,000 = 960,000 
+Dos Attack lowers sales by 40%
+cost of DoS attack for 1 week  20,000 * .40  = 8,000
+8000 * 7 = 56,000
+
+cost of mitigation service per month = 10k
+cost of mitigation service per year = 12 * 10,000 = 120,000.00
+
+
+
+1. (c)
+2. (d)
+3. (c)
+4. (a)
+5. all but Running login process

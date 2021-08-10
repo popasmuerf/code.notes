@@ -8,6 +8,42 @@
         *   Security Governance
         *   Organizational structure
 
+-   Risk = Vulnerability + Threat
+-   Vulnerability is a weakness...that may be a 
+    a problem or not...dependining on the context
+    that it exists in......from zero-day to known
+    vulnerabilities.
+-   Asset management is the method by which we detect 
+    and identify vulnerabilities
+
+-   Asset management can be handled by actual apps designed specifically for this purpose like Qualys, GCP asset manager, or apps that can somewhat fill that role like ELK and Splunk
+
+-   Threat modeling?  
+-   Risk analysis
+    -   Budget analysis
+    -   How much is the asset costing me now
+    -   How much will it cost me for any asset 
+        compromise.....
+    -   single_lose_expectancy = asset_cost + .10(asset_cost)
+        -   lost of income
+        -   lose of revenue
+        -   single_lose_expectancy(SLE)
+    -   SLE vs ALE
+
+-   sUPPLY Chain risk management
+-   ISSO
+-   Castellan/Operation
+-   Monitor
+-   Operational Control
+-   Standards
+-   Guidelines
+-   Best practice
+-   Due Care vs Due Dilligence
+-   Threat vulnerability
+-   Thread assessment
+-   quantitative analysis
+
+
 
 
 ## Cornerstone Information Security Concepts
