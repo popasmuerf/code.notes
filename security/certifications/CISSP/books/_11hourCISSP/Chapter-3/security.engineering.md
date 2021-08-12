@@ -1,0 +1,12 @@
+
+-   Substitution
+-   permutation
+-   cryptosystems
+    -   symmetric
+        -   Elctronic code Book
+        -   Cipher Block Chaning
+        -   Cipher Feedback
+        -   Outpuc Feedback
+        -   Counter Mode
+    -   asymmetrc
+    -   hashing
