@@ -125,7 +125,66 @@
         - Secure Hash Standard(SHS)
         - FIPS 180
     * MD5
+      - Implements additional security features that reduce the speed of message digest production significantly.
+      - Is vulnerable to collisions and thus isn't so great for guaranteed messaged integrity
+      - It has been demonstrated in 2005 that it is possible to create two digital certificates from different public keys that have the sam MD5 hash
+      - Some tools still depend on MD5
+      - It is best to rely on SHA-2 for creating digests if you can.
+
+    * RIPEMD (RIPE Message Digest)
+      - series of has functions is an alternative to the SHA family that is used in some applications, such as Bitcoin HASH implementations.  The family contains  a series of increasingly sophisted functiones
+        * RIPEMD
+          - 128 bit digest
+          - Structural issues that rendered it insecure
+        * RIPEMD-128
+          - Replace RIPMD
+          - 128 digest
+          - no longer considered secure
+        * RIPEMD-160 
+          - Replaces RIPEMD-128
+          - Remains secure to this day
+          - 160 bit digest
+          - Most commonly usued RIPEMD variant 
+
     * RIPE Message Digrest(RIPEMD)
     * Hash message authentication code(HMAC)
 
 
+
+### Digital Signatures
+ONce you have chosen a cryptographic  sound hash sfunction and cyrptogrpahic algorithm, you cna use it 
+to implement a **digital signature** system.  Digital
+signature infrastructures have two distinct goals:
+  * non-repudiation
+  * integrity of information in transit which protects info from attack while in transit or corruption due to electrical interference or for some other reason
+  
+
+### HMAC (Hashed Message Authentication Code)
+The hashed message authentication code(HMAC) algorithm 
+implements a partial digital signature----it guarantees the integrity of a message during transmission, but it does not provide for nonrepudiation
+
+
+
+
+
+### PKI Key Infrastructure
+The major strenght of public key encryption is it's ability to facilitate communication between parties previously unknown to each other.  This is made possible
+via **public key infrastrucute(PKI)**
+
+Digital certificates are essentially endorsed copies of an individual's public key....
+
+Again...a PKI cert is little more than a copy of 
+a public key that is endorsed by some trusted CA.
+..so self signed certs are still conscidered PKI?
+I am thinking...yeah..I think so..because "trust" is relative.
+
+1. User verifies that a cert(endorsed public key) has been signed by a trusted certificate authority(CA) then they "know" that their public key is legit.
+
+### Internaltional standard -- X.509
+1. Serial number(from cert creator)
+2. Signature algorithm identifier
+3. Signature 
+
+
+
+Certificates....

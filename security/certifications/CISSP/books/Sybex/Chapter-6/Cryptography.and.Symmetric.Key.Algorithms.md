@@ -234,3 +234,4 @@ Hashing Alorithms
    - A message digest is also known as a **hash**
    - It is nearly impossible to unencrypt a hash(it is one way)
    - When a hash function produces the same value for two different methods...it's called a **Collision**
+   - IMPORTANT:  Hashes encrypt nothing....it's just a random "unique" value(message digest) generated from the selected plain text.....your selected key and chosen encyrption algorithm(one way...becaus)
