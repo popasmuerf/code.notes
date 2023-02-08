@@ -28,22 +28,18 @@ XOR
 ### Protocol Governance 
 	- describes the process of selecting the right method (ie, cipher) and implementation
 	- digital signatures provide integrity but not confidentiality (you know what the key is, likely a provided PGP key)
-	- Symetric Ciphers are used for confidentiality primarily :
-		--> encrypting hardrives
-		--> encrypting files, etc.
+	- Symetric Ciphers are used for confidentiality primarily 
 	- AES is preferred over DES do to cryptographic strength
-	NOTE: Do not confuse DES, AES, et all with symmetric and asymetric cryptography.  
+	
 ### Types of Cryptogray 
 	- symmetric 
 		--> single key
 		--> FASTER
 		--> less secure due to key sharing
-		--> Strong crypto strength
-		--> used for general confidentiality typically
+		--> Strong crypto strength 
 	- asymetric
 		--> multi-key(two public/private key exchange)
 		--> AKA "secret key encryption"
-		--> used for confidentiality communication between remote hosts typically.  Think TLS/SSL, SFTP, etc. 
 		-->
 		
 		
@@ -52,8 +48,6 @@ XOR
 	--> Block ciphers encrypt in blocks of bits.  typically 64 or 128 bit blocks
 	--> DES(Data Encryption Standard) uses 64 bit blocks 
 	--> AES (Advanced Encryption Standard) uses 128 bit blocks 
-	Note: DES 64 bit blocks
-		  AES 128 bit blocks
 	
 ### Initialization vectors and chaining
 	--> Some symetric ciphers use initialization vectors(IV) to ensure 
@@ -178,10 +172,6 @@ XOR
 			--------> ShiftRows
 			--------> MixColumns
 			--------> AddRoundKey
-			
-			
-### Blowfish and TwoFish 
-	=> 
 			
 					
 
