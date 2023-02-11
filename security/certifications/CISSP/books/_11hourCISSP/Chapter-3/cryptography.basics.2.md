@@ -28,19 +28,24 @@ XOR
 ### Protocol Governance 
 	- describes the process of selecting the right method (ie, cipher) and implementation
 	- digital signatures provide integrity but not confidentiality (you know what the key is, likely a provided PGP key)
-	- Symetric Ciphers are used for confidentiality primarily 
+	- Symetric Ciphers are used for confidentiality primarily :
+		--> encrypting hardrives
+		--> encrypting files, etc.
 	- AES is preferred over DES do to cryptographic strength
-	
+	NOTE: Do not confuse DES, AES, et all with symmetric and asymetric cryptography.  
 ### Types of Cryptogray 
 	- symmetric 
 		--> single key
-		--> FASTER
+		--> FASTER than Asymmetric algorithms
 		--> less secure due to key sharing
-		--> Strong crypto strength 
+		--> Strong crypto strength
+		--> used for general confidentiality typically
 	- asymetric
 		--> multi-key(two public/private key exchange)
 		--> AKA "secret key encryption"
-		-->
+		--> used for confidentiality communication between remote hosts typically.  Think TLS/SSL, SFTP, etc. 
+		--> SLOWER than Symmetric algorithms 
+		--> STRONGER per bit Symmetric algorithms 
 		
 		
 ### Stream and block ciphers 
@@ -48,6 +53,8 @@ XOR
 	--> Block ciphers encrypt in blocks of bits.  typically 64 or 128 bit blocks
 	--> DES(Data Encryption Standard) uses 64 bit blocks 
 	--> AES (Advanced Encryption Standard) uses 128 bit blocks 
+	Note: DES 64 bit blocks
+		  AES 128 bit blocks
 	
 ### Initialization vectors and chaining
 	--> Some symetric ciphers use initialization vectors(IV) to ensure 
@@ -173,7 +180,115 @@ XOR
 			--------> MixColumns
 			--------> AddRoundKey
 			
-					
+			
+### Blowfish and TwoFish 
+	--> are both symetric ciphers 
+	--> created by Bruce Schneier, author of Applied Cryptography 
+	--> Blowfish
+		----> 64 bit blocks
+		----> Key size ranges from 32 - 448 bit keys 
+		----> Default key size = 128 bit 
+		----> Twofish was an AES finalist
+		----> 
+	--> TwoFish 
+		----> Was an AES finalisht
+		----> Symetric cipher 
+		----> 128 bit blocks
+		----> 256 keys 
+		
+		
+### RC5 and RC6  
+	--> create by RSA laboratories 
+	--> are both symetric ciphers 
+	--> AES finalists
+	--> RC5 
+		----> 32 bit blocks (testing purposes
+		----> 64-bit blocks 
+		----> 128 bit blocks
+		----> Key size ranges from 0 - 2040-bit keys 
+		----> Was later modified to meat AES requirements  
+		----> Twofish was an AES finalist
+		---->
+	--> RC6 
+		----> Was an AES finalisht
+		----> Symetric cipher 
+		----> 128 bit blocks
+		----> 128, 192, 2560 bit  keys 	
+		
 
 			
-			
+# Asymetric Encryption 
+	--> Involves two keys 
+	--> 1st key :  encryption 
+	--> 2nd key : decryption 
+	-->  AKA public key encryption 
+	--> one key is public 
+	--> one key is private
+	--> public keys are public and downloadable
+	--> public keys cannot decrypt on their own
+	--> secret keys are used to decrypt
+	--> plaintest that has been encrypted with a private key can be decrypted with the public key
+	--> math is what powers assymetric encryption.
+	-->
+	
+	
+### Factoring prime numbers 
+	An exqample of one-way function is factoring a componsite number into primes.
+	Multiplying th eprime number of 6269 by the prime number 7883 resutlst 
+	in a composite number of 49,418,527.
+	
+	Computing 49,418,527 takes less than milliseconds for any modern CPU/GPU.
+	finding the inverse(factoring)....that is which two primes where used in the calculation is 
+	far more difficult and time consuming.
+	Factoring is the bassis of the RSA algorithm.
+	
+	
+### Discrete logarithm. 
+
+A logarithm is the opposite of exponentiation.  computing 7^13  is easy on modern calculator:
+96,889,010,407.
+
+Asking if the log of 96,889,010,407 = 7  is far more diffiuclt.
+Discrete logarithms apply logarithms to groups, which is a much more difficult. 
+Discrete logarithms apply logarithms to groups, which is a much harder problem.
+
+Discrete logarithms to groups which is a much harder problem to solve.
+This one-way function is the basis of the Diffie-Hellman and ElGamal asymmetric algorithms.
+
+
+### Diffie-Hellman key agreement protocol
+	--> Asymmetric
+	--> Key aggreement allows two parties the security with which to 
+	    to agree on a symeetric key  via a public channel. witout 
+		any prior key exchange.
+	--> Attackers who are able to sniff the entire conversation are unable
+	    to dervice the exchanged key.
+	--> Diffie_hellman Key Agreement Protocol or key-exchange Invented in 1976
+	--> Diffie_hellman uses discrete logarithms to provide seucrity.
+	
+	
+	
+### Elliptic curve cryptography (ECC) 
+	--> Asemmetric 
+	--> ECC leverages a one-way function that uses discrete logarithms.
+	    as applied to elliptic curves.
+	--> Solving this problem is harder than solving discrete logarithms, so algorithms
+	    based on elliptic curve cryptography (ECC).
+	--> ECC is much stronger per bit than systems using discrete logarithms alone.
+	--> ECC requires less computational resources because it uses shorter keys in comparison to 
+	    other asymmetric methods.
+	--> Low powered devices often use ECC for this reason.
+
+### Asymmetric methods 
+	--> Math lies behind the asymetric breakthrough.
+	--> Are all one way functions 
+	--> One way functions are easy to compute
+	--> Inversing (these) one way functions are difficult to compute.
+	
+	
+### Factoring prime numbers 
+	--> An examaple of a one-way function is factoring a composite number into it's prime
+	--> Multiplying the prime number of 6269 with prime 7883 resutls in the product of 
+	    49,418,527.
+	--> Factoring 49,418,527 is computationally difficult.
+	
