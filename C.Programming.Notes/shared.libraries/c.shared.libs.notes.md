@@ -1,4 +1,4 @@
-(source)[https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html]
+[source](https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html)
 
 
 
@@ -105,3 +105,71 @@ embedding the location of shared libraries in the executable itself
 > #Let's now link using rapth. Assume *.so path is working directory, and
 > #our executible is named 'driver'
 > gcc -Wall -c -L. -lfoo -rpath=.  -o driver driver main.c   
+
+
+### Using ldconfig to modify ld.so 
+
+Using rpath solves the following issues you may have :
+1. Having your programs using shared libraries depending on $LD_LIBRARY_PATH 
+to be initialized with a specific path to the shared libraries/objects 
+
+But....
+
+What if we want to to install our library so that every program on the system where your program resides.....can use these awesome shared libs you just created ?  For example...there are shared libraries written in C that are often used by other programs that we take for granted largely because we are unware that are being used 
+everytime we launch our daily drivers like word processors, accounting software, and of course....video games?
+
+How ?
+Assuming we are on a modern Unix like Linux, FreeBSD, or MacOS.....
+1. You need admin privileges.  
+2.  You will need where the standard location on the OS for shared libraries.  Typically it will be on Linux:
+    /usr/lib
+    -or-
+    /usr/local/lib
+3. You will need to modify:
+    -> ld.so config file
+    -> ld.so cache
+
+#### Steps....
+    #As a root user, copy your shared lib to the /usr/lib directory
+    #Change the permissions for the shared library to 755 so that it is executable by the system
+    # and can be read and executed only by any program on the system
+    > cp /home/username/foo/libfoo.so /usr/lib 
+    > chmod 755 /usr/lib/libfoo.so
+    > #We now need to tell the the loader it is available for use
+    > #So let's update the ldconfig cache
+    > #this cache is actually located in directory /etc/ld.so.cache
+    > ldconfig 
+    > #Check to see if the command ldconfig succeded
+    > ldconfig -p | grep foo
+        libfoo.so (libc6) => /usr/lib/libfoo.so
+    > #Now that our shared library has been installed, 
+    > #Let's clear $LD_LIBRARY_PATH
+    > unset LD_LIBRARY_PATH
+    > #Re-Link our executable so we don't have to rely on rpath or LD_LIBRARY_PATH any longer
+    > unset LD_LIBRARY_PATH
+    > gcc -Wall -c -lfoo main.c -o driver
+    > #Let's make sure we are using the shared library we are targeting is actually the shared library we > #want to target.  If we did this right then ldd should return the reference in the symbol table for 
+    > #shared library 'foo'
+    > ldd driver | egrep foo
+
+
+# The Wrap-Up
+That about wraps it all up.  
+We have covered :
+    -> Linking to shared libraries 
+    -> Resolving common issues with shared library loading 
+    -> The pros and cons of each approach
+
+
+1. It looks in the DT_RPATH section of the executable, unless there is a DT_RUNPATH section.
+2. It looks in LD_LIBRARY_PATH. This is skipped if the executable is setuid/setgid for security reasons.
+3. It looks in the DT_RUNPATH section of the executable unless the setuid/setgid bits are set (for security reasons).
+4. It looks in the cache file /etc/ld/so/cache (disabled with the -z nodeflib linker option).
+5. It looks in the default directories /lib then /usr/lib (disabled with the -z nodeflib linker option).
+
+
+1. What is position independent code? PIC is code that works no matter where in memory it is placed. Because several different programs can all use one instance of your shared library, the library cannot store things at fixed addresses, since the location of that library in memory will vary from program to program. ↩
+
+2. GCC first searches for libraries in /usr/local/lib, then in /usr/lib. Following that, it searches for libraries in the directories specified by the -L parameter, in the order specified on the command line. ↩
+
+3. The default GNU loader, ld.so, looks for libraries in the following order: ↩
