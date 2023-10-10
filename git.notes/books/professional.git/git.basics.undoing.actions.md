@@ -31,3 +31,54 @@ the same, and all you will change is your commit mesage.
 	> #Time to amend my previous stage and commit 
 	> git add pear.txt
 	> git commit --amend
+	> #Now we have a single commit...not an additonal one...just an ammendment of the last commit you made
+
+
+
+### Unstaging a Staged File 
+	-> When you need to wrangle our staging area and working directory changes.
+	-> Comes in handy when you absent-mindedly stage everything but you only wanted to stage particular resources
+	-> Example:
+
+		mikeyb@Michaels-MacBook-Pro benchmarks % echo "#include <cherry.h>" > cherry.txt 
+		mikeyb@Michaels-MacBook-Pro benchmarks % git status
+		On branch main
+		Untracked files:
+		  (use "git add <file>..." to include in what will be committed)
+			cherry.txt
+
+		nothing added to commit but untracked files present (use "git add" to track)
+		mikeyb@Michaels-MacBook-Pro benchmarks % git add .
+		mikeyb@Michaels-MacBook-Pro benchmarks % git status
+		On branch main
+		Changes to be committed:
+		  (use "git restore --staged <file>..." to unstage)
+			new file:   cherry.txt
+
+		mikeyb@Michaels-MacBook-Pro benchmarks % git reset HEAD cherry.txt  
+		mikeyb@Michaels-MacBook-Pro benchmarks % git status
+		On branch main
+		Untracked files:
+		  (use "git add <file>..." to include in what will be committed)
+			cherry.txt
+
+		nothing added to commit but untracked files present (use "git add" to track)
+		mikeyb@Michaels-MacBook-Pro benchmarks % 
+
+The command is a bit strange, but it works.
+The cherry.txt file is modified but once again unstaged.
+
+
+NOTE:
+While git reset can be a most dangerous command if yu call with the switch --hard, 
+in this instance the file in your working directory is not touched.
+Calling git reset without an optin is not dangerous....as it only touches your staging area.
+
+
+
+
+
+
+Ok....but why didnt' we just run the command ?:
+
+	> git rm cherry.txt --cache 

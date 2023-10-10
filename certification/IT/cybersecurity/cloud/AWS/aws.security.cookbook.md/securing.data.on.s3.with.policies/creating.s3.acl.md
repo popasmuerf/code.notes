@@ -1,0 +1,380 @@
+[source](https://free-braindumps.com/comptia/free-sy0-601-braindumps.html?p=11)
+[source](https://free-braindumps.com/comptia/free-sy0-601-braindumps.html?p=12)
+
+# Securing Data on S3 with Policies and Techniques 
+
+
+### Topics Covered
+
+- bucket policies
+- presigned URLs
+- Encryptrion
+- versioning 
+= cross-region replicatino 
+
+
+### Recipies:
+- Creating S3 access contorl lists
+- Creating an S3 bucket policy
+- S3 pre-signed URLs with an expiry time using CLI and Python
+- Encrypting data on S3
+- Protecting data with versioning
+- Implementing S3 cross-region replication within the same account
+- Implementing S3 cross-region replication across accounts
+
+
+Technical requirements 
+	- AWS CLI
+
+
+## Creating S3 acces control lists
+- Learn to grant permissions to the public
+- Using ACLs from console
+- Using predefined groups from teh CLI
+- Using canned ACLs from teh CLI
+- ACLs can be used to to grant basic r/w permissions to
+	-- buckets
+	-- objects 
+	-- bucket ACL
+	-- object ACL
+
+
+## Getting Ready 
+
+1. A bucket with a file 
+	-- name : aws-sec-cbk 
+	-- filename : heart.png
+2. Users
+	-- usr1 with no permissions
+	-- usr2 with admin permissions
+	-- configure CLI profiles for these users
+		--- user1 : testuser
+		--- user2 : aws-sec-admin
+
+3. Uncheck the two check boxes for all public access settings realated to ACLs
+Leave the other settings checked an click Save. 
+
+4. Go back to bucket permissions, uder Object owner turn the ACLs back on and then under ACL permissions allow
+everyone to list and list only.  They should not be able to write to anything
+
+Check to see if anyone with a browser can list the contents of your new bucket
+
+https://s3.amazonaws.com/aws-sec-cookbook
+
+
+<ListBucketResult>
+<Name>aws-sec-cookbook</Name>
+<Prefix/>
+<Marker/>
+<MaxKeys>1000</MaxKeys>
+<IsTruncated>false</IsTruncated>
+<Contents>
+<Key>robot.png</Key>
+<LastModified>2023-10-09T21:36:28.000Z</LastModified>
+<ETag>"2bcc0c0c7aba6133edfcc044610a8a0e"</ETag>
+<Size>12605</Size>
+<StorageClass>STANDARD</StorageClass>
+</Contents>
+</ListBucketResult>
+
+
+
+# Granting Read fro AWS users using predefined groups from the CLI
+
+
+We can grant READ for any AWS user using the AuthenticatedUser predefined group by peforming the 
+followoing steps
+
+1. So far we should have 
+	- a new bucket named aws-sec-cookbook
+	- aws-sec-coobook has ACLs that 
+		-- allow object owner to both read and write
+		-- Allows everyone to be able to list contents ONLY
+
+2. Creat a policy that grants access to the AuthenticatedUsers group and save it 
+as
+		acl-grant-authenticated-users.json
+
+The json below
+
+
+
+
+		{
+		 "Owner" : {
+					"DisplayName":"aws-sec-cookbook",
+					"ID":"09a85d80497044702100292ea33f2177be15f230f0a785daf764a3b2813a2492"
+					},
+		 "Grants" : [
+
+					 "Grantee":{
+						        "Type" : "Group",
+								"URI"  : "http://acs./amazonaws.com/groups/global/AuthenticatedUsers"
+								},
+								"Permission" : "READ"
+
+					   ]
+		}
+
+
+
+
+3. Execute the `put-bucket-acl` command by providing the preceding policy document:
+
+aws s3api put-bucket-acl \
+--bucket aws-sec-cookbook \
+--access-control-policy file://resources/acl-grant-authenticated-uses.json \
+--profile aws-sec-admin
+
+
+4. 
+
+
+
+
+
+
+Question 9:  
+A report delivered to the Chief Information Security Officer (CISO) shows that some user credentials could be exfiltrated. The report also indicates that users tend to choose the same credentials on different systems and applications. Which of the following policies should the CISO use to prevent someone from using the exfiltrated credentials?
+
+Answer: MFA can defeat data breaches within the context of usernames and passwords
+
+
+Question 10:
+A company wants to simplify the certificate management process. The company has a single domain with several dozen subdomains, all of which are publicly accessible on the internet. Which of the following BEST describes the type of certificate the company should implement?
+
+Answer: B Wildcard 
+Explinaition:
+
+Question 11:
+Which of the following is an effective tool to stop or prevent the exfiltration of data from a network?
+
+Answer: DLP (Data Loss Prevention)
+Explinaition 
+
+Question 12:
+Several attempts have been made to pick the door lock of a secure facility. As a result, the security engineer has been assigned to implement a stronger preventative access control. Which of the following would BEST complete the engineer's assignment?
+
+Answer:  Replacing the traditional key with an RFID key
+Explinaition
+
+
+Question 13:
+Which of the following can be used by a monitoring tool to compare values and detect password leaks without providing the actual credentials?
+
+Answer :  Hashing 
+
+Explinaition: masking only hides plain text data in a GUI.  The system storing the values still knows the plain text  values.  Hashing 
+allows you to totaly obsuficate the plain text data while still being able to compare credential values in a round about way
+
+
+Question 14:
+
+A security engineer is building a file transfer solution to send files to a business partner. The users would like to drop off the files in a specific directory and have the server send the file to the business partner. The connection to the business partner is over the internet and needs to be secure. Which of the following can be used?
+
+Answer: SSH
+Explaination: SSH is an implementation of asysmetric encryption of data in motion
+
+
+Question 15:
+
+An administrator needs to protect user passwords and has been advised to hash the passwords. Which of the following BEST describes what the administrator is being advised to do?
+
+Answer: Perform a mathematical operation on the passwords that will convert them each into a singularly unique string
+Explaination:  Hash's permnantly obsuficate passwords into uninelligable and not so easy to remember one way ciphers.  If there is a data breach, all I have 
+is a bunch of hashes that I can't use even if I knew the correct associated username because the system hashes the plain text password when submitted is it hashed
+and compared to the stored hash value.  Sumbitting the hashed value will only have this value hashed and then compared to the stored password has value
+
+
+
+Question 16: 
+Which of the following would be indicative of a hidden audio file found inside of a piece of source code?
+
+Answer: Steganography
+Explanation: Steganography is the proactice of concealing information within another message or physical object to avoid detection.
+You can literally hide an audio file (or any other file) as an array of bytes that can be retrieved via setters and getters.
+
+
+
+Question 17: 
+A user enters a username and a password at the login screen for a web portal. A few seconds later the following message appears on the screen:
+Please use a combination of numbers, special characters, and letters in the password field.
+Which of the following concepts does this message describe?
+
+Answer: Password complexity
+Explanation: 
+
+
+
+Question 18: 
+A company recently experienced an inside attack using a corporate machine that resulted in data compromise. Analysis indicated an unauthorized change to the software circumvented technological protection measures. The analyst was tasked with determining the best method to ensure the integrity of the systems remains intact and local and remote boot.  What's the best solution 
+
+Answer: TPM (Trusted Platform Module).  TPM is a specialized chip on a laptop or deskto computer that is designed 
+tosecure hardware with integrated cryptographic keys.   A TPM helps prove a user's identity and 
+authenticates their device.   A TPM also helps provide security against
+threats like firmawre and ransomeware attack
+
+
+
+Question 19: 
+Which of the following is a reason to publish files' hashes?
+
+Answer: To validate the integrity of files
+
+
+Question 20: 
+A security manager has tasked the security operations center with locating all web servers that respond to an unsecure protocol. 
+Which of the following commands could an analyst run to find the requested servers?
+
+Answer: nmap -p 80 10.10.10.0/24
+
+
+
+Question 21: 
+Which biometric error would allow an unauthorized user to access a system?
+
+Answer: False acceptatance
+
+
+Question 22: 
+A company is auditing the manner in which its European customers' personal information is handled. Which of the following should the company consult?
+
+Answer: GDPR AKA General Data Protection Regulation compliance
+
+
+Question 23: 
+Which of the following are common VoIP-associated vulnerabilities? (Choose two)
+
+Answer: Vishing AKA Voice Phising is the use of telephony to conduct phising attacks.
+Landline telephone services have traditionally been trustworthy; terminated in physical locations known 
+to the telephone company, an dan associated with a bill payer:
+
+Awnswer: SPIM AKA Spam over Instant Messaging
+
+
+Question 24: 
+Which of the following describes the exploitation of an interactive process to gain access to restricted areas?
+
+Answer:  Privileged Escalation 
+
+
+
+Question 25:
+An organization is planning to open other data centers to sustain operations in the event of a natural 
+disaster. Which of the following considerations would BEST support the organization's resiliency?
+
+Answer: Geogrpahic dispersal....which makes sense (kinda) in the case of a natural disaster.  Nothing else 
+matters if all of your assets are in the same place.
+
+
+
+Question 26:
+A security engineer is deploying a new wireless network for a company. The company shares office space with multiple tenants. Which of the following should the engineer configure on the wireless network to ensure that confidential data is not exposed to unauthorized users?
+
+Answer: WPA1/2/3 AES AKA Web Protected Access  + AES
+
+
+Question 27:
+The Chief Compliance Officer from a bank has approved a background check policy for all new hires. Which of the following is the policy MOST likely protecting against?
+
+Answer: PCI DSS requi4es backgrond checks for employees handling credit acard holder data
+https://www.pcicomplianceguide.org/what-does-the-pci-dss-say-about-employee-background-checks/
+
+
+Question 28:
+A technician was dispatched to complete repairs on a server in a data center. 
+While locating the server, the technician entered a restricted area without authorization. 
+Which of the following security controls would BEST prevent this in the future?
+
+
+Answer: Employ Access Control Vestibule  AKA man traps that prevent tailgaiting and access to areas of 
+higher required clearance that an individual may not have
+
+
+Question 30:
+Which of the following would BEST provide a systems administrator with the ability to more efficiently identify systems and manage permissions and policies based on location, role, and service level?
+
+Answer: Domain Sevices.  The entire point of Damin Services is to compartmentaliz and ensure base configuration as well 
+categorizing of assets.
+
+
+Question 31:
+Which of the following would detect intrusions at the perimeter of an airport?
+
+Answer: Motion sensors are devices used to detect movement or motion within their coverage area. They are commonly deployed as part of a security system to monitor the perimeter of a facility, such as an airport, and detect unauthorized intrusions. When someone or something moves within the range of a motion sensor, it triggers an alert, notifying security personnel of potential intruders.
+
+
+Question 32:
+A security analyst is concerned about critical vulnerabilities that have been detected on some applications running inside containers. Which of the following is the
+BEST remediation strategy?
+
+Answer: Update the base container image and redeploye the enviroment.
+
+
+Question 33:
+An organization has decided to purchase an insurance policy because a risk assessment determined that the cost to remediate the risk is greater than the five- year cost of the insurance policy. The organization is enabling risk:
+
+Answer: transference.   They aren't accepting the risk....they are simply transferring the risk to the insurance comapany.
+
+
+Question 34:
+A security analyst receives an alert from the company's SIEM that anomalous activity is coming from a local source IP address of 192.168.34.26. The Chief Information Security Officer asks the analyst to block the originating source. Several days later, another employee opens an internal ticket stating that vulnerability scans are no longer being performed properly. The IP address the employee provides is 192.168.34.26. Which of the following describes this type of alert?
+
+
+Answer: ISO 31000. 
+
+
+Question 35:
+A security analyst wants to reference a standard to develop a risk management program. Which of the following is the BEST source for the analyst to use?
+
+Answer:ISO 31000 The ISO 31000 Risk Management framework is an international standard that provides businesses with guidelines and principles for risk management from the International Organization for Standardization. Regulatory compliance initiatives are usually specific to a particular country and applicable to certain sized businesses or businesses in specific industries. However, ISO 31000 is designed to be used in organizations of any size. Its concepts work equally well in the public and the private sector, in large or small businesses and nonprofit organizations.
+
+
+Question 36:
+The Chief Information Security Officer (CISO) requested a report on potential areas of improvement following a security incident. Which of the following incident response processes is the CISO requesting?
+
+Answer: Lessons Learned
+
+
+Question 37:
+A company is providing security awareness training regarding the importance of not forwarding social media messages from unverified sources. Which of the following risks would this training help to prevent?
+
+Answer: Hoaxes 
+
+Question 38:
+A security analyst is receiving numerous alerts reporting that the response time of an internet-facing application has been degraded. However, the internal network performance was not degraded. Which of the following MOST likely explains this behavior?
+Answer: DDoS
+
+
+Question 39: Which of the following will increase cryptographic security ?
+Answer: High data entropy
+
+
+Question 40: Which of the following statements BEST describes zero-day exploits ?
+Answer: A zero-day exploit is initially undectectable, and no patch for it exists
+
+
+Question 41: A company wants to restrict emailing of PHI documents. The company is implementing a DLP solution. In order to restrict PHI documents, which of the following should be performed FIRST?
+Answer: Classification
+
+
+Question 42: A security analyst is investigating some users who are being redirected to a fake website that resembles www.comptia.org. The following output was found on the naming server of the organization:
+Name        Type       Data
+
+www			A          192.168.1.10
+server1		A          10.10.10.10
+server2		A          10.10.10.11
+file        A          10.10.10.12
+
+Answer : DNS poisoning
+
+
+Question 43: Which of the following describes the continuous delivery software development methodology?
+Answer: Agile
+
+
+Question 44: Which of the following is the BEST example of a cost-effective physical control to enforce a USB removable media restriction policy?
+Answer: Implementing a GPO that will restrict access to authorized USB removable media and regularly verifying that it is encforced
+
+
+

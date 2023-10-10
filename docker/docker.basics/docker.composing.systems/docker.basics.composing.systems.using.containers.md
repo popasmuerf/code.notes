@@ -1,0 +1,157 @@
+# Chapter 4: Composing Systems Using Containers
+
+In the previous chapter, we created a server side application using 
+microservices architecture.  The application was made up of five seperate containers:
+	-> 3 official images:
+		--> MongoDB
+		--> Redis
+		--> Mosca(MQTT)
+	-> all of these containers communicated via ports that are exposed to one another and their host for that matter.
+
+
+	-> What if we want to keep these network ports private so that communication can only happen within 
+	a container ?
+
+
+
+
+
+# Dockerfile commands 
+
+
+COPY
+	-> used to copy a file or folder form the host system into the docker image.
+	-> the copied files beocme a part of every container that is created from that docker image 
+
+ADD 
+	-> used to cpy files or directories into a Docker image 
+	-> It can copy data in threwways 
+		--> Copy files from local storage to a destination in the Docker image.
+		--> copy a tarbal from the local staorage and extract it automatically inside a destination in a docker image
+WORKDIR 
+	-> command used to define the working directory of a Docker container at any given time.
+	-> analogus to the cd unix/DOS command. 
+	-> if not specified in Dockerfile, it will automatically be created by the Docker compiler.
+	-> It can be said that the command performs mkdir and cd implicitly.
+		-> can be used multiple times in a Dockerfile as you might have to "cd" to different directories
+
+#!/bin/bash
+
+#Change this to an EXISTING directory
+#on the HOST where the mongodb database files will be created
+
+#start-mongodb 
+
+SERVICE=mongodbd # name of the service
+
+#Change this to an EXISTING directory on 
+#on the HOST were the mongodb database
+#files will be created and maintained
+
+#MONGO_DATADIR ="$HOME/data"
+
+#Stop any running MongoDB container, remove previous container, pull newer version 
+
+docker stop $SERVICE 
+docker rm $SERVICE 
+docker pull mongo:3.4
+
+#Now we run it!!!
+
+docker run ...
+
+
+You do need a Dockerfile to create a container image.  However, if you are usin ga pre-made container image 
+from Docker Hub that is standalone, such as MongoDB, you won't need one.
+The developers at aMongoDB use Dockerfiles to generate the images before uploading them to Docker Hub.
+
+
+In fact, you can see from the Supported tags section of the MongoDB page in Docker Hub that they 
+produce and support  and supporte quite a few images, including different versions--- some for Windows , some for Linuxe, an dso on. 
+
+
+We must provide one enviroment variable to start-mongodb.sh: 
+
+	MONGO_DATADIR
+
+
+which is an existing directory on you rworkstation where you want MongoDB in the container to store its data files.
+There are a few ways to set this variable:
+
+	export MONGODB_DATADIR =/path/to/data/dir  # in the shell start up file zshrc, .bashrc, and so on or manually
+
+# Docker CLI commands
+
+## Docker switches (not an exaustive listing)
+
+	-t switch:
+		specifies the tag you assign the image you are building
+
+	-f switch:
+
+
+
+	-d  switch:
+
+		The -d switch runs the container in detached mode.  The container will automatically start when 
+		your workstation is rebooted.
+
+	-e switch:
+
+		The -e switch allows you to pass enviroment variables to the container; in this case, we pass the 
+		TITLE=mongodb enviroment variable.  You can have multiple -e switches if you want to pass 
+		more than one variable
+
+	-p switch:
+
+		The -p switch exposes port 27017 in the container to port 27017 on the host.  You an 
+		rem-ap an exposed port in the container to a diffferent port number on the host
+
+	-v switch:
+
+		the -v switch maps a directory on the host to the directory in the container whre MongoDB wil manage
+		its database and other files.
+
+	-it switch:
+
+		allows you to open a shell to your running container
+
+
+		> docker exec -it mongodb bash
+
+
+## Dockerfile commands 
+	-> RUN, COPY, ENV, etc
+	-> these "capital" commands direct the docker machinary to do things like run command strings within the container
+	-> commands like cp, rm, mkdir etc are commands that operatate within the comtainer
+
+
+## Docker cli commands 
+
+	% docker logs <container_name> 
+
+	% docker stop f46d0d79bb84
+
+NOTE:
+
+The docker run command only donlowas the container from Docker Hub if it doesn't exist on 
+your workstation yet or if the container image on Docker Hub is newer.
+
+
+
+
+1. Cloud Security Engineering :
+	->  Data Engineering targeting SEIM(Security Event and Incident Managment )
+		--> system architecture 
+		--> fair amount of software engineering 
+	->  Static Code analysis 
+		--> ad hoc
+		--> integration of security tools into build pipelines 
+
+2. Software Engineering 
+	-> Mostly Java and Go in the past 
+	-> Now doing freelance work Go and Rust.
+
+
+
+	- 

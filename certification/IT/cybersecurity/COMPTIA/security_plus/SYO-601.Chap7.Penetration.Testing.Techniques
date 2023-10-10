@@ -1,0 +1,58 @@
+# CRAM Quiz
+
+
+
+
+
+# Chapter-7
+
+----------------------------------------------------------------------------------------------
+1. After conduction a vulnerability assessment, which of the followin is the best action to 
+perform 
+
+	D. Organize and Document the results based on severity
+
+
+
+2. Your team is tasked with conducting a vulnerability assessment and reports back with a 
+high number of false positives.  Which of the following migh you recommande to reduce the 
+number of false positives?
+	
+	B. Have the team run a vulnerability scan using credentialed access
+
+	Answer 2: Non-credentialed scans result in a greater number of flase positives.
+	This type of scan provides an outsider point of oview, and although it might indicate what an outsider is 
+	more likely to see, it does not show as effectively the full extent of vulnerabilities.  A credentialed vulnerability
+	scan provides access to systems that might otherwise not be accessablem kaking it possible to futher determine legitimate vulnerabilities.
+
+
+3. SOAR combines functions from which of the following :
+	
+	A. Security orchestration and automation 
+	B. Incident response platforms 
+	C. Threat intelligence platforms 
+
+	Answer 3: Security orchestration, auomation and response(SOAR) combines 
+	functions from security orchestration and automation, incident reponse platforms, and 
+	threat intelligence platforms either as a complete solution or as an integrated solution.
+	Penetration tests are not poaart of the SOAR platform.
+
+
+4. Which of the following studies human emotions in data to detect patterns such as 
+negative, positive, or neutral opinions or attitudes ?
+
+	C. Sentiment analysis 
+
+
+	Answer 4: C.  Sentiment analysis studies human emotions present within data.
+	The data can be tracked and analyzed to look for patterns that rely on human sentiment.
+
+
+
+
+
+Chapter-7 Summary
+
+
+
+
