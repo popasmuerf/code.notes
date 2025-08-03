@@ -81,20 +81,20 @@ Validations       | No      | No  | Supported via keywords
 
 
 
-//Example
+	//Example
 
 
-package greetor ;
+	package greetor ;
 
-option java_package = "com.thoughtworks.greetor"
-option java_outer_classname = "GreetorProtos"
-option java_multiple_files = true ;
+	option java_package = "com.thoughtworks.greetor"
+	option java_outer_classname = "GreetorProtos"
+	option java_multiple_files = true ;
 
-//Declaration for rpc service 
+	//Declaration for rpc service 
 
-service Greetor{
-	rpc greetPerson(GreetorRequest) returns 
-}
+	service Greetor{
+		rpc greetPerson(GreetorRequest) returns 
+	}
 
 
 

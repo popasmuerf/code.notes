@@ -1,5 +1,55 @@
 [source](https://www.sisense.com/blog/beginners-guide-to-mysql-storage-engines/)
 
+
+# Why should I have a good index strategy ?
+
+Indexing data is so braod that it is hard to know what to do wand what to do when 
+developing your indexing strategies.
+
+## What you should index
+- Create a primary keys
+- Predict secondary keys with unique inices to speed up 
+join queries
+- As a rule, the most commonly queried data should be indexed (LOL...you don't say?)
+	* usernames
+	* passwords
+	* email addresses
+	* etc 
+- Predict columns that will most often be queried with clauses
+	* WHERE 
+	* GROUP BY
+	* HAVING
+	* ORDER BY
+- You should have an index on he columns that will be used with 
+functions such as 
+	* SUM()
+	* COUNT()
+	* MIN()
+	* MAX()
+	* AVG()
+
+- Incides should only breated on a small proportion of a table's columns
+	* Large incides of composite types can be excessively large in comparison to their table.
+	* It is always important to consider index-table size ration
+		- The larger the ratio, the less useful the index will be to you 
+		- The larger the ratio gets, the more memory and cpu cycles it eats
+
+		
+
+
+## What you should not index
+- Tables with relatively few column if a large percentge of 
+its records will extracted
+- Indexing will not help you here (it will but not by much and what you gain here may be outweighed by index memory consumption)
+- Tables that experience frequent deletion of primary and foreign keys
+- Static data tables of relatively small size
+- Static dat   
+
+- Only INDEX what you really need to index.  A multitude of indecies will have a deliritous effect on 
+your database performance
+- 
+
+
 # MySQL Table Types 
 
 ### Basic table formats :  

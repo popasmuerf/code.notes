@@ -1,4 +1,33 @@
-Redis  is an in-memory data stor that keeps its entire data set in a memory
+[TutorialsPoint](https://www.tutorialspoint.com/redis/redis_overview.htm)
+
+
+
+## 1.1 Why Redis
+- if you have used memcached before, ou probably know that you can add data to the 
+end of an existing string with `APPEND`.   The documentation for memcached states 
+that APPEND can be used for managing lists of items.  GREAT!!! 
+
+- With Redis, you don't need to read a database to update your data...
+- Redis is not a replacement for RDBs....it's just an alternative to situations where RDBs aren't the answer...
+- Inserting rows for RDBs is fast
+	* RDB inserts are append writes to an end of an on-disk file not only Redis' append-only log 
+	* Updating existing rows isn't very fast as you have to search that on-disk file for that particular record, and unless 
+	your RDB features colunm based search, you will have to read entire records in your search for whatever you are looking for.
+- Random writes to Redis records is fast becasue everying is in RAM 
+
+
+Note:  To be fair, memcached coudol also be used in this simple scenario, but with Redis, 
+your aggregates can be placed in structures that keep associated aggregates together for easy 
+access; the aggregates can be a part of a sorted sequence of aggreates for keeping a toplist in real time;
+and the aggregates can be integer or floating point 
+
+
+- Using Redis instead of a RDB or other on-disk database, you can avoid writing unnecessary temporary data, avoid 
+needing to scan over and delte this temporary data, and ultimately improve performance.
+
+
+
+Redis  is an in-memory data store that keeps its entire data set in a memory
 and uses disk space only as a secondary persistent storage.
 
 Therefore, Redis can provide very fast read adn write operations.
@@ -8,8 +37,182 @@ The catch is that Redis can only scale a database to the amount of memory on
 whatever computer that is hosting it....
 
 
+## 1.2  Redis data structures 
+
+Redis allows us to store keys that map to any one of five different data structure types 
+
+	STRINGS
+	LISTS 
+	SETS 
+	HASH
+	ZSETS 
+
+
+
+Table 1.2 The five structures available in Redis 
+
+
+
+Structure type              |     What it contains     |         Structure read/write ability
+--------------------------------------------------------------------------------------------------
+STRING                         strings, integers          Operate on the whole string, parts,increment
+                               floating-point             decrement the integers and floats
+
+
+LIST                           Linked list of             Typical list operations 
+                               strings 
+
+
+SET                            Unordered                  Typical SET operations 
+                               collection of unique
+						 	   strings 
+
+
+HASH                           Unordered has table        Typical Hash table operations 
+							   of keys to values
+
+
+
+ZSET							Sorted collection of 
+                                unique strings 
+
+
+
+## Value type strings 
+
+
+
+#### 1.2.1 Strings in Redis 
+
+> GET 
+	* Getches data stored at th egiven key 
+
+> SET 
+	* Sets th evalue stored at the given key 
+
+> DEL 
+	* Deletes the value stored at the given key (works for all types)
+
+
+		127.0.0.1:6379> set list-key  item
+		OK
+		127.0.0.1:6379> set list-key  item2
+		OK
+		127.0.0.1:6379> set list-key  item3
+		OK
+
+
+
+#### 1.2.2 Lists in Redis 
+
+In teh world of key-value stores, REdis is unique int that it supports a linked-list structure.
+LISTS in Redis store an ordered sequence of strings, and like STRINGs, we represent figures of lists 
+
+
+		127.0.0.1:6379> lpush bikes:repairs bike:1
+		(integer) 1
+		127.0.0.1:6379> lpush bikes:repairs bike:2
+		(integer) 2
+		127.0.0.1:6379> lpush bikes:repairs bike:3
+		(integer) 3
+		127.0.0.1:6379> lpush bikes:repairs bike:4
+		(integer) 4
+		127.0.0.1:6379> lrange bikes:repairs 0 2
+		1) "bike:4"
+		2) "bike:3"
+		3) "bike:2"
+		127.0.0.1:6379> lrange bikes:repairs -1 2
+		(empty array)
+		127.0.0.1:6379> lrange bikes:repairs 0 2
+		1) "bike:4"
+		2) "bike:3"
+		3) "bike:2"
+		127.0.0.1:6379> lrange bikes:repairs 0 0
+		1) "bike:4"
+
+
+
+		127.0.0.1:6379> lpush computers:commodore commodore
+		(integer) 1
+		127.0.0.1:6379> lpush computers:commodore c64
+		(integer) 2
+		127.0.0.1:6379> lpush computers:commodore c128
+		(integer) 3
+		127.0.0.1:6379> lpush computers:commodore vic20
+		(integer) 4
+		127.0.0.1:6379> lpush computers:atari atari_400
+		(integer) 1
+		127.0.0.1:6379> lpush computers:atari atari_800
+		(integer) 2
+		127.0.0.1:6379> lpush computers:atari atari_st
+		(integer) 3
+		127.0.0.1:6379> lrange computers:commodore 0 -1
+		1) "vic20"
+		2) "c128"
+		3) "c64"
+		4) "commodore"
+		127.0.0.1:6379> lrange computers:atari 0 -1
+		1) "atari_st"
+		2) "atari_800"
+		3) "atari_400"
+		127.0.0.1:6379> 
+
+
+
+#### 1.2.3 Sets in Redis 
+
+In Redis, SETS are similar to LITSs in that they're 
+a sequenc ofe strings, but unlike LISTs, Redis 
+SETSs usa a hash table to keep all strings unique  
+(though there are no associated values).  
+My visual representation of SETS will be similar to LISTS, 
+Redis SETS are unordered, so we can't pus and pop items form teh ends like with lists. 
+
+
+   Key name 
+    ↓
+    ↓
+---set-key-----------------------set------ 
+|                                         |
+|	item2								  |
+|   item                                  |
+|   item                                  |
+|                                         |
+|                                         |
+------------------------------------------
+
+
+Because Redis SETs are unodered, we can't push and pop 
+items from the ends liek we did with LISTs.
+Instead, we add and remove items by value  with SADD and 
+SREM commands.
+
+We can also find out whether an item is in the SET quickly
+with SISMEMBER, or fetch the entire set with 
+SMEMBERS(this can be at a significant performance hit...so be 
+careful).  You can follow along with listing in your
+Redis client console to get a feel for how SETs work  
+
+
+
+Table 1.5. Commands used on SET values 
+-------------------------------------------------------
+Commmand								Function 
+-------------------------------------------------------
+
+SADD                             Adds the item to the set  
+
+SMEMBERS                         Returns the entire set of items 
+
+SISMEMBER                        Checks if an item is in the set  
+
+SREM                             Removes the item from the set if it
+                                 exists
 
 The other features of Redis include:
+
+
+
 
 
 *	Support for complex data types
@@ -34,9 +237,178 @@ Persistence(it supports two types of persistence mechanisms)
 	-	takes snapshots from in-memory
 	-	stores snapshots on disk
 	-	
-*	Append ONly File(AOF)
+*	Append Only File(AOF)
 
 
 Publish/subscribe messaging pattern
+
+
+
+
+
+
+## Redis Advantages 
+
+- Following are certain advantages of Redis 
+
+	* Exceptionally fast 
+		- 110,000 SETs per second
+		- 81,000 GETs per second
+
+
+	* Supports rich data types 
+
+	* Operations are atomic
+
+	* Multi-utility tool that is flexible enough to be used in many general use-cases 
+
+
+## Redis Versus Other Key-value Stores 
+
+	- Redis takes a different path than other key-value DBs, where values 
+	can take the form of both brimative and complex data types, 
+	- Redis transactions are atomic
+	- Redis is nearly completely in-memory but also features on-disk persistence with the trade off 
+	that data sets cannot be larger than onboard memory
+	- In memory representation of complex data structures is much simpler to manipulate
+	compared to the same data structures on disk which reduces redis' internal complexity
+
+
+
+### 1.3.1 Voting on articles 
+
+First let's start with nuber and limitars on our problem so we can solve 
+the problem without losing sight of we are trying to do:
+
+	- We have 1000 articles are submitted each day.
+	- Of those 1,000 articles about 50 of them are interesting
+	enough that we want them to be in the top-100 arcticles for at least one day.
+	- All of those 50 articles will ercieve at least 200 up votes 
+    - We aren't going to deal with down votes for the moment.
+
+
+When deal with socres that go down over time, we need to make the 
+	- Posting time 
+	- Current time 
+	- Overall score 
+
+To keep things simple, we will say that the s ore of t  
+an item is a function of the tiem that th article was posted, pulse a 
+a constant multiplier times th enumber of votes that th earticle has recieved.
+
+For time we will us the unbber of seconds ince January 1, 2070 in the UTC time zone, 
+which is commonly referred to as Unix time. 
+
+
+We will use Unix time because it can be fetched easity in most programming languages on every 
+platform that we may use Redis on. For our constant, we will take the number of 
+seconds in a day (86,400) divided by the number of votes required (200) to last a 
+full day, which gives us 432 "points" added to the score per vote. 
+
+
+to actually build this, we need to start thinking of structures to use  in Redis. 
+For starters, we need to store article information like :
+	- Title 
+	- linke to the  article 
+	- author 
+	- time posted 
+	- number of votes recieved
+
+
+
+
+-----article:92617---------------hash
+|___________________________________|
+|  title    | go-to statement awful |
+|-------------------------------------
+|  link     | http://goo.gl/kZUSu   |
+|           |                       |
+|  poster   | user:83271            |
+|           |                       |
+|  time     | 1331382699.33         |
+|           |                       |
+|  votes    | 528                   |
+_____________________________________
+
+
+
+
+/ *A time-ordered ZSET of articles */
+-----time-----------------------zset--|
+|_____________________________________|
+|  article:100408     | 1332065417.47 |
+|-------------------------------------
+|                     |               |
+|  article:100635     | 1332075503.49 |
+|                     |               |
+|  article:100716     | 1332082035.26 |
+|                     |               |
+______________________________________|
+
+
+
+/* A score-ordered ZSET of articles */
+-----time-----------------------zset--|
+|_____________________________________|
+|  article:100635     | 1332164063.49 |
+|-------------------------------------
+|                     |               |
+|  article:100408     | 1332174713.47 |
+|                     |               |
+|  article:100716     | 1332225027.26 |
+|                     |               |
+______________________________________|
+
+
+
+
+/* Some users who have voted for article 100408 */
+-----voted: 100408 --------------set--|
+|______________________________________
+|                                     |
+|  user:234487                        |
+|                                     |
+|  user:253378                        |
+|  ....                               |
+______________________________________|
+
+
+
+For the sake of memory use over time, we will  
+say that after a week users can no longer vote on an article and its score is 
+fixed. After a week has passed, we will delete the SET of users who have 
+voted on teh article. 
+
+
+
+
+/ *Article 100408 got a new vote, so its score was increased */
+-----score----------------------zset--|             -----score----------------------zset--|  
+|_____________________________________|				|_____________________________________|
+|  article:100408     | 1332065417.47 |  ---------> |  article:100408     | 1332175145.47 |  
+|                     |                             |
+|                     |               |             |                     |               |
+|  article:100635     | 1332075503.49 |             |  article:100635     | 1332075503.49 |
+|                     |               |             |                     |               |
+|  article:100716     | 1332082035.26 |             |  article:100716     | 1332082035.26 |
+|                     |               |             |                     |               |
+______________________________________|             ______________________________________|
+
+
+
+
+/*Since user 115423 voted on teh article, they are added to the voted SET*/
+-----voted: 100408 --------------set--|				-----voted: 100408 --------------set--|
+|______________________________________				|______________________________________
+|                                     |				|                                     |
+|  user:234487                        |				|  user:234487                        |
+|                                     |				|                                     |
+|  user:253378                        |				|  user:253378                        |
+|  ....                               |				|  user:115423                        |
+______________________________________|				______________________________________|
+
+
+
+
 
 
